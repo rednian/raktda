@@ -179,7 +179,9 @@
                 <tbody>
                     @foreach($artist_details->artistPermitDocument as $req)
                     <tr>
-                        <td style="width:50%;">{{ucfirst($req->requirement->requirement_name)}}</td>
+                        <td style="width:50%;">
+                            {{$req->requirement ? ucfirst($req->requirement->requirement_name) : ''}}
+                        </td>
                         <td class="text-center">
                             {{$req->issued_date != '0000-00-00' ? date('d-m-Y', strtotime($req->issued_date)) : ''}}
                         </td>

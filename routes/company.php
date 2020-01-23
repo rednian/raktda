@@ -38,11 +38,12 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
 });
 
 
-
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
     Route::get('/dashboard', function () {
         return redirect(URL::signedRoute('artist.index'));
     })->name('company.dashboard');
+
+    //Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');   
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -51,6 +52,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('fetch_applied_artists', 'Company\ArtistController@fetch_applied')->name('company.fetch_applied_artists');
     Route::get('fetch_existing_artists', 'Company\ArtistController@fetch_valid')->name('company.fetch_existing_artists');
     Route::get('fetch_existing_drafts',  'Company\ArtistController@fetch_drafts')->name('company.fetch_existing_drafts');
+    Route::get('fetch_expired_permits',  'Company\ArtistController@fetch_expired')->name('company.fetch_expired_permits');
+    Route::get('fetch_cancelled_permits',  'Company\ArtistController@fetch_cancelled')->name('company.fetch_cancelled_permits');
     Route::post('delete_artist', 'Company\ArtistController@delete_artist')->name('company.delete_artist');
     Route::post('update_artist_temp', 'Company\ArtistController@update_artist_temp')->name('company.update_artist_temp');
     Route::post('get_files_uploaded', 'Company\ArtistController@get_files_uploaded')->name('company.get_files_uploaded');
@@ -117,6 +120,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('fetch_applied_events', 'Company\EventController@fetch_applied')->name('company.event.fetch_applied');
     Route::get('fetch_existing_events', 'Company\EventController@fetch_valid')->name('company.event.fetch_valid');
     Route::get('fetch_event_drafts',  'Company\EventController@fetch_draft')->name('company.event.fetch_draft');
+    Route::get('fetch_expired_events',  'Company\EventController@fetch_expired')->name('company.event.fetch_expired');
+    Route::get('fetch_cancelled_events',  'Company\EventController@fetch_cancelled')->name('company.event.fetch_cancelled');
     Route::post('event/fetch_requirements', 'Company\EventController@fetch_requirements')->name('company.event.get_requirements');
     Route::get('event/get_additional_requirements/{id}', 'Company\EventController@fetch_additional_requirements')->name('company.event.get_additional_requirements');
     Route::get('event/get_status/{id}', 'Company\EventController@get_status')->name('company.event.get_status');
@@ -150,6 +155,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
+    // Route::post('event/othersUpload', 'Company\EventController@othersUpload')->name('event.othersUpload');
+    // Route::post('del_other_upload_session', 'Company\EventController@del_other_upload_session')->name('event.del_other_upload_session');
+    // Route::get('event/get_uploaded_others', 'Company\EventController@get_uploaded_others')->name('event.get_uploaded_others');
+
     Route::post('event/deleteTruckLiquor', 'Company\EventController@deleteTruckLiquor')->name('event.deleteTruckLiquor');
 
     Route::get('event/fetch_this_truck_details/{id}', 'Company\EventController@fetch_this_truck_details')->name('event.fetch_this_truck_details');
@@ -172,12 +181,16 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
 
+    //REPORTS
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
     Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
     Route::get('reports/event/view/{id}', 'Company\ReportController@showevent')->name('report.view_event');
     Route::get('reports/transaction/print/{id}', 'Company\ReportController@transactionprint')->name('transaction.print');
 
-    
+     //NOTIFICATIONS
+     Route::get('notifications', 'Company\CommonController@notifications')->name('company.notifications');
+     Route::get('notifications_dt', 'Company\CommonController@getNotificationsDatatable')->name('company.notifications.datatable');
+     Route::get('notifications/update_read', 'Company\CommonController@updateAsReadNotification')->name('company.notifications.update_read');
     
 });

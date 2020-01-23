@@ -10,13 +10,13 @@
                     <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
                         {{__('Add New')}}</button>
                     <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
-                            class="fa fa-check"></i> {{__('Done')}}</button>
+                            class="fa fa-check"></i> {{__('Update')}}</button>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
             </div>
             <div class="modal-body">
-
+                @include('permits.event.common.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="kt-font-transform-u no-wrap">
@@ -123,34 +123,34 @@
                             <div id="truckuploader_{{$i}}">{{__('Upload')}}
                             </div>
                         </div>
-                        <input type="hidden" id="truckdatesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
-                        @if($req->dates_required == 1)
+                        {{-- <input type="hidden" id="truckdatesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
+                        --}}
+                        {{-- @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
                                 title="Issue Date">{{__('Issued Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="truck_doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                id="truck_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="" class="text--maroon kt-font-bold"
-                                title="Expiry Date">{{__('Expiry Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="truck_doc_exp_date_{{$i}}" id="truck_doc_exp_date_{{$i}}"
-                                placeholder="DD-MM-YYYY" />
-                        </div>
-                        @endif
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="truck_doc_issue_date_{{$i}}" data-date-end-date="0d" id="truck_doc_issue_date_{{$i}}"
+                            placeholder="DD-MM-YYYY" />
                     </div>
-                    @php
-                    $i++;
-                    @endphp
-                    @endforeach
-                </form>
-                <div class="d-flex justify-content-end kt-margin-t-10">
-                    <button class="btn btn-sm btn--maroon btn-wide" id="update_this_td">{{__('Update')}}</button>
-                    <button class="btn btn-sm btn--maroon btn-wide" id="add_new_td">{{__('Add')}}</button>
-                </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="" class="text--maroon kt-font-bold"
+                            title="Expiry Date">{{__('Expiry Date')}}</label>
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="truck_doc_exp_date_{{$i}}" id="truck_doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                    </div>
+                    @endif --}}
+            </div>
+            @php
+            $i++;
+            @endphp
+            @endforeach
+            </form>
+            <div class="d-flex justify-content-end kt-margin-t-10">
+                <button class="btn btn-sm btn--maroon btn-wide" id="update_this_td">{{__('Update')}}</button>
+                <button class="btn btn-sm btn--maroon btn-wide" id="add_new_td">{{__('Add')}}</button>
             </div>
         </div>
     </div>
+</div>
 </div>

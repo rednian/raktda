@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Transaction Reports - Smart Government Rak')
 @section('content')
 
 <div class="kt-portlet kt-portlet--mobile">
@@ -89,7 +89,7 @@
             <tr class="kt-font-transform-u text-center">
                 <th>#</th>
                 <th>{{__('Transaction ID')}}</th>
-                <th>{{__('Transaction No')}}</th>
+                <th>{{__('Receipt No')}}</th>
                 <th>{{__('Amount')}}(AED)</th>
                 <th>{{__('VAT')}}(5%)</th>
                 <th>{{__('Total')}}(AED)</th>
@@ -143,7 +143,7 @@
                 url:'{{route("company.transactions")}}',
                 data: function (d) {
                     d.made_from = $('#made_from').val();
-                    d.date = $('#archive-applied-date').val()  ? selected_date : null;
+                    d.date = $('#applied-date-from').val()  ? selected_date : null;
                 }
             },
             columns: [

@@ -135,61 +135,65 @@
 
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
 
-        <div class="table-responsive">
-            <table class="table table-striped border table-hover table-borderless">
-                <thead>
-                    <tr>
-                        <th>{{__('First Name')}}</th>
-                        <th>{{__('Last Name')}}</th>
-                        <th>{{__('Profession')}}</th>
-                        <th>{{__('Mobile Number')}}</th>
-                        {{-- <th>Email</th> --}}
-                        <th>{{__('Status')}}</th>
-                        <th class="text-center">{{__('Action')}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(count($artist_details) > 0)
-                    @foreach($artist_details as $ad)
-                    {{-- {{dd($ad)}} --}}
-                    <tr>
-                        <td>{{ getLangId() == 1 ? ucwords($ad->firstname_en) : $ad->firstname_ar}}</td>
-                        <td>{{ getLangId() == 1 ? ucwords($ad->lastname_en) : $ad->lastname_ar}}</td>
-                        <td>{{ getLangId() == 1 ? ucwords($ad->profession['name_en']) : $ad->profession['name_ar']}}
-                        </td>
-                        <td>{{$ad->mobile_number}}</td>
-                        {{-- <td>{{$ad->email}}</td> --}}
-                        <td>{{__(ucwords($ad->artist_permit_status))}}</td>
-                        <td class="d-flex justify-content-center">
-                            <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
-                                <button
-                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Edit')}}</button>
-                            </a>
-                            <a
-                                href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
-                                <button
-                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
-                            </a>
-                            @if(count($artist_details) > 1)
-                            <a href="#"
-                                onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
-                                data-toggle="modal" data-target="#delartistmodal">
-                                <button
-                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
-                            </a>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                        <td colspan="7" class="text-center">{{__('Please Add Artists')}}</td>
-                    </tr>
-                    @endif
-                </tbody>
-            </table>
+        <div class="col-md-12 kt-margin-t-10">
+            <div class="table-responsive-sm">
+                <table class="table table-striped border table-hover table-borderless">
+                    <thead>
+                        <tr>
+                            <th>{{__('First Name')}}</th>
+                            <th>{{__('Last Name')}}</th>
+                            <th>{{__('Profession')}}</th>
+                            <th>{{__('Mobile Number')}}</th>
+                            {{-- <th>Email</th> --}}
+                            <th>{{__('Status')}}</th>
+                            <th class="text-center">{{__('Action')}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(count($artist_details) > 0)
+                        @foreach($artist_details as $ad)
+                        {{-- {{dd($ad)}} --}}
+                        <tr>
+                            <td>{{ getLangId() == 1 ? ucwords($ad->firstname_en) : $ad->firstname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucwords($ad->lastname_en) : $ad->lastname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucwords($ad->profession['name_en']) : $ad->profession['name_ar']}}
+                            </td>
+                            <td>{{$ad->mobile_number}}</td>
+                            {{-- <td>{{$ad->email}}</td> --}}
+                            <td>{{__(ucwords($ad->artist_permit_status))}}</td>
+                            <td class="d-flex justify-content-center">
+                                <a
+                                    href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'event'])}}">
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
+                                </a>
+                                <a
+                                    href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'event'])}}">
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
+                                </a>
+                                @if(count($artist_details) > 1)
+                                <a href="#"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    data-toggle="modal" data-target="#delartistmodal">
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
+                                </a>
+                                @else
+                                <button class="btn" style="visibility:hidden;">btn</button>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr>
+                            <td colspan="7" class="text-center">{{__('Please Add Artists')}}</td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
-
         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
 
         <div class="d-flex flex-row-reverse">

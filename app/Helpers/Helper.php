@@ -389,7 +389,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  200);
+        $payment_no = sprintf("%07d",  205);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

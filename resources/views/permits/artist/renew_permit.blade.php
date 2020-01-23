@@ -184,6 +184,7 @@
     // }
 
 
+
     function windowBeforeUnload() {
 
         var permit_id = $('#permit_id').val();
@@ -192,12 +193,16 @@
             return;
         }
         var total = $('#total_artist_details').val();
-        var addUrl = "{{url('company/artist/add_artist_to_permit/renew')}}/"+permit_id ;
+        var addUrl = "{{URL::signedRoute('company.add_artist_to_permit', ['from' => ':from' , 'id' => ':id'])}}" ;
+        addUrl = addUrl.replace(':from' , 'renew');
+        addUrl = addUrl.replace(':id' , permit_id);
         if(nextUrl != addUrl ){
             var tempArr = [];
             for(var i = 0 ; i < total; i++){
                 var temp_id = $('#temp_id_'+i).val();
-                var tempUrl = "{{url('artist/edit')}}"+'/' +temp_id + '/renew' ;
+                var tempUrl = "{{URL::signedRoute('artist.edit_artist', [ 'from' => ':from' , 'id' => ':id' ])}}" ;
+                tempUrl = tempUrl.replace(':from', 'renew');
+                tempUrl = tempUrl.replace(':id', temp_id);
                 // var tempUrl = "{{url('company/artist/permit')}}"+'/' +temp_id +'/renew';
                 tempArr.push(tempUrl);
             }

@@ -21,13 +21,19 @@
                     role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#applied"
-                            data-target="#applied">{{__('Applied Artist Permit')}}</a>
+                            data-target="#applied">{{__('Applied Permits')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Artist Permit')}}</a>
+                        <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Permits')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Artist Permit Drafts')}}</a>
+                        <a class="nav-link" data-toggle="tab" href="#expired">{{__('Expired Permits')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#cancel">{{__('History')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#draft">{{__('Drafts')}}</a>
                     </li>
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"
@@ -78,6 +84,43 @@
                             <th>{{__('Artists')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+            <div class="tab-pane" id="expired" role="tabpanel">
+                <table class="table table-striped table-borderless table-hover border" id="expired-artists-table">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('PERMIT TERM')}}</th>
+                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('From Date')}}</th>
+                            <th>{{__('To Date')}}</th>
+                            <th>{{__('Work Location')}}</th>
+                            <th class="text-center">{{__('Artists')}}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+
+            <div class="tab-pane" id="cancel" role="tabpanel">
+                <table class="table table-striped table-borderless table-hover border" id="cancelled-artists-table">
+                    <thead>
+                        <tr class="kt-font-transform-u">
+                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('From Date')}}</th>
+                            <th>{{__('To Date')}}</th>
+                            <th>{{__('Work Location')}}</th>
+                            <th class="text-center">{{__('Artists')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th>{{__('Comments')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -224,15 +267,14 @@
             }
         });
 
+        var getLangid = $('#getLangid').val();
 
         $(document).ready(function(){
-
-            var getLangid = $('#getLangid').val();
-
             applied();
             valid();
             draft();
-            
+            expired();
+            cancelled();
             setInterval(function(){ applied(); valid();}, 100000);
             var hash = window.location.hash;
             hash && $('ul.nav a[href="' + hash + '"]').tab('show');
@@ -249,6 +291,8 @@
                 if (current_tab == '#applied' ) {  applied(); }
                 if (current_tab == '#valid' ) { valid(); }
                 if (current_tab == '#draft' ) { draft(); }
+                if (current_tab == '#expired' ) { expired(); }
+                if (current_tab == '#cancelled' ) { cancelled(); }
             });
 
         });
@@ -318,7 +362,7 @@
                     { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
                     { data: 'work_location', name: 'work_location' , className: 'work-location-column'},
                     { data: 'permit_id', name: 'permit_id' , className: 'no-wrap'},
-                    { data: 'action', name: 'action' ,  className: "text-center"},
+                    { data: 'action', name: 'action' ,  className: "text-center no-wrap"},
                     { data: 'download', name: 'download' ,  className: "text-center" },
                     { data: 'details', name: 'details' ,  className: "text-center" },
                 ],
@@ -353,6 +397,11 @@
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
+
+            table2
+                .column( '2:visible' )
+                .order( 'desc' )
+                .draw();
        }
 
        function draft()
@@ -394,6 +443,89 @@
                 }
             });
        }
+
+
+       function expired()
+       {
+            var table4 = $('#expired-artists-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                // pageLength: 5,
+                // order:[[5,'desc']],
+                // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                ajax:'{{route("company.fetch_expired_permits")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'term', name: 'term' },
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                    { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
+                    { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
+                    { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:6,
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            var artistPermit = JSON.parse(data);  
+                            return artistPermit.length;
+                        }
+                    }
+                ],
+                language: {
+                    emptyTable: "No Expired Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+            });
+       }
+
+
+
+       function cancelled()
+       {
+            var table5 = $('#cancelled-artists-table').DataTable({
+                responsive: true,
+                processing: true,
+                serverSide: true,
+                searching: true,
+                ordering: false,
+                // pageLength: 5,
+                // order:[[5,'desc']],
+                // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
+                ajax:'{{route("company.fetch_cancelled_permits")}}',
+                columns: [
+                    { data: 'reference_number', name: 'reference_number' },
+                    { data: 'permit_number', name: 'permit_number' },
+                    { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
+                    { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
+                    { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
+                    { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
+                    { data: 'permit_status', name: 'permit_status', className:'text-center' },
+                    { data: 'action', name: 'action', className:'text-center no-wrap' },
+                    { data: 'details', name: 'details' ,  className: "text-center"},
+                ],
+                columnDefs: [
+                    {
+                        targets:5,
+                        className:'text-center',
+                        render: function(data, type, full, meta) {
+                            var artistPermit = JSON.parse(data);  
+                            return artistPermit.length;
+                        }
+                    },
+                ],
+                language: {
+                    emptyTable: "No Cancelled or Rejected Permits",
+                    searchPlaceholder: "{{__('Search')}}"
+                }
+            });
+       }
+
 
 
  

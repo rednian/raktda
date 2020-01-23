@@ -1,15 +1,16 @@
 <div class="kt-portlet__body kt-padding-5">
     <section class="row">
         <div class="col-md-3">
-            <div class="border kt-padding-5">
-                <ul class="nav nav-pills nav-fill nav-flex-column kt-margin-b-0" role="tablist">
+            <div class="border kt-padding-5 kt-margin-t-5">
+                <p class="kt-font-transform-u kt-font-bolder text-center kt-margin-t-5">{{__('Event Types')}}</p>
+                <ul class="nav nav-pills nav-fill nav-flex-column kt-margin-b-0" id="event_type_nav" role="tablist">
                     @php
                     $i = 1;
                     @endphp
                     @foreach($event_types as $et)
-                    <li class="nav-item">
+                    <li class="nav-item" style="width: 100%;">
                         <a class="nav-link {{$i == 1 ? 'active' : ''}} kt-padding-5" data-toggle="tab"
-                            href="#kt_tabs_5_{{$i}}">{{ getLangId() == 1 ? ucwords($et->name_en) : $et->name_ar}}</a>
+                            href="#kt_tabs_5_{{$i}}">{{ getLangId() == 1 ? ucfirst($et->name_en) : $et->name_ar}}</a>
                     </li>
                     @php
                     $i++;
@@ -19,48 +20,142 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="border kt-padding-5">
-                <div class="tab-content">
-                    @php
-                    $i = 1;
-                    @endphp
-                    @foreach($event_types as $et)
-                    <div class="tab-pane {{$i == 1 ? 'active' : ''}}" id="kt_tabs_5_{{$i}}" role="tabpanel">
-                        <table class="table table-borderless table-sm">
+            <div class="tab-content">
+                @php
+                $i = 1;
+                @endphp
+                @foreach($event_types as $et)
+                <div class="tab-pane {{$i == 1 ? 'active' : ''}}" id="kt_tabs_5_{{$i}}" role="tabpanel">
+                    @if($et->subType()->exists())
+                    <table class="table table-borderless  border table-sm subtype_table">
+                        <thead>
                             <tr class="kt-font-transform-u">
-                                <th>#</th>
-                                <th>{{__('Document Name')}}</th>
-                                <th>{{__('Description')}}</th>
+                                <th class="text-center">#</th>
+                                <th style="width: 70%;" class="kt-padding-l-20">{{__('Event Sub Type')}}</th>
+                                <th style="width: 30%;" class="text-right kt-padding-r-20">{{__('Fee / Day')}}(AED)
+                                </th>
                             </tr>
+                        </thead>
+                        <tbody>
                             @php
-                            $i = 1;
+                            $k = 1;
                             @endphp
-                            @foreach($et->event_type_requirements as $req)
-                            <tr>
-                                <td>{{$i}}</td>
-                                <td>{{getLangId() == 1 ? ucwords($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                            @foreach($et->subType as $ett)
+                            <tr class="kt-padding-l-20 kt-padding-r-20">
+                                <td class="text-center">{{$k}}</td>
+                                <td class="text-left ">
+                                    {{ getLangId() == 1 ? ucfirst($ett->sub_name_en) : $ett->sub_name_ar}}
                                 </td>
-                                <td>{{getLangId() == 1 ? ucwords($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
-                                </td>
+                                <td class="text-right kt-padding-r-20">
+                                    {{number_format($et->amount,2)}}</td>
                             </tr>
                             @php
-                            $i++;
+                            $k++;
                             @endphp
                             @endforeach
-                            @if($et->event_type_requirements->count() == 0)
-                            <tr>
-                                <td></td>
-                                <td colspan="2">{{__('No Documents Required')}}</td>
-                            </tr>
-                            @endif
-                        </table>
+                        </tbody>
+                    </table>
+                    @endif
+                    <section class="row">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10"
+                                role="tablist">
+                                <li class="nav-item ">
+                                    <a class="nav-link active" data-toggle="tab"
+                                        href="#corporate">{{__('Corporate')}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-toggle="tab" href="#government"
+                                        data-target="#government">{{__('Government')}} </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <div class="tab-content">
+                        <div class="tab-pane show fade active" id="corporate" role="tabpanel">
+                            <small>{{__('List of required documents')}}</small>
+                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                                <thead>
+                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                        <th class="text-center">#</th>
+                                        <th style="width: 40%;">{{__('Document Name')}}</th>
+                                        <th style="width: 50%;">{{__('Notes')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $j = 1;
+                                    @endphp
+                                    @foreach($et->event_type_requirements as $req)
+                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    $req->requirement->type == 'corporate')
+                                    <tr>
+                                        <td class="text-center">{{$j}}</td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        </td>
+                                    </tr>
+                                    @php
+                                    $j++;
+                                    @endphp
+                                    @endif
+                                    @endforeach
+                                    @if($et->event_type_requirements->count() == 0)
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2">{{__('No Required Documents')}}</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="government" role="tabpanel">
+                            <small>{{__('List of required documents')}}</small>
+                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                                <thead>
+                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                        <th class="text-center">#</th>
+                                        <th style="width: 40%;">{{__('Document Name')}}</th>
+                                        <th style="width: 50%;">{{__('Notes')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $j = 1;
+                                    @endphp
+                                    @foreach($et->event_type_requirements as $req)
+                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    $req->requirement->type == 'government')
+                                    <tr>
+                                        <td class="text-center">{{$j}}</td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        </td>
+                                    </tr>
+                                    @php
+                                    $j++;
+                                    @endphp
+                                    @endif
+                                    @endforeach
+                                    @if($et->event_type_requirements->count() == 0)
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2">{{__('No Required Documents')}}</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    @php
-                    $i++;
-                    @endphp
-                    @endforeach
                 </div>
+                @php
+                $i++;
+                @endphp
+                @endforeach
             </div>
+
         </div>
     </section>
 </div>

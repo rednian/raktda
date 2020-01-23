@@ -9,6 +9,8 @@ use App\Company;
 use App\Country;
 use App\Emirates;
 use App\CompanyType;
+use App\Permit;
+use App\ArtistTempData;
 use function Sodium\compare;
 use Validator;
 use Carbon\Carbon;
@@ -36,7 +38,11 @@ class CompanyController extends Controller
    }
    public function show(Request $request ,Company $company)
    {
-    return view('permits.company.show', ['company'=>$company]);
+      Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+      ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+      Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
+
+      return view('permits.company.show', ['company'=>$company]);
    }
 
 
@@ -388,14 +394,12 @@ class CompanyController extends Controller
           $name =  __('Other Upload');
         }
         return $name;
-      })
-      ->editColumn('issued_date', function($data){
-        return $data->issued_date ? $data->issued_date->format('d-F-Y') : '-'; 
-      })
-      ->editColumn('expired_date', function($data){
-       return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
-      })
-      ->addColumn('file', function($data){
+      })->editColumn('issued_date', function($data){
+        return; 
+      })->editColumn('expired_date', function($data){
+      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
+      return ;
+      })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
           $name = $data->requirement->requirement_name;
         }

@@ -318,12 +318,6 @@
                     <input type="hidden" id="total">
 
 
-                    <div>
-                        <small>NB: {{__('Paid money will not be refunded')}}</small>
-                    </div>
-
-
-
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
                             onclick="Checkout.showLightbox()">{{__('PAY')}}</button>

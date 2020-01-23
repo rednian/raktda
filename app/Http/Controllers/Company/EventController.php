@@ -30,6 +30,9 @@ use App\Happiness;
 use App\EventTypeSub;
 use App\ArtistTempData;
 use App\Permit;
+use App\User;
+use App\ArtistPermit;
+use App\Notifications\AllNotification;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -52,13 +55,52 @@ class EventController extends Controller
     }
 
     public function eventPreloadData() {
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
+        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement', 'subType')->orderBy('name_en', 'asc')->get();
         $data['event_sub_types'] = EventTypeSub::all()->sortBy('sub_name_en');
         $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
         $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
         $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
         $data['emirates'] = Emirates::all()->sortBy('name_en');
         return $data;
+    }
+
+    public function othersUpload(Request $request) {
+        $user_id = Auth::user()->user_id;
+        $ext = $request->file('other_file')->getClientOriginalExtension();
+        $fileName = $request->file('other_file')->getClientOriginalName();
+        $size = $request->file('other_file')->getSize();
+        $toUrl = 'public/' . $user_id . '/event/temp/other';
+        $path  = Storage::putFileAs($toUrl, $request->file('other_file'), $fileName );
+    
+        $savePath = $user_id . '/event/temp/other/'.$fileName;
+
+        if (!Session::exists($user_id . '_event_other_file')) {
+            session()->put($user_id . '_event_other_file', []);
+            session()->put($user_id . '_event_other_file_ext', []);
+        }
+        session()->push($user_id . '_event_other_file' , 'public/'.$savePath);
+        session()->push($user_id . '_event_other_file_ext' , $ext);
+        // return json_encode($file);
+        return response()->json(['filepath' => $path, 'ext' => $ext]);
+    }
+
+    public function del_other_upload_session(Request $request)
+    {
+        $filepath = $request->path;
+        $ext = $request->ext;
+        $user_id = Auth::user()->user_id;
+        $files = session()->pull($user_id . '_event_other_file' , []);
+        $exts = session()->pull($user_id . '_event_other_file_ext' , []);
+        if (($key = array_search($filepath, $files)) !== false) {
+            unset($files[$key]);
+        }
+        if (($key = array_search($ext, $exts)) !== false) {
+            unset($exts[$key]);
+        }
+        $path  = Storage::delete($filepath);
+        session()->put($user_id . '_event_other_file' , $files);
+        session()->put($user_id . '_event_other_file_ext' , $exts);
+        return $filepath;
     }
 
     public function create(Request $request)
@@ -237,7 +279,7 @@ class EventController extends Controller
     {
        
         $liquor_details = $request->liquorDetails;
-        $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
+        // $liquorDocDetails = json_decode($request->liquorDocDetails,  true);
         $type = $request->type;
         $event_liquor_id = '';
 
@@ -266,6 +308,11 @@ class EventController extends Controller
                     'provided' => 0
                 );
     
+            }
+
+            if(isset($request->event_id))
+            {
+                $update_array['event_id'] = $request->event_id;
             }
 
             $update_array['created_by'] = Auth::user()->user_id;
@@ -315,7 +362,7 @@ class EventController extends Controller
         $userid = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
 
-        if ($liquorDocDetails) {
+        // if ($liquorDocDetails) {
 
             for ($j = 0; $j < $total; $j++) {
 
@@ -349,8 +396,8 @@ class EventController extends Controller
                                     $newPathLink = $check_path . '/' . $next_file_no . '_' . $date . '.' . $ext;
 
                                     EventLiquorTruckRequirement::create([
-                                        'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
-                                        'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
+                                        // 'issue_date' =>  $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['issue_date'])->toDateTimeString() : '',
+                                        // 'expired_date' => $liquorDocDetails[$m] != null ? Carbon::parse($liquorDocDetails[$m]['exp_date'])->toDateTimeString() : '',
                                         'created_at' =>  Carbon::now()->toDateTimeString(),
                                         'created_by' =>  Auth::user()->user_id,
                                         'requirement_id' => $l,
@@ -370,7 +417,7 @@ class EventController extends Controller
                 }
 
             }
-        }
+        // }
             DB::commit();
             if($old_event_liquor_id)
             {
@@ -754,6 +801,8 @@ class EventController extends Controller
 
             $this->insertEventImages($event_id, $request->description);
             DB::commit();
+            $event = Event::where('event_id', $event_id)->latest()->first();
+            $this->sendNotification($event, 'new');
             $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
@@ -850,7 +899,7 @@ class EventController extends Controller
     {
         
         $user = Auth::user();
-        $allEvents = Event::where('is_display_all', 1);
+        $allEvents = Event::where('is_display_all', 1)->whereNotIn('status', ['cancelled']);
         $events = Event::whereIn('status', ['active', 'expired'])->where('created_by', Auth::user()->user_id)->union($allEvents)->get();
 
         $events = $events->map(function ($event) use ($user) {
@@ -919,6 +968,8 @@ class EventController extends Controller
             $input_Array['status'] = 'new';
         } else {
             $input_Array['status'] = 'amended';
+            $input_Array['request_type'] = 'bounced
+             back request';
         }
 
         $event = Event::where('event_id', $event_id)->update($input_Array);
@@ -1049,6 +1100,8 @@ class EventController extends Controller
 
 
             DB::commit();
+            $event = Event::where('event_id',$request->event_id)->latest()->first();
+            $this->sendNotification($event, 'edit');
             $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
@@ -1185,17 +1238,35 @@ class EventController extends Controller
         }
     }
 
+    public function fetch_expired(Request $request)
+    {
+        if($request->ajax()) {
+            return $this->datatable_function('expired');
+        }
+    }
+
+    public function fetch_cancelled(Request $request)
+    {
+        if($request->ajax()) {
+            return $this->datatable_function('cancelled');
+        }
+    }
+
 
     function datatable_function($status)
     {
         $permits = Event::orderBy('created_at', 'desc')->where('created_by', Auth::user()->user_id);
 
         if ($status == 'applied') {
-            $permits->whereNotIn('status', ['active', 'draft', 'expired']);
+            $permits->whereNotIn('status', ['active', 'draft', 'expired', 'cancelled', 'rejected']);
         } else if ($status == 'valid') {
-            $permits->whereIn('status', ['active', 'expired'])->OrderBy('updated_at', 'desc');
+            $permits->whereIn('status', ['active'])->OrderBy('updated_at', 'desc');
         } else if ($status == 'draft') {
             $permits->where('status', 'draft');
+        } else if ($status == 'expired') {
+            $permits->where('status', 'expired');
+        } else if ($status == 'cancelled') {
+            $permits->whereIn('status', ['cancelled', 'rejected']);
         }
 
         $permits->latest();
@@ -1230,11 +1301,7 @@ class EventController extends Controller
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.happiness', $permit->event_id) . '"  title="'.__('Happiness').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Happiness').'</span></a>';
                     }else if ($permit->status == 'approved-unpaid') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
-                    } else if ($permit->status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
-                    } else if ($permit->status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
-                    } else if ($permit->status == 'need modification') {
+                    }  else if ($permit->status == 'need modification') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
@@ -1242,9 +1309,9 @@ class EventController extends Controller
                     break;
                 case 'valid':
                     if ($permit->status == 'active') {
-                        $issued_date = strtotime($permit->issued_date);
+                        $approved_date = strtotime($permit->approved_date);
                         $today = strtotime(date('Y-m-d 00:00:00'));
-                        $diff = abs($today - $issued_date) / 60 / 60 / 24;
+                        $diff = abs($today - $approved_date) / 60 / 60 / 24;
                         $amend_btn = ($diff <= $amend_grace) ? '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.amend', $permit->event_id) . '" title="amend" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-l-15">Amend </span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="'.__('Add Artist').'" class="kt-font-dark kt-pull-right"><i class="fa fa-user-plus"></i></a><br />' : '';
                         return $amend_btn . '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\',\''.$permit->permit_number.'\')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline" title="'.__('Cancel Permit').'">'.__('Cancel').'</span>';
                     } else if ($permit->status == 'expired') {
@@ -1256,13 +1323,20 @@ class EventController extends Controller
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.draft', $permit->event_id) . '"  title="View"><span class="kt-badge kt-badge--warning kt-badge--inline">View</span></a>&emsp;<span onClick="delete_draft(' . $permit->event_id . ')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
                     }
                     break;
+                case 'cancelled':
+                    if ($permit->status == 'rejected') {
+                        return '<span onClick="rejected_permit(' . $permit->event_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--danger kt-badge--inline">'.__('Rejected').'</span>';
+                    } else if ($permit->status == 'cancelled') {
+                        return '<span onClick="show_cancelled(' . $permit->event_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
+                    }
+                    break;
             }
         })->addColumn('type_name', function($permit) {
             return getLangId() == 1 ? $permit->type->name_en : $permit->type->name_ar ; 
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->status;
             $ret_status = '';
-            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing') {
+            if($status == 'amended' || $status == 'new' || $status == 'need approval' || $status == 'processing' || $status == 'checked') {
                 return $ret_status = __('Pending'); 
             }else if($status == 'approved-unpaid') {
                 return $ret_status = __('Approved');
@@ -1284,6 +1358,12 @@ class EventController extends Controller
                 case 'draft':
                     $from = 'draft';
                     break;
+                case 'expired':
+                    $from = 'expired';
+                    break;
+                case 'cancelled':
+                    $from = 'cancelled';
+                    break;
             }
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show',[ 'id' =>  $permit->event_id , 'tab' => $from]) .'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
@@ -1294,6 +1374,7 @@ class EventController extends Controller
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
+
 
     public function amend(Request $request, Event $event)
     {
@@ -1325,7 +1406,7 @@ class EventController extends Controller
                 'time_start' => $request->time_start,
                 'time_end' => $request->time_end,
                 'status' => 'amended', 
-                'request_type' => 'amend'
+                'request_type' => 'amend request'
             ]
         );
 
@@ -1438,8 +1519,9 @@ class EventController extends Controller
                 }
             }
         }
-
         DB::commit();
+        $event = Event::where('event_id', $request->event_id)->latest()->first();
+        $this->sendNotification($event, 'amend');
         $result = ['success', __('Event Permit Amended successfully'), 'Success'];
     } catch (Exception $e) {
         DB::rollBack();
@@ -1740,13 +1822,7 @@ class EventController extends Controller
             return abort(401);
         }
         // $data['event_types'] = EventType::all()->sortBy('name_en');
-        $data['event_types'] = EventType::with('event_type_requirements', 'event_type_requirements.requirement')->orderBy('name_en', 'asc')->get();
-        $data['areas'] = Areas::where('emirates_id', 5)->orderBy('area_en', 'asc')->get();
-        $data['truck_docs'] = EventRequirement::with('requirement')->where('event_id', $event->event_id)->where('type', 'truck')->get();
-
-        $data['truck_req'] = Requirement::where('requirement_type', 'truck')->get();
-        $data['emirates'] = Emirates::all()->sortBy('name_en');
-        $data['liquor_req'] = Requirement::where('requirement_type', 'liquor')->get();
+        $data = $this->eventPreloadData();
 
         $data['event'] = $event;
         return view('permits.event.draft', $data);
@@ -2049,7 +2125,7 @@ class EventController extends Controller
         $transactionId = $request->transactionId;
         $receipt = $request->receipt;
         $orderId = $request->orderId;
-
+        $noofdays = $request->noofdays;
         $toURL = '';
 
         try {
@@ -2069,7 +2145,7 @@ class EventController extends Controller
         
         if ($trnx_id)
         {
-            $event_amount = (int)$amount - (int)$truck_fee;
+            $event_amount = (int)$amount - ((int)$truck_fee + (int)$liquor_fee);
             EventTransaction::create([
                 'event_id' => $event_id,
                 'transaction_id' => $trnx_id->transaction_id,
@@ -2115,41 +2191,36 @@ class EventController extends Controller
                 'paid' => 1,
                 'paid_artist_fee' => $paidArtistFee
             ]);
-        }
+        
 
-        if($paidArtistFee)
-        {
-            $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
-            
-            $trns = Transaction::create([
-                'reference_number' => getTransactionReferNumber(),
-                'transaction_type' => 'event',
-                'created_by' => Auth::user()->user_id,
-                'transaction_date' => Carbon::now()->format('Y-m-d')
-            ]);
+            if($paidArtistFee)
+            {
+                $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+                
+                $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
 
-            $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+                foreach ($artistPermits as $artistPermit) {
+                    $per_day_fee = $artistPermit->profession->amount;
+                    $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
+                    $total_fee = $per_day_fee * $noofmonths;
+                    $vat_fee = $total_fee * 0.05 ; 
+                    $trnx_id->artistPermitTransaction()->create([
+                        'vat' => $vat_fee ,
+                        'amount' => $total_fee,
+                        'permit_id' => $permit_id,
+                        'artist_permit_id' => $artistPermit->artist_permit_id,
+                        'transaction_id' => $trnx_id->transaction_id,
+                    ]);
+                }
 
-            foreach ($artistPermits as $artistPermit) {
-                $per_day_fee = $artistPermit->profession->amount;
-                $total_fee = $per_day_fee * $noofdays;
-                $vat_fee = $total_fee * 0.05 ; 
-                $trns->artistPermitTransaction()->create([
-                    'vat' => $vat_fee ,
-                    'amount' => $total_fee,
-                    'permit_id' => $permit_id,
-                    'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'transaction_id' => $trns->transaction_id,
+                Permit::where('permit_id', $permit_id)->update([
+                    'paid' => 1,
+                    'permit_number' => generateArtistPermitNumber(),
+                    'permit_status' => 'active'
                 ]);
+
+                ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
             }
-
-            Permit::where('permit_id', $permit_id)->update([
-                'paid' => 1,
-                'permit_number' => generateArtistPermitNumber(),
-                'status' => 'active'
-            ]);
-
-            ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
         }
 
         DB::commit();
@@ -2213,11 +2284,19 @@ class EventController extends Controller
                 ]);
             }
 
-            if($event->firm == 'corporate' && $event->status == 'approved-unpaid' && $event->permit_number == null) {
-                Event::where('event_id', $event_id)->update([
-                    'status' => 'active',
-                    'permit_number' => generateEventPermitNumber()
-                ]);
+            if($event->firm == 'corporate' && $event->status == 'approved-unpaid') {
+                if($event->permit_number == null)
+                {
+                    Event::where('event_id', $event_id)->update([
+                        'status' => 'active',
+                        'permit_number' => generateEventPermitNumber()
+                    ]);
+                }else {
+                    Event::where('event_id', $event_id)->update([
+                        'status' => 'active'
+                    ]);
+                }
+               
             }
 
             $result = ['success', __('Thank you For your Feedback'), 'Success'];
@@ -2443,7 +2522,8 @@ class EventController extends Controller
         $thumbSavedPath = 'public/' . $user_id . '/event/temp/thumb/' . $fileName;
         session([$user_id . '_event_pic_file' => $path, $user_id . '_event_ext' => $ext, $user_id . '_event_thumb_file' => $thumbSavedPath]);
 
-        return json_encode($file);
+        // return json_encode($file);
+        return response()->json(['filepath' => $path]);
     }
 
     public function delete_logo_in_session(Request $request)
@@ -2563,79 +2643,47 @@ class EventController extends Controller
         return $output;
     }
 
+    public function sendNotification($event, $from){
+
+        $reason = $contenttext =  '';
+        switch($from){
+            case('new'):
+                $reason = 'Applied'; $contenttext = 'applied';
+                break;
+            case('edit'):
+                $reason = 'Edited';$contenttext = 'submitted after modification';
+                break;
+            case('amend'):
+                $reason = 'Amended';$contenttext = 'submitted for amendment';
+                break;
+            case('cancel'):
+                $reason = 'cancelled';$contenttext = 'cancelled';
+                break;
+            default: 
+                $reason = '';
+                break;
+        }
+        $subject = 'Event Permit #' . $event->reference_number . ' '. $reason;
+        $title = 'Event Permit <b>#' . $event->reference_number . '</b> '.$reason;
+        $buttonText = "View Application";
+        $content = 'The event permit with reference number <b>' . $event->reference_number . '</b> is '.$contenttext.'.  Please click the link below.';
+        $url = URL::signedRoute('admin.event.application', ['event' => $event->event_id]); 
+        $users = User::whereHas('roles', function($q){
+        $q->where('roles.role_id', 1);
+        })->get();
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => $buttonText,
+                'url' => $url
+            ]));
+        }
+    }
+
 }
-
-/*
-        // $tdd = json_decode($request->tdd, true);
-
-        // $truckCount = $evd['no_of_trucks'];
-        // $truckReqQuery = Requirement::where('requirement_type', 'truck')->get();
-        // $truckReqCount = $truckReqQuery->count();
-        // $truckReqIdNames = [];
-        // $truckReqIds = [];
-        // foreach ($truckReqQuery as $trk) {
-        //     array_push($truckReqIdNames, $trk->requirement_name);
-        //     array_push($truckReqIds, $trk->requirement_id);
-        // }
-
-        // // dump('i outside=' . $i); 
-
-        // for ($i = 1; $i <= $truckCount; $i++) {
-
-        //     for ($j = 1; $j <= $truckReqCount; $j++) {
-
-        //         if (session($userid . '_truck_file_' . $i . '_' . $j)) {
-
-
-        //             $total_truck_docs = count(session($userid . '_truck_file_' . $i . '_' . $j));
-
-
-        //             if ($total_truck_docs > 0) {
-
-        //                 for ($k = 0; $k < $total_truck_docs; $k++) {
-
-        //                     if (Storage::exists(session($userid . '_truck_file_' . $i . '_' . $j)[$k])) {
-
-        //                         $ext = session($userid . '_truck_ext_' . $i . '_' . $j)[$k];
-
-        //                         $check_path = 'public/' . $userid . '/event/' . $event_id . '/truck/' . $i . '/' . $j;
-
-        //                         $file_count = count(Storage::files($check_path));
-
-        //                         if ($file_count == 0) {
-        //                             $next_file_no = 1;
-        //                         } else {
-        //                             $next_file_no = $file_count + 1;
-        //                         }
-
-        //                         $truckRequirement = preg_replace('/\s+/', '_', str_replace('/', '', strtolower($truckReqIdNames[$j - 1])));
-
-        //                         $newPath = 'public/' . $userid . '/event/' . $event_id . '/' . $i . '/' . $j . '/' . $truckRequirement . '_' . $next_file_no . '_' . $date . '.' . $ext;
-
-        //                         $newPathLink = $userid . '/event/' . $event_id . '/' . $i . '/' . $j . '/' . $truckRequirement . '_' . $next_file_no . '_' . $date . '.' . $ext;
-
-        //                         Storage::move(session($userid  . '_truck_file_' . $i . '_' . $j)[$k], $newPath);
-
-        //                         EventRequirement::create([
-        //                             'issued_date' => $tdd[$i][$j] != null ? Carbon::parse($tdd[$i][$j]['issue_date'])->toDateTimeString() : '',
-        //                             'expired_date' => $tdd[$i][$j] != null ? Carbon::parse($tdd[$i][$j]['exp_date'])->toDateTimeString() : '',
-        //                             'created_at' =>  Carbon::now()->toDateTimeString(),
-        //                             'created_by' =>  Auth::user()->user_id,
-        //                             'event_type_id' => $evd['event_type_id'],
-        //                             'requirement_id' => $truckReqIds[$j - 1],
-        //                             'type' => 'truck',
-        //                             'event_id' => $event_id,
-        //                             'path' =>  $newPathLink,
-        //                         ]);
-        //                     }
-        //                 }
-        //                 $request->session()->forget([$userid . '_truck_file_' . $i . '_' . $j, $userid . '_truck_ext_' . $i . '_' . $j]);
-        //             }
-        //         }
-        //     }
-        // }
-
-
 
 
 

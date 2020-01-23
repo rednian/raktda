@@ -391,6 +391,7 @@ class ArtistPermitController extends Controller
       }
     }
 
+
     private function sendNotificationApproval($permit, $users){
 
       $subject = 'Artist Permit #' . $permit->reference_number . ' For Approval';
