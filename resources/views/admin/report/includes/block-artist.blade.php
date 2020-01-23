@@ -25,7 +25,10 @@
 
     .dt-button-collection span {
         color: #6d6d6d;
+
     }
+
+
 
     #block-artist_filter {
         width: 42%;
@@ -70,14 +73,11 @@
         color: white;
     }
 
-    #active-artist_wrapper .dt-buttons {
-        background-color: #edeef4;
-        margin-top: 6px;
-    }
 
-    #block-artist_wrapper .dt-buttons {
+    .dt-buttons{
+        height: 33px;
+        margin-top: 8.5px;
         background-color: #edeef4;
-        margin-top: 6px;
     }
 
     #navbarCollapse {
@@ -97,11 +97,10 @@
         border-bottom: 3px solid #8b0000b8;
     }
 
-
 </style>
-<div class="container" style="margin-top:-16px;margin-left: -10px">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
-        id="navlink" style="width:104.8%">
+
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-1x nav-tabs-line-danger" role="tablist"
+        id="navlink" style="margin-top: -22px;">
         <li id="all_permit_type_click" class="nav-item "><a class="nav-link active" data-toggle="tab" href="#">
                 <span style="font-size: 11px">{{__('ARTISTS WITH ACTIVE PERMITS')}}</span>
                 <input type="text" value='all' id="all_permit_type_input" hidden>
@@ -127,7 +126,7 @@
         <li>
             <button class="btn btn-warning btn-sm"
                     style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
-                    id="filter_button"><i class="fas fa-filter"></i>FILTER
+                    id="filter_button"><i class="fas fa-filter"></i>{{__('FILTER')}}
             </button>
         </li>
         <li>
@@ -137,7 +136,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             </button>
         </li>
     </ul>
-</div>
+
 
 <table class="table  table-hover  table-bordered table-striped border" id="block-artist">
     <thead>
@@ -190,7 +189,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('ARTIST NAME') }}</th>
         <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('PROFESSION') }}</th>
         <th style="font-weight: bold;width: 18%;white-space: nowrap">{{ __('NATIONALITY') }}</th>
-        <th style="width: 18%;font-weight: bold;white-space: nowrap">{{ __('MOBILE') }}</th>
+        <th style="width: 18%;font-weight: bold;white-space: nowrap">{{ __('MOBILE ') }}</th>
         <th style="font-weight: bold;width:14%;white-space: nowrap">{{ __('EMAIL') }}</th>
         <th style="font-weight: bold;white-space: nowrap">{{ __('IDENTIFICATION NUMBER') }}</th>
         <th style="font-weight: bold;white-space: nowrap">{{ __('LANGUAGE') }}</th>
@@ -284,7 +283,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 <th style="width: 14%; font-weight: bold;font-size: 10px ;text-align: left;padding:13px">{{ __('PERMIT NO.') }}</th>
                                 <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('REFERENCE NO.') }}</th>
                                 <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('ISSUED DATE') }}</th>
-                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('EXPIRY DATE') }}</th>
+                                <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('NO. OF DAYS') }}</th>
                                 <th style="width: 18% ;text-align: left; font-weight: bold;font-size: 10px;padding:13px">{{ __('COMPANY') }}</th>
                                 <th></th>
                             </tr>
@@ -295,10 +294,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             <?php
                             $permits=\App\Permit::wherehas('artistPermit',function ($q) use ($artists){
                                 $q->where('artist_id',$artists->artist_id);
-                            })->where('permit_status','active')->get();
+                            })->where('permit_status','active')->whereDate('expired_date', '>', \Carbon\Carbon::today()->toDateString())->get();
                             ?>
-                            @foreach($permits as $permit)
 
+
+                            @foreach($permits as $permit)
                                 <tr align="center">
                                     <td style="text-align: left;padding:14px;font-size: 10px">{{ Auth()->user()->LanguageId == 1 ? $artists->firstname_en . ' ' . $artists->lastname_en  : $artists->firstname_ar . ' ' . $artists->lastname_ar}}
                                     <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->permit_number}}</td>
@@ -306,9 +306,15 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                     <?php
                                     $issued_date = \Illuminate\Support\Facades\Date::make($permit->issued_date)->format('d-M-Y');
                                     $expire_date = \Illuminate\Support\Facades\Date::make($permit->expired_date)->format('d-M-Y');
+
+                                    $to = \Carbon\Carbon::parse($permit->expired_date);
+                                    $from = \Carbon\Carbon::parse($permit->issued_date);
+                                    $days =$from->diffInDays($to);
+
+
                                     ?>
                                     <td style="text-align: left;padding:14px;font-size: 10px">{{$issued_date}}</td>
-                                    <td style="text-align: left;padding:14px;font-size: 10px">{{$expire_date}}</td>
+                                    <td style="text-align: left;padding:14px;font-size: 10px">{{/*$expire_date.' '.*/$days}}</td>
                                     <td style="text-align: left;padding:14px;font-size: 10px">{{$permit->company? $permit->company->name_en:''}}</td>
                                 </tr>
 
@@ -326,6 +332,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     </div>
                 </div>
                 <div class="modal-footer" id="modal_footer{{$artists->artist_id}}">
+                    <a class="btn btn-success"
+                            style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
+                            id="{{$artists->artist_id}}" href="{{route('admin.artist_permit_report.artistHistory',$artists->artist_id)}}" >Artist History
+                    </a>
                     <button class="btn btn-success"
                             style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
                             id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print
@@ -353,6 +363,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             newWin.print();
             newWin.close();
         }
+
         function onclickevent(id) {
             var url = "artist_reports/event_reports/getEvent/" + id;
             window.location.href = url;
@@ -400,7 +411,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4, 5]
                         },
                         title:function(){
-                            return   'Artist With Active Permits '+datetime;
+                            return   'Artist With Active Permits '+datetime+Date.now();
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
@@ -425,7 +436,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
                         },
                         title: function () {
-                            return 'Artists With Active Permits '+datetime;
+                            return 'Artists With Active Permits '+datetime+Date.now();
                         },
 
                     }
@@ -464,8 +475,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             });
         });
 
-        $('#name_search_button').click(function (e) {
-            e.preventDefault();
+        $('input[name="search-artist-name"]').change(function(){
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             $('#navlink li a').removeClass('active');
             var link = $('#all_permit_type_click a')
             if (!link.hasClass('active')) {
@@ -481,7 +495,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
@@ -497,7 +511,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
@@ -515,7 +529,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
@@ -539,52 +553,67 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         "targets": [ 6, 7, 8,9, 11],
                         "visible": false,
-                        "searchable": false
                     },
+                    {
+                        "targets": [1,2,3,4,5],
+                        searchable: true
+                    },
+
                 ],
+
                 buttons: ['pageLength',
                     {
                         extend: 'print',
                         title: function () {
                             if (filter_search == 1) {
-                                return 'All Artists List ' +datetime;
+
+                                if (search_artist == 'active') {
+                                    return 'Active Artists' +datetime+Date.now();
+                                }
+                                if (search_artist == 'blocked') {
+                                    return 'Blocked Artists' +datetime+Date.now();
+                                }
+
+                            }
+                            if (filter_search == 2) {
+                                return 'Artist Searched By Gender ' +datetime+Date.now();
                             }
                             if (filter_search == 3) {
-                                return ' Artists List Searched By Name' +datetime ;
+                                return ' Artists List Searched By Name' +datetime+Date.now() ;
                             }
                             if (filter_search == 4) {
-                                return ' Artists With Profession' +datetime ;
+                                return ' Artists With Profession' +datetime +Date.now();
                             }
 
                             if (filter_search == 5) {
-                                return ' Artists By Nationality' +datetime ;
+                                return ' Artists By Nationality' +datetime+Date.now() ;
                             }
 
                             if (filter_search == 6) {
                                 if (search_artist == 'single') {
-                                    return ' Artists With Single Permit' +datetime ;
+                                    return ' Artists With Single Permit' +datetime +Date.now();
                                 }
                                 if (search_artist == 'multiple') {
-                                    return ' Artists With Multiple Permits' +datetime ;
+                                    return ' Artists With Multiple Permits' +datetime+Date.now() ;
                                 }
                                 if (search_artist == 'all') {
-                                    return ' Artists With Active Permits' +datetime ;
+                                    return ' Artists With Active Permits' +datetime+Date.now() ;
                                 }
                             }
                             if (filter_search == 7) {
-                                return ' Artists List Searched By Visa Type' +datetime ;
+                                return ' Artists List Searched By Visa Type' +datetime +Date.now();
                             }
 
                             if (filter_search == 8) {
                                 if (search_artist == '17') {
-                                    return ' Artists Below Age 18' +datetime ;
+                                    return ' Artists Below Age 18' +datetime+Date.now() ;
                                      }
                                 if (search_artist == '18') {
-                                    return ' Artists Above Age 18' +datetime ;
+                                    return ' Artists Above Age 18' +datetime +Date.now();
                                 }
                             }
                             if (filter_search == 9) {
-                                return ' Artists List Searched By Area' +datetime ;
+                                return ' Artists List Searched By Area' +datetime+Date.now() ;
                                    }
                                },
                         exportOptions: {
@@ -592,8 +621,21 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         customize: function ( win ) {
                             if (filter_search == 1) {
+
+                                if (search_artist == 'active') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Active Artists </h3>'
+                                    );
+                                }
+                                if (search_artist == 'blocked') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Blocked Artists </h3>'
+                                    );
+                                }
+                            }
+                            if (filter_search == 2) {
                                 $(win.document.body).prepend(
-                                    '<h3 style="font-family:arial;text-align:center">All Artists List </h3>'
+                                    '<h3 style="font-family:arial;text-align:center">Artist Searched By Gender</h3>'
                                 );
                             }
                             if (filter_search == 3) {
@@ -657,6 +699,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 );
                                 $(win.document.body).find('h1')
                                 .css( 'display', 'none' );
+
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -666,48 +709,55 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-                        },
-                        title: function () {
+                     },
+
+                  title: function () {
                             if (filter_search == 1) {
-                                return 'Artists List Searched By Status '+datetime;
+
+                                if (search_artist == 'active') {
+                                    return 'Active Artists' +datetime+Date.now();
+                                }
+                                if (search_artist == 'blocked') {
+                                    return 'Blocked Artists' +datetime+Date.now();
+                                }
                             }
                             if (filter_search == 3) {
-                                return 'Artists List Searched By Name '+datetime;
+                                return 'Artists List Searched By Name '+datetime+Date.now();
                             }
                             if (filter_search == 4) {
-                                return 'Artists With Profession '+datetime;
+                                return 'Artists With Profession '+datetime+Date.now();
                             }
 
                             if (filter_search == 5) {
-                                return 'Artists By Nationality '+datetime;
+                                return 'Artists By Nationality '+datetime+Date.now();
                             }
 
                             if (filter_search == 6) {
                                 if (search_artist == 'single') {
-                                    return "Artists With Single Permit "+datetime;
+                                    return "Artists With Single Permit "+datetime+Date.now();
                                 }
                                 if (search_artist == 'multiple') {
-                                    return "Artists With Multiple Permits "+datetime;
+                                    return "Artists With Multiple Permits "+datetime+Date.now();
                                 }
                                 if (search_artist == 'all') {
-                                    return "Artists With Active Permits "+datetime;
+                                    return "Artists With Active Permits "+datetime+Date.now();
                                 }
                             }
                             if (filter_search == 7) {
-                                return 'Artists List Searched By Visa Type '+datetime;
+                                return 'Artists List Searched By Visa Type '+datetime+Date.now();
                             }
 
                             if (filter_search == 8) {
                                 if (search_artist == '17') {
-                                    return 'Artists Below Age 18 '+datetime;
+                                    return 'Artists Below Age 18 '+datetime+Date.now();
                                 }
                                 if (search_artist == '18') {
-                                    return 'Artists Above Age 18 '+datetime;
+                                    return 'Artists Above Age 18 '+datetime+Date.now();
                                 }
                             }
 
                             if (filter_search == 9) {
-                                return 'Artists List Searched By Area '+datetime;
+                                return 'Artists List Searched By Area '+datetime+Date.now();
                             }
                         },
 
@@ -725,7 +775,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 serverSide: true,
                 footer: true,
                 searching: true,
-
                 ajax: {
                     url: '{{ route('admin.artist_permit_reports.search_artist')}}',
                     method: 'post',
@@ -748,7 +797,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ],
             });
         }
-
         function ArtistResetTable() {
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
@@ -757,7 +805,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-
+            var time= + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
             table = $('#block-artist').DataTable({
                 dom: 'Bfrtip',
                 "searching": true,
@@ -768,7 +818,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         "searchable": false
                     },
                 ],
-
                 buttons: ['pageLength',
                     {
                         extend: 'print',
@@ -777,20 +826,20 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4, 5]
                         },
                         title:function(){
-                            return  ' Artist With Active Permits ' +datetime;
+                            return   'Artist With Active Permits '+datetime+Date.now();
                         },
-
                         customize: function ( win ) {
                             $(win.document.body).prepend(
                                 '<h3 style="font-family:arial;text-align:center">Artist With Active Permits </h3>'
                             );
-                            $(win.document.body).find('h1').css('dispaly', 'none');
-
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
+                            $(win.document.body).find('h1')
+                                .css( 'display', 'none' )
+
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -798,10 +847,13 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     },
                     {
                         extend: 'excel',
-
-                        title: function () {
-                            return 'Artists With Active Permits ' +datetime;
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
                         },
+                        title: function () {
+                            return 'Artists With Active Permits '+datetime+Date.now();
+                        },
+
                     }
                 ],
                 lengthMenu: [
@@ -820,7 +872,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     data: function (d) {
                     }
                 },
-
                 columns: [
                     {data: 'person_code', name: 'person_code'},
                     {data: 'artist_name', name: 'artist_name'},
@@ -835,7 +886,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {data: 'emirate_id', name: 'emirate_id'},
                     {data: 'address_en', name: 'address_en'},
                     {data: 'artist_id', name: 'artist_id'},
-
                 ],
             });
         }
@@ -849,7 +899,12 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             }
         })
 
-        $('#Artist-report-tab').click(function () {
+        $('#artist-report-tab').click(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             ArtistResetTable();
         })
 
@@ -863,13 +918,17 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
         $('#search_by_status').change(function () {
 
-
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search = {{\App\ConstantValue::STATUS}};
             var search_artist = $('#search_by_status').val();
             $('#navlink li a').removeClass('active');
@@ -882,11 +941,15 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
         $('#search_by_gender').change(function () {
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search = {{\App\ConstantValue::GENDER}};
             var search_artist = $('#search_by_gender').val();
             $('#navlink li a').removeClass('active');
@@ -899,7 +962,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
@@ -916,12 +979,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
 
         $('#search_by_profession').change(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
             var filter_search = {{\App\ConstantValue::PROFESSION}};
             var search_artist = $('#search_by_profession').val();
             $('#navlink li a').removeClass('active');
@@ -934,11 +1001,15 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
         $('#search_by_nationality').change(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search = 5;
             var search_artist = $('#search_by_nationality').val();
             $('#navlink li a').removeClass('active');
@@ -950,7 +1021,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         });
 
@@ -1010,21 +1081,21 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         title: function () {
                             if (filter_search == 1) {
-                                return 'Artist List searched by Status '+datetime;
+                                return 'Artist List searched by Status '+datetime+Date.now();
                             }
                             if (filter_search == 3) {
-                                return 'Artist List searched by Name '+datetime;
+                                return 'Artist List searched by Name '+datetime+Date.now();
                             }
                             if (filter_search == 4) {
-                                return 'Artist List searched by Profession '+datetime;
+                                return 'Artist List searched by Profession '+datetime+Date.now();
                             }
 
                             if (filter_search == 5) {
-                                return 'Artist List searched by Nationality '+datetime;
+                                return 'Artist List searched by Nationality '+datetime+Date.now();
                             }
 
                             if (filter_search == 6) {
-                                return "Artist List searched by Artist Permit Count "+datetime;
+                                return "Artist List searched by Artist Permit Count "+datetime+Date.now();
                             }
                         },
 
@@ -1077,11 +1148,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         })
 
         $('#multiple_permit_type_click').click(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search ={{\App\ConstantValue::NUMBER_OF_PERMIT}};
             var search_artist = $('#multiple_permit_type_input').val();
 
@@ -1090,11 +1166,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         })
 
         $('#all_permit_type_click').click(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search ={{\App\ConstantValue::NUMBER_OF_PERMIT}};
             var search_artist = $('#all_permit_type_input').val();
 
@@ -1102,12 +1183,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         })
 
         $('#search_by_age').change(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
 
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search ={{\App\ConstantValue::AGE}};
             var search_artist = $('#search_by_age').val();
             $('#navlink li a').removeClass('active');
@@ -1119,11 +1204,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#block-artist').DataTable().destroy();
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         })
 
         $('#search_by_area').change(function () {
+            $('#search_by_gender option').prop('selected', false)
+            $('#search_by_name').empty()
+            $('#search_by_age option').prop('selected', false)
+            $('#search_by_nationality option').prop('selected', false)
+            $('#search_by_profession option').prop('selected', false)
             var filter_search ={{\App\ConstantValue::AREA}};
             var search_artist = $('#search_by_area').val();
             $('#navlink li a').removeClass('active');
@@ -1136,7 +1226,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 $('#navbarCollapse').hide(400)
                 fill_datatable(filter_search, search_artist);
             } else {
-                alert('Please Select Filter Option');
+                ArtistResetTable();
             }
         })
 
@@ -1171,20 +1261,20 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'print',
                         title: function () {
                             if (xyz == "all") {
-                                return 'All Events '+datetime;
+                                return 'All Events '+datetime+Date.now();
                             }
                             if (xyz == "+30") {
-                                return ' Events In Next 30 Days' +datetime ;
+                                return ' Events In Next 30 Days' +datetime+Date.now() ;
 
                             }
                             if (xyz == "-30") {
-                                return ' Events In Last 30 Days' +datetime ;
+                                return ' Events In Last 30 Days' +datetime+Date.now() ;
                             }
                             if (xyz == "+60") {
-                                return ' Events In Next 60 Days' +datetime ;
+                                return ' Events In Next 60 Days' +datetime +Date.now();
                             }
                             if (xyz == "active") {
-                                return ' All Active Events' +datetime ;
+                                return ' All Active Events' +datetime+Date.now() ;
                             }
                         },
                         exportOptions: {
@@ -1229,19 +1319,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         title: function () {
                             if (xyz == "all") {
-                                return 'All Events Report '+datetime;
+                                return 'All Events Report '+datetime+Date.now();
                             }
                             if (xyz == "+30") {
-                                return 'Events In NExt 30 Days '+datetime;
+                                return 'Events In NExt 30 Days '+datetime+Date.now();
                             }
                             if (xyz == "-30") {
-                                return 'Events In Last 30 Days '+datetime;
+                                return 'Events In Last 30 Days '+datetime+Date.now();
                             }
                             if (xyz == "+60") {
-                                return 'Events In Next 60 Days '+datetime;
+                                return 'Events In Next 60 Days '+datetime+Date.now();
                             }
                             if (xyz == "active") {
-                                return 'All Active Events '+datetime
+                                return 'All Active Events '+datetime+Date.now()
                             }
                         },
                     }
@@ -1300,7 +1390,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                                return 'Active Events '+datetime
+                                return 'Active Events '+datetime+Date.now()
                         },
                         exportOptions: {
                             columns: [0, 1, 3, 7, 8, 9]
@@ -1328,7 +1418,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                         },
                         title: function () {
-                            return 'Active Events' +datetime;
+                            return 'Active Events' +datetime+Date.now();
                         },
                     }
                 ],
@@ -1453,7 +1543,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                                return 'Active Events '+datetime
+                                return 'Active Events '+datetime+Date.now()
                         },
                         exportOptions: {
                             columns: [0, 1, 3, 7, 8, 9]
@@ -1481,7 +1571,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                         },
                         title: function () {
-                            return 'Active Events' +datetime;
+                            return 'Active Events' +datetime+Date.now();
                         },
                       }
                 ],
@@ -1561,7 +1651,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                            return 'Events Searched By Application Type ' +datetime;
+                            return 'Events Searched By Application Type ' +datetime+Date.now();
                         },
                         exportOptions: {
                             columns: [0, 1, 3, 7, 8, 9]
@@ -1659,7 +1749,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                            return 'Active Events '+datetime
+                            return 'Active Events '+datetime+Date.now()
                         },
                         exportOptions: {
                             columns: [0, 1, 3, 7, 8, 9]
@@ -1714,30 +1804,30 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         title: function () {
                             if(applied_date==1 ){
-                            return 'All Active Events on Today '+datetime
+                            return 'All Active Events on Today '+datetime+Date.now()
                             }
                             if(applied_date==2){
-                                return 'All Active Events on Yesterday '+datetime
+                                return 'All Active Events on Yesterday '+datetime+Date.now()
 
                             }
                             if(applied_date==3){
-                                return 'All Active Events Last 7 Days '+datetime
+                                return 'All Active Events Last 7 Days '+datetime+Date.now()
 
                             }
                             if(applied_date==4){
-                                return 'All Active Events Last 30 Days '+datetime
+                                return 'All Active Events Last 30 Days '+datetime+Date.now()
 
                             }
                             if(applied_date==5){
-                                return 'All Active Events This Month '+datetime
+                                return 'All Active Events This Month '+datetime+Date.now()
 
                             }
                             if(applied_date==6){
-                                return 'All Active Events Last Month '+datetime
+                                return 'All Active Events Last Month '+datetime+Date.now()
 
                             }
                             else{
-                                return 'All Active Events '+datetime
+                                return 'All Active Events '+datetime+Date.now()
 
                             }
                         },
@@ -1913,97 +2003,97 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         $(document).ready(function () {
 
+
             transactions();
             eventTable();
+            chartCurrentMonth();
+            function eventTable(){
+                var currentdate = new Date();
+                var datetime = +currentdate.getDate() + "-"
+                    + (currentdate.getMonth() + 1) + "-"
+                    + currentdate.getFullYear() + "  "
+                    + currentdate.getHours() + ":"
+                    + currentdate.getMinutes() + ":"
+                    + currentdate.getSeconds();
+                table = $('#event-report').DataTable({
+                    dom: 'Bfrtip',
+                    "columnDefs": [
+                        {
+                            "targets": [4,5,6, 10],
+                            "visible": false,
+                            "searchable": false
+                        },
 
+                    ],
+                    buttons: ['pageLength',
+                        {
+                            extend: 'print',
+                            title: function () {
+                                return 'Active Events '+datetime
+                            },
+                            exportOptions: {
+                                columns: [0, 1, 3, 7, 8, 9]
+                            },
+                            customize: function (doc){
+                                $(doc.document.body).prepend('<h3 style="text-align: center">All Active Events</h3>')
 
-           function eventTable(){
-               var currentdate = new Date();
-               var datetime = +currentdate.getDate() + "-"
-                   + (currentdate.getMonth() + 1) + "-"
-                   + currentdate.getFullYear() + "  "
-                   + currentdate.getHours() + ":"
-                   + currentdate.getMinutes() + ":"
-                   + currentdate.getSeconds();
-               table = $('#event-report').DataTable({
-                   dom: 'Bfrtip',
-                   "columnDefs": [
-                       {
-                           "targets": [4,5,6, 10],
-                           "visible": false,
-                           "searchable": false
-                       },
+                                $(doc.document.body)
+                                    .css( 'font-size', '10pt' )
+                                    .prepend(
+                                        '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                    );
+                                $(doc.document.body).find('h1')
+                                    .css( 'display', 'none');
 
-                   ],
-                   buttons: ['pageLength',
-                       {
-                           extend: 'print',
-                           title: function () {
-                               return 'Active Events '+datetime
-                           },
-                           exportOptions: {
-                               columns: [0, 1, 3, 7, 8, 9]
-                           },
-                           customize: function (doc){
-                               $(doc.document.body).prepend('<h3 style="text-align: center">All Active Events</h3>')
+                                $(doc.document.body).find( 'table' )
+                                    .addClass( 'compact' )
+                                    .css({ 'font-size': 'inherit'});
+                            },
+                        },
 
-                               $(doc.document.body)
-                                   .css( 'font-size', '10pt' )
-                                   .prepend(
-                                       '<img src="{{asset('img/raktdalogo.png')}}"/>'
-                                   );
-                               $(doc.document.body).find('h1')
-                                   .css( 'display', 'none');
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                            },
+                            title: function () {
+                                return 'Active Events' +datetime;
+                            },
+                        }
+                    ],
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        ['10 rows', '25 rows', '50 rows', 'Show all']
+                    ],
+                    processing: true,
+                    language: {
+                        processing: '<span>Processing</span>',
+                    },
+                    serverSide: true,
+                    footer: true,
+                    ajax: {
+                        url: '{{ route('admin.event_reports.event_report')}}',
+                        method: 'get',
+                        data: function (d) {
 
-                               $(doc.document.body).find( 'table' )
-                                   .addClass( 'compact' )
-                                   .css({ 'font-size': 'inherit'});
-                           },
-                       },
-
-                       {
-                           extend: 'excel',
-                           exportOptions: {
-                               columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-                           },
-                           title: function () {
-                               return 'Active Events' +datetime;
-                           },
-                       }
-                   ],
-                   lengthMenu: [
-                       [10, 25, 50, -1],
-                       ['10 rows', '25 rows', '50 rows', 'Show all']
-                   ],
-                   processing: true,
-                   language: {
-                       processing: '<span>Processing</span>',
-                   },
-                   serverSide: true,
-                   footer: true,
-                   ajax: {
-                       url: '{{ route('admin.event_reports.event_report')}}',
-                       method: 'get',
-                       data: function (d) {
-
-                       }
-                   },
-                   columns: [
-                       {data: 'reference_number', name: 'reference_number'},
-                       {data: 'application_type', name: 'application_type'},
-                       {data: 'event_type_id', name: 'event_type_id'},
-                       {data: 'name_en', name: 'name_en'},
-                       {data: 'description_en', name: 'description_en'},
-                       {data: 'venue_en', name: 'venue_en'},
-                       {data: 'address', name: 'address'},
-                       {data: 'company_id', name: 'company_id'},
-                       {data: 'issued_date', name: 'issued_date'},
-                       {data: 'expired_date', name: 'expired_date'},
-                       {data: 'status', name: 'status'},
-                       {data: 'event_id', name: 'event_id'},
-                   ],
-               });
-           }
+                        }
+                    },
+                    columns: [
+                        {data: 'reference_number', name: 'reference_number'},
+                        {data: 'application_type', name: 'application_type'},
+                        {data: 'event_type_id', name: 'event_type_id'},
+                        {data: 'name_en', name: 'name_en'},
+                        {data: 'description_en', name: 'description_en'},
+                        {data: 'venue_en', name: 'venue_en'},
+                        {data: 'address', name: 'address'},
+                        {data: 'company_id', name: 'company_id'},
+                        {data: 'issued_date', name: 'issued_date'},
+                        {data: 'expired_date', name: 'expired_date'},
+                        {data: 'status', name: 'status'},
+                        {data: 'event_id', name: 'event_id'},
+                    ],
+                });
+            }
 
 
 
@@ -2026,7 +2116,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     wildcard: '%QUERY',
                     url: '{{ route('admin.artist_permit.search') }}?q=%QUERY',
                     transform: function (response) {
-                        console.log(response);
                         // Map the remote source JSON array to a JavaScript object array
                         return $.map(response.reference_number, function (data) {
                             return {
@@ -2232,6 +2321,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         }
 
         function activeArtistTable() {
+
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -3343,20 +3433,20 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [],
-                        "visible": false,
+                        targets: [],
+                        visible: false,
                         "searchable": false,
                     },
                     {
-                        "targets": [2,3,4],
-                        "className": "text-right",
+                        targets: [2,3,4],
+                        className: "text-right",
                     }
                 ],
                 buttons: ['pageLength',
                     {
                         extend: 'print',
                         title: function () {
-                            return 'Transactions' +datetime;
+                            return 'Transactions' +datetime+new Date();
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
@@ -3366,7 +3456,14 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 '<h3 style="font-family:arial;text-align:center"><span style="position: absolute">Transactions</span> <span class="text-dark pull-right font-weight-bolder" style="font-size: 16px;margin-top:3px;" id="totalAmountPrint">Total Amount :</span></h3>'
                             );
                             var totalAmount= $('#totalAmount').html();
+                            var vat = $('#vatFooter').html();
+                            var amount = $('#amountFooter').html();
                             $(win.document.body).find('#totalAmountPrint').append(totalAmount)
+
+                            $(win.document.body).find('table').append(
+                            '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+
                             $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
@@ -3388,8 +3485,18 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var totalAmount = $('#totalAmount').html();
                             return "Transactions " + datetime + ' Total Amount ' + totalAmount;
                         },
-                    }
 
+                        customize: function (win) {
+                            var totalAmount= $('#totalAmount').html();
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
+                            var total=$('#totalFooter').html();
+                            $(win.document.body).find('table').append(
+                                '<tfoot><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+                        }
+
+                    }
                 ],
                 lengthMenu: [
                     [10, 25, 50],
@@ -3424,15 +3531,30 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
 
                     if (api.column(4).data().length){
+                        var amount = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
+                        var vat = api
+                            .column( 3 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
                         var total = api
                             .column( 4 )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } ) }
+                            } )
+                    }
                     else{ total = 0};
                     if (api.column(4).data().length){
-                        var pageTotal = api
+                        var amountTotal = api
                             .column( 4, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
@@ -3442,13 +3564,23 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                     // Update footer
                     $('#totalAmount').html(
-                        'AED '+pageTotal.toFixed(2)
+                        'AED ' +total.toFixed(2)
                     );
-
+                    $('#amountFooter').html(
+                        'AED ' +amount.toFixed(2)
+                    );
+                    $('#vatFooter').html(
+                        'AED ' +vat.toFixed(2)
+                    );
+                    $('#totalFooter').html(
+                        'AED ' +total.toFixed(2)
+                    );
                 },
             });
         }
-        $('.artist_transaction_tab').click(transactions());
+
+        $('#transaction-report-tab').click(transactions());
+
         $("#filter_event_button").click(function () {
             $("#filter_to_hide").toggle();
         });
@@ -3470,7 +3602,21 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             $('#transaction_toggle_calender').toggle(300)
         })
 
-        $('#todayButton').click(function () {
+    $('#allTransactions').click(function () {
+        $('.navbar-nav .nav-item').removeClass('active');
+        var link = $('#allTransactions');
+        if (!link.hasClass('active')) {
+            link.addClass('active');
+        }
+        transactions()
+    })
+
+        $('#todayButtonClick').click(function () {
+            $('.navbar-nav .nav-item').removeClass('active');
+            var link = $('#todayButtonClick');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             var currentdate = new Date();
             var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             var today=$('#today').val();
@@ -3480,7 +3626,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-
             var time = + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
@@ -3489,43 +3634,43 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [],
-                        "visible": false,
-                        "searchable": false,
+                        targets: [],
+                        visible: false,
+                        searchable: false,
                     },
                     {
                         "targets": [2,3,4],
                         "className": "text-right",
-                    },
-                    {
-                        targets: [0],
-                        searchable: true,
-                    },
+                    }
                 ],
                 buttons: ['pageLength',
                     {
                         extend: 'print',
                         title: function () {
-                            return "Transaction on "+currentdate.getDate()+"-"+monthNames[currentdate.getMonth()]+"-"+currentdate.getFullYear()+'_'+datetime;
+                            return "Transactions on "+currentdate.getDate()+"-"+  monthNames[currentdate.getMonth()]+"-"+currentdate.getFullYear()+'_'+datetime+Date.now();
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
-
-                                '<h3 style="text-align: center">'+ '<span style="margin-right: -12%">Transaction on '+currentdate.getDate()+ '-'+monthNames[currentdate.getMonth()]+ '-'+ +currentdate.getFullYear()+ '</span><span id="todayTotalAmount" class="pull-right text-dark" style="margin-top:3px;font-size:bold;font-size: 16px">Total Amount : </span></h3>'
+                                '<h3 style="text-align: center">'+ '<span style="margin-right: -12%">Transactions on '+currentdate.getDate()+ '-'+  monthNames[currentdate.getMonth()]+ '-'+ +currentdate.getFullYear()+ '</span><span id="todayTotalAmount" class="pull-right text-dark" style="margin-top:3px;font-size:bold;font-size: 16px">Total Amount : </span></h3>'
                             );
-
                             var totalAmount= $('#totalAmount').html();
-                            $(win.document.body).find('#todayTotalAmount').append(totalAmount)
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
 
+
+                            $(win.document.body).find('table').append(
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+                            $(win.document.body).find('#todayTotalAmount').append(totalAmount)
+                            $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
-                            $(win.document.body).find( 'h1' ).css('display','none')
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -3538,7 +3683,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         title: function () {
                             var totalAmount= $('#totalAmount').html();
-                            return "Transaction on "+currentdate.getDate()+"-"+monthNames[currentdate.getMonth()]+"-"+currentdate.getFullYear()+'_'+datetime+ ' Total Amount '+totalAmount;
+                            return "Transactions on "+currentdate.getDate()+"-"+monthNames[currentdate.getMonth()]+"-"+currentdate.getFullYear()+'_'+datetime+ ' Total Amount '+totalAmount;
                         },
                     }
                 ],
@@ -3552,7 +3697,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 serverSide: true,
                 footer: true,
-                "searching": true,
+                searching: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
                     method: 'post',
@@ -3578,15 +3723,31 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
 
                     if (api.column(4).data().length){
+                        var amount = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                var number=intVal(a) + intVal(b);
+                             return number
+                            } )
+
+                        var vat = api
+                            .column( 3 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
                         var total = api
                             .column( 4 )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } ) }
+                            } )
+                    }
                     else{ total = 0};
                     if (api.column(4).data().length){
-                        var pageTotal = api
+                        var amountTotal = api
                             .column( 4, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
@@ -3595,15 +3756,33 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     else{ pageTotal = 0};
 
                     // Update footer
+
+
                     $('#totalAmount').html(
-                        'AED '+pageTotal.toFixed(2)
+                        'AED ' +total.toFixed(2)
+                    );
+                    $('#amountFooter').html(
+                        'AED ' +amount.toFixed(2)
+                    );
+                    $('#vatFooter').html(
+                        'AED ' +vat.toFixed(2)
+                    );
+                    $('#totalFooter').html(
+                        'AED ' +total.toFixed(2)
                     );
                 },
             });
         });
 
 
+
+
         $('#lastSevenButton').click(function () {
+                  $('.navbar-nav .nav-item').removeClass('active');
+                    var link = $('#lastSevenButton');
+                   if (!link.hasClass('active')) {
+                   link.addClass('active');
+                   }
             var currentdate = new Date();
             var lastSeven=$('#lastSeven').val();
             var datetime = +currentdate.getDate() + "-"
@@ -3621,9 +3800,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [],
-                        "visible": false,
-                        "searchable": false,
+                        targets: [],
+                        visible: false,
+                        searchable: false,
                     },
                     {
                         "targets": [2,3,4],
@@ -3634,19 +3813,23 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {
                         extend: 'print',
                         title: function () {
-                            return "Transactions in last 7 days " +datetime ;
+                            return "Transactions in last 7 days " +datetime+Date.now() ;
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
-                                '<h3 style="font-family:arial;text-align:center">Transactions In Last 7 Days</h3>'
+                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute;margin-left: -10%">Transactions In Last 7 Days </span><span style="float: right" id="totalAmountLastSeven"></span></h3>'
                             );
-
                             var totalAmount= $('#totalAmount').html();
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
 
-
+                            $(win.document.body).find('table').append(
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+                            $(win.document.body).find('#totalAmountLastSeven').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
@@ -3683,7 +3866,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ajax: {
                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
                     method: 'post',
-                    data: {lastThirty: lastThirty}
+                    data: {lastSeven: lastSeven}
                 },
                 columns: [
                     {data: 'transaction_id', name: 'transaction_id'},
@@ -3705,15 +3888,30 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
 
                     if (api.column(4).data().length){
+                        var amount = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
+                        var vat = api
+                            .column( 3 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
                         var total = api
                             .column( 4 )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } ) }
+                            } )
+                    }
                     else{ total = 0};
                     if (api.column(4).data().length){
-                        var pageTotal = api
+                        var amountTotal = api
                             .column( 4, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
@@ -3723,12 +3921,26 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                     // Update footer
                     $('#totalAmount').html(
-                        'AED '+pageTotal.toFixed(2)
+                        'AED ' +total.toFixed(2)
+                    );
+                    $('#amountFooter').html(
+                        'AED ' +amount.toFixed(2)
+                    );
+                    $('#vatFooter').html(
+                        'AED ' +vat.toFixed(2)
+                    );
+                    $('#totalFooter').html(
+                        'AED ' +total.toFixed(2)
                     );
                 },
             });
         });
         $('#lastThirtyButton').click(function () {
+                $('.navbar-nav .nav-item').removeClass('active');
+                var link = $('#lastThirtyButton');
+               if (!link.hasClass('active')) {
+                   link.addClass('active');
+               }
             var currentdate = new Date();
             var lastThirty=$('#lastThirty').val();
             var datetime = +currentdate.getDate() + "-"
@@ -3742,24 +3954,24 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
 
-            table = $('#artist-transaction-table').DataTable({
+             table = $('#artist-transaction-table').DataTable({
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [],
-                        "visible": false,
-                        "searchable": false,
+                        targets: [],
+                        visible: false,
+                        searchable: false,
                     },
                     {
-                        "targets": [2,3,4],
-                        "className": "text-right",
+                        targets: [2,3,4],
+                        className: "text-right",
                     }
                 ],
                 buttons: ['pageLength',
                     {
                         extend: 'print',
                         title: function () {
-                            return "Transactions in last 30 days " +datetime ;
+                            return "Transactions in last 30 days " +datetime+Date.now() ;
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
@@ -3768,11 +3980,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             $(win.document.body).prepend(
                                 '<h3 style="font-family:arial;text-align:center"><span style="margin-right: -15%">Transactions In Last 30 Days</span><span class="text-dark pull-right font-weight-bold" style="margin-top:4px;font-size:16px" id="thirtyTotalAmount">Total Amount :</span></h3>'
                             );
-
                             var totalAmount= $('#totalAmount').html();
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
+                            var total=$('#totalFooter').html();
+                            $(win.document.body).find('table').append(
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+                            $(win.document.body).find('h1').css('display','none')
                             $(win.document.body).find('#thirtyTotalAmount').append(totalAmount)
 
-                            $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
@@ -3811,13 +4028,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     data: {lastThirty: lastThirty}
                 },
                 columns: [
+
                     {data: 'transaction_id', name: 'transaction_id'},
                     {data: 'transaction_date', name: 'transaction_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'vat', name: 'vat'},
                     {data: 'total', name: 'total'},
                     {data: 'action', name: 'action'},
+
                 ],
+
                 footerCallback: function ( row, data, start, end, display ) {
                     var api = this.api();
                     // Remove the formatting to get integer data for summation
@@ -3854,6 +4074,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             });
         });
         $('#thismonthButton').click(function () {
+              $('.navbar-nav .nav-item').removeClass('active');
+                var link = $('#thismonthButton');
+               if (!link.hasClass('active')) {
+                   link.addClass('active');
+               }
             var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             var currentdate = new Date();
             var thisMonth=$('#thisMonth').val();
@@ -3870,15 +4095,15 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
             table = $('#artist-transaction-table').DataTable({
                 dom: 'Bfrtip',
-                "columnDefs": [
+                columnDefs: [
                     {
-                        "targets": [],
-                        "visible": false,
-                        "searchable": false,
+                        targets: [],
+                        visible: false,
+                        searchable: false,
                     },
                     {
-                        "targets": [2,3,4],
-                        "className": "text-right",
+                        targets: [2,3,4],
+                        className: "text-right",
                     }
                 ],
                 buttons: ['pageLength',
@@ -3894,10 +4119,14 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             $(win.document.body).prepend(
                                 "<h3 style='font-family:arial;text-align:center'>"+'<span style="margin-right: -20%">Transactions in ' +(monthNames[currentdate.getMonth()]) +' of ' +currentdate.getFullYear() +"</span><span id='thisMonthTotalAmount' class='text-dark pull-right font-weight-bold' style='font-size: 16px;margin-top:4px'>Total Amount: </span></h3>"
                             );
-
                             var totalAmount= $('#totalAmount').html();
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
+                            var total=$('#totalFooter').html();
+                            $(win.document.body).find('table').append(
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
                             $(win.document.body).find('#thisMonthTotalAmount').append(totalAmount)
-
                             $(win.document.body)
                                 .css('font-size', '10pt')
                                 .prepend(
@@ -3955,15 +4184,30 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
 
                     if (api.column(4).data().length){
+                        var amount = api
+                            .column( 2 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
+                        var vat = api
+                            .column( 3 )
+                            .data()
+                            .reduce( function (a, b) {
+                                return intVal(a) + intVal(b);
+                            } )
+
                         var total = api
                             .column( 4 )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } ) }
+                            } )
+                    }
                     else{ total = 0};
                     if (api.column(4).data().length){
-                        var pageTotal = api
+                        var amountTotal = api
                             .column( 4, { page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
@@ -3973,14 +4217,145 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                     // Update footer
                     $('#totalAmount').html(
-                        'AED '+pageTotal.toFixed(2)
+                        'AED ' +total.toFixed(2)
+                    );
+                    $('#amountFooter').html(
+                        'AED ' +amount.toFixed(2)
+                    );
+                    $('#vatFooter').html(
+                        'AED ' +vat.toFixed(2)
+                    );
+                    $('#totalFooter').html(
+                        'AED ' +total.toFixed(2)
                     );
                 },
             });
         });
 
+
+         $('#amountCollectedMonth').change(function(){
+            var currentdate = new Date();
+            var todayDate =
+                + currentdate.getFullYear() + "-"
+                +'0'+ (currentdate.getMonth() +1)+ "-"
+                +currentdate.getDate() + " "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes();
+
+            currentMonth= +'0'+ (currentdate.getMonth()+1)+ "-"
+             + currentdate.getFullYear();
+            var amountCollectedMonth=$('#amountCollectedMonth').val();
+
+          if(amountCollectedMonth!='') {
+                  var submit = 'submit'
+                  var datetime = +currentdate.getDate() + "-"
+                      + (currentdate.getMonth() + 1) + "-"
+                      + currentdate.getFullYear() + "  "
+                      + currentdate.getHours() + ":"
+                      + currentdate.getMinutes() + ":"
+                      + currentdate.getSeconds();
+
+                  var time = +currentdate.getHours() + ":"
+                      + currentdate.getMinutes() + ":"
+                      + currentdate.getSeconds();
+
+                  table = $('#artist-transaction-table').DataTable({
+                      dom: 'Bfrtip',
+                      columnDefs: [
+                          {
+                              targets: [],
+                              visible: false,
+                              searchable: false,
+                          },
+                          {
+                              targets: [2,3,4],
+                              className: "text-right",
+                          }
+                      ],
+                      buttons: ['pageLength',
+                          {
+                              extend: 'print',
+                              title: function () {
+                                  var totalAmount
+                                  return 'Transactions in' +amountCollectedMonth+' is '+ totalAmount ;
+                              },
+                              exportOptions: {
+                                  columns: [0, 1, 2, 3, 4],
+                              },
+                              customize: function (win) {
+                                  $(win.document.body).prepend(
+                                      '<h4 style="font-family:arial;text-align:center"><span style="position:absolute;"></span>'+"Transactions Collected in "+amountCollectedMonth +'<span style="float: right" id="amountSelectedMonth"></span></h4>'
+                                  );
+                                  var totalAmount= $('#totalAmount').html();
+                                  var amount=$('#amountFooter').html();
+                                  var vat=$('#vatFooter').html();
+                                  var total=$('#totalFooter').html();
+
+                                  $(win.document.body).find('table').append(
+                                      '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                  );
+                                  $(win.document.body).find('#amountSelectedMonth').append(totalAmount)
+                                  $(win.document.body)
+                                      .css('font-size', '10pt')
+                                      .prepend(
+                                          '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                      );
+                                  $(win.document.body).find('h1')
+                                      .css( 'display', 'none' )
+                                  $(win.document.body).find('table')
+                                      .addClass('compact')
+                                      .css({'font-size': 'inherit'});
+                              }
+                          },
+                          {
+                              extend: 'excel',
+                              exportOptions: {
+                                  columns: [0, 1, 2, 3, 4,]
+                              },
+                              title: function () {
+                                  var totalAmount= $('#totalAmount').html();
+                                  return 'Transactions in ' +amountCollectedMonth+' is '+ totalAmount ;
+                              },
+                          }
+                      ],
+                      lengthMenu: [
+                          [10, 25, 50],
+                          ['10 rows', '25 rows', '50 rows']
+                      ],
+                      processing: true,
+                      language: {
+                          processing: '<span>Processing</span>',
+                      },
+                      serverSide: true,
+                      footer: true,
+                      searching: true,
+                      ajax: {
+                          url: '{{ route('admin.artist_permit_report.transactionDate')}}',
+                          method: 'post',
+                          data: {month: amountCollectedMonth},
+                          success:function(data){
+                              console.log(data)
+                          }
+                      },
+                      columns: [
+
+                          {data: 'transaction_id', name: 'transaction_id'},
+                          {data: 'transaction_date', name: 'transaction_date'},
+                          {data: 'amount', name: 'amount'},
+                          {data: 'vat', name: 'vat'},
+                          {data: 'total', name: 'total'},
+                          {data: 'action', name: 'action'},
+                      ],
+                  });
+          }
+          else{
+              alert('Please Select Both Field')
+          }
+        });
+
         $('#endDate').change(function(){
             var currentdate = new Date();
+            $('.datepicker').hide();
             var todayDate =
                 + currentdate.getFullYear() + "-"
                 +'0'+ (currentdate.getMonth() +1)+ "-"
@@ -4029,7 +4404,13 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                   $(win.document.body).prepend(
                                       '<h4 style="font-family:arial;text-align:center">'+"Transactions between "+start_date +" and " +end_date +'</h4>'
                                   );
-
+                                  var totalAmount= $('#totalAmount').html();
+                                  var amount=$('#amountFooter').html();
+                                  var vat=$('#vatFooter').html();
+                                  var total=$('#totalFooter').html();
+                                  $(win.document.body).find('table').append(
+                                      '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                  );
                                   $(win.document.body)
                                       .css('font-size', '10pt')
                                       .prepend(
@@ -4067,7 +4448,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                       ajax: {
                           url: '{{ route('admin.artist_permit_report.transactionDate')}}',
                           method: 'post',
-                          data: {start_date: start_date, end_date: end_date, submit: submit}
+                          data: {start_date: start_date, end_date: end_date},
                       },
                       columns: [
                           {data: 'transaction_id', name: 'transaction_id'},
@@ -4087,17 +4468,30 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                       i : 0;
                           };
                           // Total over all pages
-
                           if (api.column(4).data().length){
+                              var amount = api
+                                  .column( 2 )
+                                  .data()
+                                  .reduce( function (a, b) {
+                                      return intVal(a) + intVal(b);
+                                  })
+                              var vat = api
+                                  .column( 3 )
+                                  .data()
+                                  .reduce( function (a, b) {
+                                      return intVal(a) + intVal(b);
+                                  } )
+
                               var total = api
                                   .column( 4 )
                                   .data()
                                   .reduce( function (a, b) {
                                       return intVal(a) + intVal(b);
-                                  } ) }
+                                  } )
+                          }
                           else{ total = 0};
                           if (api.column(4).data().length){
-                              var pageTotal = api
+                              var amountTotal = api
                                   .column( 4, { page: 'current'} )
                                   .data()
                                   .reduce( function (a, b) {
@@ -4107,11 +4501,21 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                           // Update footer
                           $('#totalAmount').html(
-                              'AED '+pageTotal.toFixed(2)
+                              'AED ' +total.toFixed(2)
+                          );
+                          $('#amountFooter').html(
+                              'AED ' +amount.toFixed(2)
+                          );
+                          $('#vatFooter').html(
+                              'AED ' +vat.toFixed(2)
+                          );
+                          $('#totalFooter').html(
+                              'AED ' +total.toFixed(2)
                           );
                       },
                   });
               } else {
+
          alert("Dates must be less than today's date")
               }
           }
@@ -4130,135 +4534,177 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
 
-        $('#getDataByMonth').click(function(){
-            var currentdate = new Date();
-            var get_month=$('#amountCollectedMonth').val();
-            if(get_month!='') {
-                    var submit = 'submit'
-                    var datetime = +currentdate.getDate() + "-"
-                        + (currentdate.getMonth() + 1) + "-"
-                        + currentdate.getFullYear() + "  "
-                        + currentdate.getHours() + ":"
-                        + currentdate.getMinutes() + ":"
-                        + currentdate.getSeconds();
+        $('#yearSelected').datepicker({
+            autoclose: true,
+            minViewMode: 2,
+            format: 'yyyy'
+        }).on('changeDate', function(selected){
+            startDate = new Date(selected.date.valueOf());
+            var monthSelected =startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        });
 
-                    var time = +currentdate.getHours() + ":"
-                        + currentdate.getMinutes() + ":"
-                        + currentdate.getSeconds();
-
-                    table = $('#artist-transaction-table').DataTable({
-                        dom: 'Bfrtip',
-                        "columnDefs": [
+        function chartCurrentMonth(){
+            var changeYear=new Date().getFullYear();
+            $.ajax({
+                method:'post',
+                url: '{{ route("admin.artist_permit_report.chartData")}}',
+                data: {SelectedYear: changeYear},
+                success: function(response){
+                    //get the bar chart canvas
+                    var cData = JSON.parse(response);
+                    var ctx = $("#bar-chart");
+                    //bar chart data
+                    var data = {
+                        labels: cData.label,
+                        datasets: [
                             {
-                                "targets": [],
-                                "visible": false,
-                                "searchable": false,
-                            },
-                            {
-                                "targets": [2,3,4],
-                                "className": "text-right",
+                                label: cData.label,
+                                data: cData.data,
+                                backgroundColor: [
+                                    "#1abc9c",
+                                    "#e67e22",
+                                    "#27ae60",
+                                    "#54a0ff",
+                                    "#fc5c65",
+                                    "#1D7A46",
+                                    "#2bcbba",
+                                    "#CDA776",
+                                    "#989898",
+                                    "#576574",
+                                    "#10ac84",
+                                ],
+                      /*          borderColor: [
+                                    "#1abc9c",
+                                    "#e67e22",
+                                    "#27ae60",
+                                    "#54a0ff",
+                                    "#fc5c65",
+                                    "#F4A460",
+                                    "#CDA776",
+                                    "#2bcbba",
+                                    "#A9A9A9",
+                                    "#DC143C",
+                                    "#576574",
+                                    "#10ac84",
+                                ],
+                                borderWidth: [1, 1, 1, 1, 1,1,1,1, 1, 1, 1,1,1]*/
                             }
-                        ],
-                        buttons: ['pageLength',
-                            {
-                                extend: 'print',
-                                title: function () {
-                                    return 'Transactions'
-                                },
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
-                                },
-                                customize: function (win) {
-                                    $(win.document.body).prepend(
-                                        '<h4 style="font-family:arial;text-align:center">'+"Transactions between "+start_date +" and " +end_date +'</h4>'
-                                    );
+                        ]
+                    };
 
-                                    $(win.document.body)
-                                        .css('font-size', '10pt')
-                                        .prepend(
-                                            '<img src="{{asset('img/raktdalogo.png')}}"/>'
-                                        );
-                                    $(win.document.body).find('h1')
-                                        .css( 'display', 'none' )
-                                    $(win.document.body).find('table')
-                                        .addClass('compact')
-                                        .css({'font-size': 'inherit'});
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3, 4,]
-                                },
-                                title: function () {
-                                    var totalAmount= $('#totalAmount').html();
-                                    return 'Transactions between ' + start_date +' and ' +end_date+ ' Total Amount ' +totalAmount;
-                                },
+                    //options
+                    var options = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            position: "top",
+                            text: "Monthly Amount Received in "+changeYear,
+                            fontSize: 18,
+                            fontColor: "#111"
+                        },
+                        legend: {
+                            display: true,
+                            position: "bottom",
+                            labels: {
+                                fontColor: "#333",
+                                fontSize: 16
                             }
-                        ],
-                        lengthMenu: [
-                            [10, 25, 50],
-                            ['10 rows', '25 rows', '50 rows']
-                        ],
-                        processing: true,
-                        language: {
-                            processing: '<span>Processing</span>',
-                        },
-                        serverSide: true,
-                        footer: true,
-                        searching: true,
-                        ajax: {
-                            url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                            method: 'post',
-                            data: {start_date: start_date, end_date: end_date, submit: submit}
-                        },
-                        columns: [
-                            {data: 'transaction_id', name: 'transaction_id'},
-                            {data: 'transaction_date', name: 'transaction_date'},
-                            {data: 'amount', name: 'amount'},
-                            {data: 'vat', name: 'vat'},
-                            {data: 'total', name: 'total'},
-                            {data: 'action', name: 'action'},
-                        ],
-                        footerCallback: function ( row, data, start, end, display ) {
-                            var api = this.api();
-                            // Remove the formatting to get integer data for summation
-                            var intVal = function ( i ) {
-                                return typeof i === 'string' ?
-                                    i.replace(/[\$,]/g, '')*1 :
-                                    typeof i === 'number' ?
-                                        i : 0;
-                            };
-                            // Total over all pages
+                        }
+                    };
 
-                            if (api.column(4).data().length){
-                                var total = api
-                                    .column( 4 )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    } ) }
-                            else{ total = 0};
-                            if (api.column(4).data().length){
-                                var pageTotal = api
-                                    .column( 4, { page: 'current'} )
-                                    .data()
-                                    .reduce( function (a, b) {
-                                        return intVal(a) + intVal(b);
-                                    } ) }
-                            else{ pageTotal = 0};
+                    //create bar Chart class object
 
-                            // Update footer
-                            $('#totalAmount').html(
-                                'AED '+pageTotal.toFixed(2)
-                            );
-                        },
+                    var chart1 = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        options: options
                     });
                 }
-            else{
-                alert('Please Select Month')
-            }
-        });
+            })
+        }
+
+
+       $('#yearSelected').change(function(){
+           var changeYear=$('#yearSelected').val();
+           $.ajax({
+               method:'post',
+               url: '{{ route("admin.artist_permit_report.chartData")}}',
+               data: {SelectedYear: changeYear},
+               success: function(response){
+                   //get the bar chart canvas
+                   var cData = JSON.parse(response);
+                   var ctx = $("#bar-chart");
+                   //bar chart data
+                   var data = {
+                       labels: cData.label,
+                       datasets: [
+                           {
+                               label: cData.label,
+
+                               data: cData.data,
+                               backgroundColor: [
+                                   "#1abc9c",
+                                   "#e67e22",
+                                   "#27ae60",
+                                   "#54a0ff",
+                                   "#fc5c65",
+                                   "#1D7A46",
+                                   "#2bcbba",
+                                   "#CDA776",
+                                   "#989898",
+                                   "#576574",
+                                   "#10ac84",
+                               ],
+                         /*      borderColor: [
+                                   "#f1c40f",
+                                   "#e67e22",
+                                   "#27ae60",
+                                   "#54a0ff",
+                                   "#fc5c65",
+                                   "#F4A460",
+                                   "#CDA776",
+                                   "#2bcbba",
+                                   "#A9A9A9",
+                                   "#DC143C",
+                                   "#576574",
+                                   "#10ac84",
+                               ],
+                               borderWidth: [1, 1, 1, 1, 1,1,1,1, 1, 1, 1,1,1]*/
+                           }
+                       ]
+                   };
+
+                   //options
+                   var options = {
+                       responsive: true,
+                       title: {
+                           display: true,
+                           position: "top",
+                           text: "Monthly Amount Received in "+changeYear,
+                           fontSize: 18,
+                           fontColor: "#111"
+                       },
+                       legend: {
+                           display: true,
+                           position: "bottom",
+                           labels: {
+                               fontColor: "#333",
+                               fontSize: 16
+                           }
+                       }
+                   };
+
+                   //create bar Chart class object
+
+                   var chart1 = new Chart(ctx, {
+                       type: "bar",
+                       data: data,
+                       options: options,
+                   });
+               }
+           })
+       })
+
 
         var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         $('#startDate').datepicker({
@@ -4266,19 +4712,31 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             iconsLibrary: 'fontawesome',
             format:'dd-mm-yyyy',
             minDate: today,
+            todayHighlight: true,
             maxDate: function () {
                 return $('#endDate').val();
             }
         });
+
         $('#endDate').datepicker({
             uiLibrary: 'bootstrap4',
             format:'dd-mm-yyyy',
+            todayHighlight: true,
             iconsLibrary: 'fontawesome',
             minDate: function () {
                 return $('#startDate').val();
             }
         });
+        $('#amountCollectedMonth').mouseover(function () {
+            $('#tooltipMonth').show(100)
+        });
+             $('#amountCollectedMonth').mouseout(function () {
+            $('#tooltipMonth').hide(100)
+        });
+
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
 

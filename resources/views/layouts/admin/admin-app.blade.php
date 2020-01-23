@@ -97,6 +97,7 @@
 <script src="{{ asset('/js/custom-pages.js') }}"></script>
 <script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
   $(document).ready(function(){

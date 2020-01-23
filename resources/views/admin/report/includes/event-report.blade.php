@@ -5,8 +5,8 @@
 
 </style>
 
-<div class="container-fluid"style="margin-left: -10px;width: 102%">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
+
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-1x nav-tabs-line-danger" role="tablist"
         id="event_ul_list" style="margin-top: -20px">
 
         <li id="active_events" class="nav-item"><a class="nav-link active" data-toggle="tab" href="#" data-target="#">
@@ -41,7 +41,7 @@
         </button>
         </li>
     </ul>
-</div>
+
 
 <table class="table table-hover  table-bordered table-striped " id="event-report">
     <thead>

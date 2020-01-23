@@ -233,6 +233,10 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
         ->name('admin.artist_permit_report.customArtistDate');
     Route::post('artist_reports/transactionDate', 'Admin\TransactionReportController@transactionDate')
         ->name('admin.artist_permit_report.transactionDate');
+    Route::get('artist_reports/artistHistory/{id}', 'Admin\ReportController@artistHistory')
+        ->name('admin.artist_permit_report.artistHistory');
+    Route::post('artist_reports/chartData', 'Admin\TransactionReportController@chartData')
+        ->name('admin.artist_permit_report.chartData');
 
 
 

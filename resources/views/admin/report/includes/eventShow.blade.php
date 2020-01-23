@@ -106,7 +106,7 @@
         </iframe>
         </div>
         <div class="col-md-5">
-            <a href="{{url('artist_reports#event-report-section')}}"><button style="    background-color: #b45454; color: white; box-shadow: -1px 2px 7px -3px black; border: none; border-radius: 3px;" class="btn blue-gradient pull-right"><-BACK</button></a>
+            <a href="{{route('admin.artist_permit_reports.reports')}}"><button style="    background-color: #b45454; color: white; box-shadow: -1px 2px 7px -3px black; border: none; border-radius: 3px;" class="btn blue-gradient pull-right"><-BACK</button></a>
             <div class="border kt-padding-10">
                 <div class="kt-widget kt-widget--user-profile-4">
                     <div class="kt-widget__head kt-margin-t-5">
