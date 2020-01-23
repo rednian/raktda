@@ -25,6 +25,7 @@ $user_lang = $user->languageId;
           </div>
           <div class="kt-widget__subhead">
             <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
+              'back',
               'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>
             <a href="#"><i class="flaticon2-new-email"></i>{{$company->company_email}}</a>
             <a href="#"><i class="flaticon2-phone"></i>{{$company->phone_number}}</a>
@@ -33,10 +34,10 @@ $user_lang = $user->languageId;
           <div class="kt-widget__info row">
             <div class="col-md-8">
               @if ($company->company_description_en)
-                <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
-                  <h6>{{__('Establishment Details')}}</h6>
-                   {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
-                </div>
+              <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
+                <h6>{{__('Establishment Details')}}</h6>
+                {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
+              </div>
               @endif
               <div class="kt-widget__stats">
                 <div class="kt-widget__item">

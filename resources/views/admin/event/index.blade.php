@@ -293,8 +293,8 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
+              <th>{{ __('STATUS') }}</th>
               <th>{{ __('REQUEST TYPE') }}</th>
-              <th>{{ __('LAST CHECKED STATUS') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
@@ -1013,7 +1013,7 @@
            data: function (d) {
 
             // var status = $('select#new-permit-status').val();
-             d.status = ['amended', 'checked'];
+             d.status = ['checked'];
              d.type = $('select#pending-applicant-type').val();
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
              d.event_type_id = $('#pending-event-type-id').val();
@@ -1032,8 +1032,8 @@
            {data: 'establishment_name'},
            {data: 'duration'},
            {data: 'updated_at'},
-           {data: 'request_type'},
            {data: 'status'},
+           {data: 'request_type'},
            {data: 'type'},
            {data: 'start'},
            {data: 'end'},
@@ -1076,7 +1076,7 @@
            data: function (d) {
 
             var status = $('select#new-permit-status').val();
-             d.status =  ['new'];
+             d.status =  ['new', 'amended'];
              d.type = $('select#new-applicant-type').val();
              d.date = $('#new-applied-date').val()  ? selected_date : null;
              d.event_type_id = $('#new-event-type-id').val();

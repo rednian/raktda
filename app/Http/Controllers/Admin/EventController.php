@@ -64,9 +64,7 @@
 	    
 		public function index(Request $request)
 		{
-			$event = Event::whereDate('expired_date', '<', Carbon::now())->where('status', 'active')->update(['status'=>'expired']);
-
-			$event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
+		    $event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
 
@@ -74,10 +72,10 @@
 
 
 			return view($view, [
-				'page_title' => __('Event Permit'),
+				'page_title' => __('Event Permit Dashboard'),
 				'types'=> EventType::all(),
-				'new_request'=>Event::where('status', 'new')->count(),
-				'pending_request'=>Event::whereIn('status', ['amended', 'checked'])->count(),
+				'new_request'=>Event::whereIn('status', ['new', 'amended'])->count(),
+				'pending_request'=>Event::whereIn('status', ['checked'])->count(),
 				'active_request'=> $event,
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
@@ -100,7 +98,9 @@
 					'status'=>'cancelled', 
 					'cancel_date'=>Carbon::now(), 
 					'cancelled_by'=>$request->user_id, 
-					'role_id'=>$request->role_id
+					'role_id'=>$request->role_id,
+                    'is_display_all'=> null,
+                    'is_display_web'=> null
 				]);
 				$request['action'] = $request->status;
 				$event->comment()->create($request->all());
@@ -511,12 +511,9 @@
 
 		public function uploadedRequirement(Request $request, Event $event)
 		{
-
 			$requirements = Requirement::whereHas('eventRequirement', function($q) use ($event){
 				return $q->where('event_id', $event->event_id);
-			})
-			->orderBy('requirement_name')
-			->get();
+			})->orderBy('requirement_name');
 
 
 			return DataTables::of($requirements)
@@ -888,12 +885,12 @@
                     })
                     ->addColumn('has_liquor', function($event){ return $event->liquor()->exists() ? __('YES') : __('NO'); })
                     ->addColumn('has_truck', function($event){ return $event->truck()->exists() ? __('YES') : __('NO'); })
-                    ->addColumn('has_artist', function($event){ return $event->permit()->exists() ? $event->permit->artistPermit()->count() : __('NO'); })
+                    ->addColumn('has_artist', function($event){ return $event->permit()->exists() ? __('YES') : __('NO'); })
                     ->addColumn('location',function($event) use ($request){
                         return ucfirst($event->address);
                     })
                     ->editColumn('request_type', function($event){
-                        return permitStatus($event->request_type);
+                        return ucwords($event->request_type);
                     })
                     ->addColumn('description',function($event) use ($user){
                         return $user->LanguageId == 1 ? ucfirst($event->description_en) : ucfirst($event->description_ar);
@@ -963,8 +960,8 @@
                     ->rawColumns(['status', 'action', 'show', 'website', 'updated_at', 'duration', 'checked_status', 'event_type', 'approved_date', 'request_type'])
                     ->make(true);
 				$table = $table->getData(true);
-				$table['new_count'] = Event::where('status', 'new')->count();
-				$table['pending_count'] = Event::whereIn('status', ['amended', 'checked'])->count();
+				$table['new_count'] = Event::whereIn('status', ['new', 'amended'])->count();
+				$table['pending_count'] = Event::whereIn('status', ['checked'])->count();
 				$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
 				return response()->json($table);
 			}

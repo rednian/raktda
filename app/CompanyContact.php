@@ -2,6 +2,7 @@
 
 namespace App;
 use Carbon\Carbon;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyContact extends Model
@@ -27,4 +28,15 @@ class CompanyContact extends Model
    {
       return $this->belongsTo(Company::class, 'company_id');
    }
+
+   public function getNameAttribute()
+   {
+    return Auth::user()->LanguageId == 1 ? ucwords($this->contact_name_en) : ucwords($this->contact_name_ar);
+   }
+
+   public function getDesignationAttribute()
+   {
+    return Auth::user()->LanguageId == 1 ? ucwords($this->designation_en) : ucwords($this->designation_ar);
+   }
+
 }

@@ -61,7 +61,7 @@
 <table class="table table-hover table-borderless table-striped border" id="artist-permit">
 	<thead>
 		<tr>
-			<th></th>
+{{--			<th></th>--}}
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
 			<th>
@@ -73,7 +73,7 @@
 			</th>
 			<th>{{ __('SUBMITTED DATE') }}</th>
 			<th>{{ __('PERMIT TERM') }}</th>
-			<th>{{ __('PERMIT DURATION') }}</th>
+			<th>{{ __('DURATION') }}</th>
 			<th>{{ __('REQUEST TYPE') }}</th>
 			<th>{{ __('WORK LOCATION') }}</th>
 			<th>{{ __('CONNECTED TO AN EVENT') }}</th>

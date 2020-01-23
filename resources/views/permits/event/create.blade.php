@@ -1201,6 +1201,7 @@
                                 // window.location.href = "{{route('event.index')}}#draft";
                                 window.location.href = result.toURL;
                                 localStorage.clear();
+                                KTApp.unblockPage();
                             }
                         }
                     });

@@ -491,7 +491,7 @@
                {data: 'reference_number'},
                {data: 'permit_number'},
                {data: 'company_name'},
-               {data: 'applied_date'},
+               {data: 'approved_date'},
                {data: 'duration'},
                {data: 'artist_number'},
                {data: 'request_type'},
@@ -558,24 +558,23 @@
                }
             },
             columnDefs: [
-               {targets: [0, 4, 5], className: 'no-wrap'},
+               {targets: '_all', className: 'no-wrap'},
             ],
             order: [[3, 'desc']],
+             responsive:true,
             columns: [
                {data: 'reference_number'},
                {data: 'company_name'},
-               {data: 'applied_date'},
                {data: 'duration'},
                {data: 'artist_number'},
                // { data: 'company_type'},
-               {data: 'request_type'},
+               {data: 'updated_at'},
                {data: 'permit_status'},
+               {data: 'request_type'},
             ],
 
             createdRow: function (row, data, index) {
-               $(row).click(function () {
-                  location.href = data.show_link
-               });
+               $('td:not(:first-child)',row).click(function () {location.href = data.show_link; });
             }
          });
 
@@ -630,7 +629,7 @@
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
              d.request_type = $('select#pending-request-type').val();
-             d.status =  ['modified', 'checked'];//ADDED BY DONSKIE
+             d.status =  ['checked'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
@@ -711,7 +710,7 @@
           data: function (d) {
              // var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
-             d.status = ['new'];
+             d.status = ['new', 'modified'];
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
@@ -721,7 +720,7 @@
            {targets: '_all', className: 'no-wrap'},
          ],
          columns: [
-           {render:function(){ return null;}},
+           // {render:function(){ return null;}},
            {data: 'reference_number'},
            {data: 'company_name'},
            {data: 'artist_number'},

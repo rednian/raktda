@@ -9,12 +9,9 @@ use App\Company;
 use App\Country;
 use App\Emirates;
 use App\CompanyType;
-<<<<<<< HEAD
 use App\Permit;
 use App\ArtistTempData;
-=======
 use function Sodium\compare;
->>>>>>> 556fc3370b0716d93c45f4986c39cf253b639366
 use Validator;
 use Carbon\Carbon;
 use App\CompanyRequirement;
@@ -218,7 +215,7 @@ class CompanyController extends Controller
 
                   //bounce back
                 if ($company->request_type == 'new registration' && $company->status == 'back'){
-                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'bounced back request']));
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
                     $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
                 }
 
@@ -276,13 +273,14 @@ class CompanyController extends Controller
 
 
          DB::commit();
-       
+         return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['danger', $e->getMessage(), 'Error'];
+          return redirect()->back()->with('message', $result);  
       }
 
-      return redirect()->back()->with('message', $result);    
+       
    }
 
 
@@ -396,14 +394,12 @@ class CompanyController extends Controller
           $name =  __('Other Upload');
         }
         return $name;
-      })
-      ->editColumn('issued_date', function($data){
-        return $data->issued_date ? $data->issued_date->format('d-F-Y') : '-'; 
-      })
-      ->editColumn('expired_date', function($data){
-       return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
-      })
-      ->addColumn('file', function($data){
+      })->editColumn('issued_date', function($data){
+        return; 
+      })->editColumn('expired_date', function($data){
+      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
+      return ;
+      })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
           $name = $data->requirement->requirement_name;
         }

@@ -801,6 +801,7 @@ class EventController extends Controller
 
             $this->insertEventImages($event_id, $request->description);
             DB::commit();
+            $event = Event::where('event_id', $event_id)->latest()->first();
             $this->sendNotification($event, 'new');
             $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
         } catch (Exception $e) {

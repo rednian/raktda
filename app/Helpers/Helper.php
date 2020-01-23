@@ -162,7 +162,7 @@ function userType($type)
 
 function permitStatus($status)
 {
-    $status = strtolower($status);
+    $status = strtolower(trim($status));
     $classname = null;
     if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved', 'new request',
         'new registration', 'new request'
@@ -173,7 +173,7 @@ function permitStatus($status)
     if( in_array($status, [
             'send back for amendments', 'processing', 'modification request', 
             'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
-            'pending', 'bounced back request', 'renew trade license request'
+            'pending', 'bounced back request', 'renew trade license request', 'amend request', 'amendment request'
     ])){
         $classname = 'warning';
     }
@@ -183,8 +183,8 @@ function permitStatus($status)
     }
 
  
-    if (in_array($status, ['modification request', 'send back for amendments', 'back'])) { $status = 'Bounced Back'; }
-    if (in_array($status, ['modified', 'amended'])) { $status = 'Bounced Back Request'; }
+    if (in_array($status, ['modification request', 'send back for amendments', 'back','amended' ])) { $status = 'Bounced Back'; }
+//    if (in_array($status, ['modified'])) { $status = 'Bounced Back Request'; }
    
    
 

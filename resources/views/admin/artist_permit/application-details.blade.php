@@ -77,14 +77,13 @@
                                   <td width="25%">{{ __('Reference Number') }} :</td>
                                   <td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
                                </tr>
-                               <tr>
-                                  <td>{{ __('Request Type') }} :</td>
-                                  <td>{{ __(ucfirst($permit->request_type) . ' Application') }}</td>
-                               </tr>
+                                @if($permit->permit_status != 'new')
+                                
                                <tr>
                                   <td>{{ __('Permit Status') }} :</td>
                                   <td>{!! permitStatus($permit->permit_status) !!}</td>
                                </tr>
+                                    @endif
                                @if ($permit->number)
                                   <tr>
                                      <td>Permit Number :</td>
@@ -466,33 +465,18 @@
            {data: 'action'},
         ],
         createdRow: function (row, data, index) {
-
-          $(row).click(function(){ location.href = data.show_link; });
-
-        
-           $('.btn-document', row).click(function(e){
-            e.stopPropagation();
+          $(row).click(function(){ if (!data.is_checked){ location.href = data.show_link;}});
+          
+          $('.btn-document', row).click(function(e){
+              e.stopPropagation();
               documents(data);
               $('#document-modal').modal('show');
-           });
-
-           $('.btn-comment-modal', row).click(function (e) {
+          });
+          $('.btn-comment-modal', row).click(function (e) {
               e.stopPropagation();
               viewComment(data);
               $('#comment-modal').modal('show');
-           });
-
-         //   $(row).click(function () {
-         //     
-         //      if (!data.existing_permit) {
-         //         location.href = data.show_link;
-         //      } else {
-								 // $('#existing-permit-alert').removeClass('d-none').find('.alert-text').html(data.existing_permit);
-								 // $('#check-existing-permit-modal').find('a').attr('href', url);
-								 // existingPermit(data);
-         //        
-         //      }
-         //   });
+          });
         },
         initComplete: function (settings, json) {
            $('#artist-total').html(json.recordsTotal);
