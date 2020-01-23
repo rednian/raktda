@@ -9,8 +9,12 @@ use App\Company;
 use App\Country;
 use App\Emirates;
 use App\CompanyType;
+<<<<<<< HEAD
 use App\Permit;
 use App\ArtistTempData;
+=======
+use function Sodium\compare;
+>>>>>>> 556fc3370b0716d93c45f4986c39cf253b639366
 use Validator;
 use Carbon\Carbon;
 use App\CompanyRequirement;
@@ -31,6 +35,10 @@ class CompanyController extends Controller
       return view('permits.company.create');
    }
 
+   public function account(Request $request, Company $company)
+   {
+       return view('permits.company.account', ['company'=>$company]);
+   }
    public function show(Request $request ,Company $company)
    {
       Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
@@ -43,31 +51,33 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
-    //   $company = Validator::make($request->all(), [
-    //     'name_en'=> 'required|max:255',
-    //     'trade_license'=> 'required|max:255',
-    //     'trade_license_expired_date'=> 'required|max:255|date',
-    //     'address'=> 'required|max:255',
-    //     'area_id'=> 'required|max:255',
-    //     'g-recaptcha-response' => 'required|captcha',
-    //     'term_condition' => 'required'
-    //     // 'trade_license_issued_date'=> 'required|max:255|date',
-    //     // 'company_email'=> 'required|max:255|email',
-    //     // 'phone_number'=> 'required|max:255',
-    //     // 'company_description_en'=> 'required|max:255', 
-    //   ]
-    // )->validate();
+       $valid_company = Validator::make($request->all(), [
+         'name_en'=> 'required|max:255',
+         'trade_license'=> 'required|max:255',
+         'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::now(),
+         'address'=> 'required|max:255',
+         'area_id'=> 'required|max:255',
+         'term_condition' => 'required'
+       ]
+     )->validate();
+
+       $valid_user = Validator::make($request->all(), [
+           'NameEn'=>'required:max:255',
+           'username'=>'required:max:255',
+           'mobile_number'=>'required:max:255',
+           'password'=>'required:max:255',
+       ]);
 
 
       try {
          DB::beginTransaction();
 
-         $request['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
-         $company = Company::create(array_merge($request->all(), ['status'=>'draft'], $this->addressRelated() ));
-
-         $request['password'] = Hash::make($request->password);
-
-         $user = $company->user()->create(array_merge($request->all(), ['IsActive'=> 0, 'type'=> 1]));
+         $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
+         $company = Company::create(array_merge($valid_company, ['status'=>'draft', 'request_type'=>'new registration'], $this->addressRelated() ));
+         $user = $company->user()->create(array_merge(
+             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
+             ])
+         );
          $user->roles()->attach(2);
          $user->sendEmailVerificationNotification();
 
@@ -99,22 +109,13 @@ class CompanyController extends Controller
    }
 
    public function updateUser(Request $request, Company $company) {
-
-     $acccount_name_en = $request->acccount_name_en;
-     $acccount_name_ar = $request->acccount_name_ar;
-     $account_username = $request->account_username ;
-     $account_email = $request->account_email ;
-     $account_mobile= $request->account_mobile ;
-
       try {
         DB::beginTransaction();
-
-        User::where('user_id', Auth::user()->user_id)->update([
-          'NameAr' => $acccount_name_ar,
-          'NameEn' => $acccount_name_en,
-          'username' => $account_username,
-          'email' => $account_email,
-          'mobile_number' => $account_mobile
+        $company->user()->update([
+            'NameAr' => $request->acccount_name_ar,
+            'NameEn' => $request->acccount_name_en,
+            'email' => $request->account_email,
+            'mobile_number' => $request->account_mobile
         ]);
         
         DB::commit();
@@ -174,53 +175,83 @@ class CompanyController extends Controller
     if ($this->hasRequirement($company) && $request->submit != 'draft') {
       return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
     }
-      try {
+       $validate = Validator::make($request->all(), [
+               'name_en'=> 'required|max:255',
+               'name_ar'=> 'required|max:255',
+               'trade_license'=> 'required|max:255',
+               'trade_license_expired_date'=> 'required|max:255|date',
+               'company_email'=> 'required|max:255|email',
+               'phone_number'=> 'required|max:255',
+               'address'=> 'required|max:255',
+               'area_id'=> 'required|max:255',
+               'company_description_en'=> 'required|max:255',
+               'company_description_ar'=> 'required|max:255',
+               'contact_name_en'=> 'required|max:255',
+               'contact_name_ar'=> 'required|max:255',
+               'designation_en'=> 'required|max:255',
+               'designation_ar'=> 'required|max:255',
+               'mobile_number'=> 'required|max:255',
+               'emirate_identification'=> 'required|max:255',
+               'emirate_id_expired_date'=> 'required|max:255',
+               'submit'=> 'required|max:255',
+           ]
+       )->validate();
 
-        $validate = Validator::make($request->all(), [
-          'name_en'=> 'required|max:255',
-          'name_ar'=> 'required|max:255',
-          'trade_license'=> 'required|max:255',
-          'trade_license_expired_date'=> 'required|max:255|date',
-          'company_email'=> 'required|max:255|email',
-          'phone_number'=> 'required|max:255',
-          'website'=> 'nullable|max:255',
-          'address'=> 'required|max:255',
-          'area_id'=> 'required|max:255',
-          'company_description_en'=> 'required|max:255',
-          'company_description_ar'=> 'required|max:255',
-          'contact_name_en'=> 'required|max:255',
-          'contact_name_ar'=> 'required|max:255',
-          'designation_en'=> 'required|max:255',
-          'designation_ar'=> 'required|max:255',
-          'email'=> 'required|max:255|email',
-          'mobile_number'=> 'required|max:255',
-          'emirate_identification'=> 'required|max:255',
-          'emirate_id_issued_date'=> 'required|max:255',
-          'submit'=> 'required|max:255',
-           'emirate_id_expired_date'=> 'required|max:255',
-        ]
-      )->validate();
-        
+      try {
          DB::beginTransaction();
           $company->requirement()->update(['is_submit'=>1]);
+          switch ($request->submit){
+              case 'submitted':
+                  //new registration
+                  if ($company->request_type == 'new registration' && $company->status == 'draft'){
+                      $company->update(array_merge(
+                          $request->all(),
+                          [
+                              'reference_number'=> empty($company->reference_number) ?  $this->getReferenceNumber($company) : $company->reference_number,
+                              'status'=> 'new',
+                              'application_date'=> empty($company->application_date ) ? Carbon::now() : $company->application_date
+                          ],
+                          $this->addressRelated()
+                      ));
+                      $company->request()->create(['type'=>'new registration', 'user_id'=>$request->user()->user_id]);
+                  }
+
+                  //bounce back
+                if ($company->request_type == 'new registration' && $company->status == 'back'){
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'bounced back request']));
+                    $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
+                }
+
+                //renew
+                if ($company->request_type == 'new registration' && $company->status == 'back'){
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'renew trade license request']));
+                    $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
+                }
+
+
+
+
+
+//                  dd($company);
+
+                  $result = ['success', 'Successfully submitted!', 'Success'];
+                  break;
+              case 'draft':
+                  $company->update($request->all());
+                 $result = ['success', 'Draft saved!', 'Success'];
+                  break;
+          }
+
+
+
 
          switch ($request->submit) {
            case 'draft':
-                $company->update($request->all());
-                 $result = ['success', 'Draft saved!', 'Success'];
+
              break;
           case 'submitted':
 
-            $company->update(array_merge(
-              $request->all(), 
-              [
-                'reference_number'=> empty($company->reference_number) ?  $this->getReferenceNumber($company) : $company->reference_number,
-                'status'=> $company->application_date ? 'pending': 'new',
-                'application_date'=> empty($company->application_date ) ? Carbon::now() : $company->application_date
-              ],
-              $this->addressRelated()
-            ));
-            $result = ['success', 'Successfully submitted!', 'Success'];
+
             break;
          }
 
@@ -295,8 +326,8 @@ class CompanyController extends Controller
                   $request['file_type'] = $file->getClientMimeType();
                  $request['requirement_id'] = 1;
                  $request['page_number'] = $page_number+1;
-                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
-                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
                    $company->requirement()->create($request->all());   
              }
 
@@ -324,8 +355,8 @@ class CompanyController extends Controller
                  $request['type'] = 'requirement';
                  $request['file_type'] = $file->getClientMimeType();
                  $request['page_number'] = $page_number+1;
-                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
-                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
                  if($request->requirement_id != 'other upload'){
                    $company->requirement()->create($request->all());
                  }

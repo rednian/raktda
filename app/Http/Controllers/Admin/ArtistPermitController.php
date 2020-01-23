@@ -106,6 +106,27 @@ class ArtistPermitController extends Controller
           ]);
         DB::commit();
         $result = ['success', '', 'Success'];
+
+        //SEND NOTIFICATION TO COMPANY FOR PERMIT CANCELLATION BY ADMIN
+        $users = $permit->owner->company->users;
+
+        $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Cancelled';
+        $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Cancelled';
+        $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been cancelled by the Administrator. To view the details, please click the button below.';
+        $url = URL::signedRoute('company.get_permit_details', $permit->permit_id);
+        $buttonText = 'View Application';
+
+        foreach ($users as $user) {
+          $user->notify(new AllNotification([
+            'subject' => $subject,
+            'title' => $title,
+            'content' => $content,
+            'button' => $buttonText,
+            'url' => $url
+          ]));
+        }
+        //END SEND NOTIFICATION COMPANY
+
       } catch (Exception $e) {
         DB::rollBack();
          $result = ['error', $e->getMessage(), 'Error'];

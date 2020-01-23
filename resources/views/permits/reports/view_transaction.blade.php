@@ -99,7 +99,6 @@
             $vattotal = 0;
             $grandtotal = 0;
             @endphp
-
             @if($transaction->artistPermitTransaction()->exists())
             {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
             </h5> --}}

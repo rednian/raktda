@@ -12,7 +12,7 @@ class CompanyRequirement extends Model
     protected $table = 'company_requirement';
     protected $primaryKey = 'company_requirement_id';
     protected $fillable = ['company_id', 'issued_date', 'expired_date', 'path', 'requirement_id', 'page_number', 'is_submit', 'type', 'file_type'];
-    protected $dates = ['issued_date', 'expired_date'];
+//    protected $dates = ['issued_date', 'expired_date'];
 
 
     // public function setIssuedDateAttribute($date)

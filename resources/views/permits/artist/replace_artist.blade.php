@@ -834,7 +834,7 @@ $language_id = Auth::user()->LanguageId;
                 maxFileCount:1,
                 showDelete: true,
                 showDownload: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: i, reqName: $('#req_name_'+i).val() , reqId: $('#req_id_'+i).val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -942,7 +942,7 @@ $language_id = Auth::user()->LanguageId;
                 // showPreview:true,
                 showDelete: true,
                 showDownload: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 // onSuccess: function (files, response, xhr, pd) {
                 //     pd.filename.html('');
                 // },

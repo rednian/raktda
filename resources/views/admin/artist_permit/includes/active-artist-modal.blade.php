@@ -3,22 +3,19 @@
 			<div class="modal-content">
 				 <form class="kt-form kt-form--fit kt-form--label-right" id="artist_form">
 						<div class="modal-header">
-							 <h5 class="modal-title kt-font-dark kt-font-transform-u" id="exampleModalLabel">{{__('Active Permit List')}} - <span id="artist-name"></span></h5>
+							 <h5 class="modal-title kt-font-dark kt-font-transform-u" id="exampleModalLabel"><span id="artist-name"></span> - {{__('Active Permits')}}</h5>
 							 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							 </button>
 						</div>
 						<div class="modal-body">
-							<table class="table  table-hover  table-borderless table-striped table-sm border" id="active-permit">
+							<table class="table  table-hover  table-borderless table-striped border" id="active-permit">
 								 <thead>
 								 <tr>
-										<th></th>
 										<th>{{ __('REFERENCE NO.') }}</th>
 										<th>{{ __('PERMIT NO.') }}</th>
 										<th>{{ __('ESTABLISHMENT NAME') }}</th>
-										<th>{{ __('PERMIT DURATION') }}</th>
-										<th>{{ __('START DATE') }}</th>
+										<th>{{ __('PROFESSION') }}</th>
 										<th>{{ __('EXPIRY DATE') }}</th>
-										<th>{{ __('REQUEST TYPE') }}</th>
 										<th>{{ __('WORK LOCATION') }}</th>
 								 	</tr>
 								</thead>

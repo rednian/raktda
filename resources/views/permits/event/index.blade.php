@@ -53,9 +53,6 @@
                         <a class="nav-link" data-toggle="tab" href="#valid">{{__('Valid Permits')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#calendar">{{__('Calendar')}}</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#expired">{{__('Expired Permits')}}</a>
                     </li>
                     <li class="nav-item">
@@ -63,6 +60,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#draft">{{__('Drafts')}}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#calendar">{{__('Calendar')}}</a>
                     </li>
                     @if(check_is_blocked()['status'] != 'blocked' && check_is_blocked()['status'] != 'rejected')
                     <span class="nav-item"

@@ -1006,6 +1006,7 @@
                         </div>
 
 
+
                         <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
                             class="kt-hide "><span
                                 class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('Next')}}</span>
@@ -1162,7 +1163,6 @@ $output = json_decode($output);
                 url: url,
                 type: 'GET',
                 success: function(res){
-                    // console.log(res);
                     var res = JSON.parse(res);
                     var transactionId = res.transaction[0].transaction.acquirer.transactionId;
                     var receipt = res.transaction[0].transaction.receipt;
@@ -1339,7 +1339,7 @@ $output = json_decode($output);
                     maxFileCount: 2,
                     showPreview: false,
                     showDelete: true,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {
                         id: i , 
@@ -1479,7 +1479,7 @@ $output = json_decode($output);
                     abortStr: '',
                     multiple: false,
                     maxFileCount: 2,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                             //You can control using PD
@@ -1556,13 +1556,13 @@ $output = json_decode($output);
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
-                // previewHeight: '100px',
-                // previewWidth: "auto",
+                previewHeight: '100px',
+                previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                // showPreview: true,
+                showPreview: true,
                 showDelete: false,
-                uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },
@@ -1876,7 +1876,7 @@ $output = json_decode($output);
                     maxFileCount: 2,
                     showDelete: true,
                     showPreview: false,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
@@ -2019,7 +2019,7 @@ $output = json_decode($output);
                 showPreview: true,
                 showDelete: false,
                 showDownload: true,
-                uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

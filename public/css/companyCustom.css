@@ -505,7 +505,7 @@
 }
 
 .ajax-upload-dragdrop > div {
-    height: 25px !important;
+    height: 20px !important;
     padding-top: 1px !important;
 }
 
@@ -819,4 +819,8 @@ img.ajax-file-upload-preview {
 
 #liquor_details .ajax-file-upload-statusbar {
     width: 240px !important;
+}
+
+.ht-20 {
+    height: 20px !important;
 }

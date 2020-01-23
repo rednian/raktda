@@ -134,7 +134,7 @@ class ReportController extends Controller
             })->editColumn('from', function ($transaction) {
                 return ucwords($transaction->transaction_type);
             })->addColumn('action', function ($transaction)  {
-                return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction_id]) .  '"><span  class="kt-badge kt-badge--warning kt-badge--inline kt-margin-b-5">'.__('View').'</span></a>';
+                return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction_id]) .  '"><button  class="btn btn-sm btn-secondary btn-hover-warning">'.__('View').'</button></a>';
                 
             })->rawColumns(['action'])->make(true);
         }

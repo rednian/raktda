@@ -31,6 +31,7 @@ use App\EventTypeSub;
 use App\ArtistTempData;
 use App\Permit;
 use App\User;
+use App\ArtistPermit;
 use App\Notifications\AllNotification;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
@@ -2123,7 +2124,7 @@ class EventController extends Controller
         $transactionId = $request->transactionId;
         $receipt = $request->receipt;
         $orderId = $request->orderId;
-
+        $noofdays = $request->noofdays;
         $toURL = '';
 
         try {
@@ -2143,7 +2144,7 @@ class EventController extends Controller
         
         if ($trnx_id)
         {
-            $event_amount = (int)$amount - (int)$truck_fee;
+            $event_amount = (int)$amount - ((int)$truck_fee + (int)$liquor_fee);
             EventTransaction::create([
                 'event_id' => $event_id,
                 'transaction_id' => $trnx_id->transaction_id,
@@ -2189,41 +2190,36 @@ class EventController extends Controller
                 'paid' => 1,
                 'paid_artist_fee' => $paidArtistFee
             ]);
-        }
+        
 
-        if($paidArtistFee)
-        {
-            $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
-            
-            $trns = Transaction::create([
-                'reference_number' => getTransactionReferNumber(),
-                'transaction_type' => 'event',
-                'created_by' => Auth::user()->user_id,
-                'transaction_date' => Carbon::now()->format('Y-m-d')
-            ]);
+            if($paidArtistFee)
+            {
+                $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+                
+                $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
 
-            $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+                foreach ($artistPermits as $artistPermit) {
+                    $per_day_fee = $artistPermit->profession->amount;
+                    $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
+                    $total_fee = $per_day_fee * $noofmonths;
+                    $vat_fee = $total_fee * 0.05 ; 
+                    $trnx_id->artistPermitTransaction()->create([
+                        'vat' => $vat_fee ,
+                        'amount' => $total_fee,
+                        'permit_id' => $permit_id,
+                        'artist_permit_id' => $artistPermit->artist_permit_id,
+                        'transaction_id' => $trnx_id->transaction_id,
+                    ]);
+                }
 
-            foreach ($artistPermits as $artistPermit) {
-                $per_day_fee = $artistPermit->profession->amount;
-                $total_fee = $per_day_fee * $noofdays;
-                $vat_fee = $total_fee * 0.05 ; 
-                $trns->artistPermitTransaction()->create([
-                    'vat' => $vat_fee ,
-                    'amount' => $total_fee,
-                    'permit_id' => $permit_id,
-                    'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'transaction_id' => $trns->transaction_id,
+                Permit::where('permit_id', $permit_id)->update([
+                    'paid' => 1,
+                    'permit_number' => generateArtistPermitNumber(),
+                    'permit_status' => 'active'
                 ]);
+
+                ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
             }
-
-            Permit::where('permit_id', $permit_id)->update([
-                'paid' => 1,
-                'permit_number' => generateArtistPermitNumber(),
-                'status' => 'active'
-            ]);
-
-            ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
         }
 
         DB::commit();
@@ -2525,7 +2521,8 @@ class EventController extends Controller
         $thumbSavedPath = 'public/' . $user_id . '/event/temp/thumb/' . $fileName;
         session([$user_id . '_event_pic_file' => $path, $user_id . '_event_ext' => $ext, $user_id . '_event_thumb_file' => $thumbSavedPath]);
 
-        return json_encode($file);
+        // return json_encode($file);
+        return response()->json(['filepath' => $path]);
     }
 
     public function delete_logo_in_session(Request $request)

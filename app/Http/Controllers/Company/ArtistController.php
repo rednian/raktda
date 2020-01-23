@@ -2444,20 +2444,13 @@ class ArtistController extends Controller
         if($paidEventFee)
         {
 
-            $trans = Transaction::create([
-                'reference_number' => getTransactionReferNumber(),
-                'transaction_type' => 'event',
-                'transaction_date' => Carbon::now(),
-                'created_by' => Auth::user()->user_id
-            ]);
-
             $ev_amount = $permit->event->type->amount * $noofdays;
             $ev_vat = $ev_amount * 0.05;
 
             \App\EventTransaction::create([
                 'event_id' => $permit->event_id,
                 'user_id' => Auth::user()->user_id,
-                'transaction_id' => $trans->transaction_id,
+                'transaction_id' =>  $transArr->transaction_id,
                 'amount' => $ev_amount,
                 'vat' => $ev_vat,
                 'type'=> 'event'
@@ -2539,11 +2532,6 @@ class ArtistController extends Controller
             'is_paid' => 1
         ]);
 
-        // if ($transArr) {
-        //     $result = ['success', __('Payment Done Successfully'), 'Success'];
-        // } else {
-        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
-        // }
 
             DB::commit();
             $result = ['success', __('Payment Done Successfully'), 'Success'];

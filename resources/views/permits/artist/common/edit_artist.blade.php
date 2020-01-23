@@ -293,7 +293,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 showDownload: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: i, reqId: requiId , artistNo: $('#artist_number_doc').val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -391,11 +391,12 @@
                 showFileSize: false,
                 showFileCounter: false,
                 // previewHeight: '100px',
+                showDownload: true,
                 // previewWidth: "auto",
                 abortStr: '',
                 // showPreview:true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 // onSuccess: function (files, response, xhr, pd) {
                 //     pd.filename.html('');
@@ -420,6 +421,24 @@
                         });
                     }
 
+                },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }else{ 
+                        let user_id = $('#user_id').val();
+                        let artistpermitid = $('#artist_permit_id').val();
+                        let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } 
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
                 {

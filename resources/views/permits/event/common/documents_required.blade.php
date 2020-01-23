@@ -56,40 +56,99 @@
                         </tbody>
                     </table>
                     @endif
-                    <table class="table table-borderless border table-sm kt-margin-t-20 kt-padding-b-10">
-                        <thead>
-                            <tr class="kt-font-transform-u kt-margin-t-5">
-                                <th class="text-center">#</th>
-                                <th style="width: 40%;">{{__('Document Name')}}</th>
-                                <th style="width: 50%;">{{__('Notes')}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                            $j = 1;
-                            @endphp
-                            @foreach($et->event_type_requirements as $req)
-                            @if(strtolower($req->requirement->requirement_name) != 'other documents')
-                            <tr>
-                                <td class="text-center">{{$j}}</td>
-                                <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
-                                </td>
-                                <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
-                                </td>
-                            </tr>
-                            @php
-                            $j++;
-                            @endphp
-                            @endif
-                            @endforeach
-                            @if($et->event_type_requirements->count() == 0)
-                            <tr>
-                                <td></td>
-                                <td colspan="2">{{__('No Required Documents')}}</td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                    <section class="row">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10"
+                                role="tablist">
+                                <li class="nav-item ">
+                                    <a class="nav-link active" data-toggle="tab"
+                                        href="#corporate">{{__('Corporate')}}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-toggle="tab" href="#government"
+                                        data-target="#government">{{__('Government')}} </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <div class="tab-content">
+                        <div class="tab-pane show fade active" id="corporate" role="tabpanel">
+                            <small>{{__('List of required documents')}}</small>
+                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                                <thead>
+                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                        <th class="text-center">#</th>
+                                        <th style="width: 40%;">{{__('Document Name')}}</th>
+                                        <th style="width: 50%;">{{__('Notes')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $j = 1;
+                                    @endphp
+                                    @foreach($et->event_type_requirements as $req)
+                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    $req->requirement->type == 'corporate')
+                                    <tr>
+                                        <td class="text-center">{{$j}}</td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        </td>
+                                    </tr>
+                                    @php
+                                    $j++;
+                                    @endphp
+                                    @endif
+                                    @endforeach
+                                    @if($et->event_type_requirements->count() == 0)
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2">{{__('No Required Documents')}}</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="government" role="tabpanel">
+                            <small>{{__('List of required documents')}}</small>
+                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                                <thead>
+                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                        <th class="text-center">#</th>
+                                        <th style="width: 40%;">{{__('Document Name')}}</th>
+                                        <th style="width: 50%;">{{__('Notes')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $j = 1;
+                                    @endphp
+                                    @foreach($et->event_type_requirements as $req)
+                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    $req->requirement->type == 'government')
+                                    <tr>
+                                        <td class="text-center">{{$j}}</td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        </td>
+                                    </tr>
+                                    @php
+                                    $j++;
+                                    @endphp
+                                    @endif
+                                    @endforeach
+                                    @if($et->event_type_requirements->count() == 0)
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="2">{{__('No Required Documents')}}</td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 @php
                 $i++;

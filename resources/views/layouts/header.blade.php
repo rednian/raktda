@@ -119,7 +119,7 @@
                 <!--begin: Navigation -->
                 <div class="kt-notification">
                     @if (Auth::user()->type == 1)
-                    <a href="{{ URL::signedRoute('company.edit', ['company'=>Auth::user()->company->company_id]) }}"
+                    <a href="{{ URL::signedRoute('company.account', ['company'=>Auth::user()->company->company_id]) }}"
                         class="kt-notification__item">
                         <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>

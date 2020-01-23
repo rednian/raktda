@@ -1000,7 +1000,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -1187,7 +1187,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         if(files)

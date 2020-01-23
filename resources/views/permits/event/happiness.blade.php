@@ -1167,7 +1167,7 @@
                     multiple: false,
                     maxFileCount: 2,
                     // showDelete: true,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                             //You can control using PD
@@ -1249,16 +1249,16 @@
                 showFileSize: false,
                 showFileCounter: false,
                 abortStr: '',
-                // previewHeight: '100px',
-                // previewWidth: "auto",
+                previewHeight: '100px',
+                previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                // showPreview: true,
+                showPreview: true,
                 showDelete: false,
-                uploadButtonClass: 'btn btn--default mb-2 mr-2',
-                // onSuccess: function (files, response, xhr, pd) {
-                //     pd.filename.html('');
-                // },
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -1537,7 +1537,7 @@
                     maxFileCount: 2,
                     showPreview: false,
                     showDelete: true,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {
                         id: i , 
@@ -1763,7 +1763,7 @@
                     maxFileCount: 2,
                     showDelete: true,
                     showPreview: false,
-                    uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
@@ -1938,7 +1938,7 @@
                 showPreview: true,
                 showDelete: false,
                 showDownload: true,
-                uploadButtonClass: 'btn btn--default mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

@@ -806,7 +806,7 @@
                     multiple: false,
                     maxFileCount: 5,
                     showDelete: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                             //You can control using PD
@@ -906,20 +906,22 @@
                 fileName: "pic_file",
                 multiple: false,    
                 deleteStr: `<i class="la la-trash"></i>`,   
+                // downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
                 maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
-                // previewHeight: '100px',
-                // previewWidth: "auto",
+                previewHeight: '100px',
+                previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                // showPreview: true,
+                showPreview: true,
+                // showDownload: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
-                // onSuccess: function (files, response, xhr, pd) {
-                //     pd.filename.html('');
-                // },
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
 				{
 					$.ajax({
@@ -937,12 +939,20 @@
                     $.ajax({
                         url: url,
                         success: function (data) {
-                            // console.log(data);
                             if (data.trim() != '') {
+
                                 obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
+                },
+                downloadCallback: function (files, pd) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -1752,7 +1762,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -1969,7 +1979,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         if(files)
@@ -2213,7 +2223,7 @@
                 returnType: "json",
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

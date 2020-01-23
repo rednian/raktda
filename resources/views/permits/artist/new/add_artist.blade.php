@@ -932,7 +932,7 @@
                 maxFileCount: 1,
                 showDownload: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -1033,7 +1033,7 @@
             // showPreview: true,
             showDownload: true,
             showDelete: true,
-            uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+            uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
             // onSuccess: function (files, response, xhr, pd) {
             //     pd.filename.html('');
             // },

@@ -760,7 +760,7 @@
                     maxFileCount: 5,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
                             //You can control using PD
@@ -854,16 +854,16 @@
                 maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
-                // previewHeight: '100px',
-                // previewWidth: "auto",
+                previewHeight: '100px',
+                previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                // showPreview: true,
+                showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
-                // onSuccess: function (files, response, xhr, pd) {
-                //     pd.filename.html('');
-                // },
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                onSuccess: function (files, response, xhr, pd) {
+                    pd.filename.html('');
+                },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
 				{
 					$.ajax({
@@ -1712,7 +1712,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {
                         id: i , 
                         reqId: $('#truck_req_id_'+i).val()
@@ -1927,7 +1927,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
                         if(files)
@@ -2170,7 +2170,7 @@
                 returnType: "json",
                 showPreview: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 onSuccess: function (files, response, xhr, pd) {
                     pd.filename.html('');
                 },

@@ -164,13 +164,17 @@ function permitStatus($status)
 {
     $status = strtolower($status);
     $classname = null;
-    if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved'])) {
+    if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved', 'new request',
+        'new registration', 'new request'
+    ])) {
          $classname = 'success';
     }
 
     if( in_array($status, [
             'send back for amendments', 'processing', 'modification request', 
-            'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked'])){ 
+            'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
+            'pending', 'bounced back request', 'renew trade license request'
+    ])){
         $classname = 'warning';
     }
 
@@ -179,7 +183,7 @@ function permitStatus($status)
     }
 
  
-    if ($status == 'modification request') { $status = 'Bounced Back'; }
+    if (in_array($status, ['modification request', 'send back for amendments', 'back'])) { $status = 'Bounced Back'; }
     if (in_array($status, ['modified', 'amended'])) { $status = 'Bounced Back Request'; }
    
    
@@ -385,7 +389,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  150);
+        $payment_no = sprintf("%07d",  205);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

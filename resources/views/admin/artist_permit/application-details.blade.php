@@ -3,7 +3,7 @@
 	 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
 			<div class="kt-portlet__head kt-portlet__head--sm">
 				 <div class="kt-portlet__head-label">
-						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {{$permit->reference_number}} </h3>
+						<h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {!! permitStatus($permit->request_type) !!} </h3>
 				 </div>
 				 <div class="kt-portlet__head-toolbar">
 						<a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">

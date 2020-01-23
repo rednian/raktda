@@ -10,7 +10,7 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
     <div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->name_en) : ucfirst($event->name_ar) }} - {{ __('DETAILS') }}</h3>
+            <h3 class="kt-portlet__head-title kt-font-dark">{{ $event->name }} - {!! permitStatus($event->status) !!}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
             <a href="javascript:void(0)" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
@@ -268,9 +268,11 @@
             </div>
           </section>
 
-          {{-- <h6 class="kt-font-dark kt-margin-t-10">Event Map Location</h6> --}}
-          <iframe class="border kt-margin-t-10 kt-padding-5" id='mapcanvas' src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'style="height: 400px; width: 100%; margin-top: 1%; border-style: none;" >
+          <iframe class="border kt-margin-t-10 kt-padding-5" id='mapcanvas'
+                  src='https://maps.google.com/maps?q={{ urlencode($event->address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
+                  style="height: 400px; width: 100%; margin-top: 1%; border-style: none;" >
           </iframe>
+
         </div>
         <div class="col-md-5">
             <div class="border kt-padding-10">

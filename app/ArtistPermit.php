@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Auth;
 use Carbon\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -116,7 +116,10 @@ class ArtistPermit extends Model implements Auditable
 
     public function getFullNameAttribute()
     {
-        return $this->firstname_en . ' ' . $this->lastname_en;
+        $user_lang = Auth::user()->LanguageId;
+        if ($user_lang == 1){ return $this->firstname_en . ' ' . $this->lastname_en; }
+        if ($user_lang == 2){ return $this->firstname_en . ' ' . $this->lastname_en; }
+
     }
 
     public function getAgeAttribute()
