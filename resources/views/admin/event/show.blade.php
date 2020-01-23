@@ -292,11 +292,11 @@
                       @endif
                     </div>
                     <div class="kt-widget__content">
-                      <div class="kt-widget__section">
-                        <div class="kt-widget__button">
-                          {!! permitStatus($event->status)!!}                      
-                        </div>
-                      </div>
+{{--                      <div class="kt-widget__section">--}}
+{{--                        <div class="kt-widget__button">--}}
+{{--                          {!! permitStatus($event->status)!!}                      --}}
+{{--                        </div>--}}
+{{--                      </div>--}}
                       @if ($event->status == 'cancelled')
                        <div class="kt-widget__section">
                         <h6 class="kt-font-dark">{{ __('Cancel Reason') }}   <small title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}" class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small></h6>
@@ -314,7 +314,7 @@
                      <h6 class="kt-font-dark kt-font-transform-u">{{ __('Permit Information') }}</h6>
                      <table class="table table-sm table-hover table-borderless table-display">
                       <tr>
-                          <td>{{ __('Applied Date') }} : </td>
+                          <td>{{ __('Submitted Date') }} : </td>
                           <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
                       </tr>
                          <tr>

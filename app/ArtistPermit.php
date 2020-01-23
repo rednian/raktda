@@ -21,8 +21,13 @@ class ArtistPermit extends Model implements Auditable
         'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',
         'emirate_id', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date',
         'religion_id', 'identification_number', 'uid_number', 'profession_id', 'firstname_en', 'firstname_ar',
-        'lastname_en', 'lastname_ar', 'birthdate', 'country_id', 'gender_id', 'is_paid'
+        'lastname_en', 'lastname_ar', 'birthdate', 'country_id', 'gender_id', 'is_paid', 'old_artist_id', 'replace_reason_en', 'replace_reason_ar', 'is_checked'
     ];
+
+    public function oldArtist()
+    {
+        return $this->belongsTo(Artist::class, 'old_artist_id', 'artist_id');
+    }
 
 
     public function scopeIsEurope($q)
@@ -135,6 +140,11 @@ class ArtistPermit extends Model implements Auditable
     public function artistPermitTransaction()
     {
         return $this->hasMany(ArtistPermitTransaction::class,'artist_permit_id');
+    }
+
+    public function getReplaceReasonAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->replace_reason_en) : ucfirst($this->replace_reason_ar);
     }
 
 }

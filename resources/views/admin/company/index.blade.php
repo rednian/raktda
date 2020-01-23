@@ -47,13 +47,13 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
                   <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>
               </div>
             </div>
-          </div>
+          </div>    
         </div>
         
         {{-- <div class="col-2">

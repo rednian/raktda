@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Auth;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -56,6 +56,11 @@ class Requirement extends Model implements Auditable
     public function event_type_requirements()
     {
         return $this->hasMany(EventTypeRequirement::class, 'requirement_id');
+    }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->requirement_name) : ucfirst($this->requirement_name_ar);
     }
 
 }

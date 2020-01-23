@@ -406,6 +406,21 @@
 																					</div>
 																				</div>
 																		</div>
+                                                                    <div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('Check all event Food Truck details')}}</label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-truck" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
+																	</div>
 																</section>
 																@foreach ($event->truck as  $index => $truck)
 																	<section class="kt-section border kt-padding-5" style="margin-bottom: 10px !important">
@@ -528,17 +543,37 @@
 														</div>
 														<div id="collapse-liquor" class="collapse show" aria-labelledby="heading-liquor" data-parent="#accordion-liquor">
 															<div class="card-body">
-																	@if ($event->liquor->provided)
-																	<p class=" kt-font-bold">
-																	<span class="kt-font-danger">Note: </span>
-																	{{__('Liquor will be provided by the venue.')}}
-																	</p>
-																	@else
-																	<p class=" kt-font-bold">
-																	<span class="kt-font-danger">Note: </span>
-																	{{__('Liquor will be purchased to a license store.')}}
-																	</p>
-																	@endif
+																	
+                                                                <section class="row">
+                                                                    <div class="col-6">
+                                                                        @if ($event->liquor->provided)
+                                                                            <p class=" kt-font-bold">
+                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                {{__('Liquor will be provided by the venue.')}}
+                                                                            </p>
+                                                                        @else
+                                                                            <p class=" kt-font-bold">
+                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                {{__('Liquor was purchased from a licensed store.')}}
+                                                                            </p>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('Check all event liquor details')}}</label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-liquor" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
+																	</div>
+                                                                </section>
 																
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
@@ -1636,6 +1671,8 @@ function checkAll(){
 	$('input[type=checkbox]#checked-all-details').change(function(){ checkedAttr($(this)); });
 	$('input[type=checkbox]#checked-all-date').change(function(){ checkedAttr($(this)); });
 	$('input[type=checkbox]#checked-all-address').change(function(){ checkedAttr($(this)); });
+	$('input[type=checkbox]#checked-all-truck').change(function(){ checkedAttr($(this)); });
+	$('input[type=checkbox]#checked-all-liquor').change(function(){ checkedAttr($(this)); });
 }
 
 function checkedAttr(obj) {

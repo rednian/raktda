@@ -441,7 +441,8 @@ class CompanyController extends Controller
          return ucfirst($company->address).' '.$area.' '.$emirate.' '.$country;
       })
       ->editColumn('request_type', function($company){
-         return permitStatus($company->request_type);
+          return ucwords($company->request_type);
+//         return permitStatus($company->request_type);
       })
       ->editColumn('status', function($company){
          return permitStatus($company->status);

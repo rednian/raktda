@@ -209,7 +209,7 @@ class CompanyController extends Controller
 
                   //bounce back
                 if ($company->request_type == 'new registration' && $company->status == 'back'){
-                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'bounced back request']));
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
                     $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
                 }
 
@@ -267,13 +267,14 @@ class CompanyController extends Controller
 
 
          DB::commit();
-       
+         return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['danger', $e->getMessage(), 'Error'];
+          return redirect()->back()->with('message', $result);  
       }
 
-      return redirect()->back()->with('message', $result);    
+       
    }
 
 

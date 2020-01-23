@@ -417,7 +417,7 @@
                 </div>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
                 <div class="tab-pane" id="permit-history" role="tabpanel">
-                   <table class="table table-striped table-borderless table-hover" id="table-permit-history">
+                   <table class="table table-striped table-borderless table-hover border" id="table-permit-history">
                      <thead>
                        <tr>
                          <th>{{ __('RIVISION NO.') }}</th>

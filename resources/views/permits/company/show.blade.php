@@ -24,7 +24,7 @@ $user_lang = $user->languageId;
             </div>
           </div>
           <div class="kt-widget__subhead">
-            <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
+            <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked', 'back',
               'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>
             <a href="#"><i class="flaticon2-new-email"></i>{{$company->company_email}}</a>
             <a href="#"><i class="flaticon2-phone"></i>{{$company->phone_number}}</a>
