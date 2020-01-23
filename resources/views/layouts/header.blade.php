@@ -6,7 +6,55 @@
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
         <!--begin: Notifications -->
-
+        <div class="kt-header__topbar-item dropdown">
+            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
+                <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger">
+                    <i class="flaticon2-bell-alarm-symbol"></i>
+                    <span class="kt-pulse__ring"></span>
+                </span>
+                <span class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--danger"></span>
+            </div>
+            <div
+                class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-lg">
+                <form>
+                    <!--begin: Head -->
+                    <div class="kt-head kt-head--fit-x kt-head--fit-b" style="padding-top:10px!important">
+                        <h3 class="kt-head__title">
+                            {{__('Notifications')}} &nbsp; <span
+                                class="btn btn-label-primary btn-sm btn-bold btn-font-sm"><a
+                                    href="{{ URL::signedRoute('company.notifications') }}">{{__('See All')}}</a></span>
+                        </h3>
+                    </div>
+                    <!--end: Head -->
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
+                            <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true"
+                                data-height="300" data-mobile-height="200">
+                                @if(Auth::user()->unreadNotifications->count() > 0)
+                                @foreach(Auth::user()->unreadNotifications as $notification)
+                                <a href="javascript:void(0)" data-id="{{ $notification->id }}"
+                                    data-url="{{ $notification->data['url'] }}"
+                                    class="kt-notification__item notification-item">
+                                    <div class="kt-notification__item-icon"> <i class="flaticon2-bell-2"></i> </div>
+                                    <div class="kt-notification__item-details">
+                                        <div class="kt-notification__item-title"> {!! $notification->data['title'] !!}
+                                        </div>
+                                        <div class="kt-notification__item-time">
+                                            {{ humanDate($notification->created_at) }}</div>
+                                    </div>
+                                </a>
+                                @endforeach
+                                @else
+                                <p class="text-center kt-padding-15">
+                                    {{__("Relax, you're doing well. Notification is empty.")}}
+                                </p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!--begin: Language bar -->
         <div class="kt-header__topbar-item kt-header__topbar-item--langs">
@@ -71,7 +119,7 @@
                 <!--begin: Navigation -->
                 <div class="kt-notification">
                     @if (Auth::user()->type == 1)
-                    <a href="{{ URL::signedRoute('company.edit', ['company'=>Auth::user()->company->company_id]) }}"
+                    <a href="{{ URL::signedRoute('company.account', ['company'=>Auth::user()->company->company_id]) }}"
                         class="kt-notification__item">
                         <div class="kt-notification__item-icon"> <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>

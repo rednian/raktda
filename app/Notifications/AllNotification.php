@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class AllNotification extends Notification
 {
@@ -31,7 +32,7 @@ class AllNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database', 'mail', 'broadcast'];
     }
 
     /**
@@ -60,7 +61,28 @@ class AllNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'title' => $this->data['title'],
+            'content' => $this->data['content'],
+            'url' => $this->data['url'],
         ];
     }
+
+    // public function toBroadcast($notifiable)
+    // {
+    //     return new BroadcastMessage([
+    //         'title' => $this->data['title'],
+    //         'content' => $this->data['content'],
+    //         'url' => $this->data['url']
+    //     ]);
+    // }
+
+    // public function toDatabase($notifiable)
+    // {
+    //     return [
+    //         'title' => $this->data['title'],
+    //         'content' => $this->data['content'],
+    //         'url' => $this->data['url']
+    //     ];
+    // }
+
 }

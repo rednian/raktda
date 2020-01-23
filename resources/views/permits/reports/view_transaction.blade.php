@@ -99,7 +99,6 @@
             $vattotal = 0;
             $grandtotal = 0;
             @endphp
-
             @if($transaction->artistPermitTransaction()->exists())
             {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
             </h5> --}}
@@ -176,7 +175,7 @@
                     </thead>
                     <tbody>
                         @foreach($transaction->eventTransaction as $et)
-                        @if($transaction->transaction_type == 'event')
+                        @if($et->type == 'event')
                         <tr>
                             <td>{{getLangId() == 1 ? ucwords($et->event->name_en) : $et->event->name_ar}}
                             </td>
@@ -199,7 +198,7 @@
                                 </a>
                             </td>
                         </tr>
-                        @elseif($transaction->transaction_type == 'truck')
+                        @elseif($et->type == 'truck')
                         <tr>
                             <td colspan="2">{{__('Truck Fee')}}</td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
@@ -211,8 +210,9 @@
                             $grandtotal = $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
+                            <td></td>
                         </tr>
-                        @elseif($transaction->transaction_type == 'liqour')
+                        @elseif($et->type == 'liquor')
                         <tr>
                             <td colspan="2">{{__('Liqour Fee')}}</td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
@@ -224,6 +224,7 @@
                             $grandtotal = $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
+                            <td></td>
                         </tr>
                         @endif
                         @endforeach

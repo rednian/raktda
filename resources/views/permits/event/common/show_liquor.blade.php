@@ -97,37 +97,37 @@
                             </div>
                         </div>
                         <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
-                        @if($req->dates_required == 1)
+                        {{-- @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
                                 title="Issue Date">{{__('Issued Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="" class="text--maroon kt-font-bold"
-                                title="Expiry Date">{{__('Expiry Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="liquor_doc_exp_date_{{$i}}" id="liquor_doc_exp_date_{{$i}}"
-                                placeholder="DD-MM-YYYY" />
-                        </div>
-                        @endif
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
+                            id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
                     </div>
-                    @php
-                    $i++;
-                    @endphp
-                    @endforeach
-                </form>
-                <form id="liquor_provided_form" disabled>
-                    <div class="col-md-4 form-group form-group-xs">
-                        <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
-                                class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
-                            id="liquor_permit_no" disabled>
+                    <div class="col-lg-2 col-sm-12">
+                        <label for="" class="text--maroon kt-font-bold"
+                            title="Expiry Date">{{__('Expiry Date')}}</label>
+                        <input type="text" class="form-control form-control-sm date-picker"
+                            name="liquor_doc_exp_date_{{$i}}" id="liquor_doc_exp_date_{{$i}}"
+                            placeholder="DD-MM-YYYY" />
                     </div>
-                </form>
+                    @endif --}}
             </div>
+            @php
+            $i++;
+            @endphp
+            @endforeach
+            </form>
+            <form id="liquor_provided_form" disabled>
+                <div class="col-md-4 form-group form-group-xs">
+                    <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
+                            class="text-danger">*</span></label>
+                    <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
+                        id="liquor_permit_no" disabled>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </div>

@@ -7,6 +7,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements Auditable, MustVerifyEmail
 {
@@ -33,6 +34,11 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     public function routeNotificationForMail($notification)
     {
         return $this->email;
+    }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.' . $this->user_id;
     }
 
     public function scopeAvailableInspector($q, $start_date)

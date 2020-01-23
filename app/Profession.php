@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,5 +23,9 @@ class Profession extends Model
 	        'NameEn' => 'Not Available',
 	        'NameAr' => 'Not Available'
 	    ]);
+    }
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
     }
 }

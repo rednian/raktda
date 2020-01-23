@@ -63,24 +63,24 @@
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license}}</span>
               </div>
             </div>
-            <div class="form-group form-group-xs row">
-              <label class="col-4 col-form-label">{{__('Trade License Issued Date')}} :</label>
-              <div class="col-8">
-                <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_issued_date->format('d-F-Y')}}</span>
-              </div>
-            </div>
+{{--            <div class="form-group form-group-xs row">--}}
+{{--              <label class="col-4 col-form-label">{{__('Trade License Issued Date')}} :</label>--}}
+{{--              <div class="col-8">--}}
+{{--                <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_issued_date->format('d-F-Y')}}</span>--}}
+{{--              </div>--}}
+{{--            </div>--}}
             <div class="form-group form-group-xs row">
               <label class="col-4 col-form-label">{{__('Trade License Expiry Date')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_expired_date->format('d-F-Y')}}</span>
               </div>
             </div>
-            <div class="form-group form-group-xs row">
+            {{--<div class="form-group form-group-xs row">
               <label class="col-4 col-form-label">{{__('Website')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->website}}</span>
               </div>
-            </div>
+            </div>--}}
             <div class="form-group form-group-xs row">
               <label class="col-4 col-form-label">{{__('Address')}} :</label>
               <div class="col-8">
@@ -124,12 +124,12 @@
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_identification}}</span>
               </div>
             </div>
-            <div class="form-group form-group-xs row">
+            {{--<div class="form-group form-group-xs row">
               <label class="col-5 col-form-label">{{__('Emirates ID Issued Date')}}:</label>
               <div class="col-7">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->emirate_id_issued_date ? $company->contact->emirate_id_issued_date->format('d-F-Y') : null }}</span>
               </div>
-            </div>
+            </div>--}}
             <div class="form-group form-group-xs row">
               <label class="col-5 col-form-label">{{__('Emirates ID Expiry Date')}}:</label>
               <div class="col-7">
@@ -174,7 +174,7 @@
               <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-2x" role="tablist">
               <li class="nav-item ">
                   <a class="nav-link active" data-toggle="tab" href="#action-history" role="tab">
-                      {{__('ACTION')}}
+                      {{__('ACTION HISTORY')}}
                       <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->comment()->count()}}</span>
                   </a>
               </li>

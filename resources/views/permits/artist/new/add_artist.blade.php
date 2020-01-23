@@ -14,37 +14,7 @@
             <div class="kt-grid__item">
 
                 <!--begin: Form Wizard Nav -->
-                <div class="kt-wizard-v3__nav">
-                    <div class="kt-wizard-v3__nav-items">
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                            data-ktwizard-state="current" id="check_inst">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>01</span> {{__('Instructions')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>02</span> {{__('Artist Details')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-                        <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                            <div class="kt-wizard-v3__nav-body">
-                                <div class="kt-wizard-v3__nav-label">
-                                    <span>03</span> {{__('Upload Documents')}}
-                                </div>
-                                <div class="kt-wizard-v3__nav-bar"></div>
-                            </div>
-                        </a>
-
-                    </div>
-                </div>
-
+                @include('permits.artist.common.common-nav')
                 <!--end: Form Wizard Nav -->
             </div>
 
@@ -60,80 +30,10 @@
                         <div class="kt-form__section kt-form__section--first">
                             {{-- <div class="kt-wizard-v3__form"> --}}
                             <!--begin::Accordion-->
-                            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample61">
-                                <div class="card">
-                                    <div class="card-header" id="headingThree6">
-                                        <div class="card-title show" data-toggle="collapse"
-                                            data-target="#collapseThree6" aria-expanded="false"
-                                            aria-controls="collapseThree6">
-                                            <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
-                                                {{__('Permit Fee')}}
-                                            </h6>
-                                        </div>
-                                    </div>
-                                    <div id="collapseThree6" class="collapse show" aria-labelledby="headingThree6"
-                                        data-parent="#accordionExample61">
-                                        <div class="card-body">
-                                            <table class="table table-borderless table-sm">
-                                                <tr>
-                                                    <th style="width:50%" class="kt-font-transform-u">
-                                                        {{__('Profession')}}</th>
-                                                    <th style="width:50%" class="kt-font-transform-u">{{__('Fee')}}
-                                                        (AED)</th>
-                                                </tr>
-                                                @foreach($profession as $pt)
-                                                <tr>
-                                                    <td>{{getLangId() == 1 ? ucfirst($pt->name_en) : $pt->name_ar}}
-                                                    </td>
-                                                    <td>{{number_format($pt->amount,2)}}</td>
-                                                </tr>
-                                                @endforeach
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('permits.artist.common.instructions-fee')
                             <br>
-
-                            <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample6">
-
-                                <div class="card">
-                                    <div class="card-header" id="headingTwo6">
-                                        <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6"
-                                            aria-expanded="false" aria-controls="collapseTwo6">
-                                            <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
-                                                {{__('Documents Required')}}</h6>
-                                        </div>
-                                    </div>
-                                    <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                        data-parent="#accordionExample6">
-                                        <div class="card-body">
-
-                                            <table class="table table-borderless table-sm">
-                                                <tr>
-                                                    <th style="width:50%" class="kt-font-transform-u">
-                                                        {{__('Document Name')}}</th>
-                                                    <th style="width:50%" class="kt-font-transform-u">
-                                                        {{__('Description')}}</th>
-                                                </tr>
-                                                @foreach($requirements as $req)
-                                                <tr>
-                                                    <td>{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
-                                                    </td>
-                                                    <td>{{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </table>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            @include('permits.artist.common.required-documents')
                             <br>
-
-
                             <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
                                 <input type="checkbox" id="agree" name="agree">
                                 {{__('I read and understand all service, rules and agree to continue submitting it')}}
@@ -239,7 +139,7 @@
                                                                     <div class="input-group input-group-sm">
                                                                         <select class="form-control form-control-sm "
                                                                             name="nationality" id="nationality"
-                                                                            onchange="checkforArtist();checkVisaRequired();">
+                                                                            onchange="checkforArtist();">
                                                                             {{--   - class for search in select  --}}
                                                                             <option value="">{{__('Select')}}
                                                                             </option>
@@ -353,25 +253,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class=" form-group form-group-sm row">
-                                                                <label for="language"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Language')}}
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <select class=" form-control form-control-sm"
-                                                                            name="language" id="language">
-                                                                            <option value=" ">{{__('Select')}}
-                                                                            </option>
-                                                                            @foreach ($languages as $lang)
-                                                                            <option value="{{$lang->id}}">
-                                                                                {{ getLangId() == 1 ?   $lang->name_en : $lang->name_ar }}
-                                                                            </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+
 
 
                                                         </section>
@@ -512,240 +394,251 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="form-group form-group-sm row">
+                                                            {{-- <div class="form-group form-group-sm row">
                                                                 <label for="id_no"
                                                                     class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Identification No')}}
-                                                                    <span class="text-danger sh-uae">*</span></label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="id_no" id="id_no"
-                                                                            placeholder="{{__('Identification No')}}">
-                                                                    </div>
+                                                            <span class="text-danger sh-uae">*</span></label>
+                                                            <div class="col-lg-8">
+                                                                <div class="input-group input-group-sm">
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm "
+                                                                        name="id_no" id="id_no"
+                                                                        placeholder="{{__('Identification No')}}">
                                                                 </div>
                                                             </div>
+                                                    </div> --}}
 
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="sp_name"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponsor Name')}}
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="sp_name" id="sp_name"
-                                                                            placeholder="{{__('Sponsor Name')}}">
-                                                                    </div>
-                                                                </div>
+                                                    <input type="hidden" value="" name="id_no" id="id_no">
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="sp_name"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponsor Name')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="sp_name" id="sp_name"
+                                                                    placeholder="{{__('Sponsor Name')}}">
                                                             </div>
+                                                        </div>
+                                                    </div>
 
-
+                                                    <div class=" form-group form-group-sm row">
+                                                        <label for="language"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Language')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <select class=" form-control form-control-sm"
+                                                                    name="language" id="language">
+                                                                    <option value=" ">{{__('Select')}}
+                                                                    </option>
+                                                                    @foreach ($languages as $lang)
+                                                                    <option value="{{$lang->id}}">
+                                                                        {{ getLangId() == 1 ?   $lang->name_en : $lang->name_ar }}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
 
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="accordion accordion-solid accordion-toggle-plus border"
-                                    id="accordionExample7">
+                        </div>
+                        <br>
+                        <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample7">
 
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo6" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u">{{__('Contact Information')}}
-                                                </h6>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
+                                    data-parent="#accordionExample7">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <section class="kt-form--label-right">
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="mobile"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Mobile Number')}}
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="mobile" id="mobile"
+                                                                    placeholder="{{__('Mobile Number')}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="landline"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Phone Number')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="landline" id="landline"
+                                                                    placeholder="{{__('Phone Number')}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </section>
                                             </div>
-                                        </div>
-                                        <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#accordionExample7">
-                                            <div class="card-body">
-
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <section class="kt-form--label-right">
-
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="mobile"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Mobile Number')}}
-                                                                    <span class="text-danger">*</span>
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="mobile" id="mobile"
-                                                                            placeholder="{{__('Mobile Number')}}">
-                                                                    </div>
-                                                                </div>
+                                            <div class="col-6">
+                                                <section class="kt-form--label-right">
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="email"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Email')}}
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    placeholder="{{__('Email')}}" name="email"
+                                                                    id="email" />
                                                             </div>
-
-
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="landline"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Phone Number')}}
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="landline" id="landline"
-                                                                            placeholder="{{__('Phone Number')}}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                        </section>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <section class="kt-form--label-right">
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="email"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Email')}}
-                                                                    <span class="text-danger">*</span>
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            placeholder="{{__('Email')}}" name="email"
-                                                                            id="email" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="fax_no"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Fax No')}}</label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="fax_no" id="fax_no"
-                                                                            placeholder="{{__('Fax No')}}">
-                                                                    </div>
-                                                                </div>
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="fax_no"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Fax No')}}</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="fax_no" id="fax_no"
+                                                                    placeholder="{{__('Fax No')}}">
                                                             </div>
-                                                        </section>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </section>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
-                                <div class="accordion accordion-solid accordion-toggle-plus border"
-                                    id="accordionExample8">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="accordion accordion-solid accordion-toggle-plus border" id="accordionExample8">
 
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo7">
-                                            <div class="card-title collapsed" data-toggle="collapse"
-                                                data-target="#collapseTwo7" aria-expanded="false"
-                                                aria-controls="collapseTwo7">
-                                                <h6 class="kt-font-transform-u">{{__('Address Information')}}
-                                                </h6>
+                            <div class="card">
+                                <div class="card-header" id="headingTwo7">
+                                    <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
+                                        aria-expanded="false" aria-controls="collapseTwo7">
+                                        <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div id="collapseTwo7" class="collapse show" aria-labelledby="headingTwo7"
+                                    data-parent="#accordionExample8">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <section class="kt-form--label-right">
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="address"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="address" id="address"
+                                                                    placeholder="{{__('Address')}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class=" form-group form-group-sm row">
+                                                        <label for="address"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Emirate')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <select class=" form-control form-control-sm "
+                                                                    name="city" id="city"
+                                                                    onChange="getAreas(this.value)">
+                                                                    <option value=" ">{{__('Select')}}
+                                                                    </option>
+                                                                    @foreach ($emirates as $em)
+                                                                    <option value="{{$em->id}}"
+                                                                        {{$em->id == '5' ? 'selected' : ''}}>
+                                                                        {{ getLangId() == 1 ? $em->name_en : $em->name_ar}}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </section>
+                                            </div>
+                                            <div class="col-6">
+                                                <section class="kt-form--label-right">
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="email"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('PO Box')}}</label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="po_box" id="po_box"
+                                                                    placeholder="{{__('PO Box')}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="address"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Area')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <select class="  form-control form-control-sm "
+                                                                    name="area" id="area">
+                                                                    <option value="">{{__('Select')}}
+                                                                    </option>
+                                                                    @foreach ($areas as $ar)
+                                                                    <option value="{{$ar->id}}">
+                                                                        {{ getLangId() == 1 ? $ar->area_en : $ar->area_ar }}
+                                                                    </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </section>
                                             </div>
                                         </div>
-                                        <div id="collapseTwo7" class="collapse show" aria-labelledby="headingTwo7"
-                                            data-parent="#accordionExample8">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <section class="kt-form--label-right">
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="address"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Address')}}
-                                                                    <span class="text-danger">*</span>
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="address" id="address"
-                                                                            placeholder="{{__('Address')}}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class=" form-group form-group-sm row">
-                                                                <label for="address"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Emirate')}}
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <select class=" form-control form-control-sm "
-                                                                            name="city" id="city"
-                                                                            onChange="getAreas(this.value)">
-                                                                            <option value=" ">{{__('Select')}}
-                                                                            </option>
-                                                                            @foreach ($emirates as $em)
-                                                                            <option value="{{$em->id}}"
-                                                                                {{$em->id == '5' ? 'selected' : ''}}>
-                                                                                {{ getLangId() == 1 ? $em->name_en : $em->name_ar}}
-                                                                            </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                    </div>
+                                    {{-- </div> --}}
 
 
-                                                        </section>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <section class="kt-form--label-right">
-
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="email"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('PO Box')}}</label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <input type="text"
-                                                                            class="form-control form-control-sm "
-                                                                            name="po_box" id="po_box"
-                                                                            placeholder="{{__('PO Box')}}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group form-group-sm row">
-                                                                <label for="address"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Area')}}
-                                                                </label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="input-group input-group-sm">
-                                                                        <select class="  form-control form-control-sm "
-                                                                            name="area" id="area">
-                                                                            <option value="">{{__('Select')}}
-                                                                            </option>
-                                                                            @foreach ($areas as $ar)
-                                                                            <option value="{{$ar->id}}">
-                                                                                {{ getLangId() == 1 ? $ar->area_en : $ar->area_ar }}
-                                                                            </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                </div>
 
 
-
-                                                        </section>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- </div> --}}
-
-
-                                        </div>
-
-
-                                    </div> {{---end accordion---}}
+                            </div> {{---end accordion---}}
                             </form>
                         </div>
                     </div>
@@ -970,8 +863,8 @@
         uploadFunction();
         PicUploadFunction();
 
-        // wizard.goTo(2);
-
+        // wizard.goTo(3);
+        $('.hd-eu').hide();
         getAreas(5);
         wizard.on("change", function(wizard) {
             KTUtil.scrollTop();
@@ -987,6 +880,30 @@
         $('.sh-uae').hide();
 
     });
+
+    function setExpiryMindate(i) {
+        var i = parseInt(i);
+        // req_name_
+        if ($("#doc_issue_date_" + i).length) {
+            $req_name = $('#req_name_'+i).val();
+            if($req_name.toLowerCase() == 'medical report')
+            {
+                if($("#doc_issue_date_" + i).val())
+                {
+                    var issuedate = moment($("#doc_issue_date_" + i).val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var minDate = moment(issuedate)
+                        .add(6, "M").subtract(1, 'day');
+                    var expDate = moment(minDate).format('DD-MM-YYYY');
+                    $("#doc_exp_date_" + i).val(expDate).datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', true);
+                }else {
+                    $("#doc_exp_date_" + i).val('').datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', false);
+                }
+               
+            }
+        }
+    }
     
 
     $('#agree').on('click', function(){
@@ -998,16 +915,12 @@
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for (var i = 1; i <= $('#requirements_count').val(); i++) {
-            var requiredID = $('#req_id_' + i).val();
+            let requiId = $('#req_id_' + i).val();
             fileUploadFns[i] = $("#fileuploader_" + i).uploadFile({
-                // headers: {
-                //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                // },
                 url: "{{route('company.uploadDocument')}}",
                 method: "POST",
                 allowedTypes: "jpeg,jpg,png,pdf",
                 fileName: "doc_file_" + i,
-                // showDownload: true,
                 maxFileSize: 5242880,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
@@ -1019,8 +932,8 @@
                 maxFileCount: 1,
                 showDownload: true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
-                formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                formData: {id: i, reqId: requiId , reqName:$('#req_name_' + i).val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
                     pd.progressDiv.show();
@@ -1038,7 +951,7 @@
                             cache: false,
                             url: "{{route('company.get_files_uploaded')}}",
                             type: 'POST',
-                            data: {artist_permit: $('#artist_permit_id').val(), reqId: $('#req_id_' + i).val()},
+                            data: {artist_permit: $('#artist_permit_id').val(), reqId: requiId},
                             dataType: "json",
                             success: function (data) {
                                 if (data) {
@@ -1048,8 +961,9 @@
                                     let exp_datetime = new Date(data['expired_date']);
                                     let formatted_issue_date = moment(data.issued_date,'YYYY-MM-DD').format('DD-MM-YYYY');
                                     let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
-
-                                    obj.createProgress(data.requirement['requirement_name'], "{{url('storage')}}"+'/' + data.path, '');
+                                    const d = data["path"].split("/");
+                                    let docName = d[d.length - 1];
+                                    obj.createProgress(docName, "{{url('storage')}}"+'/' + data.path, '');
                                     if (formatted_issue_date != NaN - NaN - NaN) {
                                         $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                         $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
@@ -1057,20 +971,6 @@
                                 }
                             }
                         });
-                    
-
-                },
-                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
-                {
-                    $.ajax({
-                            cache: false,
-                            url: "{{route('company.delete_files_in_session')}}",
-                            type: 'POST',
-                            data: {requiredID : requiredID},
-                            success: function (data) {
-                               
-                            }
-                    });
                 },
                 onError: function (files, status, errMsg, pd) {
                     showEventsMessages(JSON.stringify(files[0]) + ": " + errMsg + '<br/>');
@@ -1078,22 +978,33 @@
                 },
                 downloadCallback: function (files, pd) {
                     if(files[0]) {
-                        let user_id = $('#user_id').val();
-                        let artistId = $('#artist_id').val();
-                        let this_url = user_id + '/artist/' + artistId +'/'+files;
+                    let user_id = $('#user_id').val();
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let this_url = user_id + '/artist/' + artistpermitid +'/'+requiId+'/'+files;
+                    window.open(
+                    "{{url('storage')}}"+'/' + this_url,
+                    '_blank'
+                    ); } else {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
                         window.open(
-                        "{{url('storage')}}"+'/' + this_url,
-                        '_blank'
-                        );
-                    } else {
-                            let file_path = files.filepath;
-                            let path = file_path.replace('public/','');
-                            window.open(
-                        "{{url('storage')}}"+'/' + path,
-                        '_blank'
-                        );
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
                     }
-                }
+                },
+                deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
+                {
+                    $.ajax({
+                            cache: false,
+                            url: "{{route('company.delete_files_in_session')}}",
+                            type: 'POST',
+                            data: {requiredID : requiId},
+                            success: function (data) {
+                               
+                            }
+                    });
+                },
             });
             $('#fileuploader_' + i + ' div').attr('id', 'ajax-upload_' + i);
             $('#fileuploader_' + i + ' + div').attr('id', 'ajax-file-upload_' + i);
@@ -1115,16 +1026,22 @@
             maxFileSize: 5242880,
             showFileCounter: false,
             abortStr: '',
-            previewHeight: '100px',
-            previewWidth: "auto",
+            // previewHeight: '100px',
+            // previewWidth: "auto",
             returnType: "json",
             maxFileCount: 1,
-            showPreview: true,
+            // showPreview: true,
+            showDownload: true,
             showDelete: true,
-            uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+            uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+            // onSuccess: function (files, response, xhr, pd) {
+            //     pd.filename.html('');
+            // },
             onSuccess: function (files, response, xhr, pd) {
-                pd.filename.html('');
-            },
+                    //You can control using PD
+                pd.progressDiv.show();
+                pd.progressbar.width('0%');
+            },    
             onLoad: function (obj) {
                 // console.log(obj);
                 $code = $('#code').val();
@@ -1135,15 +1052,39 @@
                         url: url,
                         type: 'GET',
                         success: function (data) {
-                            // console.log(data)
-                            if (data[0].artist_permit[0].original) {
-                                obj.createProgress('', "{{url('storage')}}"+'/'+ data[0].artist_permit[0].original, '');
+                          if(data[0])
+                          {
+                            let len = data[0].artist_permit.length;
+                            let i = data[0].artist_permit.length - 1;
+                            if (data[0].artist_permit[i].thumbnail) {
+                                // let ex = explode('/', data[0].artist_permit[i].thumbnail);
+                                let ex = data[0].artist_permit[i].thumbnail.split('/').pop();
+                                obj.createProgress(ex, "{{url('storage')}}"+'/'+ data[0].artist_permit[i].thumbnail, '');
                             }
+                          }
                         }
                     });
                 }
 
             }, 
+            downloadCallback: function (files, pd) {
+                if(files.filepath) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                }else{ 
+                    let user_id = $('#user_id').val();
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                    window.open(
+                    "{{url('storage')}}"+'/' + this_url,
+                    '_blank'
+                    );
+                } 
+            },
             deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
             {
                 $.ajax({
@@ -1157,16 +1098,16 @@
         $('#pic_uploader + div').attr('id', 'pic-file-upload');
     };
 
-    $.validator.addMethod("greaterThan", 
-    function(value, element, params) {
+    // $.validator.addMethod("greaterThan", 
+    // function(value, element, params) {
 
-        if (!/Invalid|NaN/.test(new Date(value))) {
-            return new Date(value) < new Date($(params).val());
-        }
+    //     if (!/Invalid|NaN/.test(new Date(value))) {
+    //         return new Date(value) < new Date($(params).val());
+    //     }
 
-        return isNaN(value) && isNaN($(params).val()) 
-            || (Number(value) < Number($(params).val())); 
-    },'Must be less than {0}.');
+    //     return isNaN(value) && isNaN($(params).val()) 
+    //         || (Number(value) < Number($(params).val())); 
+    // },'Must be less than {0}.');
 
     var detailsValidator = $("#artist_details").validate({
             ignore: [],
@@ -1193,12 +1134,12 @@
                     required: true,
                     dateNL: true
                 },
-                visa_number: 'required', 
-                visa_type:'required',
-                visa_expiry: {
-                    required: true,
-                    dateNL: true
-                },
+                // visa_number: 'required', 
+                // visa_type:'required',
+                // visa_expiry: {
+                //     required: true,
+                //     dateNL: true
+                // },
                 address: "required",
                 mobile: {
                     // number: true,
@@ -1453,6 +1394,10 @@
                         $('#cnd_'+i).html('');
                         $('#cnd_'+i).removeClass('text-danger');
                     }
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents')
+                    {
+                        $('#cnd_'+i).html('');
+                    }
                 }
             }
         });
@@ -1474,6 +1419,10 @@
                             hasFileArray[i] = false;
                             $("#ajax-upload_" + i).css('border', '2px dotted red');
                         } else {
+                            hasFileArray[i] = true;
+                            $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
+                        }
+                        if($('#req_name_'+i).val().toLowerCase() == 'other documents') {
                             hasFileArray[i] = true;
                             $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                         }

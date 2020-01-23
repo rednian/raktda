@@ -162,35 +162,31 @@ function userType($type)
 
 function permitStatus($status)
 {
-    $status = strtolower($status);
+    $status = strtolower(trim($status));
     $classname = null;
-    if ($status == 'new' || $status == 'approved-unpaid' || $status == 'active') {
-        $classname = 'success';
+    if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved', 'new request',
+        'new registration', 'new request'
+    ])) {
+         $classname = 'success';
     }
-    if ($status == 'send back for amendments' || $status == 'processing' || $status == 'modification request' || $status == 'modified' || $status == 'need modification' || $status == 'amended' || $status == 'pending') {
+
+    if( in_array($status, [
+            'send back for amendments', 'processing', 'modification request', 
+            'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
+            'pending', 'bounced back request', 'renew trade license request', 'amend request', 'amendment request'
+    ])){
         $classname = 'warning';
     }
-    if ($status == 'unprocessed' || $status == 'expired' || $status == 'rejected' || $status == 'cancelled' || $status == 'blocked') {
+
+    if (in_array($status, ['unprocessed', 'expired', 'rejected', 'cancelled', 'blocked'])) {
         $classname = 'danger';
     }
-    if ($status == 'need approval') {
-        $classname = 'warning';
-    }
-    if ($status == 'draft') {
-        $classname = 'warning';
-    }
-    if ($status == 'modification request') {
-        $status = 'need modification';
-    }
-    if ($status == 'checked'){
-        $classname = 'success';
-    }
-    if($status == 'approved'){
-        $classname = 'success';
-    }
-    if($status == 'rejected'){
-        $classname = 'danger';
-    }
+
+ 
+    if (in_array($status, ['modification request', 'send back for amendments', 'back','amended' ])) { $status = 'Bounced Back'; }
+//    if (in_array($status, ['modified'])) { $status = 'Bounced Back Request'; }
+   
+   
 
     return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . __(ucwords($status)) . '</span>';
 }
@@ -393,7 +389,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  150);
+        $payment_no = sprintf("%07d",  205);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

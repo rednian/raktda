@@ -78,7 +78,7 @@
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                     onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" />
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" disabled/>
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -185,17 +185,20 @@
                             <td class="d-flex justify-content-center">
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Edit')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                                 </a>
                                 <a href="{{URL::signedRoute('temp_artist_details.view' ,['id'=> $ad->id , 'from' => 'new'])}}"
                                     title="{{__('View')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
                                     onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                                 </a>
                                 @endif
                             </td>
@@ -469,7 +472,7 @@
 
             var temp_permit_id = $('#temp_permit_id').val();
             var noofdays = dayCount($('#permit_from').val(), $('#permit_to').val());var term;
-            if(noofdays < 30) { term = 'short'; } else { term='long';}
+            if(noofdays <= 30) { term = 'short'; } else { term='long';}
             $.ajax({
                     url:"{{route('artist.store')}}",
                     type: "POST",
@@ -546,6 +549,9 @@
                 {
                     $('#showwarning').modal('show');
                 }
+                var permit_to = x.add(30, 'days').calendar();
+                var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
+                $('#permit_to').val(permit_to_date).datepicker('update');
             }
         }
 

@@ -140,6 +140,7 @@
             <div>
                 تصريح مؤقت
             </div>
+
             <div>
                 Temporary Permit
             </div>

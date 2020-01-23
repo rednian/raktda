@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,9 @@ class Permit extends Model
     protected $primaryKey = 'permit_id';
     protected $fillable = [
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
-        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'cancel_by', 'cancel_date', 'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar', 'lock_user_id', 'exempt_by', 'exempt_payment', 'approved_by', 'approved_date', 'rivision_number', 'permit_reference_id'
+        'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'cancel_by', 'cancel_date',
+        'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar',
+        'lock_user_id', 'exempt_by', 'exempt_payment', 'approved_by', 'approved_date', 'rivision_number', 'permit_reference_id'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock', 'approved_date', 'cancel_date'];
 
@@ -96,7 +99,7 @@ class Permit extends Model
 
     public function artistPermit()
     {
-        return $this->hasMany(ArtistPermit::class, 'permit_id');
+        return $this->hasMany(ArtistPermit::class, 'permit_id')->whereNull('type');
     }
 
     public function artist()
@@ -130,5 +133,10 @@ class Permit extends Model
     public function artistPermitTransaction()
     {
         return $this->hasMany(ArtistPermitTransaction::class, 'permit_id');
+    }
+
+    public function getLocationAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->work_location) : ucfirst($this->work_location_ar);
     }
 }

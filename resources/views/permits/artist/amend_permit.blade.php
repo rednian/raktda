@@ -123,6 +123,7 @@
                         @endphp
                         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                         @foreach ($artist_details as $artist_detail)
+                        @if($artist_detail->type != 'removed')
                         <tr>
                             <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
                             </td>
@@ -137,20 +138,41 @@
                                 {{__(ucwords($artist_detail->artist_permit_status))}}
                             </td>
                             <td class="d-flex justify-content-center">
+                                @if($artist_detail->artist_permit_status == 'approved' && $artist_detail->old_artist_id
+                                == '')
                                 <a
                                     href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend'])}}">
-                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Replace')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Replace')}}</button>
                                 </a>
+                                @else
+                                <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'amend_edit'])}}"
+                                    title="Edit">
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
+                                </a>
+                                @endif
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'amend'])}}"
                                     title="View">
-                                    <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
+                                @if($artist_detail->artist_permit_status != 'approved' && $artist_detail->old_artist_id
+                                != '')
                                 <a href="#"
                                     onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
-                                    <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
+                                    <button
+                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                                 </a>
+                                @else
+                                <button style="visibility: hidden;"
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
+                                @endif
+                                @else
+                                <button style="visibility: hidden;"
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                                 @endif
 
                             </td>
@@ -159,6 +181,7 @@
                             $i++;
                             @endphp
                         </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>

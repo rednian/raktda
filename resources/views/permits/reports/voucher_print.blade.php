@@ -240,10 +240,10 @@
                     </thead>
                     <tbody>
                         @foreach($transaction->eventTransaction as $et)
-                        @if($transaction->transaction_type == 'event')
+                        @if($et->type == 'event')
                         <tr>
-                            <td>{{$et->event->name_en}}</td>
-                            <td>{{$et->event->type->name_en}}</td>
+                            <td class="text-left">{{$et->event->name_en}}</td>
+                            <td class="text-left">{{$et->event->type->name_en}}</td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
                             <td class="text-right">{{number_format($et->vat,2)}}</td>
                             @php
@@ -256,9 +256,10 @@
 
 
                         </tr>
-                        @elseif($transaction->transaction_type == 'truck')
+                        @elseif($et->type == 'truck')
                         <tr>
-                            <td colspan="2">{{__('Truck Fee')}}</td>
+                            <td style="text-align:left">{{__('Truck Fee')}}</td>
+                            <td></td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
                             <td class="text-right">{{number_format($et->vat,2)}}</td>
                             @php
@@ -269,9 +270,10 @@
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
                         </tr>
-                        @elseif($transaction->transaction_type == 'liqour')
+                        @elseif($et->type == 'liquor')
                         <tr>
-                            <td colspan="2">{{__('Liqour Fee')}}</td>
+                            <td style="text-align:left">{{__('Liqour Fee')}}</td>
+                            <td></td>
                             <td class="text-right">{{number_format($et->amount,2)}}</td>
                             <td class="text-right">{{number_format($et->vat,2)}}</td>
                             @php

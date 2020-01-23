@@ -25,6 +25,7 @@ $user_lang = $user->languageId;
           </div>
           <div class="kt-widget__subhead">
             <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
+              'back',
               'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>
             <a href="#"><i class="flaticon2-new-email"></i>{{$company->company_email}}</a>
             <a href="#"><i class="flaticon2-phone"></i>{{$company->phone_number}}</a>
@@ -33,10 +34,10 @@ $user_lang = $user->languageId;
           <div class="kt-widget__info row">
             <div class="col-md-8">
               @if ($company->company_description_en)
-                <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
-                  <h6>{{__('Establishment Details')}}</h6>
-                   {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
-                </div>
+              <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
+                <h6>{{__('Establishment Details')}}</h6>
+                {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
+              </div>
               @endif
               <div class="kt-widget__stats">
                 <div class="kt-widget__item">
@@ -47,15 +48,7 @@ $user_lang = $user->languageId;
                     <span class="btn btn-label-success btn-sm btn-bold btn-upper">{{$company->trade_license }}</span>
                   </div>
                 </div>
-                <div class="kt-widget__item">
-                  <span class="kt-widget__date kt-padding-b-5">
-                    {{__('License Issued Date')}}
-                  </span>
-                  <div class="kt-widget__label">
-                    <span
-                      class="btn btn-label-brand btn-sm btn-bold btn-upper">{{$company->trade_license_issued_date->format('d-F-Y')}}</span>
-                  </div>
-                </div>
+
                 <div class="kt-widget__item">
                   <span class="kt-widget__date kt-padding-b-5">
                     {{__('License Expiry Date')}}
@@ -77,10 +70,6 @@ $user_lang = $user->languageId;
                     <tr>
                       <td width="40%">Reference No.</td>
                       <td>{{$company->reference_number}}</td>
-                    </tr>
-                    <tr>
-                      <td>Webiste</td>
-                      <td>{{$company->website}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -180,7 +169,7 @@ $user_lang = $user->languageId;
           <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
             <li class="nav-item">
               <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_1"
-                role="tab">{{__('Documents Uploaded')}}</a>
+                role="tab">{{__('Uploaded Documents')}}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_3"

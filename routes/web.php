@@ -1,6 +1,5 @@
 <?php
-Route::get('/', function () {
-    return redirect()->route('login');
+Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
 Route::get('/test', function(){
@@ -36,11 +35,23 @@ Route::get('/registration/is_exist', 'Company\CompanyController@isexist')->name(
 Auth::routes(['register' => false, 'verify' => true ]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 
+//GET NOTIFICATIONS
+Route::get('/getnotifications', 'Admin\UserController@getNotifications')->name('getnotifications');
 
 Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
+    Route::get('/dashboard', function (Illuminate\Http\Request $request) {
 
-    Route::get('/dashboard', function () {
+        $role_id = $request->user()->roles()->first()->role_id;
+
+        if($role_id == 6){
+            return redirect(URL::signedRoute('admin.event.index'));
+        }
+
+        if($role_id == 4 || $role_id == 5){
+            return redirect(URL::signedRoute('admin.artist_permit.index'));
+        }
+
         return redirect(URL::signedRoute('admin.company.index'));
     })->name('admin.dashboard');
   //---------------------------------------------------------------------------------------------------------------
@@ -93,6 +104,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 	Route::post('/permit/artist/{artist}/updatestatus', 'Admin\ArtistController@updateStatus')->name('admin.artist.update_status');
 	Route::get('/permit/artist/{artist}/permithistory', 'Admin\ArtistController@permithistory')->name('admin.artist.permit.history');
 	Route::get('/permit/artist/{artist}/status_history', 'Admin\ArtistController@statusHistory')->name('admin.artist.status_history');
+    Route::get('/permit/artist/{artist}/activepermitdatatable', 'Admin\ArtistController@activePermitDatatable')->name('admin.artist.activepermitdatatable');
 //
     Route::get('/permit/artist_permit/{artistpermit}/history', 'Admin\ArtistController@history')->name('admin.artist_permit.history');
     //admin.artist_block
@@ -332,4 +344,9 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
         Route::resource('schedule_type', 'Admin\ScheduleTypeController');
         Route::post('schedule_type/set_active/{schedule_type}', 'Admin\ScheduleTypeController@setActive')->name('schedule_type.set_active');
     });
+
+    //NOTIFICATIONS
+    Route::get('notifications', 'Admin\UserController@notifications')->name('admin.notifications');
+    Route::get('notifications_dt', 'Admin\UserController@getNotificationsDatatable')->name('admin.notifications.datatable');
+    Route::get('notifications/update_read', 'Admin\UserController@updateAsReadNotification')->name('admin.notifications.update_read');
 });

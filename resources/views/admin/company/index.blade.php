@@ -24,7 +24,7 @@
                   <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
                   <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
-                <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ 0 }}</span>
+                <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending }}</span>
               </div>
             </div>
           </div>
@@ -47,13 +47,13 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
                   <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>
               </div>
             </div>
-          </div>
+          </div>    
         </div>
         
         {{-- <div class="col-2">
@@ -75,13 +75,14 @@
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="company-nav">
                <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">
-                  {{ __('New Registration') }}
+                  {{ __('Registration Request') }}
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
-                  {{ __('Processing Registration') }}
+                  {{ __('Pending Registration') }}
+                     <span class="kt-badge kt-badge--outline kt-badge--info">{{$pending}}</span>
                 </a>
               </li>
                <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-company">
@@ -152,7 +153,7 @@
                             <th>{{ __('ESTABLISHMENT TYPE') }}</th>
                             <th>{{ __('AREA') }}</th>
                             <th>{{ __('SUBMITTED DATE') }}</th>
-                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('REQUEST TYPE') }}</th>
                         </tr>
                     </thead>
                </table>
@@ -166,11 +167,11 @@
                                <th>{{ __('ESTABLISHMENT NAME') }}</th>
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
+                               <th>{{ __('REQUEST TYPE') }}</th>
+                               <th>{{ __('LAST CHECKED STATUS') }}</th>
                                <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
-                               <th>{{ __('WEBSITE') }}</th>
-                               <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
                                <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
-                               <th>{{ __('BOUNCE BACK REASON') }}</th>
+                               <th>{{ __('BOUNCED BACK REASON') }}</th>
                            </tr>
                        </thead>
                   </table>
@@ -305,12 +306,11 @@
         {data: 'name'},
         {data: 'phone_number'},
         {data: 'company_email'},
+        {data: 'request_type'},
+        {data: 'status'},
         {data: 'address'},
-        {data: 'website'},
-        {data: 'trade_expired_date'},
-        {data: 'issued_date'},
         {data: 'expired_date'},
-        // {data: 'reason'},
+        {data: 'reason'},
         ],
         createdRow: function(row, data, index){
 
@@ -396,7 +396,7 @@
          {data: 'type'},
          {data: 'area'},
          {data: 'date'},
-         {data: 'status'},
+         {data: 'request_type'},
          ],
          createdRow: function(row, data, index){
             $(row).click(function(e){

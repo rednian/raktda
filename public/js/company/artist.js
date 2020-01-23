@@ -13,20 +13,20 @@
     $("#doc_exp_date_" + id).val(expiryMonth.format("DD-MM-YYYY"));
 }*/
 
-function setExpiryMindate(i) {
-    var i = parseInt(i);
-    if ($("#doc_issue_date_" + i).length) {
-        var validity = $("#doc_validity_" + i).val()
-            ? $("#doc_validity_" + i).val()
-            : 1;
-        // var issue = moment($('#doc_issue_date_'+i).val(), 'DD-MM-YYYY').toDate();
-        var today = moment().toDate();
-        var minDate = moment(today)
-            .add(validity, "M")
-            .toDate();
-        $("#doc_exp_date_" + i).datepicker("setStartDate", minDate);
-    }
-}
+// function setExpiryMindate(i) {
+//     var i = parseInt(i);
+//     if ($("#doc_issue_date_" + i).length) {
+//         var validity = $("#doc_validity_" + i).val()
+//             ? $("#doc_validity_" + i).val()
+//             : 1;
+//         // var issue = moment($('#doc_issue_date_'+i).val(), 'DD-MM-YYYY').toDate();
+//         var today = moment().toDate();
+//         var minDate = moment(today)
+//             .add(validity, "M")
+//             .toDate();
+//         $("#doc_exp_date_" + i).datepicker("setStartDate", minDate);
+//     }
+// }
 
 function setWizard() {
     // Initialize form wizard

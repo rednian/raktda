@@ -20,7 +20,7 @@ class ArtistPermitDocument extends Model
 
     public function requirement()
     {
-        return $this->belongsTo(Requirement::class, 'requirement_id');
+        return $this->belongsTo(Requirement::class, 'requirement_id')->withTrashed();
     }
 
     public function artistPermit()

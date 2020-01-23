@@ -106,7 +106,7 @@
                             <div id="truckuploader_{{$i}}">{{__('Upload')}}
                             </div>
                         </div>
-                        <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
+                        {{-- <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
                         @if($req->dates_required == 1)
                         <div class="col-lg-2 col-sm-12">
                             <label for="" class="text--maroon kt-font-bold"
@@ -122,7 +122,7 @@
                                 name="truck_doc_exp_date_{{$i}}" id="truck_doc_exp_date_{{$i}}"
                                 placeholder="DD-MM-YYYY" />
                         </div>
-                        @endif
+                        @endif --}}
                     </div>
                     @php
                     $i++;

@@ -332,6 +332,7 @@
             </div>
             @endif
 
+
             @if(count($eventReq) > 0)
             <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold kt-margin-t-10">
                 {{__('Uploaded Documents')}}</h5>
@@ -346,10 +347,29 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $pre_req = '';$j = 0;
+                        @endphp
                         @foreach($eventReq as $req)
+                        @php
+                        if($pre_req == $req->requirement_id){
+                        $j++;
+                        }else {
+                        $j = 0;
+                        }
+                        $pre_req = $req->requirement_id;
+                        @endphp
+                        @if($j == 0)
+                        <tr>
+                            <td colspan="4">
+                                <strong>{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</strong>
+                            </td>
+                        </tr>
+                        @endif
                         <tr>
                             <td style="width:50%;">
-                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</td>
+                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}&nbsp;{{'-'.strval($j + 1)}}
+                            </td>
                             <td class="text-center">
                                 {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
                             </td>
@@ -411,8 +431,10 @@
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script>
     $.ajaxSetup({
-                        headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
-                    });
+            headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
+        });
+
+                    
 
 
                 function viewThisTruck(id)

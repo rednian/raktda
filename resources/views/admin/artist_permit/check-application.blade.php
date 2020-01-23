@@ -230,7 +230,6 @@
 				var comment = $('form#kt_form').find('textarea[name=comment]').val();
 				if (comment == null) {
 					e.preventDefault();
-					// alert()
 					$('form#kt_form').find('textarea[name=comment]').addClass('is-invalid');
 				}
 			});
@@ -289,6 +288,7 @@
 	</script>
 	<script>
 		$(document).ready(function () {
+			checkAll();
 			$('button#btn-check-existing-permit').click(function () {
 				$.ajax({
 					url: '{{ url('/arist_permit/') }}/'+{{ $permit->permit_id }}+'/checkactivepermit/'+{{ $artist_permit->artist_id }},
@@ -381,6 +381,26 @@
 
 
 			});
+		}
+
+		function checkAll(){
+			$('input[type=checkbox]#checked-all-detail').change(function(){ checkedAttr($(this)); });
+			$('input[type=checkbox]#checked-all-contact').change(function(){ checkedAttr($(this)); });
+			$('input[type=checkbox]#checked-all-address').change(function(){ checkedAttr($(this)); });
+		}
+
+		function checkedAttr(obj) {
+			if($(obj).is(':checked')){
+				$(obj).parents('.card-body').find('input[type=checkbox]').attr('checked', true);
+				$(obj).parents('.card-body').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
+				$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+			}
+			else{
+				$(obj).parents('.card-body').find('input[type=checkbox]').removeAttr('checked', true);
+				$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+				$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
+			}
+			
 		}
 	</script>
 @endsection

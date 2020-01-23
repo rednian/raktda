@@ -14,7 +14,8 @@ class Company extends Model
     protected $fillable = [
         'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 
         'trade_license_issued_date', 'trade_license_expired_date', 'area_id', 'emirate_id', 'country_id', 'address', 'application_date', 
-        'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en'
+        'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en',
+        'request_type'
     ];
     
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
@@ -22,6 +23,11 @@ class Company extends Model
     public function artists()
     {
         return $this->belongsToMany(Artist::class, 'company_artist', 'company_id', 'artist_id');
+    }
+
+    public function request()
+    {
+        return $this->hasMany(CompanyRequest::class, 'company_id');
     }
 
 
@@ -95,5 +101,10 @@ class Company extends Model
 
     public function users(){
         return $this->hasMany(User::class, 'EmpClientId', 'company_id');
+    }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
     }
 }

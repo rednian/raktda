@@ -9,36 +9,7 @@
                 <div class="kt-grid__item">
 
                     <!--begin: Form Wizard Nav -->
-                    <div class="kt-wizard-v3__nav">
-                        <div class="kt-wizard-v3__nav-items">
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step"
-                                data-ktwizard-state="current" id="check_inst">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>01</span>{{__('Instructions')}}
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="artist_det">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>02</span> {{__('Artist Details')}}
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-                            <a class="kt-wizard-v3__nav-item" href="#" data-ktwizard-type="step" id="upload_doc">
-                                <div class="kt-wizard-v3__nav-body">
-                                    <div class="kt-wizard-v3__nav-label">
-                                        <span>03</span>{{__('Upload Documents')}}
-                                    </div>
-                                    <div class="kt-wizard-v3__nav-bar"></div>
-                                </div>
-                            </a>
-
-                        </div>
-                    </div>
+                    @include('permits.artist.common.common-nav')
 
                     <!--end: Form Wizard Nav -->
                 </div>
@@ -181,11 +152,14 @@
                         case 'amend':
                         $status = 'amend';
                         break;
+                        case 'amend':
+                        $status = 'amend';
+                        break;
                         case 'renew':
                         $status = 'renew';
                         break;
-                        case 'edit':
-                        $status = 'edit';
+                        case 'amend_edit':
+                        $status = 'amend';
                         break;
                         }
 
@@ -259,8 +233,8 @@
        uploadFunction();
        PicUploadFunction();
        var nationality = $('#nationality').val();
-       checkVisaRequired(nationality);
-       $('.sh-uae').hide();
+    //    checkVisaRequired(nationality);
+       $('.hd-eu').hide();
 
        $('#submit_btn').css('display', 'none');
 
@@ -272,11 +246,35 @@
 
     });
 
+    function setExpiryMindate(i) {
+        var i = parseInt(i);
+        // req_name_
+        if ($("#doc_issue_date_" + i).length) {
+            $req_name = $('#req_name_'+i).val();
+            if($req_name.toLowerCase() == 'medical report')
+            {
+                if($("#doc_issue_date_" + i).val())
+                {
+                    var issuedate = moment($("#doc_issue_date_" + i).val(), 'DD-MM-YYYY').format('YYYY-MM-DD');
+                    var minDate = moment(issuedate)
+                        .add(6, "M").subtract(1, 'day');
+                    var expDate = moment(minDate).format('DD-MM-YYYY');
+                    $("#doc_exp_date_" + i).val(expDate).datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', true);
+                }else {
+                    $("#doc_exp_date_" + i).val('').datepicker("update");
+                    $("#doc_exp_date_" + i).attr('disabled', false);
+                }
+               
+            }
+        }
+    }
+
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
-            const requiId = $('#req_id_'+i).val();
+            let requiId = $('#req_id_'+i).val();
             fileUploadFns[i] = $("#fileuploader_"+i).uploadFile({
                 headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -295,7 +293,7 @@
                 maxFileCount:1,
                 showDelete: true,
                 showDownload: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: i, reqId: requiId , artistNo: $('#artist_number_doc').val()},
                 onSuccess: function (files, response, xhr, pd) {
                         //You can control using PD
@@ -392,16 +390,17 @@
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
                 showFileCounter: false,
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                showDownload: true,
+                // previewWidth: "auto",
                 abortStr: '',
-                showPreview:true,
+                // showPreview:true,
                 showDelete: true,
-                uploadButtonClass: 'btn btn-secondary mb-2 mr-2',
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 onLoad:function(obj)
                 {
                     var temp_id = $('#temp_id').val();
@@ -422,6 +421,24 @@
                         });
                     }
 
+                },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }else{ 
+                        let user_id = $('#user_id').val();
+                        let artistpermitid = $('#artist_permit_id').val();
+                        let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } 
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
                 {
@@ -713,6 +730,10 @@
                     $('#cnd_'+i).html('');
                     $('#cnd_'+i).removeClass('text-danger');
                 }
+                if($('#req_name_'+i).val().toLowerCase() == 'other documents')
+                {
+                    $('#cnd_'+i).html('');
+                }
             }
         }
 
@@ -741,6 +762,10 @@
                     else{
                         hasFileArray[i] = true;
                         $("#ajax-upload_"+i).css('border', '2px dotted #A5A5C7');
+                    }
+                    if($('#req_name_'+i).val().toLowerCase() == 'other documents') {
+                        hasFileArray[i] = true;
+                        $("#ajax-upload_" + i).css('border', '2px dotted #A5A5C7');
                     }
                 }
                 if(nationality == '232' && $('#req_id_'+i).val() == 6)
