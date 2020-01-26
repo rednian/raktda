@@ -53,7 +53,7 @@
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>
               </div>
             </div>
-          </div>    
+          </div>
         </div>
         
         {{-- <div class="col-2">

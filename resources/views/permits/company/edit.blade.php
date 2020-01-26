@@ -48,6 +48,26 @@
         <section class="kt-portlet__body kt-padding-t-15">
             <div class="tab-content">
                 <div class="tab-pane active" id="company-edit" role="tabpanel">
+
+                    @if ($company->status == 'back')
+                      <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
+                        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                        <div class="alert-text">
+                         Your application was bounced back, see the comment below:
+                         <hr class="kt-margin-t-5">
+                         @if ($company->comment()->exists())
+                            <p>{{$company->comment()->latest()->first()->comment}}</p>
+                         @endif
+                        
+                        </div>
+                        <div class="alert-close">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="la la-close"></i></span>
+                          </button>
+                        </div>
+                      </div>
+                    @endif
+
                     <div class="kt-form kt-form--label-right">
                         @if ($company->status == 'active' && (!$company->event()->exists() || !$company->permit()->exists()) )
                             <div class="alert alert-success kt-padding-b-5 kt-padding-t-5 kt-margin-b-5" role="alert">
@@ -90,21 +110,8 @@
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
 
-                                    @if ($company->status == 'back'  )
-                                        <div class="alert alert-outline-danger kt-padding-t-5 kt-padding-b-5"
-                                             role="alert">
-                                            <div class="alert-text">
-                                                @if ($company->status == 'back')
-                                                    <h6 class="alert-heading">{{__('Please check the comment below and update the information needed.')}}</h6>
-                                                    @endif
+                                   
 
-
-                                                    </p>
-                                                    <hr class="kt-margin-b-0">
-                                                    <p class="kt-margin-b-5">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->comment()->latest()->first()->comment_en :  $company->comment()->latest()->first()->comment_ar )}}</p>
-                                            </div>
-                                        </div>
-                                    @endif
                                     @if ($company->status == 'active' && $company->event()->count() < 0 || $company->permit()->count() < 0)
                                         <div class="alert alert-success" role="alert">
                                             <div class="alert-text">
@@ -218,7 +225,7 @@
                                                                                     class="text-danger">*</span></label>
                                                                             <input required name="trade_license"
                                                                                    autocomplete="off"
-                                                                                   class="date-picker start form-control form-control-sm
+                                                                                   class="form-control form-control-sm
                                                                        @error('trade_license') is-invalid @enderror"
                                                                                    type="text"
                                                                                    value="{{$company->trade_license }}">
@@ -451,8 +458,6 @@
                                                                             @endif
                                                                         </div>
                                                                         <div class="col-sm-6">
-                                                                            <input type="hidden" name="reference_number"
-                                                                                   value="123456789">
                                                                             <label>{{__('Emirates ID EXpired Date')}}
                                                                                 <span
                                                                                     class="text-danger">*</span></label>

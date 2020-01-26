@@ -51,7 +51,7 @@ class CompanyController extends Controller
        $valid_company = Validator::make($request->all(), [
          'name_en'=> 'required|max:255',
          'trade_license'=> 'required|max:255',
-         'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::now(),
+         'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::now()->format('Y-m-d'),
          'address'=> 'required|max:255',
          'area_id'=> 'required|max:255',
          'term_condition' => 'required'
@@ -70,7 +70,7 @@ class CompanyController extends Controller
          DB::beginTransaction();
 
          $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
-         $company = Company::create(array_merge($valid_company, ['status'=>'draft', 'request_type'=>'new registration'], $this->addressRelated() ));
+         $company = Company::create(array_merge($valid_company, ['status'=>'draft'], $this->addressRelated() ));
          $user = $company->user()->create(array_merge(
              $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
              ])
@@ -200,30 +200,38 @@ class CompanyController extends Controller
           switch ($request->submit){
               case 'submitted':
                   //new registration
-                  if ($company->request_type == 'new registration' && $company->status == 'draft'){
+                  if (is_null($company->request_type) && $company->status == 'draft'){
+
                       $company->update(array_merge(
                           $request->all(),
                           [
-                              'reference_number'=> empty($company->reference_number) ?  $this->getReferenceNumber($company) : $company->reference_number,
-                              'status'=> 'new',
-                              'application_date'=> empty($company->application_date ) ? Carbon::now() : $company->application_date
+                              'reference_number'=> $this->getReferenceNumber($company),
+                              'status'=> 'pending',
+                              'application_date'=> Carbon::now(),
+                              'request_type'=>'new registration'
                           ],
                           $this->addressRelated()
                       ));
                       $company->request()->create(['type'=>'new registration', 'user_id'=>$request->user()->user_id]);
                   }
 
-                  //bounce back
-                if ($company->request_type == 'new registration' && $company->status == 'back'){
+                  //ammendment request
+                  if ($company->status == 'back') {
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
-                    $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
-                }
+                    // $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
+                  }
 
-                //renew
-                if ($company->request_type == 'new registration' && $company->status == 'back'){
-                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'renew trade license request']));
-                    $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
-                }
+                  if ($company->status == 'blocked') {
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
+                  }
+
+             
+
+                // //renew
+                // if ($company->request_type == 'new registration' && $company->status == 'back'){
+                //     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'renew trade license request']));
+                //     $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
+                // }
 
 
 
@@ -239,18 +247,6 @@ class CompanyController extends Controller
                   break;
           }
 
-
-
-
-         switch ($request->submit) {
-           case 'draft':
-
-             break;
-          case 'submitted':
-
-
-            break;
-         }
 
 
          if($company->contact()->exists()){
@@ -507,8 +503,7 @@ class CompanyController extends Controller
    {
     if (Company::exists()) {
          $last_reference = Company::where('company_id', '!=', $company->company_id)
-         ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')
-         ->first()->reference_number;
+         ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
          
          $reference_number = explode('-', $last_reference);
          $reference_number = $reference_number[2]+1 ;

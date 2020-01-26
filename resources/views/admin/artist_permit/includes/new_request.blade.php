@@ -29,9 +29,9 @@
 				<select name="" id="new-request-type"
 					class="form-control-sm form-control custom-select custom-select-sm " onchange="artistPermit.draw()">
 					<option selected disabled>{{ __('REQUEST TYPE') }}</option>
-					<option value="new">{{ __('New Application') }}</option>
-					<option value="amend">{{ __('Amend Application') }}</option>
-					<option value="renew">{{ __('Renew Application') }}</option>
+					<option value="new">{{ __('New Request') }}</option>
+					<option value="amend">{{ __('Amendment Request') }}</option>
+					<option value="renew">{{ __('Renew Request') }}</option>
 				</select>
 			</div>
 			{{-- <div class="col-3">
