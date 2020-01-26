@@ -98,7 +98,7 @@
                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                <strong>Success!</strong> {{Session::get('message')[1]}}
                              </div>
-                         </div>   
+                         </div>
                      </section>
                     @endif
                     <div class="icon">
@@ -145,7 +145,7 @@
                                 @endif
                             </div>
                         </section>
-                        
+
                         <div class="login-buttons">
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>

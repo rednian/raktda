@@ -284,7 +284,7 @@
             });
 
             // active_permit_table.responsive.recalc();
-                
+
 
            $('td:not(:first-child)' ,row).click(function () { location.href = data.show_link; });
 
@@ -503,7 +503,7 @@
               $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
               $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
               $('.btn-download', row).click(function(e){ e.stopPropagation(); });
-              
+
             }
          });
 
@@ -628,7 +628,7 @@
           url: '{{ route('admin.artist_permit.datatable') }}',
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
-             d.request_type = $('select#pending-request-type').val();
+             d.term = $('select#pending-permit-term').val();
              d.status =  ['checked'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
@@ -709,7 +709,7 @@
           url: '{{ route('admin.artist_permit.datatable') }}',
           data: function (d) {
              // var status = $('select#new-permit-status').val();
-             d.request_type = $('select#new-request-type').val();
+             d.term = $('select#new-permit-term').val();
              d.status = ['new', 'modified'];
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }

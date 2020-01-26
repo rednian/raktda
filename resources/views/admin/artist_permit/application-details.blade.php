@@ -71,14 +71,14 @@
                 </div>
                       <section class="kt-section kt-margin-t-5">
                          <div class="kt-section__desc">
-                            
+
                             <table class="table table-borderless table-sm">
                                <tr>
                                   <td width="25%">{{ __('Reference Number') }} :</td>
                                   <td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
                                </tr>
                                 @if($permit->permit_status != 'new')
-                                
+
                                <tr>
                                   <td>{{ __('Permit Status') }} :</td>
                                   <td>{!! permitStatus($permit->permit_status) !!}</td>
@@ -137,7 +137,7 @@
                 </div>
                 <hr>
               </div>
-              
+
             </div>
           </div>
           <div class="col-md-4">
@@ -223,7 +223,7 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="artist-list" role="tabpanel">
-                 
+
 
                 <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
                 <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
@@ -284,11 +284,11 @@
                  </table>
                </div>
                @endif
-              
+
             </div>
           </div>
         </section>
-        
+
 
         </div>
         <?php
@@ -450,7 +450,7 @@
         columnDefs: [
            {targets: '_all', className: 'no-wrap'}
         ],
-        columns: [  
+        columns: [
            {data: 'person_code'},
            {
               render: function (type, data, full, meta) {
@@ -466,7 +466,7 @@
         ],
         createdRow: function (row, data, index) {
           $(row).click(function(){ if (!data.is_checked){ location.href = data.show_link;}});
-          
+
           $('.btn-document', row).click(function(e){
               e.stopPropagation();
               documents(data);
@@ -497,7 +497,7 @@
            }
         }
      });
-     
+
      $.ajax({
 				url: '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id+'/checklist',
 				data: $('form#frm-existing-permit').serialize(),
@@ -529,7 +529,7 @@
   function documents(data){
       $('#document-modal').on('shown.bs.modal', function(){
           $('table#table-document').DataTable({
-              ajax:{ 
+              ajax:{
                   url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
               },
               columnDefs:[

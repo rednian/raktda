@@ -29,7 +29,7 @@ class CompanyController extends Controller
 {
    public function create()
    {
-      return view('permits.company.create');
+      return view('permits.company.create', ['page_title'=>'Register Company']);
    }
 
    public function account(Request $request, Company $company)
@@ -82,8 +82,8 @@ class CompanyController extends Controller
          Auth::login($user);
          $result = ['success', 'Successfully Registered.', 'Success'];
          return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))->with('message', $result);
-         
-       
+
+
       } catch (Exception $e) {
 
          DB::rollBack();
@@ -96,13 +96,13 @@ class CompanyController extends Controller
       foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
           Storage::delete('public/'.$requirement->path);
       }
-       
+
        $company->requirement()->whereNull('is_submit')->delete();
 
        return view('permits.company.edit', [
-        'company'=>$company, 
+        'company'=>$company,
         'invalid'=> $this->hasRequirement($company),
-      ]); 
+      ]);
    }
 
    public function updateUser(Request $request, Company $company) {
@@ -114,7 +114,7 @@ class CompanyController extends Controller
             'email' => $request->account_email,
             'mobile_number' => $request->account_mobile
         ]);
-        
+
         DB::commit();
         $result = ['success', 'Update Successfully', 'Success'];
       } catch (Exception $e) {
@@ -225,7 +225,7 @@ class CompanyController extends Controller
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
                   }
 
-             
+
 
                 // //renew
                 // if ($company->request_type == 'new registration' && $company->status == 'back'){
@@ -261,9 +261,9 @@ class CompanyController extends Controller
                  'email'=>$request->email,
                  'mobile_number'=>$request->mobile_number,
                  ]);
-         }  
+         }
          else{
-          
+
              $company->contact()->create($request->all());
          }
 
@@ -273,10 +273,10 @@ class CompanyController extends Controller
       } catch (Exception $e) {
          DB::rollBack();
          $result = ['danger', $e->getMessage(), 'Error'];
-          return redirect()->back()->with('message', $result);  
+          return redirect()->back()->with('message', $result);
       }
 
-       
+
    }
 
 
@@ -299,7 +299,7 @@ class CompanyController extends Controller
       $requirement_name = explode(' ', $request->requirement_name);
       $requirement_name = strtolower(implode('_', $requirement_name));
 
-     
+
 
       if($request->requirement_id == 'other upload'){
         // $company->requirement()->whereType('other')->delete();
@@ -322,7 +322,7 @@ class CompanyController extends Controller
                  $request['page_number'] = $page_number+1;
 //                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
 //                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
-                   $company->requirement()->create($request->all());   
+                   $company->requirement()->create($request->all());
              }
 
            }
@@ -357,15 +357,15 @@ class CompanyController extends Controller
                  else{
                    // $company->requirement()->create([]);
                  }
-                 
+
              }
 
            }
         }
-         
+
       }
 
-      
+
       DB::commit();
       $result = ['success', '', 'Success'];
     } catch (Exception $e) {
@@ -373,7 +373,7 @@ class CompanyController extends Controller
      $result = ['danger', $e->getMessage(), 'Error'];
     }
     return response()->json(['message'=> $result]);
-      
+
    }
 
    public function uploadedDatatable(Request $request, Company $company)
@@ -391,9 +391,9 @@ class CompanyController extends Controller
         }
         return $name;
       })->editColumn('issued_date', function($data){
-        return; 
+        return;
       })->editColumn('expired_date', function($data){
-      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-'; 
+      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
       return ;
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
@@ -417,7 +417,7 @@ class CompanyController extends Controller
       ->rawColumns(['file', 'action'])
       ->make(true);
    }
-   
+
 
 
    public function isexist(Request $request)
@@ -457,9 +457,9 @@ class CompanyController extends Controller
    public function commentDatatable(Request $request, Company $company)
    {
     return DataTables::of($company->comment()->latest())
-   
+
     ->addColumn('remark', function($comment) use ($request){
-      return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar; 
+      return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
     })
     ->editColumn('action', function($comment){
       return ucfirst($comment->action);
@@ -504,7 +504,7 @@ class CompanyController extends Controller
     if (Company::exists()) {
          $last_reference = Company::where('company_id', '!=', $company->company_id)
          ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
-         
+
          $reference_number = explode('-', $last_reference);
          $reference_number = $reference_number[2]+1 ;
          $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
