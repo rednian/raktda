@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Carbon\Carbon;
 use App\Company;
 use App\Permit;
 use App\Event;
