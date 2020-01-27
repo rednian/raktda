@@ -22,9 +22,9 @@ class CompanyController extends Controller
 
       $new_company = Company::whereIn('status', ['new'])->count();
 
-      return view('admin.company.index',[ 
+      return view('admin.company.index',[
          'page_title'=> __('Establishment'),
-         'new_company'=> Company::where('status', 'new')->count(),
+         'new_company'=> Company::where('status', 'pending')->count(),
          'approved'=> Company::where('status', 'active')->count(),
          'blocked'=> Company::where('status', 'blocked')->count(),
          'types'=>  CompanyType::orderBy('name_en')->get(),
@@ -49,7 +49,7 @@ class CompanyController extends Controller
 
       	      	$request['action'] = 'approved';
       	      	$company->comment()->create($request->all());
-      	      	
+
       	      	$result = ['success', '', 'Success'];
       	      break;
       	   case 'back':
@@ -57,24 +57,24 @@ class CompanyController extends Controller
 
       	      $company->comment()->create($request->all());
       	      $result = ['success',' ', 'Success'];
-      	      break; 
+      	      break;
       	   case 'rejected':
       	      $company->update(['status'=>$request->status]);
       	      $company->comment()->create($request->all());
       	      $result = ['success','', 'Success'];
-      	      break;   	
-      	     
+      	      break;
+
       	}
       	DB::commit();
 
       } catch (Exception $e) {
       	$result = ['danger', $e->getMessage(), 'Error'];
 		    DB::rollBack();
-      	
+
       }
 
       return redirect(URL::signedRoute('admin.company.index'))->with('message', $result);
-      
+
    }
 
 
@@ -92,7 +92,7 @@ class CompanyController extends Controller
     } catch (Exception $e) {
       $result = ['danger', $e->getMessage(), 'Error'];
       DB::rollBack();
-      
+
     }
     return redirect()->back()->with('message', $result);
    }
@@ -109,7 +109,7 @@ class CompanyController extends Controller
       return profileName($name, $role);
    	})
    	->addColumn('remark', function($comment) use ($request){
-   		return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar; 
+   		return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
    	})
    	->editColumn('action', function($comment){
    		return ucfirst($comment->action);
@@ -135,7 +135,7 @@ class CompanyController extends Controller
 
    public function show(Request $request, Company $company)
    {
-    
+
     if (!$request->hasValidSignature()) { abort(401); }
 
       return view('admin.company.show', [
@@ -174,10 +174,10 @@ class CompanyController extends Controller
         return $name;
       })
       ->editColumn('issued_date', function($companyRequirement){
-         return $companyRequirement->issued_date ? date('d-F-Y', strtotime($companyRequirement->issued_date)) : '-'; 
+         return $companyRequirement->issued_date ? date('d-F-Y', strtotime($companyRequirement->issued_date)) : '-';
       })
        ->editColumn('expired_date', function($companyRequirement){
-          return $companyRequirement->expired_date ? date('d-F-Y', strtotime($companyRequirement->expired_date)) : '-'; 
+          return $companyRequirement->expired_date ? date('d-F-Y', strtotime($companyRequirement->expired_date)) : '-';
       })
        ->rawColumns(['name'])
       ->make(true);
@@ -248,12 +248,12 @@ class CompanyController extends Controller
          $fname = $request->user()->LanguageId == 1 ? ucwords($artist_permit->firstname_en) : $artist_permit->firstname_ar ;
          $lastname = $request->user()->LanguageId == 1 ? ucwords($artist_permit->lastname_en) : $artist_permit->lastname_ar ;
          $gender = $request->user()->LanguageId == 1 ? $artist_permit->gender->name_en : $artist_permit->gender->name_ar;
-        
+
          return profileName($fname.' '.$lastname, $gender);
       })
       ->addColumn('nationality', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-          $nationality = $request->user()->LanguageId == 1 ? ucfirst($artist_permit->country->name_en) : $artist_permit->country->name_ar; 
+          $nationality = $request->user()->LanguageId == 1 ? ucfirst($artist_permit->country->name_en) : $artist_permit->country->name_ar;
           return $nationality;
 
       })
@@ -278,35 +278,35 @@ class CompanyController extends Controller
       ->addColumn('visa_type', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
           if (!$artist_permit->visatype()->exists()) { return '-'; }
-         return $request->user()->LanguageId == 1 ? ucfirst($artist_permit->visatype->visa_type_en) : $artist_permit->visatype->visa_type_ar; 
+         return $request->user()->LanguageId == 1 ? ucfirst($artist_permit->visatype->visa_type_en) : $artist_permit->visatype->visa_type_ar;
       })
       ->addColumn('religion', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
           if ( $artist_permit->religion()->exists() ) {
-            return  $artist_permit->religion()->exists() ? $artist_permit->religion->name_en : $artist_permit->religion->name_ar;  
+            return  $artist_permit->religion()->exists() ? $artist_permit->religion->name_en : $artist_permit->religion->name_ar;
           }
           return '-';
-         
+
       })
       ->addColumn('visa_number', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-         return $artist_permit->visa_number ? $artist_permit->visa_number : '-';  
+         return $artist_permit->visa_number ? $artist_permit->visa_number : '-';
       })
       ->addColumn('visa_expiry', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-         return $artist_permit->visa_expire_date ? $artist_permit->visa_expire_date->format('d-F-Y') : '-';  
+         return $artist_permit->visa_expire_date ? $artist_permit->visa_expire_date->format('d-F-Y') : '-';
       })
        ->addColumn('passport_number', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-         return $artist_permit->passport_number ? $artist_permit->passport_number : '-';  
+         return $artist_permit->passport_number ? $artist_permit->passport_number : '-';
       })
       ->addColumn('passport_expire', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-         return $artist_permit->passport_expire_date ? $artist_permit->passport_expire_date->format('d-F-Y') : '-';  
+         return $artist_permit->passport_expire_date ? $artist_permit->passport_expire_date->format('d-F-Y') : '-';
       })
       ->addColumn('identification_number', function($artist) use ($request){
           $artist_permit = $artist->artistpermit()->latest()->first();
-         return $artist_permit->identification_number ? $artist_permit->identification_number : '-';  
+         return $artist_permit->identification_number ? $artist_permit->identification_number : '-';
       })
       ->addColumn('address', function($artist) use ($request) {
         $artist_permit = $artist->artistpermit()->latest()->first();
@@ -355,7 +355,7 @@ class CompanyController extends Controller
       })
       ->addColumn('time', function($event){
          return $event->time_start.' - '.$event->time_end;
-      }) 
+      })
       ->addColumn('truck', function($event){
          return $event->truck->count() ? $event->truck()->count() : 0;
       })
@@ -403,23 +403,23 @@ class CompanyController extends Controller
       })
       ->addColumn('profile', function($company) use ($request){
          $name = $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : $company->name_ar;
-         $type = $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
+         $type = $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar;
          return profileName($name, $type);
       })
       ->addColumn('name', function($company) use ($request){
          return $request->user()->LanguageId == 1 ? ucfirst($company->name_en) : $company->name_ar;
       })
       ->addColumn('area', function($company) use ($request){
-        return $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar; 
+        return $request->user()->LanguageId == 1 ? ucfirst($company->area->area_en) : $company->area->area_ar;
       })
       ->addColumn('issued_date', function($company){
          return null;
       })
-       ->addColumn('expired_date', function($company){  
-         return $company->trade_license_expired_date->format('d-F-Y'); 
+       ->addColumn('expired_date', function($company){
+         return $company->trade_license_expired_date->format('d-F-Y');
       })
       ->editColumn('type', function($company) use ($request){
-         return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar; 
+         return $request->user()->LanguageId == 1 ? ucfirst($company->type->name_en) : $company->type->name_ar;
       })
       ->editColumn('registered_date', function($company){
         if($company->registered_date){
@@ -429,10 +429,10 @@ class CompanyController extends Controller
       })
        ->editColumn('registered_by', function($company) use ($request){
         if(!is_null($company->registered_by)){
-        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;  
+        return $request->user()->LanguageId == 1 ? ucfirst($company->registeredBy->NameEn) : $company->registeredBy->NameAr;
         }
         return '-';
-        
+
       })
       ->editColumn('address', function($company) use ($request){
          $country = $request->user()->LanguageId == 1 ? ucfirst($company->country->name_en) : $company->country->name_ar;
@@ -449,7 +449,7 @@ class CompanyController extends Controller
       })
       ->addColumn('link', function($company){
          return URL::signedRoute('admin.company.show', ['company' => $company->company_id]);
-      }) 
+      })
       ->addColumn('application_link', function($company){
          return URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
       })

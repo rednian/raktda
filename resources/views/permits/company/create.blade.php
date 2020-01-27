@@ -94,7 +94,7 @@
                     {{Session::get('message')[1]}}
                 </section>
                 @endif
-                
+
                 <form action="{{ route('company.store') }}" method="post" accept-charset="utf-8">
                     @csrf
                     <section class="panel panel-default">
@@ -112,7 +112,7 @@
                                      @endif
 
                             </div>
-                            
+
 
                             <section class="row corporate">
                                 <div class="col-sm-6">
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
                             </section> --}}
-                            
+
                             <section class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group @if( $errors->has('area_id') ) has-error @endif">
@@ -277,13 +277,13 @@
                                     <button type="submit" class="btn btn-success btn-block">Register</button>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </section>
-                    
-                    
-                    
-                    
+
+
+
+
                 </form>
             </div>
         </section>
@@ -299,21 +299,19 @@
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
          {!! NoCaptcha::renderJs() !!}
     <script>
-      $(document).ready(function(){  
-        
+      $(document).ready(function(){
+
         $('select[name=company_type_id]').change(function(){
           if($(this).val() == 1){
             $('.corporate').addClass('hide').find('input').attr('disabled', true);
           }
           else{
-            $('.corporate').removeClass('hide').find('input').removeAttr('disabled', true);   
+            $('.corporate').removeClass('hide').find('input').removeAttr('disabled', true);
           }
         });
 
-        $('form').submit(function(){
-          $.LoadingOverlay("show");
-        });
-        
+
+
         $('form').bootstrapValidator({
           message: 'This value is not valid',
           fields: {
@@ -350,7 +348,7 @@
              data: {mobile_number: $(this).val()},
              message: 'The mobile number is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -362,7 +360,7 @@
              data: {name_en: $(this).val()},
              message: 'The establishment already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -374,7 +372,7 @@
              data: {name_ar: $(this).val()},
              message: 'The establishment already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -386,7 +384,7 @@
              data: {trade_license: $(this).val()},
              message: 'The business license number is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -398,7 +396,7 @@
              data: {email: $(this).val()},
              message: 'The email is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
       trade_license_issued_date:{
@@ -472,11 +470,11 @@
   }).on('success.form.fv', function (e) {
     // e.preventDefault();
     var $form = $(e.target);
-    
-    
+
+
     if (data.fv.getInvalidFields().length > 0) {    // There is invalid field
       //data.fv.disableSubmitButtons(true);
-      $.LoadingOverlay("hide", true);
+    //  $.LoadingOverlay("hide", true);
     }
   });
 

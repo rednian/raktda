@@ -55,7 +55,7 @@
             </div>
           </div>
         </div>
-        
+
         {{-- <div class="col-2">
           <div class="kt-section kt-section--space-sm ">
             <div class="kt-widget24 kt-widget24--solid">
@@ -191,7 +191,7 @@
                       </div>
                       <div class="col-8">
                         <form class="form-row">
-                          
+
                           {{-- <div class="col-3">
                             <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
                               <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
@@ -248,7 +248,6 @@
                             <th>{{ __('STATUS') }}</th>
                             <th>{{ __('EMAIL') }}</th>
                             <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
-                            <th>{{ __('WEBSITE') }}</th>
                             <th>{{ __('REGISTERED BY') }}</th>
                             <th>{{ __('BUSINESS LICENSE NUMBER') }}</th>
                             <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
@@ -270,7 +269,7 @@
    $(document).ready(function(){
       hasUrl()
       newCompany();
-   
+
 
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
@@ -348,7 +347,6 @@
         {data: 'status'},
         {data: 'company_email'},
         {data: 'address'},
-        {data: 'website'},
         {data: 'registered_by'},
         {data: 'trade_license'},
         {data: 'issued_date'},
@@ -367,12 +365,12 @@
       company_table.page.len($('#active-length-change').val());
       $('#active-length-change').change(function(){ company_table.page.len( $(this).val() ).draw(); });
       //custom search
-      
+
       var search = $.fn.dataTable.util.throttle(function(v){ company_table.search(v).draw(); });
       $('input#search-active-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
 
    }
-   
+
    function newCompany(){
 
      new_company =  $('table#new-company-request').DataTable({
@@ -382,7 +380,7 @@
          ajax: {
             url: '{{ route('admin.company.datatable') }}',
             data: function(d){
-               d.status = ['new', 'pending'];
+               d.status = ['pending'];
                // d.type = $('#new-company-type').val();
                d.area = $('#new-company-area').val();
             }
@@ -439,7 +437,7 @@
       new_company.page.len($('#new-length-change').val());
       $('#new-length-change').change(function(){ new_company.page.len( $(this).val() ).draw(); });
       //custom search
-      
+
       var search = $.fn.dataTable.util.throttle(function(v){ new_company.search(v).draw(); });
       $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
    }

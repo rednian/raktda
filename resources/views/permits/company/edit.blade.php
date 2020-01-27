@@ -58,7 +58,7 @@
                          @if ($company->comment()->exists())
                             <p>{{$company->comment()->latest()->first()->comment}}</p>
                          @endif
-                        
+
                         </div>
                         <div class="alert-close">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -69,21 +69,7 @@
                     @endif
 
                     <div class="kt-form kt-form--label-right">
-                        @if ($company->status == 'active' && (!$company->event()->exists() || !$company->permit()->exists()) )
-                            <div class="alert alert-success kt-padding-b-5 kt-padding-t-5 kt-margin-b-5" role="alert">
-                                <div class="alert-text">
-                                    <h4 class="alert-heading">Congratulation your establishment is registered
-                                        successfully!</h4>
-                                    <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}"
-                                                               class="btn btn-sm btn--maroon">EVENT PERMIT</a> or
-                                        <a href="{{ URL::signedRoute('company.add_new_permit', 1) }}"
-                                           class="btn btn-sm btn--maroon">ARTIST PERMIT</a> and enjoy the full services
-                                        of RAKTDA.</p>
 
-
-                                </div>
-                            </div>
-                        @endif
 
                         @if ($company->status == 'draft')
                             <div
@@ -110,7 +96,7 @@
                             <div class="kt-section kt-section--first">
                                 <div class="kt-section__body">
 
-                                   
+
 
                                     @if ($company->status == 'active' && $company->event()->count() < 0 || $company->permit()->count() < 0)
                                         <div class="alert alert-success" role="alert">

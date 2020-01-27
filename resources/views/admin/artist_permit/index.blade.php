@@ -63,10 +63,10 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <span class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</span>
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Processing') }}</span>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
-              <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+              <span class="kt-widget24__stats kt-font-default">{{ $processing }}</span>
             </div>
           </div>
         </div>
@@ -548,9 +548,9 @@
         });
 
          processingPermit = $('table#artist-permit-processing').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+          {{--  dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",  --}}
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
@@ -570,7 +570,7 @@
                // { data: 'company_type'},
                {data: 'updated_at'},
                {data: 'permit_status'},
-               {data: 'request_type'},
+               //{data: 'request_type'},
             ],
 
             createdRow: function (row, data, index) {
@@ -629,7 +629,7 @@
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
              d.term = $('select#pending-permit-term').val();
-             d.status =  ['checked'];//ADDED BY DONSKIE
+             d.status =  ['checked', 'modified'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
@@ -710,7 +710,7 @@
           data: function (d) {
              // var status = $('select#new-permit-status').val();
              d.term = $('select#new-permit-term').val();
-             d.status = ['new', 'modified'];
+             d.status = ['new'];
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },
