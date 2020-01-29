@@ -3924,20 +3924,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         },
                         title: function () {
                             var totalAmount = $('#totalAmount').html();
-                            return "Transactions " + datetime + ' Total Amount ' + totalAmount;
+                            return "Transactions " + datetime +new Date()+ ' Total Amount ' + totalAmount;
                         },
-
-                        customize: function (win) {
-                            var totalAmount= $('#totalAmount').html();
-                            var amount=$('#amountFooter').html();
-                            var vat=$('#vatFooter').html();
-                            var total=$('#totalFooter').html();
-                            $(win.document.body).find('table').append(
-                                '<tfoot><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
-                            );
-                        }
-
-                    }
+                    },
                 ],
                 lengthMenu: [
                     [10, 25, 50],
@@ -3990,36 +3979,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 return intVal(a) + intVal(b);
                             } );
 
-                        $('#amountFooter').html(
-                            'AED ' +amount.toFixed(2)
-                        );
-                        $('#totalAmount').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
-                        $('#vatFooter').html(
-                            'AED ' +vat.toFixed(2)
-                        );
-                        $('#totalFooter').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
-                    }
-                    else{
-
-                        $('#amountFooter').html(
-                            'AED 0.00'
-                        );
-                        $('#totalAmount').html(
-                            'AED 0.00'
-                        );
-
-                        $('#vatFooter').html(
-                            'AED 0.00'
-                        );
-                        $('#totalFooter').html(
-                            'AED 0.00'
-                        );
+                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
                     }
                 },
             });
@@ -4187,20 +4150,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 return intVal(a) + intVal(b);
                             } );
 
-                        $('#amountFooter').html(
-                            'AED ' +amount.toFixed(2)
-                        );
-                        $('#totalAmount').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
-                        $('#vatFooter').html(
-                            'AED ' +vat.toFixed(2)
-                        );
-                        $('#totalFooter').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
+                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
                     }
                     else{
 
@@ -4354,20 +4307,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 return intVal(a) + intVal(b);
                             } );
 
-                        $('#amountFooter').html(
-                            'AED ' +amount.toFixed(2)
-                        );
-                        $('#totalAmount').html(
-                            'AED ' +total.toFixed(2)
-                        );
 
-                        $('#vatFooter').html(
-                            'AED ' +vat.toFixed(2)
-                        );
-                        $('#totalFooter').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
+                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
                     }
                     else{
 
@@ -4500,20 +4444,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                  return intVal(a) + intVal(b);
                              } );
 
-                         $('#amountFooter').html(
-                             'AED ' +amount.toFixed(2)
-                         );
-                         $('#totalAmount').html(
-                             'AED ' +total.toFixed(2)
-                         );
 
-                         $('#vatFooter').html(
-                             'AED ' +vat.toFixed(2)
-                         );
-                         $('#totalFooter').html(
-                             'AED ' +total.toFixed(2)
-                         );
-
+                         $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                         $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                         $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                         $('#totalFooter').html(accounting.formatMoney(total,'AED '));
                      }
                      else{
 
@@ -4664,19 +4599,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 return intVal(a) + intVal(b);
                             } );
 
-                        $('#amountFooter').html(
-                            'AED ' +amount.toFixed(2)
-                        );
-                        $('#totalAmount').html(
-                            'AED ' +total.toFixed(2)
-                        );
-
-                        $('#vatFooter').html(
-                            'AED ' +vat.toFixed(2)
-                        );
-                        $('#totalFooter').html(
-                            'AED ' +total.toFixed(2)
-                        );
+                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
 
                     }
                     else{
@@ -4829,20 +4755,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                  return intVal(a) + intVal(b);
                              } );
 
-                         $('#amountFooter').html(
-                             'AED ' +amount.toFixed(2)
-                         );
-                         $('#totalAmount').html(
-                             'AED ' +total.toFixed(2)
-                         );
-
-                         $('#vatFooter').html(
-                             'AED ' +vat.toFixed(2)
-                         );
-                         $('#totalFooter').html(
-                             'AED ' +total.toFixed(2)
-                         );
-
+                         $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                         $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                         $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                         $('#totalFooter').html(accounting.formatMoney(total,'AED '));
                      }
                      else{
 
@@ -5020,19 +4936,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                       return intVal(a) + intVal(b);
                                   });
 
-                              $('#amountFooter').html(
-                                  'AED ' + amount.toFixed(2)
-                              );
-                              $('#totalAmount').html(
-                                  'AED ' + total.toFixed(2)
-                              );
 
-                              $('#vatFooter').html(
-                                  'AED ' + vat.toFixed(2)
-                              );
-                              $('#totalFooter').html(
-                                  'AED ' + total.toFixed(2)
-                              );
+                                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
 
                           } else {
 
@@ -5291,7 +5199,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
     </script>
-
+    <script src="{{asset('js/moneyFormator.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}

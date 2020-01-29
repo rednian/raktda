@@ -269,7 +269,6 @@
                         buttons: ['pageLength',
                             {
                                 extend: 'print',
-
                                 exportOptions: {
                                     columns: [0, 1, 2, 7, 8, 9]
                                 },

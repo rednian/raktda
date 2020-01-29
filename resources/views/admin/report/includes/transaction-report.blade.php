@@ -113,8 +113,7 @@
                     </thead>
 
                     <tfoot align="right">
-                    <tr><th>Total</th>
-                        <th></th>
+                    <tr><th colspan="2" class="text-right">Total</th>
                         <th><span id="amountFooter"></span></th>
                         <th> <span  id="vatFooter"></span></th>
                         <th> <span  id="totalFooter"></span></th>
