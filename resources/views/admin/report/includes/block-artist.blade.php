@@ -114,18 +114,18 @@
                 <span style="font-size: 11px">{{__('ARTISTS WITH MULTIPLE PERMITS')}}</span>
                 <input type="text" value='multiple' id="multiple_permit_type_input" hidden>
             </a></li>
-        <li id="blocked_artist_click" class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
+        <li id="blocked_artist_click" class="nav-item"><a class="nav-link"  data-toggle="tab" href="#" data-target="#">
                 <span style="font-size: 11px">{{__('BLOCKED ARTISTS')}}</span>
                 <input type="text" value='blocked' id="blocked_artist_input" hidden>
             </a></li>
 
         <li id="active_artist_click" class="nav-item"><a class="nav-link" data-toggle="tab" href="#" data-target="#">
                 <span style="font-size: 11px">{{__('ACTIVE ARTISTS')}}</span>
-                <input type="text" value="active" id="active_artist_input" hidden>
+                <input type="text" value="active" id="active_artist_input"  hidden>
             </a></li>
         <li>
             <button class="btn btn-warning btn-sm"
-                    style=" box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
+                    style="box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
                     id="filter_button"><i class="fas fa-filter"></i>{{__('FILTER')}}
             </button>
         </li>
@@ -165,6 +165,49 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         <th colspan="1"><select type="text" id="search_by_nationality"
                     class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%"
                     name="search_artist">
+                <option value="">{{__('Nationality')}}</option>
+
+                @foreach($country as $key => $nationality)
+                    <option
+                        value="{{$nationality->country_id}}">{{Auth()->user()->LanguageId==1? $nationality->nationality_en:$nationality->nationality_ar}}</option>
+                @endforeach
+            </select></th>
+        <th colspan="2">
+            <select type="text" id="search_by_profession" style="width: 99px"
+                    class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
+                <option value="">{{__('Profession')}}</option>
+                @foreach($profession as $key => $nationality)
+                    <option
+                        value="{{$nationality->profession_id}}">{{Auth()->user()->LanguageId==1? $nationality->name_en:$nationality->name_ar}}</option>
+                @endforeach
+            </select>
+        </th>
+    </tr>
+    <tr id="ActiveArtistFilterTableCollapse" style="display: none">
+        <th colspan="2">
+            <div class="col-sm" style="display: inline-flex;width:100%">
+                <input type="text" class="form-control form-control-sm " name="search-artist-name"
+                       id="search-artist-name" placeholder="{{__('Name')}}">
+                <button class="fa fa-search" id="name_search_button"></button>
+            </div>
+        </th>
+        <th><select type="text" id="search_by_gender" style="width: 100%;margin-top: 1px"
+                    class="form-control form-control-sm custom-select-sm custom-select">
+                <option value="">{{__('Gender')}}</option>
+                @foreach($gender as $key => $genders)
+                    <option
+                        value="{{$genders->gender_id}}">{{Auth()->user()->LanguageId==1? ucwords($genders->name_en):ucwords($genders->name_ar)}}</option>
+                @endforeach
+            </select></th>
+        <th><select type="text" id="search_by_age" style="width: 100%"
+                    class="form-control form-control-sm custom-select-sm custom-select" name="search_artist">
+                <option value="">{{__('Age')}}</option>
+                <option value="17">{{__('Minor')}}</option>
+                <option value="18">{{__('Adult')}}</option>
+            </select></th>
+        <th colspan="1"><select type="text" id="search_by_nationality"
+                                class="form-control form-control-sm custom-select-sm custom-select" style="width: 90%"
+                                name="search_artist">
                 <option value="">{{__('Nationality')}}</option>
 
                 @foreach($country as $key => $nationality)
@@ -373,8 +416,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             window.location.href = url;
         }
         $('#filter_button').click(function () {
-            $('#filterTableCollapse').toggle(400)
+           $('#filterTableCollapse').toggle(400)
         })
+
         /*   function showTool(x) {
                $('#tooltip_'+x).css({'display':'block'});
            }
@@ -476,26 +520,53 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
         $('input[name="search-artist-name"]').change(function(){
-            $('#search_by_gender option').prop('selected', false)
-            $('#search_by_age option').prop('selected', false)
-            $('#search_by_nationality option').prop('selected', false)
-            $('#search_by_profession option').prop('selected', false)
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+        /*        $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }*/
+                var search_artist = $('input[name="search-artist-name"]').val();
+                var filter_search ={{\App\ConstantValue::ARTISTNAME}};
+                $.ajax({
+                    url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
+                    data: {filter_search: filter_search, search_artist: search_artist}
+                })
+                if (search_artist != '' && filter_search != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
+
+                active_artist_filter(filter_search, search_artist);
             }
-            var search_artist = $('input[name="search-artist-name"]').val();
-            var filter_search ={{\App\ConstantValue::ARTISTNAME}};
-            $.ajax({
-                url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
-                data: {filter_search: filter_search, search_artist: search_artist}
-            })
-            if (search_artist != '' && filter_search != '') {
-                $('#block-artist').DataTable().destroy();
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+            else {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                var search_artist = $('input[name="search-artist-name"]').val();
+                var filter_search ={{\App\ConstantValue::ARTISTNAME}};
+                $.ajax({
+                    url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
+                    data: {filter_search: filter_search, search_artist: search_artist}
+                })
+                if (search_artist != '' && filter_search != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
@@ -526,7 +597,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             })
             if (filter_search != '' && search_artist != '') {
                 $('#block-artist').DataTable().destroy();
-
                 fill_datatable(filter_search, search_artist);
             } else {
                 ArtistResetTable();
@@ -574,14 +644,14 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                     return 'Blocked Artists' +datetime+Date.now();
                                 }
 
-                            }
-                            if (filter_search == 2) {
+                               }
+                                if (filter_search == 2) {
                                 return 'Artist Searched By Gender ' +datetime+Date.now();
-                            }
-                            if (filter_search == 3) {
+                               }
+                               if (filter_search == 3) {
                                 return ' Artists List Searched By Name' +datetime+Date.now() ;
-                            }
-                            if (filter_search == 4) {
+                               }
+                              if (filter_search == 4) {
                                 return ' Artists With Profession' +datetime +Date.now();
                             }
 
@@ -797,6 +867,273 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ],
             });
         }
+
+        function active_artist_filter(filter_search = '', search_artist = '') {
+            alert('active_artist_filter')
+            var currentdate = new Date();
+            var datetime = +currentdate.getDate() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getFullYear() + "  "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+            var time= + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            /*   console.log(filter_search +search_artist)*/
+            var dataTable = $('#block-artist').DataTable({
+                dom: 'Bfrtip',
+                "columnDefs": [
+                    {
+                        "targets": [ 6, 7, 8,9, 11],
+                        "visible": false,
+                    },
+                    {
+                        "targets": [1,2,3,4,5],
+                        searchable: true
+                    },
+
+                ],
+
+                buttons: ['pageLength',
+                    {
+                        extend: 'print',
+                        title: function () {
+                            if (filter_search == 1) {
+
+                                if (search_artist == 'active') {
+                                    return 'Active Artists' +datetime+Date.now();
+                                }
+                                if (search_artist == 'blocked') {
+                                    return 'Blocked Artists' +datetime+Date.now();
+                                }
+
+                            }
+                            if (filter_search == 2) {
+                                return 'Artist Searched By Gender ' +datetime+Date.now();
+                            }
+                            if (filter_search == 3) {
+                                return ' Artists List Searched By Name' +datetime+Date.now() ;
+                            }
+                            if (filter_search == 4) {
+                                return ' Artists With Profession' +datetime +Date.now();
+                            }
+
+                            if (filter_search == 5) {
+                                return ' Artists By Nationality' +datetime+Date.now() ;
+                            }
+
+                            if (filter_search == 6) {
+                                if (search_artist == 'single') {
+                                    return ' Artists With Single Permit' +datetime +Date.now();
+                                }
+                                if (search_artist == 'multiple') {
+                                    return ' Artists With Multiple Permits' +datetime+Date.now() ;
+                                }
+                                if (search_artist == 'all') {
+                                    return ' Artists With Active Permits' +datetime+Date.now() ;
+                                }
+                            }
+                            if (filter_search == 7) {
+                                return ' Artists List Searched By Visa Type' +datetime +Date.now();
+                            }
+
+                            if (filter_search == 8) {
+                                if (search_artist == '17') {
+                                    return ' Artists Below Age 18' +datetime+Date.now() ;
+                                }
+                                if (search_artist == '18') {
+                                    return ' Artists Above Age 18' +datetime +Date.now();
+                                }
+                            }
+                            if (filter_search == 9) {
+                                return ' Artists List Searched By Area' +datetime+Date.now() ;
+                            }
+                        },
+                        exportOptions: {
+                            columns: [0,1,2,3,4,5],
+                        },
+                        customize: function ( win ) {
+                            if (filter_search == 1) {
+
+                                if (search_artist == 'active') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Active Artists </h3>'
+                                    );
+                                }
+                                if (search_artist == 'blocked') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Blocked Artists </h3>'
+                                    );
+                                }
+                            }
+                            if (filter_search == 2) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artist Searched By Gender</h3>'
+                                );
+                            }
+                            if (filter_search == 3) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artists List Searched By Name </h3>'
+                                );
+                            }
+                            if (filter_search == 4) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artists List By Profession </h3>'
+                                );
+                            }
+                            if (filter_search == 5) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artists List By Nationality </h3>'
+                                );
+                            }
+                            if (filter_search == 6) {
+                                if (search_artist == 'single') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Artists With Single Permit</h3>'
+                                    );
+                                }
+                                if (search_artist == 'multiple') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Artists With Multiple Permits</h3>'
+                                    );
+                                }
+                                if (search_artist == 'all') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Artists With Active Permits </h3>'
+                                    );
+                                }
+                            }
+                            if (filter_search == 7) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artists List Searched By Visa Type </h3>'
+                                );
+                            }
+                            if (filter_search == 8) {
+                                if (search_artist == '17') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Artists Below Age 18 </h3>'
+                                    );
+                                }
+                                if (search_artist == '18') {
+                                    $(win.document.body).prepend(
+                                        '<h3 style="font-family:arial;text-align:center">Artists Above Age 18</h3>'
+                                    );
+                                }
+                            }
+                            if (filter_search == 9) {
+                                $(win.document.body).prepend(
+                                    '<h3 style="font-family:arial;text-align:center">Artists List Searched By Area</h3>'
+                                );
+                            }
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                );
+                            $(win.document.body).find('h1')
+                                .css( 'display', 'none' );
+
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css({ 'font-size': 'inherit'});
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                        },
+
+                        title: function () {
+                            if (filter_search == 1) {
+
+                                if (search_artist == 'active') {
+                                    return 'Active Artists' +datetime+Date.now();
+                                }
+                                if (search_artist == 'blocked') {
+                                    return 'Blocked Artists' +datetime+Date.now();
+                                }
+                            }
+                            if (filter_search == 3) {
+                                return 'Artists List Searched By Name '+datetime+Date.now();
+                            }
+                            if (filter_search == 4) {
+                                return 'Artists With Profession '+datetime+Date.now();
+                            }
+
+                            if (filter_search == 5) {
+                                return 'Artists By Nationality '+datetime+Date.now();
+                            }
+
+                            if (filter_search == 6) {
+                                if (search_artist == 'single') {
+                                    return "Artists With Single Permit "+datetime+Date.now();
+                                }
+                                if (search_artist == 'multiple') {
+                                    return "Artists With Multiple Permits "+datetime+Date.now();
+                                }
+                                if (search_artist == 'all') {
+                                    return "Artists With Active Permits "+datetime+Date.now();
+                                }
+                            }
+                            if (filter_search == 7) {
+                                return 'Artists List Searched By Visa Type '+datetime+Date.now();
+                            }
+
+                            if (filter_search == 8) {
+                                if (search_artist == '17') {
+                                    return 'Artists Below Age 18 '+datetime+Date.now();
+                                }
+                                if (search_artist == '18') {
+                                    return 'Artists Above Age 18 '+datetime+Date.now();
+                                }
+                            }
+
+                            if (filter_search == 9) {
+                                return 'Artists List Searched By Area '+datetime+Date.now();
+                            }
+                        },
+
+                    }
+
+                ],
+                lengthMenu: [
+                    [10, 25, 50],
+                    ['10 rows', '25 rows', '50 rows']
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                searching: true,
+                ajax: {
+                    url: '{{ route('admin.artist_permit_reports.search_active_artist')}}',
+                    method: 'post',
+                    data: {filter_search: filter_search, search_artist: search_artist,active:'active'}
+                },
+                columns: [
+                    {data: 'person_code', name: 'person_code'},
+                    {data: 'artist_name', name: 'artist_name'},
+                    {data: 'profession', name: 'profession'},
+                    {data: 'nationality', name: 'nationality'},
+                    {data: 'mobile_number', name: 'mobile_number'},
+                    {data: 'email', name: 'email'},
+                    {data: 'identification_number', name: 'identification_number'},
+                    {data: 'language_id', name: 'language_id'},
+                    {data: 'fax_number', name: 'fax_number'},
+                    {data: 'po_box', name: 'po_box'},
+                    {data: 'emirate_id', name: 'emirate_id'},
+                    {data: 'address_en', name: 'address_en'},
+                    {data: 'artist_id', name: 'artist_id'},
+                ],
+            });
+        }
+
+
         function ArtistResetTable() {
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
@@ -910,59 +1247,96 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
         $('.search_button').click(function () {
-
-            var filter_search = $('#filter_search').val();
-            var search_artist = $('#search_artist').val();
-
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                alert('active actist SEARCH')
+                var filter_search = $('#filter_search').val();
+                var search_artist = $('#search_artist').val();
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
+            }
+            else{
+                var filter_search = $('#filter_search').val();
+                var search_artist = $('#search_artist').val();
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
         $('#search_by_status').change(function () {
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+              alert('status artist')
+        }
+            else{
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search = {{\App\ConstantValue::STATUS}};
+                var search_artist = $('#search_by_status').val();
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
 
-            $('#search_by_gender option').prop('selected', false)
-            $('#search_by_name').empty()
-            $('#search_by_age option').prop('selected', false)
-            $('#search_by_nationality option').prop('selected', false)
-            $('#search_by_profession option').prop('selected', false)
-            var filter_search = {{\App\ConstantValue::STATUS}};
-            var search_artist = $('#search_by_status').val();
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
-            }
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
         $('#search_by_gender').change(function () {
-            $('#search_by_name').empty()
-            $('#search_by_age option').prop('selected', false)
-            $('#search_by_nationality option').prop('selected', false)
-            $('#search_by_profession option').prop('selected', false)
-            var filter_search = {{\App\ConstantValue::GENDER}};
-            var search_artist = $('#search_by_gender').val();
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search = {{\App\ConstantValue::GENDER}};
+                var search_artist = $('#search_by_gender').val();
+            /*    $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }*/
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
+                    active_artist_filter(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-                $('#navbarCollapse').hide(400)
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+            else {
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search = {{\App\ConstantValue::GENDER}};
+                var search_artist = $('#search_by_gender').val();
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
@@ -985,43 +1359,87 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
         $('#search_by_profession').change(function () {
-            $('#search_by_gender option').prop('selected', false)
-            $('#search_by_name').empty()
-            $('#search_by_age option').prop('selected', false)
-            $('#search_by_nationality option').prop('selected', false)
-            var filter_search = {{\App\ConstantValue::PROFESSION}};
-            var search_artist = $('#search_by_profession').val();
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
+
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                var filter_search = {{\App\ConstantValue::PROFESSION}};
+                var search_artist = $('#search_by_profession').val();
+          /*      $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }*/
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
+                    active_artist_filter(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-                $('#navbarCollapse').hide(400)
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+            else {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_nationality option').prop('selected', false)
+                var filter_search = {{\App\ConstantValue::PROFESSION}};
+                var search_artist = $('#search_by_profession').val();
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    $('#navbarCollapse').hide(400)
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
         $('#search_by_nationality').change(function () {
-            $('#search_by_gender option').prop('selected', false)
-            $('#search_by_name').empty()
-            $('#search_by_age option').prop('selected', false)
-            $('#search_by_profession option').prop('selected', false)
-            var filter_search = 5;
-            var search_artist = $('#search_by_nationality').val();
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search = 5;
+                var search_artist = $('#search_by_nationality').val();
+       /*         $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }*/
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    active_artist_filter(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+            else {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+                $('#search_by_age option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search = 5;
+                var search_artist = $('#search_by_nationality').val();
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         });
 
@@ -1139,6 +1557,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         }
 
+
         $('#single_permit_type_click').click(function () {
             var filter_search ={{\App\ConstantValue::NUMBER_OF_PERMIT}};
             var search_artist = $('#single_permit_type_input').val();
@@ -1188,23 +1607,46 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         })
 
         $('#search_by_age').change(function () {
-            $('#search_by_gender option').prop('selected', false)
-            $('#search_by_name').empty()
+            if($('#navlink #active_artist_click a').hasClass('active')) {
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
 
-            $('#search_by_nationality option').prop('selected', false)
-            $('#search_by_profession option').prop('selected', false)
-            var filter_search ={{\App\ConstantValue::AGE}};
-            var search_artist = $('#search_by_age').val();
-            $('#navlink li a').removeClass('active');
-            var link = $('#all_permit_type_click a')
-            if (!link.hasClass('active')) {
-                link.addClass('active');
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search ={{\App\ConstantValue::AGE}};
+                var search_artist = $('#search_by_age').val();
+        /*        $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }*/
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    active_artist_filter(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
-            if (filter_search != '' && search_artist != '') {
-                $('#block-artist').DataTable().destroy();
-                fill_datatable(filter_search, search_artist);
-            } else {
-                ArtistResetTable();
+        else {
+
+                $('#search_by_gender option').prop('selected', false)
+                $('#search_by_name').empty()
+
+                $('#search_by_nationality option').prop('selected', false)
+                $('#search_by_profession option').prop('selected', false)
+                var filter_search ={{\App\ConstantValue::AGE}};
+                var search_artist = $('#search_by_age').val();
+                $('#navlink li a').removeClass('active');
+                var link = $('#all_permit_type_click a')
+                if (!link.hasClass('active')) {
+                    link.addClass('active');
+                }
+                if (filter_search != '' && search_artist != '') {
+                    $('#block-artist').DataTable().destroy();
+                    fill_datatable(filter_search, search_artist);
+                } else {
+                    ArtistResetTable();
+                }
             }
         })
 
@@ -2321,7 +2763,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         }
 
         function activeArtistTable() {
-
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -3529,52 +3970,57 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 i : 0;
                     };
                     // Total over all pages
-
-                    if (api.column(4).data().length){
+                    if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 )
+                            .column( 2 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var vat = api
-                            .column( 3 )
+                            .column( 3,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var total = api
-                            .column( 4 )
+                            .column( 4 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-                    }
-                    else{ total = 0};
-                    if (api.column(4).data().length){
-                        var amountTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ pageTotal = 0};
+                            } );
 
-                    // Update footer
-                    $('#totalAmount').html(
-                        'AED ' +total.toFixed(2)
-                    );
-                    $('#amountFooter').html(
-                        'AED ' +amount.toFixed(2)
-                    );
-                    $('#vatFooter').html(
-                        'AED ' +vat.toFixed(2)
-                    );
-                    $('#totalFooter').html(
-                        'AED ' +total.toFixed(2)
-                    );
+                        $('#amountFooter').html(
+                            'AED ' +amount.toFixed(2)
+                        );
+                        $('#totalAmount').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                        $('#vatFooter').html(
+                            'AED ' +vat.toFixed(2)
+                        );
+                        $('#totalFooter').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                    }
+                    else{
+
+                        $('#amountFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalAmount').html(
+                            'AED 0.00'
+                        );
+
+                        $('#vatFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalFooter').html(
+                            'AED 0.00'
+                        );
+                    }
                 },
             });
         }
@@ -3721,55 +4167,57 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 i : 0;
                     };
                     // Total over all pages
-
-                    if (api.column(4).data().length){
+                    if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 )
+                            .column( 2 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
-                                var number=intVal(a) + intVal(b);
-                             return number
-                            } )
-
+                                return intVal(a) + intVal(b);
+                            } );
                         var vat = api
-                            .column( 3 )
+                            .column( 3,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var total = api
-                            .column( 4 )
+                            .column( 4 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
+                            } );
+
+                        $('#amountFooter').html(
+                            'AED ' +amount.toFixed(2)
+                        );
+                        $('#totalAmount').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                        $('#vatFooter').html(
+                            'AED ' +vat.toFixed(2)
+                        );
+                        $('#totalFooter').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
                     }
-                    else{ total = 0};
-                    if (api.column(4).data().length){
-                        var amountTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ pageTotal = 0};
+                    else{
 
-                    // Update footer
+                        $('#amountFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalAmount').html(
+                            'AED 0.00'
+                        );
 
-
-                    $('#totalAmount').html(
-                        'AED ' +total.toFixed(2)
-                    );
-                    $('#amountFooter').html(
-                        'AED ' +amount.toFixed(2)
-                    );
-                    $('#vatFooter').html(
-                        'AED ' +vat.toFixed(2)
-                    );
-                    $('#totalFooter').html(
-                        'AED ' +total.toFixed(2)
-                    );
+                        $('#vatFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalFooter').html(
+                            'AED 0.00'
+                        );
+                    }
                 },
             });
         });
@@ -3886,61 +4334,67 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 i : 0;
                     };
                     // Total over all pages
-
-                    if (api.column(4).data().length){
+                    if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 )
+                            .column( 2 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var vat = api
-                            .column( 3 )
+                            .column( 3,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var total = api
-                            .column( 4 )
+                            .column( 4 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-                    }
-                    else{ total = 0};
-                    if (api.column(4).data().length){
-                        var amountTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ pageTotal = 0};
+                            } );
 
-                    // Update footer
-                    $('#totalAmount').html(
-                        'AED ' +total.toFixed(2)
-                    );
-                    $('#amountFooter').html(
-                        'AED ' +amount.toFixed(2)
-                    );
-                    $('#vatFooter').html(
-                        'AED ' +vat.toFixed(2)
-                    );
-                    $('#totalFooter').html(
-                        'AED ' +total.toFixed(2)
-                    );
+                        $('#amountFooter').html(
+                            'AED ' +amount.toFixed(2)
+                        );
+                        $('#totalAmount').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                        $('#vatFooter').html(
+                            'AED ' +vat.toFixed(2)
+                        );
+                        $('#totalFooter').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                    }
+                    else{
+
+                        $('#amountFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalAmount').html(
+                            'AED 0.00'
+                        );
+
+                        $('#vatFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalFooter').html(
+                            'AED 0.00'
+                        );
+                    }
                 },
             });
         });
+
         $('#lastThirtyButton').click(function () {
-                $('.navbar-nav .nav-item').removeClass('active');
-                var link = $('#lastThirtyButton');
-               if (!link.hasClass('active')) {
-                   link.addClass('active');
-               }
+            $('.navbar-nav .nav-item').removeClass('active');
+            var link = $('#lastThirtyButton');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             var currentdate = new Date();
             var lastThirty=$('#lastThirty').val();
             var datetime = +currentdate.getDate() + "-"
@@ -3976,29 +4430,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
-                        customize: function ( win ) {
-                            $(win.document.body).prepend(
-                                '<h3 style="font-family:arial;text-align:center"><span style="margin-right: -15%">Transactions In Last 30 Days</span><span class="text-dark pull-right font-weight-bold" style="margin-top:4px;font-size:16px" id="thirtyTotalAmount">Total Amount :</span></h3>'
-                            );
-                            var totalAmount= $('#totalAmount').html();
-                            var amount=$('#amountFooter').html();
-                            var vat=$('#vatFooter').html();
-                            var total=$('#totalFooter').html();
-                            $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
-                            );
-                            $(win.document.body).find('h1').css('display','none')
-                            $(win.document.body).find('#thirtyTotalAmount').append(totalAmount)
 
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' )
-                                .prepend(
-                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
-                                );
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css({ 'font-size': 'inherit'});
-                        }
                     },
                     {
                         extend: 'excel',
@@ -4038,41 +4470,71 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
                 ],
 
-                footerCallback: function ( row, data, start, end, display ) {
-                    var api = this.api();
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '')*1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-                    // Total over all pages
+                 footerCallback: function ( row, data, start, end, display ) {
+                     var api = this.api();
+                     // Remove the formatting to get integer data for summation
+                     var intVal = function ( i ) {
+                         return typeof i === 'string' ?
+                             i.replace(/[\$,]/g, '')*1 :
+                             typeof i === 'number' ?
+                                 i : 0;
+                     };
+                     // Total over all pages
+                     if (api.column(4).data().length>0){
+                         var amount = api
+                             .column( 2 ,{ page: 'current'} )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
+                         var vat = api
+                             .column( 3,{ page: 'current'}  )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
+                         var total = api
+                             .column( 4 ,{ page: 'current'} )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
 
-                    if (api.column(4).data().length){
-                        var total = api
-                            .column( 4 )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ total = 0};
-                    if (api.column(4).data().length){
-                        var pageTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ pageTotal = 0};
+                         $('#amountFooter').html(
+                             'AED ' +amount.toFixed(2)
+                         );
+                         $('#totalAmount').html(
+                             'AED ' +total.toFixed(2)
+                         );
 
-                    // Update footer
-                    $('#totalAmount').html(
-                        'AED '+pageTotal.toFixed(2)
-                    );
-                },
+                         $('#vatFooter').html(
+                             'AED ' +vat.toFixed(2)
+                         );
+                         $('#totalFooter').html(
+                             'AED ' +total.toFixed(2)
+                         );
+
+                     }
+                     else{
+
+                         $('#amountFooter').html(
+                             'AED 0.00'
+                         );
+                         $('#totalAmount').html(
+                             'AED 0.00'
+                         );
+
+                         $('#vatFooter').html(
+                             'AED 0.00'
+                         );
+                         $('#totalFooter').html(
+                             'AED 0.00'
+                         );
+                     }
+                 },
             });
         });
+
         $('#thismonthButton').click(function () {
               $('.navbar-nav .nav-item').removeClass('active');
                 var link = $('#thismonthButton');
@@ -4182,178 +4644,232 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 i : 0;
                     };
                     // Total over all pages
-
-                    if (api.column(4).data().length){
+                    if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 )
+                            .column( 2 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var vat = api
-                            .column( 3 )
+                            .column( 3,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-
+                            } );
                         var total = api
-                            .column( 4 )
+                            .column( 4 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
-                            } )
-                    }
-                    else{ total = 0};
-                    if (api.column(4).data().length){
-                        var amountTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } ) }
-                    else{ pageTotal = 0};
+                            } );
 
-                    // Update footer
-                    $('#totalAmount').html(
-                        'AED ' +total.toFixed(2)
-                    );
-                    $('#amountFooter').html(
-                        'AED ' +amount.toFixed(2)
-                    );
-                    $('#vatFooter').html(
-                        'AED ' +vat.toFixed(2)
-                    );
-                    $('#totalFooter').html(
-                        'AED ' +total.toFixed(2)
-                    );
+                        $('#amountFooter').html(
+                            'AED ' +amount.toFixed(2)
+                        );
+                        $('#totalAmount').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                        $('#vatFooter').html(
+                            'AED ' +vat.toFixed(2)
+                        );
+                        $('#totalFooter').html(
+                            'AED ' +total.toFixed(2)
+                        );
+
+                    }
+                    else{
+
+                        $('#amountFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalAmount').html(
+                            'AED 0.00'
+                        );
+
+                        $('#vatFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalFooter').html(
+                            'AED 0.00'
+                        );
+                    }
                 },
             });
         });
 
 
          $('#amountCollectedMonth').change(function(){
-            var currentdate = new Date();
-            var todayDate =
-                + currentdate.getFullYear() + "-"
-                +'0'+ (currentdate.getMonth() +1)+ "-"
-                +currentdate.getDate() + " "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes();
+             $('.navbar-nav .nav-item').removeClass('active');
+             var link = $('#selectmonth');
+             if (!link.hasClass('active')) {
+                 link.addClass('active');
+             }
 
-            currentMonth= +'0'+ (currentdate.getMonth()+1)+ "-"
-             + currentdate.getFullYear();
-            var amountCollectedMonth=$('#amountCollectedMonth').val();
+             var currentdate = new Date();
+             var amountCollectedMonth=$('#amountCollectedMonth').val();
+             var datetime = +currentdate.getDate() + "-"
+                 + (currentdate.getMonth() + 1) + "-"
+                 + currentdate.getFullYear() + "  "
+                 + currentdate.getHours() + ":"
+                 + currentdate.getMinutes() + ":"
+                 + currentdate.getSeconds();
+             var time = + currentdate.getHours() + ":"
+                 + currentdate.getMinutes() + ":"
+                 + currentdate.getSeconds();
 
-          if(amountCollectedMonth!='') {
-                  var submit = 'submit'
-                  var datetime = +currentdate.getDate() + "-"
-                      + (currentdate.getMonth() + 1) + "-"
-                      + currentdate.getFullYear() + "  "
-                      + currentdate.getHours() + ":"
-                      + currentdate.getMinutes() + ":"
-                      + currentdate.getSeconds();
+             table = $('#artist-transaction-table').DataTable({
+                 dom: 'Bfrtip',
+                 "columnDefs": [
+                     {
+                         "targets": [],
+                         "visible": false,
+                         "searchable": false,
+                     },
+                     {
+                         "targets": [2,3,4],
+                         "className": "text-right",
+                     }
+                 ],
+                 buttons: ['pageLength',
+                     {
+                         extend: 'print',
+                         title: function () {
+                             return 'Transactions in ' + amountCollectedMonth;
+                         },
+                         exportOptions: {
+                             columns: [0, 1, 2, 3, 4],
+                         },
+                         customize: function (win) {
+                             $(win.document.body).prepend(
+                                 '<h4 style="font-family:arial;text-align:center">'+"Transactions in "+amountCollectedMonth+'</h4>'
+                             );
+                             var totalAmount= $('#totalAmount').html();
+                             var amount=$('#amountFooter').html();
+                             var vat=$('#vatFooter').html();
+                             var total=$('#totalFooter').html();
+                             $(win.document.body).find('table').append(
+                                 '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                             );
+                             $(win.document.body)
+                                 .css('font-size', '10pt')
+                                 .prepend(
+                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                 );
+                             $(win.document.body).find('h1')
+                                 .css( 'display', 'none' )
+                             $(win.document.body).find('table')
+                                 .addClass('compact')
+                                 .css({'font-size': 'inherit'});
+                         }
+                     },
+                     {
+                         extend: 'excel',
+                         exportOptions: {
+                             columns: [0, 1, 2, 3, 4,]
+                         },
+                         title: function () {
+                             var totalAmount= $('#totalAmount').html();
+                             return 'Transactions in '+amountCollectedMonth;
+                         },
+                     }
+                 ],
+                 lengthMenu: [
+                     [10, 25, 50],
+                     ['10 rows', '25 rows', '50 rows']
+                 ],
+                 processing: true,
+                 language: {
+                     processing: '<span>Processing</span>',
+                 },
+                 serverSide: true,
+                 footer: true,
+                 searching: true,
+                 ajax: {
+                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
+                     method: 'post',
+                     data: {month: amountCollectedMonth},
+                 },
+                 columns: [
+                     {data: 'transaction_id', name: 'transaction_id'},
+                     {data: 'transaction_date', name: 'transaction_date'},
+                     {data: 'amount', name: 'amount'},
+                     {data: 'vat', name: 'vat'},
+                     {data: 'total', name: 'total'},
+                     {data: 'action', name: 'action'},
+                 ],
+                 footerCallback: function ( row, data, start, end, display ) {
+                     var api = this.api();
+                     // Remove the formatting to get integer data for summation
+                     var intVal = function ( i ) {
+                         return typeof i === 'string' ?
+                             i.replace(/[\$,]/g, '')*1 :
+                             typeof i === 'number' ?
+                                 i : 0;
+                     };
+                     // Total over all pages
+                     if (api.column(4).data().length>0){
+                         var amount = api
+                             .column( 2 ,{ page: 'current'} )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
+                         var vat = api
+                             .column( 3,{ page: 'current'}  )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
+                         var total = api
+                             .column( 4 ,{ page: 'current'} )
+                             .data()
+                             .reduce( function (a, b) {
+                                 return intVal(a) + intVal(b);
+                             } );
 
-                  var time = +currentdate.getHours() + ":"
-                      + currentdate.getMinutes() + ":"
-                      + currentdate.getSeconds();
+                         $('#amountFooter').html(
+                             'AED ' +amount.toFixed(2)
+                         );
+                         $('#totalAmount').html(
+                             'AED ' +total.toFixed(2)
+                         );
 
-                  table = $('#artist-transaction-table').DataTable({
-                      dom: 'Bfrtip',
-                      columnDefs: [
-                          {
-                              targets: [],
-                              visible: false,
-                              searchable: false,
-                          },
-                          {
-                              targets: [2,3,4],
-                              className: "text-right",
-                          }
-                      ],
-                      buttons: ['pageLength',
-                          {
-                              extend: 'print',
-                              title: function () {
-                                  var totalAmount
-                                  return 'Transactions in' +amountCollectedMonth+' is '+ totalAmount ;
-                              },
-                              exportOptions: {
-                                  columns: [0, 1, 2, 3, 4],
-                              },
-                              customize: function (win) {
-                                  $(win.document.body).prepend(
-                                      '<h4 style="font-family:arial;text-align:center"><span style="position:absolute;"></span>'+"Transactions Collected in "+amountCollectedMonth +'<span style="float: right" id="amountSelectedMonth"></span></h4>'
-                                  );
-                                  var totalAmount= $('#totalAmount').html();
-                                  var amount=$('#amountFooter').html();
-                                  var vat=$('#vatFooter').html();
-                                  var total=$('#totalFooter').html();
+                         $('#vatFooter').html(
+                             'AED ' +vat.toFixed(2)
+                         );
+                         $('#totalFooter').html(
+                             'AED ' +total.toFixed(2)
+                         );
 
-                                  $(win.document.body).find('table').append(
-                                      '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
-                                  );
-                                  $(win.document.body).find('#amountSelectedMonth').append(totalAmount)
-                                  $(win.document.body)
-                                      .css('font-size', '10pt')
-                                      .prepend(
-                                          '<img src="{{asset('img/raktdalogo.png')}}"/>'
-                                      );
-                                  $(win.document.body).find('h1')
-                                      .css( 'display', 'none' )
-                                  $(win.document.body).find('table')
-                                      .addClass('compact')
-                                      .css({'font-size': 'inherit'});
-                              }
-                          },
-                          {
-                              extend: 'excel',
-                              exportOptions: {
-                                  columns: [0, 1, 2, 3, 4,]
-                              },
-                              title: function () {
-                                  var totalAmount= $('#totalAmount').html();
-                                  return 'Transactions in ' +amountCollectedMonth+' is '+ totalAmount ;
-                              },
-                          }
-                      ],
-                      lengthMenu: [
-                          [10, 25, 50],
-                          ['10 rows', '25 rows', '50 rows']
-                      ],
-                      processing: true,
-                      language: {
-                          processing: '<span>Processing</span>',
-                      },
-                      serverSide: true,
-                      footer: true,
-                      searching: true,
-                      ajax: {
-                          url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                          method: 'post',
-                          data: {month: amountCollectedMonth},
-                          success:function(data){
-                              console.log(data)
-                          }
-                      },
-                      columns: [
+                     }
+                     else{
 
-                          {data: 'transaction_id', name: 'transaction_id'},
-                          {data: 'transaction_date', name: 'transaction_date'},
-                          {data: 'amount', name: 'amount'},
-                          {data: 'vat', name: 'vat'},
-                          {data: 'total', name: 'total'},
-                          {data: 'action', name: 'action'},
-                      ],
-                  });
-          }
-          else{
-              alert('Please Select Both Field')
-          }
+                         $('#amountFooter').html(
+                             'AED 0.00'
+                         );
+                         $('#totalAmount').html(
+                             'AED 0.00'
+                         );
+
+                         $('#vatFooter').html(
+                             'AED 0.00'
+                         );
+                         $('#totalFooter').html(
+                             'AED 0.00'
+                         );
+                     }
+                 },
+             });
         });
 
         $('#endDate').change(function(){
+            $('.navbar-nav .nav-item').removeClass('active');
+            var link = $('#borderBottom');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             var currentdate = new Date();
             $('.datepicker').hide();
             var todayDate =
@@ -4364,8 +4880,24 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 + currentdate.getMinutes();
             var start_date=$('#startDate').val();
             var end_date=$('#endDate').val();
+
+            var d = new Date();
+            var strDate = d.getFullYear() + "-" + ('0' +(d.getMonth()+1)).slice(-2)+ "-" +   ('0'+ d.getDate()).slice(-2) ;
+            var today=strDate.split('-')
+            var  todayString=today[0]+today[1]+today[2]
+            var start=start_date.split('-')
+            var end=end_date.split('-')
+            var  start_string=start[2]+start[1]+start[0]
+            var   end_string=end[2]+end[1]+end[0]
+
+
+
           if(start_date!='' && end_date!='') {
-              if (start_date < todayDate && end_date < todayDate) {
+              if (end_string < todayString) {
+                  $('#endDate').css({border:'1px solid green',color:'green'});
+                  if (start_string < end_string) {
+                      $('#endDate').css({border:'1px solid green',color:'green'});
+                      $('#startDate').css({border:'1px solid green',color:'green'});
                   var submit = 'submit'
                   var datetime = +currentdate.getDate() + "-"
                       + (currentdate.getMonth() + 1) + "-"
@@ -4387,7 +4919,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                               "searchable": false,
                           },
                           {
-                              "targets": [2,3,4],
+                              "targets": [2, 3, 4],
                               "className": "text-right",
                           }
                       ],
@@ -4395,21 +4927,21 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                           {
                               extend: 'print',
                               title: function () {
-                                  return 'Transactions between ' + start_date +' and ' +end_date;
+                                  return 'Transactions between ' + start_date + ' and ' + end_date;
                               },
                               exportOptions: {
                                   columns: [0, 1, 2, 3, 4],
                               },
                               customize: function (win) {
                                   $(win.document.body).prepend(
-                                      '<h4 style="font-family:arial;text-align:center">'+"Transactions between "+start_date +" and " +end_date +'</h4>'
+                                      '<h4 style="font-family:arial;text-align:center">' + "Transactions between " + start_date + " and " + end_date + '</h4>'
                                   );
-                                  var totalAmount= $('#totalAmount').html();
-                                  var amount=$('#amountFooter').html();
-                                  var vat=$('#vatFooter').html();
-                                  var total=$('#totalFooter').html();
+                                  var totalAmount = $('#totalAmount').html();
+                                  var amount = $('#amountFooter').html();
+                                  var vat = $('#vatFooter').html();
+                                  var total = $('#totalFooter').html();
                                   $(win.document.body).find('table').append(
-                                      '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                      '<tfoot align="right"><tr><th></th><th>Total</th><th>' + amount + '</th><th>' + vat + '</th><th>' + totalAmount + '</th></tr></tfoot>'
                                   );
                                   $(win.document.body)
                                       .css('font-size', '10pt')
@@ -4417,7 +4949,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                           '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                       );
                                   $(win.document.body).find('h1')
-                                      .css( 'display', 'none' )
+                                      .css('display', 'none')
                                   $(win.document.body).find('table')
                                       .addClass('compact')
                                       .css({'font-size': 'inherit'});
@@ -4429,8 +4961,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                   columns: [0, 1, 2, 3, 4,]
                               },
                               title: function () {
-                                  var totalAmount= $('#totalAmount').html();
-                                  return 'Transactions between ' + start_date +' and ' +end_date+ ' Total Amount ' +totalAmount;
+                                  var totalAmount = $('#totalAmount').html();
+                                  return 'Transactions between ' + start_date + ' and ' + end_date + ' Total Amount ' + totalAmount;
                               },
                           }
                       ],
@@ -4458,65 +4990,82 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                           {data: 'total', name: 'total'},
                           {data: 'action', name: 'action'},
                       ],
-                      footerCallback: function ( row, data, start, end, display ) {
+                      footerCallback: function (row, data, start, end, display) {
                           var api = this.api();
                           // Remove the formatting to get integer data for summation
-                          var intVal = function ( i ) {
+                          var intVal = function (i) {
                               return typeof i === 'string' ?
-                                  i.replace(/[\$,]/g, '')*1 :
+                                  i.replace(/[\$,]/g, '') * 1 :
                                   typeof i === 'number' ?
                                       i : 0;
                           };
                           // Total over all pages
-                          if (api.column(4).data().length){
+                          if (api.column(4).data().length > 0) {
                               var amount = api
-                                  .column( 2 )
+                                  .column(2, {page: 'current'})
                                   .data()
-                                  .reduce( function (a, b) {
+                                  .reduce(function (a, b) {
                                       return intVal(a) + intVal(b);
-                                  })
+                                  });
                               var vat = api
-                                  .column( 3 )
+                                  .column(3, {page: 'current'})
                                   .data()
-                                  .reduce( function (a, b) {
+                                  .reduce(function (a, b) {
                                       return intVal(a) + intVal(b);
-                                  } )
-
+                                  });
                               var total = api
-                                  .column( 4 )
+                                  .column(4, {page: 'current'})
                                   .data()
-                                  .reduce( function (a, b) {
+                                  .reduce(function (a, b) {
                                       return intVal(a) + intVal(b);
-                                  } )
-                          }
-                          else{ total = 0};
-                          if (api.column(4).data().length){
-                              var amountTotal = api
-                                  .column( 4, { page: 'current'} )
-                                  .data()
-                                  .reduce( function (a, b) {
-                                      return intVal(a) + intVal(b);
-                                  } ) }
-                          else{ pageTotal = 0};
+                                  });
 
-                          // Update footer
-                          $('#totalAmount').html(
-                              'AED ' +total.toFixed(2)
-                          );
-                          $('#amountFooter').html(
-                              'AED ' +amount.toFixed(2)
-                          );
-                          $('#vatFooter').html(
-                              'AED ' +vat.toFixed(2)
-                          );
-                          $('#totalFooter').html(
-                              'AED ' +total.toFixed(2)
-                          );
+                              $('#amountFooter').html(
+                                  'AED ' + amount.toFixed(2)
+                              );
+                              $('#totalAmount').html(
+                                  'AED ' + total.toFixed(2)
+                              );
+
+                              $('#vatFooter').html(
+                                  'AED ' + vat.toFixed(2)
+                              );
+                              $('#totalFooter').html(
+                                  'AED ' + total.toFixed(2)
+                              );
+
+                          } else {
+
+                              $('#amountFooter').html(
+                                  'AED 0.00'
+                              );
+                              $('#totalAmount').html(
+                                  'AED 0.00'
+                              );
+
+                              $('#vatFooter').html(
+                                  'AED 0.00'
+                              );
+                              $('#totalFooter').html(
+                                  'AED 0.00'
+                              );
+                          }
                       },
                   });
+              }
+              else{
+                      $('#endDate').css({border:'1px solid #ff00006e',color:'#ff0000c4'});
+                      $('#startDate').css({border:'1px solid #ff00006e',color:'#ff0000c4'});
+
+                  alert("Start Date must be less than End Date date")
+              }
+
               } else {
 
-         alert("Dates must be less than today's date")
+                      $('#endDate').css({border:'1px solid #ff00006e',color:'#ff0000c4'});
+                      $('#startDate').css({border:'1px solid #ff00006e',color:'#ff0000c4'});
+
+               alert("Dates must be less than today's date")
               }
           }
           else{
@@ -4705,7 +5254,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
            })
        })
 
-
         var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         $('#startDate').datepicker({
             uiLibrary: 'bootstrap4',
@@ -4733,6 +5281,14 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
              $('#amountCollectedMonth').mouseout(function () {
             $('#tooltipMonth').hide(100)
         });
+
+      $('#transaction-report-tab').mouseover(function () {
+       $('#dropdown-trasanction').show(200)
+      })
+        $('#dropdown-trasanction').mouseout(function () {
+            $('#dropdown-trasanction').hide(500)
+        })
+
 
     </script>
 

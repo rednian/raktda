@@ -75,18 +75,18 @@
         <a class="nav-link" href="#">{{__('This Month')}}</a>
         <input type="text" value="month" id="thisMonth" hidden>
       </li>
-        <li class="nav-item">
-            <button id="tooltipMonth" disabled style="display: none;font-size: 12px">{{__('Selected month to get amount')}}</button>
-        <a class="nav-link" href="#"   style="margin-right:12px"><input style="height: 16px;width: 112px;background-color: #f7f8f9;border: 1px solid #d6d6d6" type="text" class="form-control form-control-1 input-sm" id="amountCollectedMonth" placeholder="Select Month"></a>
+        <li class="nav-item" id="selectmonth">
+            <button id="tooltipMonth" disabled style="display: none;font-size: 12px">{{__('Select month to get transactions')}}</button>
+        <a class="nav-link" href="#"   style="margin-right:12px"><input style="height: 16px;width: 112px;background-color: #f7f8f9;border: 1px solid #d6d6d6;border-radius: 1px" type="text" class="form-control form-control-1 input-sm" id="amountCollectedMonth" placeholder="Select Month"></a>
       </li>
 
-<li>
-    <div class="row col-10"  style="width:278px">
+<li style="width: 38%"  id="borderBottom">
+    <div class="row col-10" style="width:278px">
             <div class="col-5" style="margin-left:-11px" >
-                <input style="margin-top: 5px;height: 19px;width: 97px;margin-right: 77px" class="form-control" id="startDate" placeholder="{{__('From')}}"/>
+                <input style="margin-top: 5px;height: 19px;width: 97px;margin-right: 77px;border-radius: 1px" class="form-control" id="startDate" placeholder="{{__('From')}}"/>
                 </div>
-        <div class="col-5" style="margin-left:16px">
-                <input style="margin-top: 5px;height: 19px;width: 97px;" class="form-control" id="endDate" placeholder="{{__('To')}}"/>
+        <div class="col-5" style=" margin-left:16px">
+                <input style="margin-top: 5px;height: 19px;width: 97px;border-radius: 1px" class="form-control" id="endDate" placeholder="{{__('To')}}"/>
             </div>
     </div>
     </li>
@@ -124,10 +124,12 @@
                 </table>
             </div>
 
-    {{--        <div class="col">
+            <div class="col">
                  <input class="btn btn-secondary" style="width: 123px;height: 24px;" type="text" id="yearSelected" placeholder="Select Year">
+{{--
                 <button id="printChart"  class="bt btn-secondary">Print Chart</button>
-            </div>--}}
+--}}
+            </div>
 
             <div class="chart-container">
                 <div class="bar-chart-container" id="printContentChart">
@@ -135,5 +137,5 @@
                 </div>
             </div>
         </div>
-    </div>
+
 </section>

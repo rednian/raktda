@@ -10,11 +10,11 @@
             <div class="kt-portlet__head-toolbar">
 
                 <div class="my-auto float-right permit--action-bar">
-                <a href="{{url('artist_reports#artist-report')}}"
+                <a href="{{url('artist_reports#transaction-report-tab')}}"
                   {{--  <a href="{{url('artist_reports#transaction-report-tab')}}"--}}
                        class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u" style="background-color: #b45454;
                          color: white;
-                         box-shadow: -1px 2px 7px -3px black;
+                         box-shadow: -1px 6px 11px -6px #969696;
                          border: none;
                          border-radius: 3px;">
                         <i class="la la-arrow-left"></i>

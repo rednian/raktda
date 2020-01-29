@@ -49,7 +49,7 @@ class ArtistPermitController extends Controller
     {
         $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
 
-        return view($view, [
+       return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
             'professions'=>Profession::has('artistpermit')->get(),
@@ -701,7 +701,6 @@ class ArtistPermitController extends Controller
 
     public  function permitHistory(Request $request, Permit $permit)
     {
-
         $permits = Permit::has('artist')
             ->whereNotIn('permit_status', ['draft'])
             ->whereNotNull('permit_reference_id')

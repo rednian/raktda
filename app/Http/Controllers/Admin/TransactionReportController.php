@@ -62,42 +62,21 @@ class TransactionReportController extends Controller
 
     //START EVENT SECTION
 
-    public function eventTransaction()
+    public function eventTransactionDatatable()
     {
-        $transactions = EventTransaction::with('event')->whereHas('event', function ($q) {
-            $q->with('type')->with('company')->with('emirate')->with('country');
-        })->with('transaction')->latest();
+        $transactions = EventTransaction::wherehas('transaction')->with('event')->whereHas('event', function ($q) {
+            $q->with('type')->with('country');
+        })->with('transaction')->get();
 
         return Datatables::of($transactions)
             ->addColumn('reference_number', function (EventTransaction $user) {
-                return $user->transaction->reference_number;
+               return $user->transaction->reference_number;
             })
-            ->addColumn('transaction_type', function (EventTransaction $user) {
-                return $user->transaction->transaction_type;
+            ->addColumn('event_name', function (EventTransaction $user) {
+                return Auth()->user()->LanguageId==1? $user->event->name_en:$user->event->name_ar;
             })
-            ->addColumn('company', function (EventTransaction $user) {
-                return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : '') : ($user->company ? $user->company->name_en : '');
-            })
-            ->addColumn('vat', function (EventTransaction $artist) {
-                return $artist->vat;
-            })
-            ->addColumn('amount', function (EventTransaction $artist) {
-                return $artist->amount;
-            })
-            ->addColumn('event_name', function (EventTransaction $artist) {
-                return Auth()->user()->LanguageId == 1 ? $artist->event->name_en : $artist->event->name_ar;
-            })
-            ->addColumn('description_en', function (EventTransaction $user) {
-                return Auth()->user()->LanguageId == 1 ? $user->event->description_en : $user->event->description_ar;
-            })
-            ->addColumn('venue_en', function (EventTransaction $user) {
-                return Auth()->user()->LanguageId == 1 ? $user->event->venue_en : $user->event->venue_ar;
-            })
-            ->addColumn('owner_name', function (EventTransaction $user) {
-                return $user->event->owner_name;
-            })
-            ->addColumn('full_address', function (EventTransaction $user) {
-                return $user->event->full_address;
+            ->addColumn('transaction_date', function (EventTransaction $artist) {
+                return \Carbon\Carbon::parse($artist->transaction->transaction_date)->format('d-M-Y');
             })
             ->addColumn('issued_date', function (EventTransaction $user) {
                 return \Carbon\Carbon::parse($user->event->issued_date)->format('d-M-Y');
@@ -106,22 +85,101 @@ class TransactionReportController extends Controller
                 return \Carbon\Carbon::parse($user->event->expired_date)->format('d-M-Y');
 
             })
+            ->addColumn('vat', function (EventTransaction $artist) {
+                return number_format($artist->vat,2);
+            })
+            ->addColumn('amount', function (EventTransaction $artist) {
+                return number_format($artist->amount,2);
+            })
+            ->addColumn('total', function (EventTransaction $artist) {
+                return number_format($artist->amount+$artist->vat,2);
+            })
+            ->addColumn('event_type', function (EventTransaction $artist) {
+                $data=Auth()->user()->LanguageId==1 ? $artist->event->type->name_en:   $artist->event->type->name_ar;
+                $pieces = explode(" ", $data);
+                return $pieces[0];            })
+            ->addColumn('application_type', function (EventTransaction $user) {
+                return $user->event->firm;
+            })
+
+            ->rawColumns(['reference_number', 'event_type', 'total','application_type', 'event_name'])
+            ->make(true);
+    }
+
+    public function eventTransaction(){
+
+            $transactions = EventTransaction::wherehas('transaction')->with('event')->whereHas('event', function ($q) {
+            $q->with('type')->with('country');
+            })->with('transaction')->get();
+
+         $page_title='Event Transactions';
+           return view('admin.report.includes.event-transactions',compact('transactions','page_title'));
+
+    }
+
+
+    public function eventTransactionDateRange(Request $request)
+    {
+
+        $transactions = EventTransaction::when($request->selectEventTypeId,function ($id) use ($request) {
+                $id->wherehas('transaction')->with('event')->whereHas('event', function ($q) use ($request) {
+                    $q->whereHas('type', function ($query) use ($request) {
+                        $query->where('event_type_id', $request->selectEventTypeId);
+                    })->with('country');
+                });
+        })
+         -> when($request->end_date,function($date) use ($request){
+           $date-> wherehas('transaction',function ($query) use ($request){
+               $start = Carbon::parse($request->start_date)->format('y-m-d');
+               $end = Carbon::parse($request->end_date)->format('y-m-d');
+               $query->whereDate('transaction_date', '>', $start)->whereDate('transaction_date', '<', $end);
+             })->with('event');
+           })
+       ->with('transaction')->get();
+
+
+
+        return Datatables::of($transactions)
+            ->addColumn('reference_number', function (EventTransaction $user) {
+                return $user->transaction->reference_number;
+            })
+            ->addColumn('event_name', function (EventTransaction $user) {
+                return Auth()->user()->LanguageId==1? $user->event->name_en:$user->event->name_ar;
+            })
             ->addColumn('transaction_date', function (EventTransaction $artist) {
                 return \Carbon\Carbon::parse($artist->transaction->transaction_date)->format('d-M-Y');
             })
-            /*       ->addColumn('event_transaction_id', function(EventTransaction $user) {
-                       $artistDetails=EventTransaction::where('event_transaction_id',$user->artist_permit_trans_id)->first();
+            ->addColumn('issued_date', function (EventTransaction $user) {
+                return \Carbon\Carbon::parse($user->event->issued_date)->format('d-M-Y');
+            })
+            ->addColumn('expired_date', function (EventTransaction $user) {
+                return \Carbon\Carbon::parse($user->event->expired_date)->format('d-M-Y');
 
-                       return "<button type='button' style='height: 25px;
-                                      line-height: 4px;
-                                       border-radius: 3px;
-                                      border: navajowhite;
-                                      box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
-                                      View</button>";
-                   })*/
-            ->rawColumns(['reference_number', 'transaction_type', 'company', 'event_name'/*,'event_transaction_id'*/])
+            })
+            ->addColumn('vat', function (EventTransaction $artist) {
+                return number_format($artist->vat,2);
+            })
+            ->addColumn('amount', function (EventTransaction $artist) {
+                return number_format($artist->amount,2);
+            })
+            ->addColumn('total', function (EventTransaction $artist) {
+                return number_format($artist->amount+$artist->vat,2);
+            })
+            ->addColumn('event_type', function (EventTransaction $artist) {
+                $data=Auth()->user()->LanguageId==1 ? $artist->event->type->name_en:   $artist->event->type->name_ar;
+                $pieces = explode(" ", $data);
+                return $pieces[0];
+            })
+            ->addColumn('application_type', function (EventTransaction $user) {
+                return $user->event->firm;
+            })
+
+            ->rawColumns(['reference_number', 'event_type', 'total','application_type', 'event_name'])
             ->make(true);
-    }
+
+         }
+
+
 
 
     public function customEventDate(Request $request)
@@ -171,16 +229,7 @@ class TransactionReportController extends Controller
             ->addColumn('transaction_date', function (EventTransaction $artist) {
                 return \Carbon\Carbon::parse($artist->transaction->transaction_date)->format('d-M-Y');
             })
-            /*       ->addColumn('event_transaction_id', function(EventTransaction $user) {
-                       $artistDetails=EventTransaction::where('event_transaction_id',$user->artist_permit_trans_id)->first();
 
-                       return "<button type='button' style='height: 25px;
-                                      line-height: 4px;
-                                       border-radius: 3px;
-                                      border: navajowhite;
-                                      box-shadow: 0px 2px 5px -2px #0c0c0c;'  class='btn btn-primary btn-sm'  onclick='viewArtistDetails($user->artist_id)' data-toggle='modal' data-target='#artist_modal_$user->artist_id'>
-                                      View</button>";
-                   })*/
             ->rawColumns(['reference_number', 'transaction_type', 'company', 'event_name'/*,'event_transaction_id'*/])
             ->make(true);
     }
@@ -217,6 +266,7 @@ class TransactionReportController extends Controller
             })
             ->get();
 
+
             return Datatables::of($transactions)
                 ->addColumn('transaction_date', function ($transaction) {
                     if ($transaction->transaction_date) {
@@ -247,7 +297,7 @@ class TransactionReportController extends Controller
                View
           </button>";
                 })
-                ->rawColumns(['action', 'transaction_id', 'amount', 'vat', 'transaction_date'])->make(true);
+                ->rawColumns(['action', 'transaction_id', 'amount', 'vat','total', 'transaction_date'])->make(true);
     }
 
     public function transactionShow($id)

@@ -189,6 +189,9 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('/artist_reports/search_artist', 'Admin\ReportController@search_artist')
         ->name('admin.artist_permit_reports.search_artist');
 
+    Route::post('/artist_reports/search_active_artist', 'Admin\ReportController@search_active_artist')
+        ->name('admin.artist_permit_reports.search_active_artist');
+
     Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
         ->name('admin.artist_permit_reports.search_artist_select');
 
@@ -225,12 +228,17 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::get('artist_reports/artist_permit_report/transactionShow/{id}', 'Admin\TransactionReportController@transactionShow')
         ->name('admin.artist_permit_report.transaction');
+    Route::post('artist_reports/artist_permit_report/eventTransactionDateRange', 'Admin\TransactionReportController@eventTransactionDateRange')
+        ->name('admin.artist_permit_report.eventTransactionDateRange');
+
 
     //Transactions
     Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')
         ->name('admin.artist_permit_report.artistTransaction');
     Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
         ->name('admin.artist_permit_report.eventTransaction');
+    Route::get('artist_reports/event_transaction_report/eventTransactionDatatable', 'Admin\TransactionReportController@eventTransactionDatatable')
+        ->name('admin.artist_permit_report.eventTransactionDatatable');
     Route::get('artist_reports/eventSevenDaysReport', 'Admin\TransactionReportController@sevenDaysEvent')
         ->name('admin.artist_permit_report.sevenDaysEvent');
     Route::get('artist_reports/thirtyDaysEvent', 'Admin\TransactionReportController@thirtyDaysEvent')
