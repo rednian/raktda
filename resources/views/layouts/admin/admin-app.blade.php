@@ -106,6 +106,20 @@
       </div>
     </div>
   </div>
+<<<<<<< HEAD
+</div>
+<!-- end:: Page -->
+<script src="{{ asset('/js/mandatory.js') }}"></script>
+<script src="{{ asset('/js/plugins.js') }}"></script>
+<script src="{{ asset('/assets/js/demo1/scripts.bundle.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/custom-pages.js') }}"></script>
+<script src="{{ asset('/assets/vendors/custom/jquery.treetable/jquery.treetable.js') }}"></script>
+<script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
+
+{{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
+<script type="text/javascript">
+  $(document).ready(function(){
+=======
   <!-- end:: Page -->
   <script src="{{ asset('/js/mandatory.js') }}"></script>
   <script src="{{ asset('/js/plugins.js') }}"></script>
@@ -137,6 +151,7 @@
                             <div class="kt-notification__item-time">2 seconds ago</div>\
                         </div>\
                     </a>';
+>>>>>>> 7d92be8dd12e2da6e0a22f900dc6335ee40f7a0d
 
         $('#topbar_notifications_notifications .kt-notification').prepend(html);
     }

@@ -22,28 +22,33 @@ class EventReportController extends Controller
                 return $user->reference_number;
             })
             ->addColumn('name_en', function (Event $user) {
-                return $user->name_en;
+                return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
             })
             ->addColumn('description_en', function (Event $user) {
-                return str_limit($user->description_en, 50);
+                return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
             })
             ->addColumn('venue_en', function (Event $user) {
-                return str_limit($user->venue_en, 50);
+                return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
             })
             ->addColumn('address', function (Event $user) {
                 return $user->address;
             })
             ->addColumn('company_id', function (Event $user) {
-                return $user->company ? $user->company->name_en : ' -- ';
+                return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
             })
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
             ->addColumn('expired_date', function (Event $user) {
-                return $user->expired_date;
+
+                $datetime1 = new \DateTime($user->issued_date);
+                $datetime2 = new \DateTime($user->expired_date);
+                $interval = $datetime1->diff($datetime2);
+                return $interval->d;
             })
             ->addColumn('event_type_id', function (Event $user) {
-                return $user->type ? $user->type->name_en : '';
+                return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
             })
             ->addColumn('application_type', function (Event $user) {
                 return $user->firm;
@@ -56,17 +61,13 @@ class EventReportController extends Controller
 
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
-                    border-radius: 3px;
-                     
-                     '
+                    border-radius: 3px;'
                     class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                     View</button>";
                 } else {
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
-                   border-radius: 3px;
-                    
-                    '
+                    border-radius: 3px; '
                    class='btn btn-danger btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                  View</button>";
                 }
@@ -88,28 +89,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -120,9 +125,7 @@ class EventReportController extends Controller
                 ->addColumn('event_id', function (Event $user) {
                     return "<button type='button' style='height: 25px;
                     line-height: 4px;
-                   border-radius: 3px;
-                    
-                    ' 
+                   border-radius: 3px;'
                    class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
                 View</button>";
                 })
@@ -140,28 +143,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -170,7 +177,7 @@ class EventReportController extends Controller
                     return strtoupper($user->status);
                 })
                 ->addColumn('event_id', function (Event $user) {
-                        return "<button type='button' style='height: 25px;
+                    return "<button type='button' style='height: 25px;
                     line-height: 4px;
                    border-radius: 3px;
                     
@@ -191,28 +198,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -244,28 +255,31 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -296,28 +310,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->name_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -339,7 +357,6 @@ class EventReportController extends Controller
         }
     }
 
-
     public function applied_date(Request $request)
     {
         if ($request->applied_date == 1) {
@@ -350,28 +367,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -402,28 +423,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -454,28 +479,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -505,28 +534,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -556,28 +589,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LangugeId == 1 ? Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LamgguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -606,28 +643,32 @@ class EventReportController extends Controller
                     return $user->reference_number;
                 })
                 ->addColumn('name_en', function (Event $user) {
-                    return $user->name_en;
+                    return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
                 })
                 ->addColumn('description_en', function (Event $user) {
-                    return str_limit($user->description_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
                 })
                 ->addColumn('venue_en', function (Event $user) {
-                    return str_limit($user->venue_en, 50);
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
                 })
                 ->addColumn('address', function (Event $user) {
                     return $user->address;
                 })
                 ->addColumn('company_id', function (Event $user) {
-                    return $user->company ? $user->company->name_en : ' -- ';
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
                 })
                 ->addColumn('issued_date', function (Event $user) {
                     return $user->issued_date;
                 })
                 ->addColumn('expired_date', function (Event $user) {
-                    return $user->expired_date;
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
                 })
                 ->addColumn('event_type_id', function (Event $user) {
-                    return $user->type ? $user->type->name_en : '';
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
                 })
                 ->addColumn('application_type', function (Event $user) {
                     return $user->firm;
@@ -647,6 +688,59 @@ class EventReportController extends Controller
                 ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
                 ->make(true);
         }
+        if ($request->applied_date == '') {
+            $users = Event::where('status', 'active')
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+            return Datatables::of($users)
+                ->addColumn('reference_number', function (Event $user) {
+                    return $user->reference_number;
+                })
+                ->addColumn('name_en', function (Event $user) {
+                    return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
+                })
+                ->addColumn('description_en', function (Event $user) {
+                    return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
+                })
+                ->addColumn('venue_en', function (Event $user) {
+                    return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
+                })
+                ->addColumn('address', function (Event $user) {
+                    return $user->address;
+                })
+                ->addColumn('company_id', function (Event $user) {
+                    return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
+                })
+                ->addColumn('issued_date', function (Event $user) {
+                    return $user->issued_date;
+                })
+                ->addColumn('expired_date', function (Event $user) {
+                    $datetime1 = new \DateTime($user->issued_date);
+                    $datetime2 = new \DateTime($user->expired_date);
+                    $interval = $datetime1->diff($datetime2);
+                    return $interval->d;
+                })
+                ->addColumn('event_type_id', function (Event $user) {
+                    return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+                })
+                ->addColumn('application_type', function (Event $user) {
+                    return $user->firm;
+                })
+                ->addColumn('status', function (Event $user) {
+                    return strtoupper($user->status);
+                })
+                ->addColumn('event_id', function (Event $user) {
+                    return "<button type='button' style='height: 25px;
+                    line-height: 4px;
+                    border-radius: 3px;
+                    
+                    '
+                   class='btn btn-outline-warning btn-sm event_button_modal{{$user->event_id}}'  onclick='onclickevent($user->event_id)' data-toggle='modal' data-target='#event_modal_$user->event_id'>
+                 View</button>";
+                })
+                ->rawColumns(['reference_number', 'name_en', 'description_en', 'venue_en', 'address', 'event_id'])
+                ->make(true);
+        }
+
     }
 
     public function application_type(Request $request)
@@ -658,28 +752,32 @@ class EventReportController extends Controller
                 return $user->reference_number;
             })
             ->addColumn('name_en', function (Event $user) {
-                return $user->name_en;
+                return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
             })
             ->addColumn('description_en', function (Event $user) {
-                return str_limit($user->description_en, 50);
+                return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
             })
             ->addColumn('venue_en', function (Event $user) {
-                return str_limit($user->venue_en, 50);
+                return Auth()->user()->LanguageId ? $user->venue_en : $user->venue_ar;
             })
             ->addColumn('address', function (Event $user) {
                 return $user->address;
             })
             ->addColumn('company_id', function (Event $user) {
-                return $user->company ? $user->company->name_en : ' -- ';
+                return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
             })
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
             ->addColumn('expired_date', function (Event $user) {
-                return $user->expired_date;
+                $datetime1 = new \DateTime($user->issued_date);
+                $datetime2 = new \DateTime($user->expired_date);
+                $interval = $datetime1->diff($datetime2);
+                return $interval->d;
             })
             ->addColumn('event_type_id', function (Event $user) {
-                return $user->type ? $user->type->name_en : '';
+                return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
             })
             ->addColumn('application_type', function (Event $user) {
                 return $user->firm;
@@ -709,28 +807,32 @@ class EventReportController extends Controller
                 return $user->reference_number;
             })
             ->addColumn('name_en', function (Event $user) {
-                return $user->name_en;
+                return Auth()->user()->LanguageId == 1 ? $user->name_en : $user->name_ar;
             })
             ->addColumn('description_en', function (Event $user) {
-                return str_limit($user->description_en, 50);
+                return Auth()->user()->LanguageId == 1 ? $user->description_en : $user->description_ar;
             })
             ->addColumn('venue_en', function (Event $user) {
-                return str_limit($user->venue_en, 50);
+                return Auth()->user()->LanguageId == 1 ? $user->venue_en : $user->venue_ar;
             })
             ->addColumn('address', function (Event $user) {
                 return $user->address;
             })
             ->addColumn('company_id', function (Event $user) {
-                return $user->company ? $user->company->name_en : ' -- ';
+                return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : ' -- ') : ($user->company ? $user->company->name_ar : ' -- ');
             })
             ->addColumn('issued_date', function (Event $user) {
                 return $user->issued_date;
             })
             ->addColumn('expired_date', function (Event $user) {
-                return $user->expired_date;
+                $datetime1 = new \DateTime($user->issued_date);
+                $datetime2 = new \DateTime($user->expired_date);
+                $interval = $datetime1->diff($datetime2);
+                return $interval->d;
             })
             ->addColumn('event_type_id', function (Event $user) {
-                return $user->type ? $user->type->name_en : '';
+                return Auth()->user()->LanguageId ? ($user->type ? $user->type->name_en : '') : ($user->type ? $user->type->name_ar : '');
+
             })
             ->addColumn('application_type', function (Event $user) {
                 return $user->firm;

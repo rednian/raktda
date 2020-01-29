@@ -70,7 +70,7 @@
 				$result = ['success', 'Artist has been '.$request->action.' Successfully ', 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
-				
+
 			}
 
 			return redirect(URL::signedRoute('admin.artist.show', $artist->artist_id))->with('message', $result);
@@ -203,6 +203,7 @@
 
 		public function permitHistory(Request $request, Artist $artist)
 		{
+
 			$permit = Permit::whereHas('artistpermit', function($q) use ($artist){
 				$q->where('artist_id', $artist->artist_id);
 			})
@@ -241,6 +242,7 @@
 
 		public function history(Request $request, ArtistPermit $artistpermit)
 		{
+
 			$artist_permit = $artistpermit->datatable()
 				 ->where('artist_permit.artist_id', $artistpermit->artist_id)
 				 ->where('artist_permit.artist_permit_id', '!=', $artistpermit->artist_permit_id)

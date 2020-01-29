@@ -5,8 +5,8 @@
 
 </style>
 
-<div class="container-fluid"style="margin-left: -10px;width: 102%">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
+
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-1x nav-tabs-line-danger" role="tablist"
         id="event_ul_list" style="margin-top: -20px">
 
         <li id="active_events" class="nav-item"><a class="nav-link active" data-toggle="tab" href="#" data-target="#">
@@ -22,7 +22,7 @@
                 <input type="text" value='+60' id="events_in_60_days" hidden>
             </a></li>
         <li id="events_previous_30_days" class="nav-item"><a class="nav-link" data-toggle="tab" href="#">
-                <span style="font-size: 11px">{{__('EVENTS IN PREVIOUS 30 DAYS')}}</span>
+                <span style="font-size: 11px">{{__('EVENTS IN LAST 30 DAYS')}}</span>
                 <input type="text" value='-30' id="events_in_previous_30_days" hidden>
             </a></li>
 
@@ -41,9 +41,9 @@
         </button>
         </li>
     </ul>
-</div>
 
-<table class="table table-hover  table-borderless table-striped border" id="event-report">
+
+<table class="table table-hover  table-bordered table-striped " id="event-report">
     <thead>
 
     <tr id="filter_to_hide" style="display: none">
@@ -86,8 +86,8 @@
         <th style="font-weight: bold">{{ __('VENUE') }}</th>
         <th style="font-weight: bold">{{ __('ADDRESS') }}</th>
         <th style="font-weight: bold">{{ __('COMPANY') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('ISSUED DATE') }}</th>
-        <th style="font-weight: bold;white-space: nowrap">{{ __('EXPIRE DATE') }}</th>
+        <th style="font-weight: bold;white-space: nowrap">{{ __('EVENT DATE') }}</th>
+        <th style="font-weight: bold;white-space: nowrap">{{ __('NO. OF DAYS') }}</th>
         <th style="font-weight: bold">{{ __('STATUS') }}</th>
         <th></th>
     </tr>
