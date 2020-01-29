@@ -28,8 +28,12 @@
                                         </div>
                                     @else
                                         <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" >
+<<<<<<< HEAD
 
 
+=======
+                                            {{profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
+>>>>>>> 124d3e64358ea245ef4d9601fdaf52697d2d4609
                                         </div>
                                     @endif--}}
 
@@ -37,6 +41,7 @@
                                     <div class="kt-widget__content">
                                         <div class="kt-widget__head">
                                             <div class="kt-widget__user">
+
                                                 <span class="kt-widget__username kt-padding-b-10 kt-margin-r-5"></span>
                                                 <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
                                                                             <label>
@@ -44,15 +49,34 @@
                                                                                 <span></span>
                                                                             </label>
                                                                         </span>
+
+                                                <span class="kt-widget__username kt-padding-b-10 kt-margin-r-5">{{ ucwords($artist_permit->name) }}</span>
+                                                <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
+                                                <label>
+                                                    <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
+                                                    <span></span>
+                                                </label>
+                                            </span>
+
                                             </div>
                                         </div>
 
                                         <div class="kt-widget__subhead">
+
 																 <span>{{ __('Current Company') }} :
                                                                     <span class="kt-font-dark kt-font-bolder">
                                                                    {{--     {{Auth()->user()->LanguageId==1? $artist->permit()->latest()->first()->owner->company->name_en : $artist->permit()->latest()->first()->owner->company->name_ar}}--}}
                                                                     </span>
                                                                 </span>
+
+
+    										 <span>{{ __('Current Company') }} :
+                                                <span class="kt-font-dark kt-font-bolder">
+                                                    {{Auth()->user()->LanguageId==1? $artist_permit->permit()->latest()->first()->owner->company->name_en : $artist_permit->permit()->latest()->first()->owner->company->name_ar}}
+                                                </span>
+                                            </span>
+                                            {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
+                                            {{--										 <a href="#"><i class="flaticon2-placeholder"></i>Melbourne</a>--}}
 
                                         </div>
 

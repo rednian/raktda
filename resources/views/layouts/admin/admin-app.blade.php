@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ Auth::user()->LanguageId != 1 ?  'rtl': null }}">
-
 <head>
   <meta charset="utf-8" />
   <title>RAKTDA | {{ ucwords($page_title) }}</title>

@@ -23,4 +23,9 @@ class EventTypeSub extends Model
 		return $this->hasMany(Event::class, 'event_type_sub_id');
 	}
 
+	public function getSubnameAttribute()
+	{
+		return auth()->user()->LanguageId == 1 ? ucfirst($this->sub_name_en) : ucfirst($this->sub_name_ar);
+	}
+
 }

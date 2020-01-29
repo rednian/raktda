@@ -9,6 +9,11 @@
   ---gray: #f5f5f5;
   ---gray-light: #edeef4;
 }
+
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+}
+
 .kt-spinner--danger { color: #a63a3f !important; }
 
 /*sidebar logo*/

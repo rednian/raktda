@@ -101,7 +101,7 @@ mix.scripts([
     'public/assets/vendors/general/jquery.repeater/src/repeater.js',
     'public/assets/vendors/general/dompurify/dist/purify.js',
     'public/assets/vendors/custom/fullcalendar/ar.js',
-    'public/assets/vendors/custom/datatable-rowgroup/dataTables.rowGroup.min.js',
+   
     // 'public/assets/vendors/custom/jquery.treetable1/jquery.treetable.js',
    
 ], 'public/js/plugins.js');
@@ -126,5 +126,6 @@ mix.scripts([
     'public/assets/vendors/custom/fancybox-master/dist/jquery.fancybox.js',
     'public/assets/vendors/custom/dataTables/dataTables.colVis.js',
     'public/assets/vendors/custom/bootbox/bootbox.all.min.js',
+    'public/assets/vendors/custom/datatable-rowgroup/dataTables.rowGroup.min.js',
 ], 'public/js/custom-pages.js');
 

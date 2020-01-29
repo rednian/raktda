@@ -1,5 +1,13 @@
 <?php
 
+function requestType($type)
+{
+    if (in_array($type, ['amend request'])) {
+        $type = 'amendment request';
+    }
+    return $type;
+}
+
 function duration($start = null, $end = null){
     $days = Carbon\Carbon::parse($start)->diffInDays($end);
     return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
@@ -8,16 +16,16 @@ function duration($start = null, $end = null){
 function type($name = null, $type = null){
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
-    
+
     $first = explode(' ', $name);
     $first = strtoupper(substr($first[0], 0, 1));
 
-    $html = '<div class="kt-user-card-v2">'; 
-    $html .= ' <div class="kt-user-card-v2__details">'; 
-    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>'; 
-    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>'; 
-    $html .= ' </div>'; 
-    $html .= '</div>'; 
+    $html = '<div class="kt-user-card-v2">';
+    $html .= ' <div class="kt-user-card-v2__details">';
+    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>';
+    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>';
+    $html .= ' </div>';
+    $html .= '</div>';
 
     return $html;
 
@@ -27,19 +35,19 @@ function type($name = null, $type = null){
 function profileName($name = null, $type = null){
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
-    
+
     $first = explode(' ', $name);
     $first = strtoupper(substr($first[0], 0, 1));
 
-    $html = '<div class="kt-user-card-v2">'; 
-    $html .= '<div class="kt-user-card-v2__pic">'; 
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--'.$classname[array_rand($classname)].'"><span>'.$first.'</span></div>'; 
-    $html .= ' </div>'; 
-    $html .= ' <div class="kt-user-card-v2__details">'; 
-    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>'; 
-    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>'; 
-    $html .= ' </div>'; 
-    $html .= '</div>'; 
+    $html = '<div class="kt-user-card-v2">';
+    $html .= '<div class="kt-user-card-v2__pic">';
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--'.$classname[array_rand($classname)].'"><span>'.$first.'</span></div>';
+    $html .= ' </div>';
+    $html .= ' <div class="kt-user-card-v2__details">';
+    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>';
+    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>';
+    $html .= ' </div>';
+    $html .= '</div>';
 
     return $html;
 
@@ -54,15 +62,15 @@ function humanDate($date){
 
 function defaults($name = null, $role){
     $fname = explode(' ', $name);
-    $html = '<div class="kt-user-card-v2">'; 
-    $html .= ' <div class="kt-user-card-v2__pic">'; 
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--success"><span>'.strtoupper(substr($fname[0], 0, 1)).'</span></div>'; 
-    $html .= '  </div>'; 
-    $html .= '  <div class="kt-user-card-v2__details">'; 
-    $html .= '   <span class="kt-user-card-v2__name">'.ucwords($name).'</span>'; 
-    $html .= '   <span class="kt-user-card-v2__email kt-link">'.ucwords($role).'</span>'; 
-    $html .= '   </div>'; 
-    $html .= '   </div>'; 
+    $html = '<div class="kt-user-card-v2">';
+    $html .= ' <div class="kt-user-card-v2__pic">';
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--success"><span>'.strtoupper(substr($fname[0], 0, 1)).'</span></div>';
+    $html .= '  </div>';
+    $html .= '  <div class="kt-user-card-v2__details">';
+    $html .= '   <span class="kt-user-card-v2__name">'.ucwords($name).'</span>';
+    $html .= '   <span class="kt-user-card-v2__email kt-link">'.ucwords($role).'</span>';
+    $html .= '   </div>';
+    $html .= '   </div>';
 
     return $html;
 }
@@ -171,7 +179,7 @@ function permitStatus($status)
     }
 
     if( in_array($status, [
-            'send back for amendments', 'processing', 'modification request', 
+            'send back for amendments', 'processing', 'modification request',
             'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
             'pending', 'bounced back request', 'renew trade license request', 'amend request', 'amendment request'
     ])){
@@ -182,11 +190,11 @@ function permitStatus($status)
         $classname = 'danger';
     }
 
- 
+
     if (in_array($status, ['modification request', 'send back for amendments', 'back','amended' ])) { $status = 'Bounced Back'; }
 //    if (in_array($status, ['modified'])) { $status = 'Bounced Back Request'; }
-   
-   
+
+
 
     return '<span class="kt-badge kt-badge--' . $classname . ' kt-badge--inline">' . __(ucwords($status)) . '</span>';
 }
@@ -221,7 +229,7 @@ function generateEventPermitNumber()
         $n = substr($last_pn, 2);
         $f = substr($n, 0, 1);
         $l = substr($n, -1, 1);
-        $x = 4; 
+        $x = 4;
         if ($f == 9 && $l == 9) {
             $x++;
         }
@@ -406,7 +414,7 @@ function getPaymentOrderId($from, $id)
         }else {
             $payment_no = sprintf("%07d",  1);
         }
-        
+
     }
     if($from == 'event'){
         $times = \App\EventTransaction::where('event_id', $id)->distinct('transaction_id')->count('transaction_id');

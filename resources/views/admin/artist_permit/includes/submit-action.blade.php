@@ -14,7 +14,7 @@
 						<div class="kt-section__desc">
 							@csrf
 							 <?php
-							 $all_artist = $permit->artistpermit()->count();
+                             $all_artist = $permit->artistpermit()->count();
 							 $disaaproved_artist = $permit->artistpermit()->where('artist_permit_status', 'approved')->count();
 							 ?>
 							<div class="form-group form-group-xs row">
@@ -22,9 +22,9 @@
 								<div class="col-sm-8">
 									<select name="action" class="form-control-sm form-control custom-select">
 										@if(!Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
-										<option disabled selected>{{ __('-Select Action-') }}</option>
-										 @if($all_artist == $disaaproved_artist ){
-													<option value="approved-unpaid">{{ __('Approve Application and notify client for payment') }}</option>
+                                        <option disabled selected>{{ __('-Select Action-') }}</option>
+                                        @if($all_artist == $disaaproved_artist ){
+                                            <option value="approved-unpaid">{{ __('Approve Application and notify client for payment') }}</option>
 										 @endif
 
 										<option value="send_back">{{ __('Bounce back to client for modification') }}</option>

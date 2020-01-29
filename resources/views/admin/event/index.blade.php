@@ -1013,7 +1013,7 @@
            data: function (d) {
 
             // var status = $('select#new-permit-status').val();
-             d.status = ['checked'];
+             d.status = ['checked', 'amended'];
              d.type = $('select#pending-applicant-type').val();
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
              d.event_type_id = $('#pending-event-type-id').val();
@@ -1076,7 +1076,7 @@
            data: function (d) {
 
             var status = $('select#new-permit-status').val();
-             d.status =  ['new', 'amended'];
+             d.status =  ['new'];
              d.type = $('select#new-applicant-type').val();
              d.date = $('#new-applied-date').val()  ? selected_date : null;
              d.event_type_id = $('#new-event-type-id').val();
@@ -1171,7 +1171,7 @@
                 textColor : '#ffffff',
               },
               eventRender: function(info) {
-                console.log(info);
+               
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
                       if (element.hasClass('fc-day-grid-event')) {

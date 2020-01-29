@@ -21,4 +21,9 @@ class Government extends Model
     public function getUsers(){
     	return $this->hasMany(User::class, 'government_id');
     }
+
+    public function getNameAttribute()
+    {
+        return auth()->user()->LAnguageId == 1 ? ucfirst($this->government_name_en) : ucfirst($this->government_name_ar);
+    }
 }

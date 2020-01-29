@@ -74,8 +74,8 @@ class EventController extends Controller
         return view($view, [
             'page_title' => __('Event Permit Dashboard'),
             'types'=> EventType::all(),
-            'new_request'=>Event::whereIn('status', ['new', 'amended'])->count(),
-            'pending_request'=>Event::whereIn('status', ['checked'])->count(),
+            'new_request'=>Event::whereIn('status', ['new'])->count(),
+            'pending_request'=>Event::whereIn('status', ['checked', 'amended'])->count(),
             'active_request'=> $event,
             'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
             'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
@@ -890,31 +890,28 @@ class EventController extends Controller
                     return ucfirst($event->address);
                 })
                 ->editColumn('request_type', function($event){
-                    return ucwords($event->request_type);
+
+                    return ucwords(requestType($event->request_type));
                 })
                 ->addColumn('description',function($event) use ($user){
-                    return $user->LanguageId == 1 ? ucfirst($event->description_en) : ucfirst($event->description_ar);
+                    return ucfirst($event->description);
                 })
                 ->addColumn('website', function($event){
                     return $event->is_display_web ? __('YES'): __('NO');
                 })
                 ->addColumn('event_type', function($event) use ($request){
-                    $type = $request->user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar;
-                    $sub = $request->user()->LanguageId == 1 ?  ucfirst($event->subtype->sub_name_en) : $event->subtype->sub_name_ar;
-                    $sub = !empty($sub) ? $sub : '-';
-                    return type($type, $sub);
+
+                    $sub = !empty($event->subtype->subname) ? $event->subtype->subname : '-';
+                    return type($event->type->name, $sub);
                 })
                 ->addColumn('venue', function($event) use ($user){
-                    return $user->LanguageId == 1 ? ucfirst($event->venue_en) : ucfirst($event->venue_ar);
+                    return ucfirst($event->venue);
                 })
                 ->addColumn('show', function($event){
                     $display = $event->is_display_all ? __('YES'): __('NO');
                 })
-                ->addColumn('event_name', function($event) use ($user){
-                    if ($user->LanguageId == 1) {return ucfirst($event->name_en);} return ucfirst($event->name_ar); })
-                ->addColumn('type', function($event){
-                    return ucwords(__($event->firm));
-                })
+                ->addColumn('event_name', function($event) use ($user){ return ucfirst($event->name); })
+                ->addColumn('type', function($event){return ucwords(__($event->firm)); })
                 ->editColumn('updated_at', function($event){
                     return '<span title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-original-title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->updated_at).'</span>';
                 })

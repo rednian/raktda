@@ -71,19 +71,19 @@
                 </div>
                       <section class="kt-section kt-margin-t-5">
                          <div class="kt-section__desc">
-                            
+
                             <table class="table table-borderless table-sm">
                                <tr>
                                   <td width="25%">{{ __('Reference Number') }} :</td>
                                   <td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
                                </tr>
-                                @if($permit->permit_status != 'new')
-                                
+                           {{--      @if($permit->permit_status != 'new')
+
                                <tr>
                                   <td>{{ __('Permit Status') }} :</td>
                                   <td>{!! permitStatus($permit->permit_status) !!}</td>
                                </tr>
-                                    @endif
+                                @endif --}}
                                @if ($permit->number)
                                   <tr>
                                      <td>Permit Number :</td>
@@ -137,7 +137,7 @@
                 </div>
                 <hr>
               </div>
-              
+
             </div>
           </div>
           <div class="col-md-4">
@@ -148,7 +148,7 @@
                     <tbody>
                       <tr>
                          <td><span style="font-size: large;" class="flaticon-home"></span></td>
-                         <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($permit->owner->company->name_en) : ucwords($permit->owner->company->name_ar) }}</td>
+                         <td class="kt-font-dark">{{ ucwords($permit->owner->company->name) }}</td>
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-email"></span></td>
@@ -160,13 +160,7 @@
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-placeholder-3"></span></td>
-                        @php
-                          $country = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->country->name_en) : ucfirst($permit->owner->company->country->name_ar);
-                          $area = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->area->area_en) : ucfirst($permit->owner->company->area->area_en);
-                          $emirate = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->emirate->name_en) : ucfirst($permit->owner->company->emirate->name_en);
-                          $address = ucfirst($permit->owner->company->address).' '.ucfirst($area).' '.ucfirst($emirate).' '.ucfirst($country);
-                        @endphp
-                        <td>{{$address}}</td>
+                        <td>{{$permit->owner->company->fullAddress}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -178,12 +172,12 @@
                       <tr>
                         <td class="no-wrap"><i style="font-size: large;" class="flaticon-profile-1"></i></td>
                         <td>
-                          {{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->contact_name_en) : ucwords($permit->company->contact->contact_name_ar)  }}
+                          {{ ucwords($permit->company->contact->name)  }}
                         </td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-suitcase"></i></td>
-                        <td>{{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->designation_en) : ucwords($permit->company->contact->designation_ar) }}</td>
+                        <td>{{ ucwords($permit->company->contact->designation) }}</td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-mobile-phone"></i></td>
@@ -223,7 +217,7 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="artist-list" role="tabpanel">
-                 
+
 
                 <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
                 <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
@@ -284,11 +278,11 @@
                  </table>
                </div>
                @endif
-              
+
             </div>
           </div>
         </section>
-        
+
 
         </div>
         <?php
@@ -450,7 +444,7 @@
         columnDefs: [
            {targets: '_all', className: 'no-wrap'}
         ],
-        columns: [  
+        columns: [
            {data: 'person_code'},
            {
               render: function (type, data, full, meta) {
@@ -466,7 +460,7 @@
         ],
         createdRow: function (row, data, index) {
           $(row).click(function(){ if (!data.is_checked){ location.href = data.show_link;}});
-          
+
           $('.btn-document', row).click(function(e){
               e.stopPropagation();
               documents(data);
@@ -497,7 +491,7 @@
            }
         }
      });
-     
+
      $.ajax({
 				url: '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id+'/checklist',
 				data: $('form#frm-existing-permit').serialize(),
@@ -529,7 +523,7 @@
   function documents(data){
       $('#document-modal').on('shown.bs.modal', function(){
           $('table#table-document').DataTable({
-              ajax:{ 
+              ajax:{
                   url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
               },
               columnDefs:[

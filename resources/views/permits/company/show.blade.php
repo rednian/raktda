@@ -6,6 +6,59 @@ $user_lang = $user->languageId;
 @endphp
 <div class="kt-portlet ">
   <div class="kt-portlet__body">
+
+    @if ($company->status == 'draft')
+      <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
+        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+        <div class="alert-text">
+          <ul>
+            <li>Your registration is still in <span class="kt-badge kt-badge--warning kt-badge--inline">Draft</span>. Please update the information and submit to enjoy the RAKTDA services.</li>
+          </ul>
+        </div>
+        <div class="alert-close">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="la la-close"></i></span>
+          </button>
+        </div>
+      </div>
+    @endif
+
+    @if ($company->status == 'pending')
+      <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
+        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+        <div class="alert-text">
+          <ul>
+            <li>Your registration is still in <span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span> . The RAKTDA representative will check your application and will respond your request.</li>
+          </ul>
+        </div>
+        <div class="alert-close">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="la la-close"></i></span>
+          </button>
+        </div>
+      </div>
+    @endif
+
+    @if ($company->status == 'back')
+      <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
+        <div class="alert-icon"><i class="flaticon-warning"></i></div>
+        <div class="alert-text">
+         Your application was bounced back, see the comment below:
+         <hr class="kt-margin-t-5">
+         @if ($company->comment()->exists())
+            <p>{{$company->comment()->latest()->first()->comment}}</p>
+         @endif
+        
+        </div>
+        <div class="alert-close">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true"><i class="la la-close"></i></span>
+          </button>
+        </div>
+      </div>
+    @endif
+  
+
     <div class="kt-widget kt-widget--user-profile-3">
       <div class="kt-widget__top">
 
@@ -16,12 +69,17 @@ $user_lang = $user->languageId;
           <div class="kt-widget__head">
             <span
               class="kt-widget__title">{{$user_lang == 1 ? ucfirst($company->name_en) : ucfirst($company->name_ar) }}</span>
-            <div class="kt-widget__action">
-              <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}" class="btn btn-sm btn-upper"
-                style="background: #edeff6">{{__('Update Details')}}</a>&nbsp;
-              <button type="button" class="kt-hide btn btn-success btn-sm btn-upper">add user</button>&nbsp;
-              <button type="button" class="kt-hide btn btn-brand btn-sm btn-upper">new task</button>
-            </div>
+
+              @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
+               <div class="kt-widget__action">
+                 <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}" class="btn btn-sm btn-upper"
+                   style="background: #edeff6">{{__('Update Details')}}</a>&nbsp;
+                 <button type="button" class="kt-hide btn btn-success btn-sm btn-upper">add user</button>&nbsp;
+                 <button type="button" class="kt-hide btn btn-brand btn-sm btn-upper">new task</button>
+               </div>
+              @endif
+            
+
           </div>
           <div class="kt-widget__subhead">
             <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',

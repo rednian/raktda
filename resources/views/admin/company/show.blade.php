@@ -280,8 +280,8 @@
                   <table class="table table-borderless table-striped table-hover border table-sm" id="event-table">
                       <thead>
                           <tr>
-                              <th></th>
                               <th>{{__('EVENT NAME')}}</th>
+                              <th>{{__('EVENT TYPE')}}</th>
                               <th>{{__('REFERENCE NO.')}}</th>
                               <th>{{__('PERMIT NO.')}}</th>
                               <th>{{__('EVENT DURATION')}}</th>
@@ -319,7 +319,6 @@
                   <table class="table table-borderless table-striped table-hover border table-sm" id="artist-table">
                       <thead>
                           <tr>
-                              <th></th>
                               <th>{{__('ARTIST NAME')}}</th>
                               <th>{{__('PERSON CODE')}}</th>
                               <th>{{__('NATIONALITY')}}</th>
@@ -334,7 +333,6 @@
                               <th>{{__('VISA EXPIRY')}}</th>
                               <th>{{__('PASSPORT NUMBER')}}</th>
                               <th>{{__('PASSPORT EXPIRY DATE')}}</th>
-                              <th>{{__('IDETIFICATION NUMBER')}}</th>
                               <th>{{__('ADDRESS')}}</th>
                           </tr>
                       </thead>
@@ -456,7 +454,6 @@
               {targets: '_all', className:'no-wrap'}
           ],
           columns:[
-          {render: function(){ return null; }},
           {data: 'name'},
           {data: 'person_code'},
           {data: 'nationality'},
@@ -471,7 +468,6 @@
           {data: 'visa_expiry'},
           {data: 'passport_number'},
           {data: 'passport_expire'},
-          {data: 'identification_number'},
           {data: 'address'},
           ],
           createdRow: function(row, data, index){
@@ -500,8 +496,8 @@
               {targets: '_all', className:'no-wrap'}
           ],
           columns:[
-          {render: function(){ return null; }},
           {data: 'profile'},
+          {data: 'event_type'},
           {data: 'reference_number'},
           {data: 'permit_number'},
           {data: 'duration'},

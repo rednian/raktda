@@ -16,4 +16,10 @@ class Gender extends Model
         return $this->hasMany(ArtistPermit::class, 'gender_id');
     }
 
+
+    public function getNameAttribute()
+    {
+    	return auth()->user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
+    }
+
 }

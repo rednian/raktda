@@ -25,4 +25,9 @@ class EventLiquor extends Model
    {
       return $this->hasMany(EventLiquorTruckRequirement::class, 'liquor_truck_id','event_liquor_id')->where('type', 'liquor');
    }
+
+   public function getCompanyNameAttribute()
+   {
+      return auth()->user()->LanguageId == 1 ? ucfirst($this->company_name_en) : ucfirst($this->company_name_ar); 
+   }
 }

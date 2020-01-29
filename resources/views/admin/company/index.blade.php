@@ -53,9 +53,9 @@
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>
               </div>
             </div>
-          </div>    
+          </div>
         </div>
-        
+
         {{-- <div class="col-2">
           <div class="kt-section kt-section--space-sm ">
             <div class="kt-widget24 kt-widget24--solid">
@@ -150,10 +150,11 @@
                         <tr>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('ESTABLISHMENT TYPE') }}</th>
-                            <th>{{ __('AREA') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                            <th>{{ __('BUSINESS LICENSE') }}</th>
                             <th>{{ __('SUBMITTED DATE') }}</th>
                             <th>{{ __('REQUEST TYPE') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
                         </tr>
                     </thead>
                </table>
@@ -162,14 +163,13 @@
                      <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
                        <thead>
                            <tr>
-                               <th></th>
                                <th>{{ __('REFERENCE NO.') }}</th>
                                <th>{{ __('ESTABLISHMENT NAME') }}</th>
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
                                <th>{{ __('REQUEST TYPE') }}</th>
                                <th>{{ __('LAST CHECKED STATUS') }}</th>
-                               <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
+                               <th>{{ __('COMPLETE ADDRESS') }}</th>
                                <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCED BACK REASON') }}</th>
                            </tr>
@@ -191,7 +191,7 @@
                       </div>
                       <div class="col-8">
                         <form class="form-row">
-                          
+
                           {{-- <div class="col-3">
                             <select name="" id="active-applicant-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="company_table.draw()" >
                               <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
@@ -244,14 +244,12 @@
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('REGISTERED DATE') }}</th>
-                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('APPROVED DATE') }}</th>
                             <th>{{ __('EMAIL') }}</th>
-                            <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
-                            <th>{{ __('WEBSITE') }}</th>
-                            <th>{{ __('REGISTERED BY') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
+                            <th>{{ __('APPROVED BY') }}</th>
                             <th>{{ __('BUSINESS LICENSE NUMBER') }}</th>
-                            <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
                             <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                         </tr>
                     </thead>
@@ -270,7 +268,7 @@
    $(document).ready(function(){
       hasUrl()
       newCompany();
-   
+
 
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
@@ -301,14 +299,13 @@
            {targets: '_all', className:'no-wrap'}
         ],
         columns:[
-        {render: function(){ return null; }},
         {data: 'reference_number'},
         {data: 'name'},
         {data: 'phone_number'},
         {data: 'company_email'},
         {data: 'request_type'},
         {data: 'status'},
-        {data: 'address'},
+        {data: 'full_address'},
         {data: 'expired_date'},
         {data: 'reason'},
         ],
@@ -345,13 +342,11 @@
         {data: 'name'},
         {data: 'phone_number'},
         {data: 'registered_date'},
-        {data: 'status'},
         {data: 'company_email'},
-        {data: 'address'},
-        {data: 'website'},
+        {data: 'status'},
+        {data: 'full_address'},
         {data: 'registered_by'},
         {data: 'trade_license'},
-        {data: 'issued_date'},
         {data: 'expired_date'},
         ],
         createdRow: function(row, data, index){
@@ -367,12 +362,12 @@
       company_table.page.len($('#active-length-change').val());
       $('#active-length-change').change(function(){ company_table.page.len( $(this).val() ).draw(); });
       //custom search
-      
+
       var search = $.fn.dataTable.util.throttle(function(v){ company_table.search(v).draw(); });
       $('input#search-active-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
 
    }
-   
+
    function newCompany(){
 
      new_company =  $('table#new-company-request').DataTable({
@@ -382,26 +377,26 @@
          ajax: {
             url: '{{ route('admin.company.datatable') }}',
             data: function(d){
-               d.status = ['new', 'pending'];
+               d.status = ['pending'];
                // d.type = $('#new-company-type').val();
                d.area = $('#new-company-area').val();
             }
          },
          columnDefs:[
-            {targets:[0, 4, 5], className:'no-wrap'}
+            {targets:'_all', className:'no-wrap'}
          ],
+         responsive:true,
          columns:[
          {data: 'reference_number'},
          {data: 'name'},
-         {data: 'type'},
-         {data: 'area'},
+         {data: 'expired_date'},
+         {data: 'trade_license'},
          {data: 'date'},
          {data: 'request_type'},
+         {data: 'full_address'},
          ],
          createdRow: function(row, data, index){
-            $(row).click(function(e){
-               location.href = data.application_link;
-            });
+            $('td:not(:first-child)', row).click(function(e){ location.href = data.application_link; });
          }
       });
 
@@ -439,7 +434,7 @@
       new_company.page.len($('#new-length-change').val());
       $('#new-length-change').change(function(){ new_company.page.len( $(this).val() ).draw(); });
       //custom search
-      
+
       var search = $.fn.dataTable.util.throttle(function(v){ new_company.search(v).draw(); });
       $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
    }

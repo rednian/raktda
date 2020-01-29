@@ -20,6 +20,12 @@ class Company extends Model
     
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
 
+    public function getFullAddressAttribute()
+    {
+        return ucfirst($this->address).", {$this->area->name}, {$this->emirate->name}, {$this->country->name}";
+    }
+    
+
     public function artists()
     {
         return $this->belongsToMany(Artist::class, 'company_artist', 'company_id', 'artist_id');
@@ -106,5 +112,10 @@ class Company extends Model
     public function getNameAttribute()
     {
         return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
+    }
+
+     public function getDescriptionAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->company_description_en) : ucfirst($this->company_description_ar);
     }
 }

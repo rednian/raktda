@@ -53,7 +53,7 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <td>{{ $action->user->NameEn }}</td>
+                        <td>{{ $action->user->name }}</td>
                         <td>{{ $action->updated_at }}</td>
                         <td>
                             {{ $action->comment }}
@@ -203,7 +203,7 @@
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
                           @if ($number < 6)
-                            <a href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist->artist_id) }}" class="kt-badge__pic" data-original-title="{{ ucwords($artist_permit->fullname) }}" data-toggle="kt-tooltip" data-skin="brand" data-placement="top">
+                            <a href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist->artist_id) }}" class="kt-badge__pic" data-original-title="{{ ucwords($artist_permit->name) }}" data-toggle="kt-tooltip" data-skin="brand" data-placement="top">
                               <img class="img-thumbnail" src="{{ asset('storage/'.$artist_permit->thumbnail) }}" alt="image">
                             </a>
                             @else
@@ -229,7 +229,7 @@
                     <tbody>
                       <tr>
                          <td><span style="font-size: large;" class="flaticon-home"></span></td>
-                         <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($permit->owner->company->name_en) : ucwords($permit->owner->company->name_ar) }}</td>
+                         <td class="kt-font-dark">{{ ucwords($permit->owner->company->name) }}</td>
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-email"></span></td>
@@ -241,13 +241,7 @@
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-placeholder-3"></span></td>
-                        @php
-                          $country = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->country->name_en) : ucfirst($permit->owner->company->country->name_ar);
-                          $area = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->area->area_en) : ucfirst($permit->owner->company->area->area_en);
-                          $emirate = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->emirate->name_en) : ucfirst($permit->owner->company->emirate->name_en);
-                          $address = ucfirst($permit->owner->company->address).' '.ucfirst($area).' '.ucfirst($emirate).' '.ucfirst($country);
-                        @endphp
-                        <td>{{$address}}</td>
+                        <td>{{$permit->owner->company->fullAddress}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -259,12 +253,12 @@
                       <tr>
                         <td class="no-wrap"><i style="font-size: large;" class="flaticon-profile-1"></i></td>
                         <td>
-                          {{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->contact_name_en) : ucwords($permit->company->contact->contact_name_ar)  }}
+                          {{ ucwords($permit->company->contact->name) }}
                         </td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-suitcase"></i></td>
-                        <td>{{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->designation_en) : ucwords($permit->company->contact->designation_ar) }}</td>
+                        <td>{{ ucwords($permit->company->contact->designation) }}</td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-mobile-phone"></i></td>
@@ -393,7 +387,7 @@
                                                         <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ strtoupper(substr($name[0], 0, 1)) }}</span></div>
                                                     </div>
                                                     <div class="kt-user-card-v2__details">
-                                                        <span class="kt-user-card-v2__name">{{ ucwords($comment->user->NameEn) }}</span>
+                                                        <span class="kt-user-card-v2__name">{{ ucwords($comment->user->name) }}</span>
                                                         <a href="#" class="kt-user-card-v2__email kt-link">{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</a>
                                                     </div>
                                                 </div>

@@ -49,18 +49,19 @@ class ArtistPermitController extends Controller
     {
         $view = $request->user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists() ? 'admin.artist_permit.inspector_index' : 'admin.artist_permit.index';
 
-       return view($view, [
+        return view($view, [
             'page_title'=> 'Artist Permit Dashboard',
             'breadcrumb'=> 'admin.artist_permit.index',
             'professions'=>Profession::has('artistpermit')->get(),
             'countries'=> Country::has('artistpermit')->get(),
-            'new_request'=> Permit::has('artist')->whereIn('permit_status', ['new', 'modified'])->count(),
-            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['checked'])->count(),
+            'new_request'=> Permit::has('artist')->whereIn('permit_status', ['new'])->count(),
+            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['checked', 'modified'])->count(),
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
             'active_permit'=> Permit::lastMonth(['active', 'approved-unpaid', 'rejected', 'expired', 'modification request'])->count(),
-            'active'=> Permit::where('permit_status', 'active')->count()
+            'active'=> Permit::where('permit_status', 'active')->count(),
+            'processing' => Permit::whereIn('permit_status', ['approved-unpaid', 'modification request', 'processing', 'need approval'])->count()
         ]);
 
     }
@@ -556,12 +557,10 @@ class ArtistPermitController extends Controller
                 return $name;
             })
             ->editColumn('issued_date', function($artist_permit_document){
-                if(strtolower($artist_permit_document->requirement->requirement_name)  == 'medical certificate'){ return 'Not Required';}
-                return $artist_permit_document->issued_date->format('d-M-Y');
+                return $artist_permit_document->issued_date->year > 1 ? $artist_permit_document->issued_date->format('d-F-Y') : '-';
             })
             ->editColumn('expired_date', function($artist_permit_document){
-                if(strtolower($artist_permit_document->requirement->requirement_name) == 'medical certificate'){ return 'Not Required';}
-                return $artist_permit_document->expired_date->format('d-M-Y');
+                return $artist_permit_document->expired_date->year > 1 ? $artist_permit_document->expired_date->format('d-F-Y') : '-';
             })
             ->addColumn('name', function($artist_permit_document){
                 return  $artist_permit_document->requirement->requirement_name;
@@ -573,8 +572,8 @@ class ArtistPermitController extends Controller
 
         $data['data'][] = [
             'document_name' => '<a href="'.asset('/storage/'.$artistpermit->thumbnail).'" data-fancybox data-caption="'.ucwords($artistpermit->artist->fullname).' - Photo">Artist Photo</a>',
-            'issued_date'=> 'Not Required',
-            'expired_date'=> 'Not Required',
+            'issued_date'=> '-',
+            'expired_date'=> '-',
             'name'=> ucwords($artistpermit->artist->fullname)
         ];
 
@@ -632,7 +631,7 @@ class ArtistPermitController extends Controller
                 })
                 ->addColumn('profession', function($artist_permit){
                     if(!$artist_permit->profession){ return null; }
-                    return ucwords($artist_permit->profession->name_en);
+                    return ucwords($artist_permit->profession->name);
                 })
                 ->addColumn('person_code', function($artist_permit){
                     return $artist_permit->artist->person_code;
@@ -666,7 +665,7 @@ class ArtistPermitController extends Controller
                         $date = $existing_permit->created_at->diffForHumans();
                     }
                     $profession = $artist_permit->profession->name_en;
-                    return '<span class="kt-font-bolder kt-font-transform-u">'.$name.'</span> currently has an existing permit that will expire '.$date.' with profession of 
+                    return '<span class="kt-font-bolder kt-font-transform-u">'.$name.'</span> currently has an existing permit that will expire '.$date.' with profession of
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
                 })
                 ->addColumn('action', function($artist_permit){
@@ -701,6 +700,7 @@ class ArtistPermitController extends Controller
 
     public  function permitHistory(Request $request, Permit $permit)
     {
+
         $permits = Permit::has('artist')
             ->whereNotIn('permit_status', ['draft'])
             ->whereNotNull('permit_reference_id')
@@ -778,8 +778,8 @@ class ArtistPermitController extends Controller
             $limit = $request->length;
             $start = $request->start;
             $permit = Permit::has('artist')
-                ->when($request->request_type, function ($q) use ($request){
-                    $q->where('request_type', $request->request_type);
+                ->when($request->term, function ($q) use ($request){
+                    $q->where('term', $request->term);
                 })
                 ->when($request->status, function($q) use ($request){
                     $q->whereIn('permit_status', $request->status);

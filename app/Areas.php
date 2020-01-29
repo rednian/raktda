@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class Areas extends Model
@@ -20,6 +21,11 @@ class Areas extends Model
     public function company()
     {
     	return $this->hasMany(Company::class, 'area_id', 'id');
+    }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->area_en) : ucfirst($this->area_ar); 
     }
 
 

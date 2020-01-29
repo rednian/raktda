@@ -94,7 +94,7 @@
                     {{Session::get('message')[1]}}
                 </section>
                 @endif
-                
+
                 <form action="{{ route('company.store') }}" method="post" accept-charset="utf-8">
                     @csrf
                     <section class="panel panel-default">
@@ -112,7 +112,7 @@
                                      @endif
 
                             </div>
-                            
+
 
                             <section class="row corporate">
                                 <div class="col-sm-6">
@@ -129,7 +129,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group @if( $errors->has('trade_license_expired_date') ) has-error @endif">
                                         <label>Trade License Expired Date <span class="text-danger">*</span></label>
-                                        <input required value="{{old('trade_license_expired_date')}}" type="date"
+                                        <input min="{{date('Y-m-d')}}" required value="{{old('trade_license_expired_date')}}" type="date"
                                             name="trade_license_expired_date" class="form-control @error('trade_license_expired_date') is-invalid @enderror" autocomplete="off">
                                         @if ($errors->has('trade_license_expired_date'))
                                           <div class="help-block"> {{$errors->first('trade_license_expired_date')}}</div>
@@ -171,7 +171,7 @@
                                     </div>
                                 </div>
                             </section> --}}
-                            
+
                             <section class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group @if( $errors->has('area_id') ) has-error @endif">
@@ -277,13 +277,13 @@
                                     <button type="submit" class="btn btn-success btn-block">Register</button>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </section>
-                    
-                    
-                    
-                    
+
+
+
+
                 </form>
             </div>
         </section>
@@ -295,56 +295,47 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
     </script>
+    <script src="{{ asset('/assets/vendors/custom/loading_overlay/loadingoverlay.min.js') }}"></script>
     <script src="{{ asset('assets/css/login/backstretch.min.js') }}" type="text/javascript"></script>
          {!! NoCaptcha::renderJs() !!}
     <script>
-        $(document).ready(function(){
+      $(document).ready(function(){
 
-            $('select[name=company_type_id]').change(function(){
-                console.log($(this).val());
-                if($(this).val() == 1){
-                    $('.corporate').addClass('hide').find('input').attr('disabled', true);
-                }
-                else{
-                 $('.corporate').removeClass('hide').find('input').removeAttr('disabled', true);   
-                }
-            });
-
-         $('.news-feed').backstretch([
-            '{{asset('/assets/css/login/1.jpg')}}',
-            '{{asset('/assets/css/login/2.jpg')}}',
-            '{{asset('/assets/css/login/3.jpg')}}',
-            '{{asset('/assets/css/login/4.jpg')}}',
-      ], {
-            fade: 1000,
-            duration: 3000
-         });
+        $('select[name=company_type_id]').change(function(){
+          if($(this).val() == 1){
+            $('.corporate').addClass('hide').find('input').attr('disabled', true);
+          }
+          else{
+            $('.corporate').removeClass('hide').find('input').removeAttr('disabled', true);
+          }
+        });
 
 
-  $('form').bootstrapValidator({
-    message: 'This value is not valid',
-    fields: {
-      username: {
-        message: 'The username is not valid',
-        validators: {
-          notEmpty: {
-            message: 'The username is required and cannot be empty'
-          },
-          stringLength: {
-            min: 5,
-            max: 20,
-            message: 'The username must be more than 5 and less than 20 characters long'
-          },
-          regexp: {
-            regexp: /^[a-zA-Z][a-zA-Z0-9.]+$/,
-            message: 'The username must start with letter and can only consist of alphabetical, number and dot'
-          },
-          remote: {
-            url: '{{ route('company.isexist') }}',
-            type: 'get',
-            data: {username: $(this).val()},
-            message: 'The username is already exist.',
-            delay: 1000
+
+        $('form').bootstrapValidator({
+          message: 'This value is not valid',
+          fields: {
+            username: {
+              message: 'The username is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'The username is required and cannot be empty'
+                },
+                stringLength: {
+                  min: 5,
+                  max: 20,
+                  message: 'The username must be more than 5 and less than 20 characters long'
+                },
+                regexp: {
+                  regexp: /^[a-zA-Z][a-zA-Z0-9.]+$/,
+                  message: 'The username must start with letter and can only consist of alphabetical, number and dot'
+                },
+                remote: {
+                  url: '{{ route('company.isexist') }}',
+                  type: 'get',
+                  data: {username: $(this).val()},
+                  message: 'The username is already exist.',
+                  delay: 1000
           }
         }
       },
@@ -357,7 +348,7 @@
              data: {mobile_number: $(this).val()},
              message: 'The mobile number is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -369,7 +360,7 @@
              data: {name_en: $(this).val()},
              message: 'The establishment already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -381,7 +372,7 @@
              data: {name_ar: $(this).val()},
              message: 'The establishment already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -393,7 +384,7 @@
              data: {trade_license: $(this).val()},
              message: 'The business license number is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
 
@@ -405,7 +396,7 @@
              data: {email: $(this).val()},
              message: 'The email is already exist.',
              delay: 1000
-           } 
+           }
         }
       },
       trade_license_issued_date:{
@@ -477,9 +468,14 @@
       }
     }/*end of fields*/
   }).on('success.form.fv', function (e) {
-
     // e.preventDefault();
     var $form = $(e.target);
+
+
+    if (data.fv.getInvalidFields().length > 0) {    // There is invalid field
+      //data.fv.disableSubmitButtons(true);
+    //  $.LoadingOverlay("hide", true);
+    }
   });
 
 });

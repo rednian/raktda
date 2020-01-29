@@ -21,7 +21,7 @@ class CompanyComment extends Model
 		return $this->belongsTo(User::class, 'user_id');
 	}
 
-	public function getCommentAttribute()
+	public function getRemarksAttribute()
     {
         return Auth::user()->LanguageId == 1 ? ucfirst($this->comment_en) :  ucfirst($this->comment_ar);
     }
