@@ -14,6 +14,11 @@ class VisaType extends Model
         return $this->hasMany(ArtistPermit::class, 'visa_type_id');
     }
 
+    public function getNameAttribute()
+    {
+    	return auth()->user()->LanguageId == 1 ? ucfirst($this->visa_type_en) : ucfirst($this->visa_type_ar);
+    }
+
 }
 
 

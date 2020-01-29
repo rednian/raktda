@@ -1,5 +1,13 @@
 <?php
 
+function requestType($type)
+{
+    if (in_array($type, ['amend request'])) {
+        $type = 'amendment request';
+    }
+    return $type;
+}
+
 function duration($start = null, $end = null){
     $days = Carbon\Carbon::parse($start)->diffInDays($end);
     return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';

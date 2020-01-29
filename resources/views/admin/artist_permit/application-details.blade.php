@@ -77,13 +77,13 @@
                                   <td width="25%">{{ __('Reference Number') }} :</td>
                                   <td class="text-danger kt-font-bolder">{{ $permit->reference_number }}</td>
                                </tr>
-                                @if($permit->permit_status != 'new')
+                           {{--      @if($permit->permit_status != 'new')
 
                                <tr>
                                   <td>{{ __('Permit Status') }} :</td>
                                   <td>{!! permitStatus($permit->permit_status) !!}</td>
                                </tr>
-                                    @endif
+                                @endif --}}
                                @if ($permit->number)
                                   <tr>
                                      <td>Permit Number :</td>
@@ -148,7 +148,7 @@
                     <tbody>
                       <tr>
                          <td><span style="font-size: large;" class="flaticon-home"></span></td>
-                         <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucwords($permit->owner->company->name_en) : ucwords($permit->owner->company->name_ar) }}</td>
+                         <td class="kt-font-dark">{{ ucwords($permit->owner->company->name) }}</td>
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-email"></span></td>
@@ -160,13 +160,7 @@
                       </tr>
                       <tr>
                         <td><span style="font-size: large;" class="flaticon-placeholder-3"></span></td>
-                        @php
-                          $country = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->country->name_en) : ucfirst($permit->owner->company->country->name_ar);
-                          $area = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->area->area_en) : ucfirst($permit->owner->company->area->area_en);
-                          $emirate = Auth::user()->LanguageId == 1 ? ucfirst($permit->owner->company->emirate->name_en) : ucfirst($permit->owner->company->emirate->name_en);
-                          $address = ucfirst($permit->owner->company->address).' '.ucfirst($area).' '.ucfirst($emirate).' '.ucfirst($country);
-                        @endphp
-                        <td>{{$address}}</td>
+                        <td>{{$permit->owner->company->fullAddress}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -178,12 +172,12 @@
                       <tr>
                         <td class="no-wrap"><i style="font-size: large;" class="flaticon-profile-1"></i></td>
                         <td>
-                          {{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->contact_name_en) : ucwords($permit->company->contact->contact_name_ar)  }}
+                          {{ ucwords($permit->company->contact->name)  }}
                         </td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-suitcase"></i></td>
-                        <td>{{ Auth::user()->LanguageId == 1 ? ucwords($permit->company->contact->designation_en) : ucwords($permit->company->contact->designation_ar) }}</td>
+                        <td>{{ ucwords($permit->company->contact->designation) }}</td>
                      </tr>
                      <tr>
                         <td><i style="font-size: large;" class="la la-mobile-phone"></i></td>

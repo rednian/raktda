@@ -2,6 +2,7 @@
 
 namespace App;
 use Auth;
+use App\Country;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,6 +22,8 @@ class Event extends Model
         'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid', 'paid_artist_fee',
         'owner_name','owner_name_ar', 'request_type', 'additional_location_info','cancel_date', 'event_type_sub_id','exempt_payment',
         'exempt_by', 'approved_by', 'approved_date'];
+
+
 
     public function subType()
     {
@@ -176,6 +179,13 @@ class Event extends Model
         $this->attributes['issued_date'] = Carbon::parse($date)->format('Y-m-d');
     }
 
+
+    public function setCountryIdAttribute()
+    {
+        $this->attributes['country_id'] = Country::where('country_code', 'AE')->first()->country_id;
+    }
+
+
     public function setExpiredDateAttribute($date)
     {
         $this->attributes['expired_date'] = Carbon::parse($date)->format('Y-m-d');
@@ -185,5 +195,22 @@ class Event extends Model
     {
         return Auth::user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
     }
+
+    public function getNoteAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->note_en) : ucfirst($this->note_ar);
+    }
+
+    public function getVenueAttribute()
+    {
+        return auth()->user()->LanguageId ==1 ? ucfirst($this->venue_en) : ucfirst($this->venue_ar);
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return auth()->user()->LanguageId == 1 ? ucfirst($this->description_en) : ucfirst($this->description_ar);
+    }
+
+
 
 }

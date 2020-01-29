@@ -150,10 +150,11 @@
                         <tr>
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                            <th>{{ __('ESTABLISHMENT TYPE') }}</th>
-                            <th>{{ __('AREA') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                            <th>{{ __('BUSINESS LICENSE') }}</th>
                             <th>{{ __('SUBMITTED DATE') }}</th>
                             <th>{{ __('REQUEST TYPE') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
                         </tr>
                     </thead>
                </table>
@@ -162,14 +163,13 @@
                      <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
                        <thead>
                            <tr>
-                               <th></th>
                                <th>{{ __('REFERENCE NO.') }}</th>
                                <th>{{ __('ESTABLISHMENT NAME') }}</th>
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
                                <th>{{ __('REQUEST TYPE') }}</th>
                                <th>{{ __('LAST CHECKED STATUS') }}</th>
-                               <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
+                               <th>{{ __('COMPLETE ADDRESS') }}</th>
                                <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCED BACK REASON') }}</th>
                            </tr>
@@ -244,13 +244,12 @@
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('PHONE NUMBER') }}</th>
-                            <th>{{ __('REGISTERED DATE') }}</th>
-                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('APPROVED DATE') }}</th>
                             <th>{{ __('EMAIL') }}</th>
-                            <th>{{ __('ESTABLISHMENT ADDRESS') }}</th>
-                            <th>{{ __('REGISTERED BY') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
+                            <th>{{ __('APPROVED BY') }}</th>
                             <th>{{ __('BUSINESS LICENSE NUMBER') }}</th>
-                            <th>{{ __('BUSINESS LICENSE ISSUED DATE') }}</th>
                             <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                         </tr>
                     </thead>
@@ -300,14 +299,13 @@
            {targets: '_all', className:'no-wrap'}
         ],
         columns:[
-        {render: function(){ return null; }},
         {data: 'reference_number'},
         {data: 'name'},
         {data: 'phone_number'},
         {data: 'company_email'},
         {data: 'request_type'},
         {data: 'status'},
-        {data: 'address'},
+        {data: 'full_address'},
         {data: 'expired_date'},
         {data: 'reason'},
         ],
@@ -344,12 +342,11 @@
         {data: 'name'},
         {data: 'phone_number'},
         {data: 'registered_date'},
-        {data: 'status'},
         {data: 'company_email'},
-        {data: 'address'},
+        {data: 'status'},
+        {data: 'full_address'},
         {data: 'registered_by'},
         {data: 'trade_license'},
-        {data: 'issued_date'},
         {data: 'expired_date'},
         ],
         createdRow: function(row, data, index){
@@ -386,20 +383,20 @@
             }
          },
          columnDefs:[
-            {targets:[0, 4, 5], className:'no-wrap'}
+            {targets:'_all', className:'no-wrap'}
          ],
+         responsive:true,
          columns:[
          {data: 'reference_number'},
          {data: 'name'},
-         {data: 'type'},
-         {data: 'area'},
+         {data: 'expired_date'},
+         {data: 'trade_license'},
          {data: 'date'},
          {data: 'request_type'},
+         {data: 'full_address'},
          ],
          createdRow: function(row, data, index){
-            $(row).click(function(e){
-               location.href = data.application_link;
-            });
+            $('td:not(:first-child)', row).click(function(e){ location.href = data.application_link; });
          }
       });
 

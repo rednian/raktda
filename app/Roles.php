@@ -27,6 +27,12 @@ class Roles extends Model
         return $this->belongsTo(ApproverProcedure::class, 'role_id');
     }
 
+
+    public function getNameAttribute()
+    {
+        return auth()->user()->LanguageId == 1 ? ucfirst($this->NameEn) : ucfirst($this->NameAr);
+    }
+
     
 
      public function users()

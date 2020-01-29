@@ -56,6 +56,11 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         })
         ->whereType(4);
     }
+
+    public function getNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->NameEn) : ucfirst($this->NameAr);
+    }
     
 
     public function approver()

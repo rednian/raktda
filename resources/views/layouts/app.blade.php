@@ -189,10 +189,7 @@
              var key = String.fromCharCode(e.which);
              return arabicAlphabet.test(key) ? true : false;    
         });
-
-        if (!$('input[type=text]').prop('dir')) {
-            $(this).attr('dir', 'ltr');
-        }
+        
         
         //english, numbers and special character allowed    
         $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){

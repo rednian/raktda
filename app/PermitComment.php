@@ -2,14 +2,21 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class PermitComment extends Model
 {
     protected $table = 'smartrak_smartgov.permit_comment';
     protected $primaryKey = 'permit_comment_id';
-    protected $fillable = [ 'comment', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment', 'government_id'];
+    protected $fillable = [ 'comment', 'comment_ar', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment', 'government_id'];
     protected  $dates = ['created_at', 'updated_at', 'checked_date'];
+
+    // public function getCommentAttribute()
+    // {
+    //     // return Auth::user()->LanguageId == 1 ? ucfirst($this->comment) : ucfirst($this->comment_ar);
+    //     return ucfirst($this->comment_ar);
+    // }
 
     public function role()
     {
@@ -47,5 +54,10 @@ class PermitComment extends Model
 
     public function government(){
         return $this->belongsTo(Government::class, 'government_id');
+    }
+
+    public function getRemarksAttribute()
+    {
+       return auth()->user()->LanguageId == 1 ? ucfirst($this->comment) : ucfirst($this->comment_ar); 
     }
 }

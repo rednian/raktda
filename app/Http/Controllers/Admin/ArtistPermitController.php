@@ -54,8 +54,8 @@ class ArtistPermitController extends Controller
             'breadcrumb'=> 'admin.artist_permit.index',
             'professions'=>Profession::has('artistpermit')->get(),
             'countries'=> Country::has('artistpermit')->get(),
-            'new_request'=> Permit::has('artist')->whereIn('permit_status', ['new', 'modified'])->count(),
-            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['checked'])->count(),
+            'new_request'=> Permit::has('artist')->whereIn('permit_status', ['new'])->count(),
+            'pending_request'=> Permit::has('artist')->whereIn('permit_status', ['checked', 'modified'])->count(),
             'approved_permit'=> Permit::lastMonth(['active'])->count(),
             'rejected_permit'=> Permit::lastMonth(['rejected'])->count(),
             'cancelled_permit'=> Permit::lastMonth(['cancelled'])->count(),
@@ -631,7 +631,7 @@ class ArtistPermitController extends Controller
 			    })
 			    ->addColumn('profession', function($artist_permit){
 			    	if(!$artist_permit->profession){ return null; }
-			    	return ucwords($artist_permit->profession->name_en);
+			    	return ucwords($artist_permit->profession->name);
 			    })
 			    ->addColumn('person_code', function($artist_permit){
 			    	return $artist_permit->artist->person_code;

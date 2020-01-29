@@ -21,6 +21,7 @@ var KTAppOptions = {
 
 
 $(document).ready(function(){
+
   $('input[type=checkbox]').each(function(){
       $(document).on('input[type=checkbox]','change',function(){
         if($(this).is(':checked')){
@@ -33,6 +34,7 @@ $(document).ready(function(){
         }
       });
   });
+  
 // datatable default setting
     $.extend( true, $.fn.dataTable.defaults, {
         // dom: '<"row"<"col text-left"f>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',

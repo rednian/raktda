@@ -14,6 +14,11 @@
     --gray-light: #edeef4;
 }
 
+button, input, optgroup, select, textarea {
+    font-family: sans-serif;
+}
+
+
 /*sidebar*/
 .kt-aside,
 .kt-aside-menu .kt-aside__brand {
