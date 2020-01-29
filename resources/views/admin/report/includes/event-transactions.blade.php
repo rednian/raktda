@@ -378,20 +378,10 @@
 
                             }
                             else{
-
-                                $('#amountFooter').html(
-                                    ' 0.00'
-                                );
-                                $('#totalAmount').html(
-                                    ' 0.00'
-                                );
-
-                                $('#vatFooter').html(
-                                    '0.00'
-                                );
-                                $('#totalFooter').html(
-                                    '0.00'
-                                );
+                                $('#amountFooter').html(' 0.00');
+                                $('#totalAmount').html('0.00');
+                                $('#vatFooter').html('0.00');
+                                $('#totalFooter').html('0.00');
                             }
                         },
                     } );
@@ -561,23 +551,16 @@
 
                                     } else {
 
-                                        $('#amountFooter').html(
-                                            '0.00'
-                                        );
-                                        $('#totalAmount').html(
-                                            '0.00'
-                                        );
-
-                                        $('#vatFooter').html(
-                                            '0.00'
-                                        );
-                                        $('#totalFooter').html(
-                                            '0.00'
-                                        );
+                                        $('#amountFooter').html('0.00');
+                                        $('#totalAmount').html('0.00');
+                                        $('#vatFooter').html('0.00');
+                                        $('#totalFooter').html('0.00');
                                     }
-                                },
-                            });
-                        } else {
+                                 },
+                               });
+                            }
+                        else
+                            {
                             alert('Start Date must be Less than End Date')
                                $('#end_date').css({border:'1px solid #ff0000c4',color:'#ff0000c4'});
                             $('#start_date').css({border:'1px solid #ff0000c4',color:'#ff0000c4'});

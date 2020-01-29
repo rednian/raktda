@@ -4374,6 +4374,28 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
+                        customize: function ( win ) {
+                            $(win.document.body).prepend(
+                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute;margin-left: -10%">Transactions In Last 30 Days </span><span style="float: right" id="totalAmountLastThirty"></span></h3>'
+                            );
+                            var totalAmount= $('#totalAmount').html();
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
+
+                            $(win.document.body).find('table').append(
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            );
+                            $(win.document.body).find('#totalAmountLastThirty').append(totalAmount)
+                            $(win.document.body).find('h1').css('display','none')
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                );
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css({ 'font-size': 'inherit'});
+                        },
 
                     },
                     {
@@ -4385,6 +4407,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var totalAmount= $('#totalAmount').html();
                             return "Transactions in last 30 days " +datetime + ' Total Amount : '+totalAmount ;
                         },
+
                     }
                 ],
                 lengthMenu: [
