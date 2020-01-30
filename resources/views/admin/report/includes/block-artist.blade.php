@@ -136,11 +136,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             </button>
         </li>
     </ul>
-
-
 <table class="table  table-hover  table-bordered table-striped border" id="block-artist">
     <thead>
-    <tr id="filterTableCollapse" style="display: none">
+    <tr id="filterTableCollapse" style="display: none;font-family:arial">
         <th colspan="2">
             <div class="col-sm" style="display: inline-flex;width:100%">
                 <input type="text" class="form-control form-control-sm " name="search-artist-name"
@@ -869,7 +867,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         }
 
         function active_artist_filter(filter_search = '', search_artist = '') {
-            alert('active_artist_filter')
+
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -1248,7 +1246,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         $('.search_button').click(function () {
             if($('#navlink #active_artist_click a').hasClass('active')) {
-                alert('active actist SEARCH')
+
                 var filter_search = $('#filter_search').val();
                 var search_artist = $('#search_artist').val();
                 if (filter_search != '' && search_artist != '') {
@@ -1272,7 +1270,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         $('#search_by_status').change(function () {
             if($('#navlink #active_artist_click a').hasClass('active')) {
-              alert('status artist')
+
         }
             else{
                 $('#search_by_gender option').prop('selected', false)
@@ -1707,7 +1705,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             }
                             if (xyz == "+30") {
                                 return ' Events In Next 30 Days' +datetime+Date.now() ;
-
                             }
                             if (xyz == "-30") {
                                 return ' Events In Last 30 Days' +datetime+Date.now() ;
@@ -1790,7 +1787,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.event_reports.events')}}',
-                    method: 'post',
+                    method: 'get',
                     data: {events: xyz}
                 },
                 columns: [
@@ -3858,7 +3855,13 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         function transactions()
         {
+            $('.navbar-nav .nav-item').removeClass('active');
+            var link = $('#lastSevenButton');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
             var currentdate = new Date();
+            var lastSeven=$('#lastSeven').val();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
                 + currentdate.getFullYear() + "  "
@@ -3869,49 +3872,47 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             var time = + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-            table = $('#artist-transaction-table').DataTable({
 
+            table = $('#artist-transaction-table').DataTable({
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
                         targets: [],
                         visible: false,
-                        "searchable": false,
+                        searchable: false,
                     },
                     {
-                        targets: [2,3,4],
-                        className: "text-right",
+                        "targets": [2,3,4],
+                        "className": "text-right",
                     }
                 ],
                 buttons: ['pageLength',
                     {
                         extend: 'print',
                         title: function () {
-                            return 'Transactions' +datetime+new Date();
+                            return "Transactions in last 7 days " +datetime+Date.now() ;
                         },
                         exportOptions: {
                             columns: [0,1,2,3,4],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
-                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute">Transactions</span> <span class="text-dark pull-right font-weight-bolder" style="font-size: 16px;margin-top:3px;" id="totalAmountPrint">Total Amount :</span></h3>'
+                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute;margin-left: -10%">Transactions In Last 7 Days </span><span style="float: right" id="totalAmountLastSeven"></span></h3>'
                             );
                             var totalAmount= $('#totalAmount').html();
-                            var vat = $('#vatFooter').html();
-                            var amount = $('#amountFooter').html();
-                            $(win.document.body).find('#totalAmountPrint').append(totalAmount)
+                            var amount=$('#amountFooter').html();
+                            var vat=$('#vatFooter').html();
 
                             $(win.document.body).find('table').append(
-                            '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
-
+                            $(win.document.body).find('#totalAmountLastSeven').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
-
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -3923,10 +3924,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             columns: [0, 1, 2, 3, 4,]
                         },
                         title: function () {
-                            var totalAmount = $('#totalAmount').html();
-                            return "Transactions " + datetime +new Date()+ ' Total Amount ' + totalAmount;
+                            var totalAmount= $('#totalAmount').html();
+                            return "Transactions in last 7 days " +datetime +' Total Amount '+totalAmount;
                         },
-                    },
+                    }
                 ],
                 lengthMenu: [
                     [10, 25, 50],
@@ -3939,8 +3940,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 serverSide: true,
                 footer: true,
                 searching: true,
-
-                ajax: "{{ route('admin.artist_permit_report.artistTransaction') }}",
+                ajax: {
+                    url: '{{ route('admin.artist_permit_report.transactionDate')}}',
+                    method: 'get',
+                    data: {lastSeven: lastSeven}
+                },
                 columns: [
                     {data: 'transaction_id', name: 'transaction_id'},
                     {data: 'transaction_date', name: 'transaction_date'},
@@ -3979,10 +3983,27 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 return intVal(a) + intVal(b);
                             } );
 
+
                         $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
                         $('#totalAmount').html(accounting.formatMoney(total,'AED '));
                         $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
                         $('#totalFooter').html(accounting.formatMoney(total,'AED '));
+                    }
+                    else{
+
+                        $('#amountFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalAmount').html(
+                            'AED 0.00'
+                        );
+
+                        $('#vatFooter').html(
+                            'AED 0.00'
+                        );
+                        $('#totalFooter').html(
+                            'AED 0.00'
+                        );
                     }
                 },
             });
@@ -4017,7 +4038,134 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         if (!link.hasClass('active')) {
             link.addClass('active');
         }
-        transactions()
+        var currentdate = new Date();
+        var datetime = +currentdate.getDate() + "-"
+            + (currentdate.getMonth() + 1) + "-"
+            + currentdate.getFullYear() + "  "
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+
+        var time = + currentdate.getHours() + ":"
+            + currentdate.getMinutes() + ":"
+            + currentdate.getSeconds();
+        table = $('#artist-transaction-table').DataTable({
+
+            dom: 'Bfrtip',
+            "columnDefs": [
+                {
+                    targets: [],
+                    visible: false,
+                    "searchable": false,
+                },
+                {
+                    targets: [2,3,4],
+                    className: "text-right",
+                }
+            ],
+            buttons: ['pageLength',
+                {
+                    extend: 'print',
+                    title: function () {
+                        return 'Transactions' +datetime+new Date();
+                    },
+                    exportOptions: {
+                        columns: [0,1,2,3,4],
+                    },
+                    customize: function ( win ) {
+                        $(win.document.body).prepend(
+                            '<h3 style="font-family:arial;text-align:center"><span style="position: absolute">Transactions</span> <span class="text-dark pull-right font-weight-bolder" style="font-size: 16px;margin-top:3px;" id="totalAmountPrint">Total Amount :</span></h3>'
+                        );
+                        var totalAmount= $('#totalAmount').html();
+                        var vat = $('#vatFooter').html();
+                        var amount = $('#amountFooter').html();
+                        $(win.document.body).find('#totalAmountPrint').append(totalAmount)
+
+                        $(win.document.body).find('table').append(
+                            '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                        );
+
+                        $(win.document.body).find('h1').css('display','none')
+                        $(win.document.body)
+                            .css( 'font-size', '10pt' )
+                            .prepend(
+                                '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                            );
+
+                        $(win.document.body).find( 'table' )
+                            .addClass( 'compact' )
+                            .css({ 'font-size': 'inherit'});
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4,]
+                    },
+                    title: function () {
+                        var totalAmount = $('#totalAmount').html();
+                        return "Transactions " + datetime +new Date()+ ' Total Amount ' + totalAmount;
+                    },
+                },
+            ],
+            lengthMenu: [
+                [10, 25, 50],
+                ['10 rows', '25 rows', '50 rows']
+            ],
+            processing: true,
+            language: {
+                processing: '<span>Processing</span>',
+            },
+            serverSide: true,
+            footer: true,
+            searching: true,
+
+            ajax: "{{ route('admin.artist_permit_report.artistTransaction') }}",
+            columns: [
+                {data: 'transaction_id', name: 'transaction_id'},
+                {data: 'transaction_date', name: 'transaction_date'},
+                {data: 'amount', name: 'amount'},
+                {data: 'vat', name: 'vat'},
+                {data: 'total', name: 'total'},
+                {data: 'action', name: 'action'},
+            ],
+            footerCallback: function ( row, data, start, end, display ) {
+                var api = this.api();
+                // Remove the formatting to get integer data for summation
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+                // Total over all pages
+                if (api.column(4).data().length>0){
+                    var amount = api
+                        .column( 2 ,{ page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        } );
+                    var vat = api
+                        .column( 3,{ page: 'current'}  )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        } );
+                    var total = api
+                        .column( 4 ,{ page: 'current'} )
+                        .data()
+                        .reduce( function (a, b) {
+                            return intVal(a) + intVal(b);
+                        } );
+
+                    $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
+                    $('#totalAmount').html(accounting.formatMoney(total,'AED '));
+                    $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
+                    $('#totalFooter').html(accounting.formatMoney(total,'AED '));
+                }
+            },
+        });
     })
 
         $('#todayButtonClick').click(function () {
@@ -4109,7 +4257,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 searching: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                    method: 'post',
+                    method: 'get',
                     data: {today: today}
                 },
                 columns: [
@@ -4179,158 +4327,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
         $('#lastSevenButton').click(function () {
-                  $('.navbar-nav .nav-item').removeClass('active');
-                    var link = $('#lastSevenButton');
-                   if (!link.hasClass('active')) {
-                   link.addClass('active');
-                   }
-            var currentdate = new Date();
-            var lastSeven=$('#lastSeven').val();
-            var datetime = +currentdate.getDate() + "-"
-                + (currentdate.getMonth() + 1) + "-"
-                + currentdate.getFullYear() + "  "
-                + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-
-            var time = + currentdate.getHours() + ":"
-                + currentdate.getMinutes() + ":"
-                + currentdate.getSeconds();
-
-            table = $('#artist-transaction-table').DataTable({
-                dom: 'Bfrtip',
-                "columnDefs": [
-                    {
-                        targets: [],
-                        visible: false,
-                        searchable: false,
-                    },
-                    {
-                        "targets": [2,3,4],
-                        "className": "text-right",
-                    }
-                ],
-                buttons: ['pageLength',
-                    {
-                        extend: 'print',
-                        title: function () {
-                            return "Transactions in last 7 days " +datetime+Date.now() ;
-                        },
-                        exportOptions: {
-                            columns: [0,1,2,3,4],
-                        },
-                        customize: function ( win ) {
-                            $(win.document.body).prepend(
-                                '<h3 style="font-family:arial;text-align:center"><span style="position: absolute;margin-left: -10%">Transactions In Last 7 Days </span><span style="float: right" id="totalAmountLastSeven"></span></h3>'
-                            );
-                            var totalAmount= $('#totalAmount').html();
-                            var amount=$('#amountFooter').html();
-                            var vat=$('#vatFooter').html();
-
-                            $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
-                            );
-                            $(win.document.body).find('#totalAmountLastSeven').append(totalAmount)
-                            $(win.document.body).find('h1').css('display','none')
-                            $(win.document.body)
-                                .css( 'font-size', '10pt' )
-                                .prepend(
-                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
-                                );
-                            $(win.document.body).find( 'table' )
-                                .addClass( 'compact' )
-                                .css({ 'font-size': 'inherit'});
-                        }
-                    },
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
-                        },
-                        title: function () {
-                            var totalAmount= $('#totalAmount').html();
-                            return "Transactions in last 7 days " +datetime +' Total Amount '+totalAmount;
-                        },
-                    }
-                ],
-                lengthMenu: [
-                    [10, 25, 50],
-                    ['10 rows', '25 rows', '50 rows']
-                ],
-                processing: true,
-                language: {
-                    processing: '<span>Processing</span>',
-                },
-                serverSide: true,
-                footer: true,
-                searching: true,
-                ajax: {
-                    url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                    method: 'post',
-                    data: {lastSeven: lastSeven}
-                },
-                columns: [
-                    {data: 'transaction_id', name: 'transaction_id'},
-                    {data: 'transaction_date', name: 'transaction_date'},
-                    {data: 'amount', name: 'amount'},
-                    {data: 'vat', name: 'vat'},
-                    {data: 'total', name: 'total'},
-                    {data: 'action', name: 'action'},
-                ],
-                footerCallback: function ( row, data, start, end, display ) {
-                    var api = this.api();
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function ( i ) {
-                        return typeof i === 'string' ?
-                            i.replace(/[\$,]/g, '')*1 :
-                            typeof i === 'number' ?
-                                i : 0;
-                    };
-                    // Total over all pages
-                    if (api.column(4).data().length>0){
-                        var amount = api
-                            .column( 2 ,{ page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } );
-                        var vat = api
-                            .column( 3,{ page: 'current'}  )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } );
-                        var total = api
-                            .column( 4 ,{ page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            } );
-
-
-                        $('#amountFooter').html(accounting.formatMoney(amount,'AED '));
-                        $('#totalAmount').html(accounting.formatMoney(total,'AED '));
-                        $('#vatFooter').html(accounting.formatMoney(vat,'AED '));
-                        $('#totalFooter').html(accounting.formatMoney(total,'AED '));
-                    }
-                    else{
-
-                        $('#amountFooter').html(
-                            'AED 0.00'
-                        );
-                        $('#totalAmount').html(
-                            'AED 0.00'
-                        );
-
-                        $('#vatFooter').html(
-                            'AED 0.00'
-                        );
-                        $('#totalFooter').html(
-                            'AED 0.00'
-                        );
-                    }
-                },
-            });
+        transactions()
         });
 
         $('#lastThirtyButton').click(function () {
@@ -4423,7 +4420,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 searching: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                    method: 'post',
+                    method: 'get',
                     data: {lastThirty: lastThirty}
                 },
                 columns: [
@@ -4581,7 +4578,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 searching: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                    method: 'post',
+                    method: 'get',
                     data: {thisMonth: thisMonth}
                 },
                 columns: [
@@ -4737,7 +4734,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                  searching: true,
                  ajax: {
                      url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                     method: 'post',
+                     method: 'get',
                      data: {month: amountCollectedMonth},
                  },
                  columns: [
@@ -4918,7 +4915,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                       searching: true,
                       ajax: {
                           url: '{{ route('admin.artist_permit_report.transactionDate')}}',
-                          method: 'post',
+                          method: 'get',
                           data: {start_date: start_date, end_date: end_date},
                       },
                       columns: [
@@ -5019,6 +5016,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             minViewMode: 2,
             format: 'yyyy'
         }).on('changeDate', function(selected){
+            startDate = new Date(selected.date.valueOf());
+            var monthSelected =startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        });
+
+        $('#monthSelected').datepicker({
+            autoclose: true,
+            minViewMode: 1,
+            format: 'mm-yyyy'
+        }).on('changeDate', function(selected){
+            $('#yearSelected').val('');
             startDate = new Date(selected.date.valueOf());
             var monthSelected =startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
         });
@@ -5184,6 +5191,109 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                }
            })
        })
+        $('#monthSelected').change(function(){
+            var changeMonth=$('#monthSelected').val();
+            $.ajax({
+                method:'post',
+                url: '{{ route("admin.artist_permit_report.chartData")}}',
+                data: {month: changeMonth},
+                success: function(response){
+                    //get the bar chart canvas
+
+                    var cData = JSON.parse(response);
+                    var ctx = $("#bar-chart");
+                    //bar chart data
+                    var data = {
+                        labels: cData.label,
+                        datasets: [
+                            {
+                                label: cData.label,
+
+                                data: cData.data,
+                                backgroundColor: [
+                                    "#1abc9c",
+                                    "#e67e22",
+                                    "#27ae60",
+                                    "#54a0ff",
+                                    "#fc5c65",
+                                    "#1D7A46",
+                                    "#2bcbba",
+                                    "#CDA776",
+                                    "#989898",
+                                    "#576574",
+                                    "#10ac84",
+                                    "#1abc9c",
+                                    "#e67e22",
+                                    "#27ae60",
+                                    "#54a0ff",
+                                    "#fc5c65",
+                                    "#1D7A46",
+                                    "#2bcbba",
+                                    "#CDA776",
+                                    "#989898",
+                                    "#576574",
+                                    "#10ac84",
+                                    "#1abc9c",
+                                    "#e67e22",
+                                    "#27ae60",
+                                    "#54a0ff",
+                                    "#fc5c65",
+                                    "#1D7A46",
+                                    "#2bcbba",
+                                    "#CDA776",
+                                    "#989898",
+                                    "#576574",
+                                    "#10ac84",
+                                ],
+                                /*      borderColor: [
+                                          "#f1c40f",
+                                          "#e67e22",
+                                          "#27ae60",
+                                          "#54a0ff",
+                                          "#fc5c65",
+                                          "#F4A460",
+                                          "#CDA776",
+                                          "#2bcbba",
+                                          "#A9A9A9",
+                                          "#DC143C",
+                                          "#576574",
+                                          "#10ac84",
+                                      ],
+                                      borderWidth: [1, 1, 1, 1, 1,1,1,1, 1, 1, 1,1,1]*/
+                            }
+                        ]
+                    };
+
+                    //options
+                    var options = {
+                        responsive: true,
+                        title: {
+                            display: true,
+                            position: "top",
+                            text: "Monthly Amount Received in "+changeMonth,
+                            fontSize: 18,
+                            fontColor: "#111"
+                        },
+                        legend: {
+                            display: true,
+                            position: "bottom",
+                            labels: {
+                                fontColor: "#333",
+                                fontSize: 16
+                            }
+                        }
+                    };
+
+                    //create bar Chart class object
+
+                    var chart1 = new Chart(ctx, {
+                        type: "bar",
+                        data: data,
+                        options: options,
+                    });
+                }
+            })
+        })
 
         var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         $('#startDate').datepicker({

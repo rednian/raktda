@@ -54,6 +54,10 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto" style="font-weight: 500">
+        <li class="nav-item" id="lastSevenButton">
+            <a class="nav-link" href="#">{{_('Last 7 Days')}}</a>
+            <input type="text" value="-7" id="lastSeven" hidden>
+        </li>
         <li class="nav-item active"  id="allTransactions">
             <a class="nav-link" href="#">{{__('All')}}<span class="sr-only">(current)</span></a>
             <input type="text" value="all" id="allTransactionsInput" hidden>
@@ -62,10 +66,7 @@
             <a class="nav-link" href="#">{{__('Today')}} <span class="sr-only">(current)</span></a>
             <input type="text" value="today" id="today" hidden>
         </li>
-      <li class="nav-item" id="lastSevenButton">
-        <a class="nav-link" href="#">{{_('Last 7 Days')}}</a>
-          <input type="text" value="-7" id="lastSeven" hidden>
-      </li>
+
       <li class="nav-item" id="lastThirtyButton">
         <a class="nav-link" href="#">{{__('Last 30 Days')}}</a>
           <input type="text" value="-30" id="lastThirty" hidden>
@@ -125,7 +126,9 @@
 
             <div class="col">
                  <input class="btn btn-secondary" style="width: 123px;height: 24px;" type="text" id="yearSelected" placeholder="Select Year">
-{{--
+                <input class="btn btn-secondary" style="width: 123px;height: 24px;" type="text" id="monthSelected" placeholder="Select Month">
+
+                {{--
                 <button id="printChart"  class="bt btn-secondary">Print Chart</button>
 --}}
             </div>
@@ -136,5 +139,5 @@
                 </div>
             </div>
         </div>
-
+    </div>
 </section>

@@ -313,94 +313,124 @@ class TransactionReportController extends Controller
 
     public function chartData(Request $request)
     {
-        if ($request->SelectedYear != '') {
-            $date = $request->SelectedYear;
-            $jan=Transaction::whereMonth('transaction_date','1')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $january=[];
-            foreach ($jan as $transaction) {
-                array_push($january, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $one=array_sum($january);
 
-            $feb=Transaction::whereMonth('transaction_date','2')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $february=[];
-            foreach ($feb as $transaction) {
-                array_push($february, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $two=array_sum($february);
+        if ($request->month != '') {
+            $date= '01-'.$request->month;
+            $days= date('t', strtotime($date));
+            $month=date('m', strtotime($date));
+            $year= date('Y', strtotime($date));
+            $array=[];
+            $day=[];
+             $total=[];
 
-            $mar=Transaction::whereMonth('transaction_date','3')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $march=[];
-            foreach ($mar as $transaction) {
-                array_push($march, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $three=array_sum($march);
+            for ($i=1;$i<=$days;$i++){
+                 $trans = Transaction::whereDay('transaction_date',str_pad($i,2,0,STR_PAD_LEFT))->whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                 array_push($array,$trans);
+                 array_push($day,str_pad($i,2,0,STR_PAD_LEFT));
 
-            $apr=Transaction::whereMonth('transaction_date','4')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $april=[];
-            foreach ($apr as $transaction) {
-                array_push($april, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $four=array_sum($april);
+                $amount=[];
+                 foreach ($trans as $transaction) {
+                    array_push($amount, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                 }
+                 $myData=array_sum($amount);
+                 array_push($total,$myData);
+/*               $trans = Transaction::whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();*/
 
-            $ma=Transaction::whereMonth('transaction_date','5')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $may=[];
-            foreach ($ma as $transaction) {
-                array_push($may, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
             }
-            $five=array_sum($may);
-
-            $jun=Transaction::whereMonth('transaction_date','6')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $june=[];
-            foreach ($jun as $transaction) {
-                array_push($june, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $six=array_sum($june)  ;
-            $jul=Transaction::whereMonth('transaction_date','7')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $july=[];
-            foreach ($jul as $transaction) {
-                array_push($july, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $seven=array_sum($july);
-
-            $aug=Transaction::whereMonth('transaction_date','8')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $august=[];
-            foreach ($aug as $transaction) {
-                array_push($august, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $eight=array_sum($august);
-
-            $sep=Transaction::whereMonth('transaction_date','9')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $september=[];
-            foreach ($sep as $transaction) {
-                array_push($september, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $nine=array_sum($september);
-
-            $oct=Transaction::whereMonth('transaction_date','10')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $october=[];
-            foreach ($oct as $transaction) {
-                array_push($october, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $ten=array_sum($october);
+            $chart_data['label'] =$day;
+            $chart_data['data'] =$total;
 
 
-            $nov=Transaction::whereMonth('transaction_date','11')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $november=[];
-            foreach ($nov as $transaction) {
-                array_push($november, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $eleven=array_sum($november);
-
-            $dec=Transaction::whereMonth('transaction_date','12')->whereYear('transaction_date',$date)->whereDate('transaction_date','<', Carbon::now()->format('y-m-d'))->get();
-            $december=[];
-            foreach ($dec as $transaction) {
-                array_push($december, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
-            }
-            $twelve=array_sum($december);
+            return json_encode($chart_data);
         }
-        $chart_data['label']=  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        $chart_data['data']=[$one,$two,$three,$four,$five,$six,$seven,$eight,$nine,$ten,$eleven,$twelve];
-        return json_encode($chart_data);
+            if ($request->SelectedYear != '') {
+                $date = $request->SelectedYear;
+                $jan = Transaction::whereMonth('transaction_date', '1')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $january = [];
+                foreach ($jan as $transaction) {
+                    array_push($january, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $one = array_sum($january);
+
+                $feb = Transaction::whereMonth('transaction_date', '2')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $february = [];
+                foreach ($feb as $transaction) {
+                    array_push($february, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $two = array_sum($february);
+
+                $mar = Transaction::whereMonth('transaction_date', '3')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $march = [];
+                foreach ($mar as $transaction) {
+                    array_push($march, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $three = array_sum($march);
+
+                $apr = Transaction::whereMonth('transaction_date', '4')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $april = [];
+                foreach ($apr as $transaction) {
+                    array_push($april, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $four = array_sum($april);
+
+                $ma = Transaction::whereMonth('transaction_date', '5')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $may = [];
+                foreach ($ma as $transaction) {
+                    array_push($may, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $five = array_sum($may);
+
+                $jun = Transaction::whereMonth('transaction_date', '6')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $june = [];
+                foreach ($jun as $transaction) {
+                    array_push($june, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $six = array_sum($june);
+                $jul = Transaction::whereMonth('transaction_date', '7')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $july = [];
+                foreach ($jul as $transaction) {
+                    array_push($july, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $seven = array_sum($july);
+
+                $aug = Transaction::whereMonth('transaction_date', '8')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $august = [];
+                foreach ($aug as $transaction) {
+                    array_push($august, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $eight = array_sum($august);
+
+                $sep = Transaction::whereMonth('transaction_date', '9')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $september = [];
+                foreach ($sep as $transaction) {
+                    array_push($september, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $nine = array_sum($september);
+
+                $oct = Transaction::whereMonth('transaction_date', '10')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $october = [];
+                foreach ($oct as $transaction) {
+                    array_push($october, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $ten = array_sum($october);
+
+
+                $nov = Transaction::whereMonth('transaction_date', '11')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $november = [];
+                foreach ($nov as $transaction) {
+                    array_push($november, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $eleven = array_sum($november);
+
+                $dec = Transaction::whereMonth('transaction_date', '12')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                $december = [];
+                foreach ($dec as $transaction) {
+                    array_push($december, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                }
+                $twelve = array_sum($december);
+            }
+            $chart_data['label'] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            $chart_data['data'] = [$one, $two, $three, $four, $five, $six, $seven, $eight, $nine, $ten, $eleven, $twelve];
+            return json_encode($chart_data);
     }
 }

@@ -22,20 +22,6 @@
                         <div class="card-body">
                             <div class="kt-widget kt-widget--user-profile-3">
                                 <div class="kt-widget__top">
-                   {{--                 @if($artist->thumbnail)
-                                        <div class="kt-widget__media">
-                                            <img class="img img-thumbnail" src="{{ asset('/storage/'.$artist->thumbnail) }}" alt="">
-                                        </div>
-                                    @else
-                                        <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" >
-<<<<<<< HEAD
-
-
-=======
-                                            {{profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
->>>>>>> 124d3e64358ea245ef4d9601fdaf52697d2d4609
-                                        </div>
-                                    @endif--}}
 
 
                                     <div class="kt-widget__content">
@@ -124,9 +110,6 @@
                                                 <li>Passport Number</li>
                                                 <li>Passport Expiry Date</li>
                                             </ul>
-
-
-
                                         </div>
                                     </div>
 
@@ -150,8 +133,6 @@
 
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -379,7 +360,6 @@
                 });
             });
         }
-
     </script>
 
 @stop

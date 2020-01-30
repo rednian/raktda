@@ -37,7 +37,6 @@
                               margin-right: -10px;
                               margin-bottom: 7px;" class="btn"><<- BACK</button></a>
                           </div>
-
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 6px">
             {{-- <a class="navbar-brand" href="#">Navbar w/ text</a>--}}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,8 +59,9 @@
                         <input style="height: 30px; border: none; margin-top: -4px;" type="text" id="start_date" class="form-control" placeholder="From Date">
                     </li>
                     <li style="padding: 4px">
-                        <input style="height: 30px; border: none; margin-top: -4px;" type="text" id="end_date" class="form-control" placeholder="To Date"></li>
-                </ul>
+                        <input style="height: 30px; border: none; margin-top: -4px;" type="text" id="end_date" class="form-control" placeholder="To Date">
+                    </li>
+                   </ul>
                 <span class="navbar-text" style="white-space: nowrap">
            Total Amount : <span style="color: #6d6d6d;font-weight: 500" id="totalAmount"></span></span>
             </div>
@@ -80,9 +80,6 @@
 @endsection
 @section('script')
     <script>
-
-
-
         $(document).ready(function () {
        eventTransactions();
        function eventTransactions(){
@@ -110,7 +107,7 @@
                            },
                            customize: function ( win ) {
                                $(win.document.body).prepend(
-                                   '<h3 style="text-align:center"><span style="position:absolute;margin-left: -20px">Event Transactions</span><span style="float: right;font-size: 13px;font-weight: bold;margin-top: 8px" id="totalAmount">TOTAL AMOUNT: AED </span></h3>'
+                                   '<h3 style="text-align:center"><span style="position:absolute;margin-left: -20px">Event Transactions</span><span style="float: right;font-size: 13px;font-weight: bold;margin-top: 8px" id="totalAmount">TOTAL AMOUNT: </span></h3>'
                                );
                                var totalAmount= $('#totalAmount').html();
                                var amount=$('#amountFooter').html();
@@ -139,7 +136,10 @@
                            title: function () {
                                return 'Events Transactions '+Date.now();
                            },
-                       }
+                           customize: function ( win ) {
+
+                           }
+                       },
                    ],
                    lengthMenu: [
                        [10, 25, 50],
@@ -208,26 +208,14 @@
                        }
                        else{
 
-                           $('#amountFooter').html(
-                               '0.00'
-                           );
-                           $('#totalAmount').html(
-                               '0.00'
-                           );
-
-                           $('#vatFooter').html(
-                               '0.00'
-                           );
-                           $('#totalFooter').html(
-                               '0.00'
-                           );
-                       }
-                   },
-               } );
-       }
-
-
-
+                           $('#amountFooter').html('0.00');
+                           $('#totalAmount').html('0.00');
+                           $('#vatFooter').html('0.00');
+                           $('#totalFooter').html('0.00');
+                         }
+                    },
+               });
+             }
 
             $('#start_date').datepicker({
                 uiLibrary: 'bootstrap4',
