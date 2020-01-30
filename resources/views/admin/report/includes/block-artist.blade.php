@@ -531,6 +531,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 var search_artist = $('input[name="search-artist-name"]').val();
                 var filter_search ={{\App\ConstantValue::ARTISTNAME}};
                 $.ajax({
+                    method:"post",
                     url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
                     data: {filter_search: filter_search, search_artist: search_artist}
                 })
@@ -556,6 +557,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 var search_artist = $('input[name="search-artist-name"]').val();
                 var filter_search ={{\App\ConstantValue::ARTISTNAME}};
                 $.ajax({
+                    method:'post',
                     url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
                     data: {filter_search: filter_search, search_artist: search_artist}
                 })
@@ -573,6 +575,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             var search_artist = $('#active_artist_input').val();
             var filter_search ={{\App\ConstantValue::STATUS}};
             $.ajax({
+                method:'post',
                 url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
                 data: {filter_search: filter_search, search_artist: search_artist}
             })
@@ -590,6 +593,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             var filter_search ={{\App\ConstantValue::STATUS}};
 
             $.ajax({
+                method:'post',
                 url: '{{ route("admin.artist_permit_reports.artist_reports")}}',
                 data: {filter_search: filter_search, search_artist: search_artist}
             })
@@ -1194,6 +1198,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 serverSide: true,
                 footer: true,
                 ajax: {
+
                     url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
                     method: 'post',
                     data: function (d) {
@@ -5257,9 +5262,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                           "#10ac84",
                                       ],
                                       borderWidth: [1, 1, 1, 1, 1,1,1,1, 1, 1, 1,1,1]*/
-                            }
-                        ]
-                    };
+                                }
+                            ]
+                        };
 
                     //options
                     var options = {

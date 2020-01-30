@@ -312,7 +312,7 @@ class TransactionReportController extends Controller
     }
 
     public function chartData(Request $request)
-    {
+       {
         if ($request->month != '') {
             $date= '01-'.$request->month;
             $days= date('t', strtotime($date));
@@ -334,13 +334,10 @@ class TransactionReportController extends Controller
                  $myData=array_sum($amount);
                  array_push($total,$myData);
 /*               $trans = Transaction::whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();*/
-
             }
             $chart_data['label'] =$day;
             $chart_data['total'] =array_sum($total);
             $chart_data['data'] =$total;
-
-
             return json_encode($chart_data);
         }
             if ($request->SelectedYear != '') {
