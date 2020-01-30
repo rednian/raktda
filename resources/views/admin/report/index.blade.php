@@ -19,6 +19,7 @@
 
                           <li class="nav-item artist_transaction_tab">
 
+
                               <div class="btn-group">
                                   <a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">
                                       {{__('Transactions')}}
@@ -29,7 +30,7 @@
                                       <a href="{{route('admin.artist_permit_report.eventTransaction')}}">
                                           <button class="btn btn-dark btn-sm dropdown-menu" style="height: 20px;
     line-height: 2px;
-    text-align: center;background-color: #656565; box-shadow: -1px 6px 11px -6px black;">{{__('EVENT TRANSACTIONS')}}</button></a>
+    text-align: center; box-shadow: -1px 6px 11px -6px black;">{{__('EVENT TRANSACTIONS')}}</button></a>
                               </div>
                           </li>
 

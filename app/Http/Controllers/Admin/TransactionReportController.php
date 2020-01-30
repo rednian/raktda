@@ -313,7 +313,6 @@ class TransactionReportController extends Controller
 
     public function chartData(Request $request)
     {
-
         if ($request->month != '') {
             $date= '01-'.$request->month;
             $days= date('t', strtotime($date));
@@ -321,16 +320,18 @@ class TransactionReportController extends Controller
             $year= date('Y', strtotime($date));
             $array=[];
             $day=[];
-             $total=[];
-
+            $total=[];
+            $amount = [];
             for ($i=1;$i<=$days;$i++){
-                 $trans = Transaction::whereDay('transaction_date',str_pad($i,2,0,STR_PAD_LEFT))->whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
+                 $trans = Transaction::whereDay('transaction_date',str_pad($i,2,0,STR_PAD_LEFT))->whereMonth('transaction_date', $month)
+                     ->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
                  array_push($array,$trans);
                  array_push($day,str_pad($i,2,0,STR_PAD_LEFT));
 
-                $amount=[];
                  foreach ($trans as $transaction) {
-                    array_push($amount, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                    array_push($amount, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') +
+                            $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') +
+                            $transaction->eventTransaction->sum('vat') : 0));
                  }
                  $myData=array_sum($amount);
                  array_push($total,$myData);

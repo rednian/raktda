@@ -189,6 +189,13 @@
                                         </tr>
                                         </thead>
                                     </table>
+
+                                    <div class="col">
+                                        <button class="btn btn-block btn-secondary">Print Table</button>
+                                    </div>
+
+
+
                                 </div>
                                 <div class="tab-pane" id="kt_tabs_6_3" role="tabpanel">
                                     <table class="table table-striped table-borderless table-hover border table-hover table-sm" id="status-history">

@@ -670,17 +670,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             }
                             if (filter_search == 7) {
                                 return ' Artists List Searched By Visa Type' +datetime +Date.now();
-                            }
-
-                            if (filter_search == 8) {
-                                if (search_artist == '17') {
+                                 }
+                                if(filter_search == 8) {
+                                if(search_artist == '17') {
                                     return ' Artists Below Age 18' +datetime+Date.now() ;
                                      }
-                                if (search_artist == '18') {
+                                if(search_artist == '18') {
                                     return ' Artists Above Age 18' +datetime +Date.now();
                                 }
                             }
-                            if (filter_search == 9) {
+                            if(filter_search == 9) {
                                 return ' Artists List Searched By Area' +datetime+Date.now() ;
                                    }
                                },
@@ -867,7 +866,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         }
 
         function active_artist_filter(filter_search = '', search_artist = '') {
-
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -997,6 +995,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                         '<h3 style="font-family:arial;text-align:center">Artists With Multiple Permits</h3>'
                                     );
                                 }
+
                                 if (search_artist == 'all') {
                                     $(win.document.body).prepend(
                                         '<h3 style="font-family:arial;text-align:center">Artists With Active Permits </h3>'
@@ -1032,7 +1031,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 );
                             $(win.document.body).find('h1')
                                 .css( 'display', 'none' );
-
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -1060,7 +1058,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             if (filter_search == 4) {
                                 return 'Artists With Profession '+datetime+Date.now();
                             }
-
                             if (filter_search == 5) {
                                 return 'Artists By Nationality '+datetime+Date.now();
                             }
@@ -1079,7 +1076,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             if (filter_search == 7) {
                                 return 'Artists List Searched By Visa Type '+datetime+Date.now();
                             }
-
                             if (filter_search == 8) {
                                 if (search_artist == '17') {
                                     return 'Artists Below Age 18 '+datetime+Date.now();
@@ -1088,14 +1084,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                     return 'Artists Above Age 18 '+datetime+Date.now();
                                 }
                             }
-
                             if (filter_search == 9) {
                                 return 'Artists List Searched By Area '+datetime+Date.now();
                             }
                         },
-
                     }
-
                 ],
                 lengthMenu: [
                     [10, 25, 50],
@@ -1130,7 +1123,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ],
             });
         }
-
 
         function ArtistResetTable() {
             var currentdate = new Date();
@@ -1232,7 +1224,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             if (!link.hasClass('active')) {
                 link.addClass('active');
             }
-        })
+        });
 
         $('#artist-report-tab').click(function () {
             $('#search_by_gender option').prop('selected', false)
