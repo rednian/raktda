@@ -21,7 +21,7 @@
 
                               <div class="btn-group">
                                   <a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">
-                                      {{__('TRANSACTIONS')}}
+                                      {{__('Transactions')}}
                                   </a>
                                   <button style="border: none" type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <span class="sr-only">Toggle Dropdown</span>
