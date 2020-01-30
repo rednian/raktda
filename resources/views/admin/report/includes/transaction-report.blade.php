@@ -137,6 +137,9 @@
                 <div class="bar-chart-container" id="printContentChart">
                     <canvas id="bar-chart"></canvas>
                 </div>
+             </div>
+            <div class="row">
+                <div class="col-3" style="white-space: nowrap;font-weight: bold">Total Amount: </div><div class="col-4" id="totalAmountInMonth"> </div>
             </div>
         </div>
     </div>

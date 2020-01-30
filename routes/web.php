@@ -182,7 +182,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/artist_reports', 'Admin\ReportController@reports')
         ->name('admin.artist_permit_reports.reports');
 
-        Route::get('/artist_permit_reports', 'Admin\ReportController@artist_reports')
+        Route::post('/artist_permit_reports', 'Admin\ReportController@artist_reports')
         ->name('admin.artist_permit_reports.artist_reports');
 
 

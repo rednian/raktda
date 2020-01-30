@@ -495,7 +495,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
-                    method: 'get',
+                    method: 'post',
                     data: function (d) {
                     }
                 },
@@ -1203,7 +1203,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
-                    method: 'get',
+                    method: 'post',
                     data: function (d) {
                     }
                 },
@@ -1242,7 +1242,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             $('#search_by_profession option').prop('selected', false)
             ArtistResetTable();
         })
-
 
         $('.search_button').click(function () {
             if($('#navlink #active_artist_click a').hasClass('active')) {
@@ -1529,7 +1528,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
-                    method: 'get',
+                    method: 'post',
                     data: function (d) {
                     }
                 },
@@ -1787,7 +1786,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 footer: true,
                 ajax: {
                     url: '{{ route('admin.event_reports.events')}}',
-                    method: 'get',
+                    method: 'post',
                     data: {events: xyz}
                 },
                 columns: [
@@ -5118,7 +5117,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                url: '{{ route("admin.artist_permit_report.chartData")}}',
                data: {SelectedYear: changeYear},
                success: function(response){
+
                    //get the bar chart canvas
+
                    var cData = JSON.parse(response);
                    var ctx = $("#bar-chart");
                    //bar chart data
@@ -5188,6 +5189,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                        data: data,
                        options: options,
                    });
+
                }
            })
        })
@@ -5201,6 +5203,9 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     //get the bar chart canvas
 
                     var cData = JSON.parse(response);
+                    console.log(response)
+                    $('#totalAmountInMonth').html(cData.total)
+
                     var ctx = $("#bar-chart");
                     //bar chart data
                     var data = {

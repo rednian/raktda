@@ -338,6 +338,7 @@ class TransactionReportController extends Controller
 
             }
             $chart_data['label'] =$day;
+            $chart_data['total'] =number_format(array_sum($total),2);
             $chart_data['data'] =$total;
 
 
