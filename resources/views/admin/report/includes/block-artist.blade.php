@@ -493,6 +493,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 serverSide: true,
                 footer: true,
+
+
                 ajax: {
                     url: '{{ route('admin.artist_permit_reports.artist_reports')}}',
                     method: 'post',
@@ -1232,6 +1234,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
         $('#artist-report-tab').click(function () {
+            $('#transaction-report-tab ').removeClass('active');
             $('#search_by_gender option').prop('selected', false)
             $('#search_by_name').empty()
             $('#search_by_age option').prop('selected', false)
@@ -1804,6 +1807,15 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         }
 
         $('#event-report-tab').click(function () {
+
+            $('#artist-permit-nav .nav-item').removeClass('active');
+            $('#transaction-report-tab ').removeClass('active');
+
+            var link = $('#artist-permit-nav .active');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
+
             var currentdate = new Date();
             var datetime = +currentdate.getDate() + "-"
                 + (currentdate.getMonth() + 1) + "-"
@@ -3851,7 +3863,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         function transactions()
         {
-            $('.navbar-nav .nav-item').removeClass('active');
+            $('#artist-permit-nav .nav-item .active').removeClass('active');
+            $('#allTransactions').removeClass('active');
             var link = $('#lastSevenButton');
             if (!link.hasClass('active')) {
                 link.addClass('active');
@@ -4005,7 +4018,17 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             });
         }
 
-        $('#transaction-report-tab').click(transactions());
+        $('#transaction-report-tab').click(function () {
+            $('.navbar-nav .nav-item ').removeClass('active');
+            var link = $('#lastSevenButton');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
+
+            transactions();
+        });
+
+
 
         $("#filter_event_button").click(function () {
             $("#filter_to_hide").toggle();
@@ -4323,7 +4346,12 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
         $('#lastSevenButton').click(function () {
-        transactions()
+            $('.navbar-nav .nav-item').removeClass('active');
+            var link = $('#lastSevenButton');
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
+             transactions()
         });
 
         $('#lastThirtyButton').click(function () {
@@ -5324,13 +5352,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
              $('#amountCollectedMonth').mouseout(function () {
             $('#tooltipMonth').hide(100)
         });
-
-      $('#transaction-report-tab').mouseover(function () {
-       $('#dropdown-trasanction').show(200)
-      })
-        $('#dropdown-trasanction').mouseout(function () {
-            $('#dropdown-trasanction').hide(500)
-        })
 
 
     </script>

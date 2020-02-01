@@ -18,8 +18,6 @@
                         <li class="nav-item"><a class="nav-link" id="event-report-tab" data-toggle="tab" href="#event-report-section" data-target="#event-report-section">{{__('Event Report') }}</a></li>
 
                           <li class="nav-item artist_transaction_tab">
-
-
                               <div class="btn-group">
                                   <a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">
                                       {{__('Transactions')}}

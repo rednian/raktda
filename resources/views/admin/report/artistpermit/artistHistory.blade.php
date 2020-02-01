@@ -191,7 +191,7 @@
                                     </table>
 
                                     <div class="col">
-                                        <button class="btn btn-block btn-secondary">Print Table</button>
+                                        <button onclick="printHistory()" class="btn btn-block btn-secondary" id="printHistory">Print Table</button>
                                     </div>
 
 
@@ -215,12 +215,6 @@
                 </div>
             </section>
 
-
-
-
-
-
-
         </div>
     </section>
     {{-- @include('admin.artist.include.artist-block-modal') --}}
@@ -228,9 +222,7 @@
 @endsection
 @section('script')
     <script>
-
         $('form#frm-status').validate();
-
         var is_checked = false;
         $(document).ready(function () {
 
@@ -248,7 +240,6 @@
                 }
             });
         });
-
 
         function statusHistory() {
             $('table#status-history').DataTable({
@@ -280,6 +271,46 @@
                 responsive:true,
                 columnDefs: [
                     {targets: '_all', className: 'no-wrap'}
+                ],
+                lengthMenu: [
+                    [10, 25, 50],
+                    ['10 rows', '25 rows', '50 rows']
+                ],
+                buttons: ['pageLength',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        },
+                        title:function(){
+                            return   'History ';
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body).prepend(
+                                '<h3 style="font-family:arial;text-align:center">Artist With Active Permits </h3>'
+                            );
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                );
+                            $(win.document.body).find('h1')
+                                .css( 'display', 'none' )
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css({ 'font-size': 'inherit'});
+                        }
+                    },
+                     {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4,]
+                        },
+                        title: function () {
+                            return 'History'
+                            },
+
+                    }
                 ],
                 columns: [
                     {render: function(){ return null; }},
