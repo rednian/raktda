@@ -3929,6 +3929,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     },
                     {
                         extend: 'excel',
+                        footer:true,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4,]
                         },
@@ -4024,11 +4025,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             if (!link.hasClass('active')) {
                 link.addClass('active');
             }
-
             transactions();
         });
-
-
 
         $("#filter_event_button").click(function () {
             $("#filter_to_hide").toggle();
@@ -4118,6 +4116,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 {
                     extend: 'excel',
+                    footer:true,
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4,]
                     },
@@ -4254,6 +4253,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     },
                     {
                         extend: 'excel',
+                        footer:true,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4,]
                         },
@@ -4421,6 +4421,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     },
                     {
                         extend: 'excel',
+                        footer:true,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4,]
                         },
@@ -4581,6 +4582,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     },
                     {
                         extend: 'excel',
+                        footer:true,
                         exportOptions: {
                             columns: [0, 1, 2, 3, 4,]
                         },
@@ -4736,6 +4738,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                      },
                      {
                          extend: 'excel',
+                         footer:true,
                          exportOptions: {
                              columns: [0, 1, 2, 3, 4,]
                          },
@@ -4917,6 +4920,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                           },
                           {
                               extend: 'excel',
+                              footer:true,
                               exportOptions: {
                                   columns: [0, 1, 2, 3, 4,]
                               },

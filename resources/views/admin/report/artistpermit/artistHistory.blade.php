@@ -1,13 +1,23 @@
 @extends('layouts.admin.admin-app')
 @section('content')
+    <STYLE>
+        #artist-permit-history_filter{
+            float: right;
+        }
+    </STYLE>
     <section class="kt-portlet kt-portlet--head-sm">
         <div class="kt-portlet__head kt-portlet__head--sm kt-padding-l-15 kt-padding-r-15">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span></h3></div>
             <div class="kt-portlet__head-toolbar">
-                <button type="button" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>{{ __('BACK') }}
-                </button>
+
+              <button STYLE="background-color: #b45454;
+                 color: white;
+                 box-shadow: -1px 6px 11px -6px #969696;
+                 border: none;
+                 border-radius: 3px;" type="button" onclick="window.history.back()" class="btn btn-sm btn-secondary btn-elevate  kt-font-transform-u">
+                  <i class="la la-arrow-left"></i>{{ __('BACK') }}
+              </button>
             </div>
         </div>
         <div class="kt-portlet__body kt-padding-15 kt-font-dark">
@@ -24,9 +34,9 @@
                             </div>
                             <div class="kt-widget__content">
                                 <div class="kt-widget__section">
-                    <span class="kt-widget__username">
+                           <span class="kt-widget__username">
                       {{ $language == 1 ? ucwords($artistpermit->fullname) : $artistpermit->firstname_ar.' '.$artistpermit->lastname_ar }}
-                    </span>
+                           </span>
                                     <div class="kt-widget__button">
                                         @if ($artist->artist_status == 'active')
                                             <span class="btn btn-label-success btn-sm">{{ __(ucfirst($artist->artist_status)) }}</span>
@@ -47,55 +57,52 @@
                                     </div> --}}
                                 </div>
                             </div>
-                        </div>
+                      </div>
                         <div class="kt-widget__body kt-padding-l-5 kt-padding-r-5">
                             <h6 class="kt-font-dark kt-font-bold ">{{__('Artist Details')}}</h6>
                             <hr class="kt-margin-b-5  kt-margin-t-0">
-                            <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br>
-                            <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
-                            <span>{{ __('Birthdate') }} : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
-                            <span>{{ __('Gender') }} : {{$artistpermit->gender->name_en}}</span><br>
-                            <span>{{ __('Religion') }} : {{$artistpermit->religion->name_en}}</span><br>
-                            <span>Identification Number : {{$artistpermit->identification_number}}</span><br>
-                            <span>{{ __('UID No.') }} : {{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span><br>
-                            <span>{{ __('UID Expiry Date') }} : {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br>
-                            <span>{{ __('Visa Type') }} : {{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span><br>
-                            <span>{{ __('Visa No.') }} : {{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span><br>
-                            <span>{{ __('Passport No.') }} : {{$artistpermit->passport_number ? $artistpermit->passport_number : '-' }}</span><br>
-                            <span>{{ __('Passport Expiry Date') }} : {{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span><br>
-
+                            <span>{{ __('Person Code') }} : <span id="person_code">{{$artist->person_code }}</span></span><br>
+                            <span>{{ __('Age') }} : <span id="age">{{$artistpermit->birthdate->age }}</span></span><br>
+                            <span>{{ __('Birthdate') }} : <span id="birthday">{{$artistpermit->birthdate->format('d-F-Y')}}</span></span><br>
+                            <span>{{ __('Gender') }} : <span id="gender">{{$artistpermit->gender->name_en}}</span></span><br>
+                            <span>{{ __('Religion') }} : <span id="religion">{{$artistpermit->religion->name_en}}</span></span><br>
+                            <span>{{ __('Identification Number') }} : <span id="identification">{{$artistpermit->identification_number}}</span></span><br>
+                            <span>{{ __('UID No.') }} : <span id="uid_no">{{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span></span><br>
+                            <span>{{ __('UID Expiry Date') }} : <span id="uid_expiry">{{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span></span><br>
+                            <span>{{ __('Visa Type') }} : <span id="visa_type">{{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span></span><br>
+                            <span>{{ __('Visa No.') }} : <span id="visa_no">{{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span></span><br>
+                            <span>{{ __('Passport No.') }} : <span id="pass_no">{{$artistpermit->passport_number ? $artistpermit->passport_number : '-' }}</span></span><br>
+                            <span>{{ __('Passport Expiry Date') }} : <span id="pass_expiry">{{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span></span><br>
                             <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Contact Information')}}</h6>
                             <hr class="kt-margin-b-5  kt-margin-t-0">
-                            <span>{{ __('Email') }} : {{$artistpermit->email }}</span><br>
+                            <span>{{ __('Email') }} : <span id="email">{{$artistpermit->email }}</span></span><br>
                             <span>{{ __('Mobile Number') }} : {{$artistpermit->mobile_number }}</span><br>
                             <span>{{ __('Phone Number') }} : {{$artistpermit->phone_number }}</span><br>
                             <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br>
 
                             <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Address Details')}}</h6>
                             <hr class="kt-margin-b-5  kt-margin-t-0">
-                            @php
-                                $address = $language == 1 ? ucfirst($artistpermit->address_en) : $artistpermit->address_ar;
-                                $area = $language == 1 ? ucfirst($artistpermit->area->area_en) : $artistpermit->area->area_ar;
-                                $emirate = $language == 1 ? ucfirst($artistpermit->emirate->name_en) : $artistpermit->emirate->name_ar;
-                                $country = $language == 1 ? ucfirst($artistpermit->country->name_en) : $artistpermit->country->name_ar;
-                            @endphp
-                            <span>{{$address.' '.$area.' '.$emirate.' '.$country}}</span><br>
+                               @php
+                                  $address = $language == 1 ? ucfirst($artistpermit->address_en) : $artistpermit->address_ar;
+                                  $area = $language == 1 ? ucfirst($artistpermit->area->area_en) : $artistpermit->area->area_ar;
+                                  $emirate = $language == 1 ? ucfirst($artistpermit->emirate->name_en) : $artistpermit->emirate->name_ar;
+                                  $country = $language == 1 ? ucfirst($artistpermit->country->name_en) : $artistpermit->country->name_ar;
+                               @endphp
+                            <span id="address"> {{$address.' '.$area.' '.$emirate.' '.$country}}</span><br>
                             <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Current Sponsor Details')}}</h6>
                             <hr class="kt-margin-b-5  kt-margin-t-0">
-                            <span>{{ __('Name') }} : {{ucwords($artistpermit->sponsor_name_en) }}</span><br>
+                            <span>{{ __('Name') }} : <span id="sponsor_name">{{ucwords($artistpermit->sponsor_name_en) }}</span></span><br>
+                          </div>
                         </div>
-                    </div>
-                </div>
+                      </div>
                 <div class="col-md-8">
                     <div class="kt-widget kt-widget--user-profile-3">
-
                         <div class="kt-widget__bottom kt-margin-t-0 kt-hide">
-
                             <div class="kt-widget__item">
                                 <div class="kt-widget__icon">
                                     <i class="flaticon-confetti"></i>
-                                </div>
-                                <div class="kt-widget__details">
+                                    </div>
+                                    <div class="kt-widget__details">
                                     <span class="kt-widget__title">{{__('ACTIVE PROFESSIONS')}}</span>
                                     <span class="kt-widget__value">
                       @if ($artistpermits = $artist->artistPermit()->whereHas('permit', function($q){ $q->where('permit_status', 'active'); })->get())
@@ -103,7 +110,7 @@
                                                 <small>{{ $artistpermit->profession->name_en }} </small>
                                             @endforeach
                                         @endif
-                    </span>
+                                     </span>
                                 </div>
                             </div>
                             <div class="kt-widget__item">
@@ -175,26 +182,24 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="kt_tabs_6_2" role="tabpanel">
+
+                                    <div id="artist_details"></div>
+
                                     <table class="table table-striped table-borderless table-hover border" id="artist-permit-history">
                                         <thead>
-                                        <tr>
+                                        <tr style="font-weight: bold;font-size: 12px">
                                             <th></th>
                                             <th>{{ __('ACTION') }}</th>
-                                            <th>{{ __('REFERENCE NO.') }}</th>
-                                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                                            <th>{{ __('PERMIT STATUS') }}</th>
-                                            <th>{{ __('PERMIT NO.') }}</th>
-                                            <th>{{ __('ISSUED DATE') }}</th>
-                                            <th>{{ __('EXPIRED DATE') }}</th>
+                                            <th style="white-space: nowrap">{{ __('REFERENCE NO.') }}</th>
+                                            <th style="white-space: nowrap">{{ __('ESTABLISHMENT NAME') }}</th>
+                                            <th style="white-space: nowrap">{{ __('PERMIT STATUS') }}</th>
+                                            <th style="white-space: nowrap">{{ __('PERMIT NO.') }}</th>
+                                            <th style="white-space: nowrap">{{ __('ISSUE DATE') }}</th>
+                                            <th style="white-space: nowrap">{{ __('EXPIRY DATE') }}</th>
                                         </tr>
                                         </thead>
+                                        <tbody style="font-size: 12px"></tbody>
                                     </table>
-
-                                    <div class="col">
-                                        <button onclick="printHistory()" class="btn btn-block btn-secondary" id="printHistory">Print Table</button>
-                                    </div>
-
-
 
                                 </div>
                                 <div class="tab-pane" id="kt_tabs_6_3" role="tabpanel">
@@ -260,58 +265,95 @@
             });
         }
 
-
         function permitHistory() {
             $('table#artist-permit-history').DataTable({
-                ajax: {
-                    url: '{{ route('admin.artist.permit.history', $artist_permit->artist_id) }}',
-                    data: function (d) {
-                    }
-                },
-                responsive:true,
-                columnDefs: [
-                    {targets: '_all', className: 'no-wrap'}
-                ],
-                lengthMenu: [
-                    [10, 25, 50],
-                    ['10 rows', '25 rows', '50 rows']
-                ],
-                buttons: ['pageLength',
+                dom: 'Bfrtip',
+                "columnDefs": [
+                    {
+                        targets: [0,1,6],
+                        visible: false,
+                        "searchable": false,
+                        },
+                       {
+                        targets: [],
+                        className: "text-right",
+                        }
+                      ],
+                   buttons: ['pageLength',
                     {
                         extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                        title: function () {
+                            return 'Permit History' +new Date();
                         },
-                        title:function(){
-                            return   'History ';
+                        exportOptions: {
+                            columns: [2,3,4,5,6,7],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
-                                '<h3 style="font-family:arial;text-align:center">Artist With Active Permits </h3>'
+                                '<h5 style="font-family:arial;text-align:center;font-weight:bold;color: black">PERMIT HISTORY</h5>'
                             );
+                           var person_code=$('#person_code').html();
+                           var uid_expiry=$('#uid_expiry').html();
+                           var uid_no=$('#uid_no').html();
+                           var visa_expiry=$('#visa_expiry').html();
+                           var visa_type=$('#visa_type').html();
+                           var visa_no=$('#visa_no').html();
+                           var pass_expiry=$('#pass_expiry').html();
+                           var pass_no=$('#pass_no').html();
+                           var birthday=$('#birthday').html();
+                           var age=$('#age').html();
+                           var sponsor_name=$('#sponsor_name').html();
+                           var address=$('#address').html();
+                           var email=$('#email').html();
+
+
+                            $(win.document.body).prepend(
+                                '<table STYLE="color: #000000" class="table table-striped"><tr><th colspan="6" class="text-center" style="font-weight: bold;font-size: 15px">ARTIST DETAILS</th></tr>' +
+                                '<tr><th>Person Code</th><td>'+person_code+'</td><th>Age</th><td>'+age+'</td><th>Birthday</th><td>'+birthday+'</td></tr>' +
+                                '<tr><th>UID No.</th><td>'+uid_no+'</td><th>UID Expiry</th><td>'+uid_expiry+'</td><th>E-mail</th><td>'+email+'</td></tr>' +
+                                '<tr><th>Visa Type</th><td>'+visa_type+'</td><th>Visa No.</th><td>'+visa_no+'</td><th>Passport No.</th><td>'+pass_no+'</td></tr>' +
+                                '<tr><th>Passport Expiry</th><td>'+pass_expiry+'</td><th>Sponsor</th><td>'+sponsor_name+'</td><th>Address</th><td>'+address+'</td></tr></table>'
+                                );
+
+                            $(win.document.body).find('h1').css('display','none')
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
-                            $(win.document.body).find('h1')
-                                .css( 'display', 'none' )
+
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
-                                .css({ 'font-size': 'inherit'});
+                                .css({ 'font-size': '12px'});
                         }
                     },
-                     {
+                    {
                         extend: 'excel',
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
+                            columns: [2,3,4,5,6,7]
                         },
                         title: function () {
-                            return 'History'
-                            },
-
-                    }
+                         return 'Permit History '+new Date();
+                        },
+                    },
                 ],
+                lengthMenu: [
+                    [10, 25, 50],
+                    ['10 rows', '25 rows', '50 rows']
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                searching: true,
+
+                ajax: {
+                    url: '{{ route('admin.artist.permit.history', $artist_permit->artist_id) }}',
+                    data: function (d) {
+                    }
+                },
                 columns: [
                     {render: function(){ return null; }},
                     {
@@ -325,9 +367,8 @@
                     {data: 'permit_number'},
                     {data: 'issued_date'},
                     {data: 'expired_date'},
-
                 ],
-                createdRow: function(row, data, index){
+             /*   createdRow: function(row, data, index){
                     $('td:not(:first-child)',row).click(function(e){ location.href = '{{ url('/artist_permit') }}/'+data.permit_id; });
 
                     $('.btn-document', row).click(function(e){
@@ -336,7 +377,7 @@
                         $('#document-modal').modal('show');
 
                     });
-                }
+                }*/
             });
         }
 

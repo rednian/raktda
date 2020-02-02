@@ -35,7 +35,8 @@
                               line-height: 4px;
                               margin-top: -14px;
                               margin-right: -10px;
-                              margin-bottom: 7px;" class="btn"><<- BACK</button></a>
+                              margin-bottom: 7px;" class="btn">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>BACK</button></a>
                           </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 6px">
             {{-- <a class="navbar-brand" href="#">Navbar w/ text</a>--}}
@@ -53,7 +54,6 @@
                                 <option value="{{$transaction->event->event_type_id}}">{{Auth()->user()->LanguageId==1?$transaction->event->type->name_en:$transaction->event->type->name_ar}}</option>
                             @endforeach
                         </select>
-
                     </li>
                     <li style="padding: 4px">
                         <input style="height: 30px; border: none; margin-top: -4px;" type="text" id="start_date" class="form-control" placeholder="From Date">
@@ -133,12 +133,11 @@
                        },
                        {
                            extend: 'excel',
+                            footer:true,
                            title: function () {
                                return 'Events Transactions '+Date.now();
                            },
-                           customize: function ( win ) {
 
-                           }
                        },
                    ],
                    lengthMenu: [
@@ -293,7 +292,7 @@
                             },
                             {
                                 extend: 'excel',
-
+footer:true,
                                 title: function () {
                                     return 'Events Transactions '+Date.now();
                                 },
@@ -462,7 +461,7 @@
                                     },
                                     {
                                         extend: 'excel',
-
+                                         footer:true,
                                         title: function () {
                                             return 'Events Transactions ' + Date.now();
                                         },

@@ -52,6 +52,7 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto" style="font-weight: 500">
         <li class="nav-item" id="lastSevenButton">
@@ -81,9 +82,9 @@
         <a class="nav-link" href="#"   style="margin-right:12px"><input style="height: 16px;width: 112px;background-color: #f7f8f9;border: 1px solid #d6d6d6;border-radius: 1px" type="text" class="form-control form-control-1 input-sm" id="amountCollectedMonth" placeholder="Select Month"></a>
       </li>
 
-<li style="width: 38%"  id="borderBottom">
+<li style="width: 38%"  id="borderBottom"  >
     <div class="row col-10" style="width:278px">
-            <div class="col-5" style="margin-left:-11px" >
+            <div class="col-5" style="margin-left:-11px;">
                 <input style="margin-top: 5px;height: 19px;width: 97px;margin-right: 77px;border-radius: 1px" class="form-control" id="startDate" placeholder="{{__('From')}}"/>
                 </div>
         <div class="col-5" style=" margin-left:16px">
@@ -99,22 +100,19 @@
         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
             <div class="tab-pane fade show active" id="artist-transaction-report" role="tabpanel"
                  aria-labelledby="artist-transaction-tab">
-
                 <table class="table  table-striped table-hover table-bordered" id="artist-transaction-table">
                     <thead>
                     <tr>
-
                         <th style="">TRANSACTION ID</th>
                         <th style="">TRANSACTION DATE</th>
                         <th style="text-align: right">AMOUNT (AED)</th>
-                        <th style="text-align: right">VAT (AED)</th>
+                        <th style="text-align: right">VAT (5%)</th>
                         <th style="text-align: right">TOTAL (AED)</th>
                         <th style="">ACTION</th>
                     </tr>
                     </thead>
-
                     <tfoot align="right">
-                    <tr><th colspan="2" class="text-right">Total</th>
+                    <tr><th></th><th  class="text-right">Total</th>
                         <th><span id="amountFooter"></span></th>
                         <th> <span  id="vatFooter"></span></th>
                         <th> <span  id="totalFooter"></span></th>
@@ -123,16 +121,11 @@
                     </tfoot>
                 </table>
             </div>
-
             <div class="col">
                  <input class="btn btn-secondary" style="width: 123px;height: 24px;" type="text" id="yearSelected" placeholder="Select Year">
                 <input class="btn btn-secondary" style="width: 123px;height: 24px;" type="text" id="monthSelected" placeholder="Select Month">
-
-                {{--
-                <button id="printChart"  class="bt btn-secondary">Print Chart</button>
---}}
+                {{--<button id="printChart"  class="bt btn-secondary">Print Chart</button>--}}
             </div>
-
             <div class="chart-container">
                 <div class="bar-chart-container" id="printContentChart">
                     <canvas id="bar-chart"></canvas>

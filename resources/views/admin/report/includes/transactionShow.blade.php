@@ -8,10 +8,9 @@
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">
-
                 <div class="my-auto float-right permit--action-bar">
-                <a href="{{url('artist_reports#transaction-report-tab')}}"
-                  {{--  <a href="{{url('artist_reports#transaction-report-tab')}}"--}}
+                    <button id="print_button" class="btn btn-primary" style="color: white;height: 30px;border-radius: 3px;line-height: 5px;box-shadow: 1px 2px 9px -4px grey;"><i class="fa fa-print"></i><a href="" style="color: white">{{__('Print')}}</a></button>
+                    <a href="{{url('artist_reports#transaction-report-tab')}}"
                        class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u" style="background-color: #b45454;
                          color: white;
                          box-shadow: -1px 6px 11px -6px #969696;
@@ -19,9 +18,8 @@
                          border-radius: 3px;">
                         <i class="la la-arrow-left"></i>
                         {{__('Back')}}
-                    </a>
+                 </a>
                 </div>
-
                 <div class="my-auto float-right permit--action-bar--mobile">
                     {{-- <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id])}}"
                     target="_blank">
@@ -39,8 +37,11 @@
         </div>
 
         <div class="kt-portlet__body kt-padding-t-0" id="main-div">
-            <div class="kt-container kt-padding-l-0">
-                <div class="col-md-12">
+            <div id="image" style="display: none">
+                <img class="card-img-top" src="{{asset('img/raktdalogo.png')}}" alt="">
+            </div>
+            <div class="container-fluid kt-padding-l-0">
+                <div class="col-md-12" id="headerContents">
                     <div class="row">
                         <div class="col-md-4 col-sm-12 row">
                             <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
@@ -84,7 +85,7 @@
                     {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
                     </h5> --}}
                     <div class="col-md-12">
-                        <table class="table table-hover table-borderless border table-striped">
+                        <table class="table table-hover table-borderless border table-striped" id="permit_table">
                             <thead>
                             <tr class="kt-font-transform-u">
                                 <th>{{__('Artist Name')}}</th>`
@@ -147,7 +148,7 @@
                                 <th class="text-right">{{__('Fee')}} (AED)</th>
                                 <th class="text-right">{{__('Vat')}}(5%)</th>
                                 <th class="text-right">{{__('Total')}} (AED) </th>
-                                <th class="text-center">{{__('View')}}</th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -166,12 +167,6 @@
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
 
-                                        <td class="text-center">
-                                            <a href="{{URL::signedRoute('report.view_event', ['id' => $et->event->event_id ])}}">
-                                                <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
-                                                </button>
-                                            </a>
-                                        </td>
                                     </tr>
                                 @elseif($transaction->transaction_type == 'truck')
                                     <tr>
@@ -207,7 +202,6 @@
 
                 @endif
 
-
                 <div class="table-responsive">
                     <div class="pull-right">
                         <table class=" table table-borderless" id="total_div">
@@ -233,10 +227,35 @@
                         </table>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
 
+
 @endsection
+@section('script')
+    <script src="{{asset('js/print.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $(function () {
+                $('#print_button').click(function () {
+                $('#image').css({display:'block'})
+                $('#main-div').print({
+                    addGlobalStyles : true,
+                    stylesheet : '{{asset('css/printCss.css')}}',
+                    rejectWindow : true,
+                    noPrintSelector : ".no-print",
+                    iframe : true,
+               /*     prepend : "Hello World!!!<br/>",*/
+                    //Add this on bottom
+                    append : "",
+                    title:'TRANSACTION REPORT'
+                });
+                    $('#image').hide(100)
+                });
+            });
+        });
+    </script>
+
+    @endsection
+
