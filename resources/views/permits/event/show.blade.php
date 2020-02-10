@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'View Event Permit - Event Permit Details')
+@section('title', 'View Event Permit Details - Smart Government Rak')
 
 @section('content')
 

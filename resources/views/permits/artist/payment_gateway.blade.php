@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'Make Payment Artist Permit - Smart Government Rak')
 
 @section('content')
 

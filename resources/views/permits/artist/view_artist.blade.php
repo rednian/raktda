@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'View Artist Details - Smart Government Rak')
+
 @section('title', 'Artist Details')
 
 @section('content')

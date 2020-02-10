@@ -938,12 +938,16 @@ class ArtistController extends Controller
             $toURL =URL::signedRoute('artist.index').'#applied';    
         }
 
-        $artist_temp_data = ArtistTempData::where([
+        // == 'new' || $request->fromWhere == 'event' || $request->fromWhere = 'renew'
+
+        $artist_temp_data = ArtistTempData::when($request->fromWhere != 'draft', function ($q) use ($request){
+            $q->where('status', '!=', '5');
+          })->when($request->fromWhere == 'draft', function ($q) use ($request){
+            $q->where('del_status', '!=', '1');
+          })->where([   
             ['permit_id', $temp_permit_id],
             ['created_by', $user_id]
-        ])->when($request->fromWhere == 'new' || $request->fromWhere == 'event' || $request->fromWhere = 'renew', function ($q) use ($request){
-            $q->where('status', '!=', '5');
-          })->get();
+        ])->get();
 
         $artists_total = count($artist_temp_data);
 
@@ -983,7 +987,7 @@ class ArtistController extends Controller
             $temp_ids = [];
 
             foreach ($artist_temp_data as $data) {
-
+                
                 array_push($temp_ids, $data->id);
                 if ($data->status == 1) {
                     if ($data->artist_permit_id) {
@@ -1952,6 +1956,14 @@ class ArtistController extends Controller
         }
 
         $user_id = Auth::user()->user_id;
+
+        ArtistTempData::where([
+            ['created_by', $user_id],
+            ['permit_id', $id],
+            ['status', 5],
+            ['del_status', 1]
+        ])->update(['del_status' => 0]);
+
         $data['artist_details'] = ArtistTempData::with('profession', 'nationality', 'ArtistTempDocument', 'event')->where([
             ['status', 5],
             ['del_status', 0],
@@ -1998,8 +2010,7 @@ class ArtistController extends Controller
             ['del_status', 1],
         ])->delete();
 
-            $this->makeSessionForgetPermitDetails();
-        
+        $this->makeSessionForgetPermitDetails();
 
         DB::commit();
 		

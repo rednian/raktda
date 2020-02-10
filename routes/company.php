@@ -39,11 +39,13 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
 
 
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
-    Route::get('/dashboard', function () {
-        return redirect(URL::signedRoute('artist.index'));
-    })->name('company.dashboard');
+    // Route::get('/dashboard', function () {
+    //     return redirect(URL::signedRoute('artist.index'));
+    // })->name('company.dashboard');
 
-    //Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');   
+    Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');   
+
+    Route::post('dashboard','Company\ReportController@filterdashboard')->name('dashboard.filter');
 
     Route::resource('artist', 'Company\ArtistController');
     Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
@@ -192,5 +194,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
      Route::get('notifications', 'Company\CommonController@notifications')->name('company.notifications');
      Route::get('notifications_dt', 'Company\CommonController@getNotificationsDatatable')->name('company.notifications.datatable');
      Route::get('notifications/update_read', 'Company\CommonController@updateAsReadNotification')->name('company.notifications.update_read');
+
+    //  Route::get('/getnotifications', 'Admin\UserController@getNotifications')->name('getnotifications');
     
 });

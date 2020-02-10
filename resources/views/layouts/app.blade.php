@@ -195,6 +195,7 @@
 
         //FUNCTION TO PUT THE NOTIFICATION TO PANE
         function addNotification(data){
+            // console.log(data)
             var html = '<a href="' + data.url + '" class="kt-notification__item">\
                             <div class="kt-notification__item-icon"> <i\
                                     class="flaticon2-bell-2"></i> </div>\
@@ -301,6 +302,21 @@
 
     if($('.ajax-file-upload-error').length){
         setTimeout($('.ajax-file-upload-error').hide(), 2000);
+    }
+
+    function toRead(id, url){
+        $.ajax({
+        url: '{{ route('company.notifications.update_read') }}',
+        data: { id: id },
+        type: 'GET',
+        dataType: 'JSON',
+        success: function(data){
+            location.href = url;
+        },
+        error: function(){
+            alert('error');
+        }
+        }); 
     }
 </script>
 <!-- end::Body -->

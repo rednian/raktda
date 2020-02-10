@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Event Permit Draft - Smart Government Rak')
+@section('title', 'Edit Event Permit - Smart Government Rak')
 
 @section('content')
 
@@ -2141,9 +2141,13 @@
             if(reqCount > 0)
             {
                 var paths = [];
+                let user_id = $('#user_id').val();
+                let event_id = $('#event_id').val();
                 for (var i = 1; i <= reqCount; i++) 
                 {
-                    let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
+                    let filename = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') > .ajax-file-upload-filename').text().trim();
+                    let src = user_id +'/event/'+ event_id + '/pictures/'+filename ;
+                    // let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
                     paths.push(src);
                 }
                 localStorage.setItem('imagePaths', JSON.stringify(paths));
@@ -2160,6 +2164,7 @@
                 fileName: "image_file",
                 multiple: true,
                 deleteStr: `<i class="la la-trash"></i>`,
+                downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
                 maxFileSize: 5242880,
                 showFileCounter: false,
@@ -2168,12 +2173,13 @@
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                showPreview: true,
+                // showPreview: true,
+                showDownload: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 onLoad: function(obj) {
                     var url = "{{route('event.get_uploaded_eventImages', ':id')}}";
                     url = url.replace(':id', $('#event_id').val());
@@ -2183,39 +2189,49 @@
                             success: function (data) {
                                 if (data) {
                                     let j = 1 ;
-                                    if(data[0]) {
-                                        $('#description').val(data[0].description);
-                                    }
+                                    
                                     for(data of data) {
                                         const d = data["path"].split("/");
                                         let docName = d[d.length - 1];
-                                        obj.createProgress('', "{{asset('storage')}}"+'/' + data["path"], '');
+                                        obj.createProgress(docName, "{{asset('storage')}}"+'/' + data["path"], '');
                                     }
                                     getImagePaths();
                                 }
                             }
                         });
-
-                       
-        
                 },
                 downloadCallback: function (files, pd) {
-                    let file_path = files;
-                    let path = file_path.replace('public/','');
-                        window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                    if(files.filepath)
+                    {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/','');
+                                window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                    }else {
+                            let user_id = $('#user_id').val();
+                            let event_id = $('#event_id').val();
+                            let path = user_id + '/event/' + event_id + '/pictures/'+files;
+                                window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                            );
+                    }
                 },
                 deleteCallback: function(data,pd)
                 {
-                    $.ajax({
-                        url: "{{route('event.deleteUploadedEventPic')}}",
-                        type: 'POST',
-                        data: {path: data.filepath, ext: data.ext },
-                        success: function (result) {
-                        }   
-                    });
+                    if(data.filepath)
+                    {
+                        $.ajax({
+                            url: "{{route('event.deleteUploadedEventPic')}}",
+                            type: 'POST',
+                            data: {path: data.filepath, ext: data.ext },
+                            success: function (result) {
+                            }   
+                        });
+                    }
+                   
                 }
             });
             $('#image_uploader div').attr('id', 'image-upload');

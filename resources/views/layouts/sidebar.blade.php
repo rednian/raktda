@@ -24,7 +24,7 @@
             <ul class="kt-menu__nav">
                 <li
                     class="kt-menu__item kt-menu__item {{ \Request::is('company/dashboard') ? 'kt-menu__item--active' : ''}}">
-                    <a href="{{route('company.dashboard')}}" class="kt-menu__link">
+                    <a href="{{URL::signedRoute('company.dashboard')}}" class="kt-menu__link">
                         <span class="kt-menu__link-text">{{ __('Dashboard')}}</span>
                     </a>
                 </li>

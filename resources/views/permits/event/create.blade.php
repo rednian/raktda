@@ -2,7 +2,6 @@
 
 @section('title', 'Add Event Permit - Smart Government Rak')
 
-
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
@@ -2130,17 +2129,14 @@
                 maxFileSize: 5242880,
                 abortStr: '',
                 showProgress: false,
-                // downloadStr: `<i class="la la-download"></i>`,
+                downloadStr: `<i class="la la-download"></i>`,
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                // showDownload:true,
-                showPreview: true,
+                showDownload:true,
+                // showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
                 downloadCallback: function (files, pd) {
                     let path = files.filepath.replace('public/','');
                     window.open("{{url('storage')}}"+'/' + path,

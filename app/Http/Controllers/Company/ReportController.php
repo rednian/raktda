@@ -191,23 +191,65 @@ class ReportController extends Controller
 
     public function dashboard()
     {
-        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
-        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+        $user = Auth::user()->user_id ;
+        Permit::where('created_by', $user)->update(['is_edit' => 0]);
+        ArtistTempData::where('created_by', $user)->where('status' , 0)->delete();
         Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
-        
-        $data['artist_applied'] = Permit::whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
-        $data['artist_valid'] = Permit::where('permit_status', 'active')->count();
-        $data['artist_drafts'] = ArtistTempData::where('status', 5)->distinct('permit_id')->count();
-        $data['artist_expired'] = Permit::where('permit_status', 'expired')->count();
-        $data['artist_cancelled'] = Permit::whereIn('permit_status',['cancelled', 'rejected'])->count();
 
-        $data['event_applied'] = Event::whereIn('status', ['new', 'amended', 'amended', 'approved-unpaid'])->count();
-        $data['event_valid'] = Event::where('status', 'active')->count();
-        $data['event_drafts'] = Event::where('status','draft')->count();
-        $data['event_expired'] = Event::where('status','expired')->count();
-        $data['event_cancelled'] = Event::whereIn('status', ['cancelled', 'rejected'])->count();
+        $permit = Permit::where('created_by', $user);
+        $artistTempData = ArtistTempData::where('created_by', $user);
+        $event = Event::where('created_by', $user);
+        
+        $data['artist_applied'] = $permit->whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
+        $data['artist_valid'] = $permit->where('permit_status', 'active')->count();
+        $data['artist_drafts'] = $artistTempData->where('status', 5)->distinct('permit_id')->count();
+        $data['artist_expired'] = $permit->where('permit_status', 'expired')->count();
+        $data['artist_cancelled'] = $permit->whereIn('permit_status',['cancelled', 'rejected'])->count();
+
+        $data['event_applied'] = $event->whereIn('status', ['new', 'amended', 'amended', 'approved-unpaid'])->count();
+        $data['event_valid'] = $event->where('status', 'active')->count();
+        $data['event_drafts'] = $event->where('status','draft')->count();
+        $data['event_expired'] = $event->where('status','expired')->count();
+        $data['event_cancelled'] = $event->whereIn('status', ['cancelled', 'rejected'])->count();
+
         return view('permits.dashboard', $data);
     }
 
+    public function filterdashboard(Request $request)
+    {
+        $filter_value = $request->filterby;
+        $user = Auth::user()->user_id ;
+        $permit = Permit::where('created_by', $user);
+        $artistTempData = ArtistTempData::where('created_by', $user);
+        $event = Event::where('created_by', $user);
+
+        if($filter_value == 'today'){
+            $permit->whereDate('created_at', '=', Carbon::today()->toDateString());
+            $artistTempData->whereDate('created_at', '=', Carbon::today()->toDateString());
+            $event->whereDate('created_at', '=', Carbon::today()->toDateString());
+        }else if($filter_value == 'lastweek') {
+            $permit->whereDate('created_at', '>=', Carbon::now()->subDays(7)->toDateString());
+            $artistTempData->whereDate('created_at', '>=', Carbon::now()->subDays(7)->toDateString());
+            $event->whereDate('created_at', '>=', Carbon::now()->subDays(7)->toDateString());
+        }else if($filter_value == 'lastthirty') {
+            $permit->whereDate('created_at', '>=', Carbon::now()->subDays(30)->toDateString());
+            $artistTempData->whereDate('created_at', '>=', Carbon::now()->subDays(30)->toDateString());
+            $event->whereDate('created_at', '>=', Carbon::now()->subDays(30)->toDateString());
+        }
+        
+        $data['artist_applied'] = $permit->whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
+        $data['artist_valid'] = $permit->where('permit_status', 'active')->count();
+        $data['artist_drafts'] = $artistTempData->where('status', 5)->distinct('permit_id')->count();
+        $data['artist_expired'] = $permit->where('permit_status', 'expired')->count();
+        $data['artist_cancelled'] = $permit->whereIn('permit_status',['cancelled', 'rejected'])->count();
+
+        $data['event_applied'] = $event->whereIn('status', ['new', 'amended', 'amended', 'approved-unpaid'])->count();
+        $data['event_valid'] = $event->where('status', 'active')->count();
+        $data['event_drafts'] = $event->where('status','draft')->count();
+        $data['event_expired'] = $event->where('status','expired')->count();
+        $data['event_cancelled'] = $event->whereIn('status', ['cancelled', 'rejected'])->count();
+
+        return $data;
+    }
 
 }

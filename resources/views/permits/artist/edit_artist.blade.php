@@ -1,8 +1,9 @@
 @extends('layouts.app')
+
+@section('title', 'Edit Artist - Smart Government Rak')
+
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
-
-
 <div class="kt-portlet">
     <div class="kt-portlet__body kt-portlet__body--fit">
         <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
@@ -342,6 +343,7 @@
                 abortStr: '',
                 // showPreview:true,
                 showDelete: true,
+                showDownload: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 // onSuccess: function (files, response, xhr, pd) {
@@ -366,15 +368,42 @@
                             url: "{{url('company/get_temp_photo_temp_id')}}"+'/'+temp_id,
                             success: function(data)
                             {
-                                // console.log(data[0].original_pic);
-                                if(data[0].original)
-                                {
-                                    obj.createProgress('',"{{url('/storage')}}"+'/'+data[0].original,'');
+                                let len = data.length;
+                                let i = data.length - 1;
+                                if (data[i].thumbnail) {
+                                    // let ex = explode('/', data[i].thumbnail);
+                                    let ex = data[i].thumbnail.split('/').pop();
+                                    obj.createProgress(ex, "{{url('storage')}}"+'/'+ data[i].thumbnail, '');
                                 }
                             }
                         });
                     }
 
+                },
+                downloadCallback: function (files, pd) {
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let user_id = $('#user_id').val();
+                    if(files.filepath) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }else if(artistpermitid){
+                        let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    }else{ 
+                        let temp_id = $('#temp_id').val();
+                        let this_url = user_id + '/artist/temp/' +temp_id +'/photos/'+ files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    } 
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');

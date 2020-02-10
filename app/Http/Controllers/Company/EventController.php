@@ -125,7 +125,7 @@ class EventController extends Controller
         $event_id = $request->event_id;
         $truck_id = $request->truck_id;
         $truck_details = json_decode($request->truckDetails, true);
-        $truck_doc_details = json_decode($request->truckDocDetails, true);
+        // $truck_doc_details = json_decode($request->truckDocDetails, true);
         
         $requirements = Requirement::where('requirement_type', 'truck')->get();
         $requirement_ids = [];
@@ -200,7 +200,7 @@ class EventController extends Controller
 
        
 
-        if ($truck_doc_details) {
+        // if ($truck_doc_details) {
 
             for ($j = 0; $j < $total; $j++) {
 
@@ -254,7 +254,7 @@ class EventController extends Controller
                         $request->session()->forget([$userid . '_truck_file_'  . $l, $userid . '_truck_ext_'  . $l]);
                     }
                 }
-            }
+            // }
         }
 
             if(isset($request->from) && $request->from == "amend")
