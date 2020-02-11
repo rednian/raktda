@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Event Permit Draft - Smart Government Rak')
+@section('title', 'Payment Event Permit - Smart Government Rak')
 
 @section('content')
 
@@ -1478,7 +1478,7 @@ $output = json_decode($output);
                     showFileCounter: false,
                     abortStr: '',
                     multiple: false,
-                    maxFileCount: 2,
+                    maxFileCount: 5,
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id: i, reqId: $('#req_id_' + i).val() , reqName:$('#req_name_' + i).val()},
                     onSuccess: function (files, response, xhr, pd) {
@@ -1497,7 +1497,6 @@ $output = json_decode($output);
                                 if (data) {
                                     let j = 1 ;
                                     for(data of data) {
-                                        if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
                                         let issue_datetime = new Date(data['issued_date']);
@@ -1514,7 +1513,7 @@ $output = json_decode($output);
                                             $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
                                         }
-                                        }
+                                        
                                         j++;
                                     }
 

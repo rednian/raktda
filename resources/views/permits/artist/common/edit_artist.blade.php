@@ -1,4 +1,8 @@
 @extends('layouts.app')
+
+@section('title', __('Edit Artist') . ' - ' . __('Smart Government Rak'))
+
+
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
 <!-- begin:: Content -->
@@ -16,8 +20,6 @@
                 @php
                 $language_id = getLangId();
                 @endphp
-
-
                 <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
                 <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
                 <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
@@ -163,7 +165,7 @@
                         break;
                         }
 
-                        $route_back = URL::signedRoute('artist.permit',[ 'id' => $permit_details->permit_id , 'status'=>
+                        $route_back = URL::signedRoute('artist.permit',[ 'id' => $artist_details->permit_id , 'status'=>
                         $status]);
 
                         if($from == 'new') {
@@ -171,7 +173,7 @@
                         }
 
                         if($from == 'event') {
-                        $route_back = URL::signedRoute('event.add_artist', [ 'id' => $permit_details->permit_id]);
+                        $route_back = URL::signedRoute('event.add_artist', [ 'id' => $artist_details->permit_id]);
                         }
 
                         @endphp
@@ -412,10 +414,12 @@
                             url: "{{url('company/get_temp_photo_temp_id')}}"+'/'+temp_id,
                             success: function(data)
                             {
-                                // console.log(data[0].original_pic);
-                                if(data[0].original)
-                                {
-                                    obj.createProgress('',"{{url('/storage')}}"+'/'+data[0].original,'');
+                                let len = data.length;
+                                let i = data.length - 1;
+                                if (data[i].thumbnail) {
+                                    // let ex = explode('/', data[i].thumbnail);
+                                    let ex = data[i].thumbnail.split('/').pop();
+                                    obj.createProgress(ex, "{{url('storage')}}"+'/'+ data[i].thumbnail, '');
                                 }
                             }
                         });
@@ -423,17 +427,24 @@
 
                 },
                 downloadCallback: function (files, pd) {
+                    let artistpermitid = $('#artist_permit_id').val();
+                    let user_id = $('#user_id').val();
                     if(files.filepath) {
-                            let file_path = files.filepath;
-                            let path = file_path.replace('public/','');
-                            window.open(
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
                         "{{url('storage')}}"+'/' + path,
                         '_blank'
                         );
-                    }else{ 
-                        let user_id = $('#user_id').val();
-                        let artistpermitid = $('#artist_permit_id').val();
+                    }else if(artistpermitid){
                         let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + this_url,
+                        '_blank'
+                        );
+                    }else{ 
+                        let temp_id = $('#temp_id').val();
+                        let this_url = user_id + '/artist/temp/' +temp_id +'/photos/'+ files;
                         window.open(
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'

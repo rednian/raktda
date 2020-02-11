@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('title', 'Add Artist - Smart Government Rak')
+
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
 @php
@@ -1430,12 +1433,9 @@ function checkVisaRequired(){
                         {
                             $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">This is an Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
                             $('#not_artist_personcode').html(code);
-                        }
-
-
-                        if(data.artist_d.artist_status == 'blocked')
+                        }else if(data.artist_d.artist_status == 'blocked')
                         {
-                            $('#person_code_modal').append('<div class="kt-font-dark kt-font-bold">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
+                            $('#person_code_modal').append('<div class="kt--maroon text-center kt-font-bold">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
                             return ;
                         }
 

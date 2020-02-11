@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Happiness -- Artsit Permit -- Smart Government Rak')
+@section('title', 'Happiness Meter Artist Permit - Smart Government Rak')
 @section('style')
 <style>
     ::placeholder {

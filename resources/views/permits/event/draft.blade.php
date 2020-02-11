@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ' Event Permit Draft - Smart Government Rak')
+@section('title', 'View Event Permit Draft - Smart Government Rak')
 
 @section('content')
 
@@ -1363,6 +1363,7 @@
                     // $('#submit--btn-group #btnGroupDrop1').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
                     getImagePaths();
+
                     var ed = localStorage.getItem('eventdetails');
                     var dd = localStorage.getItem('documentDetails');
                     var dn = localStorage.getItem('documentNames');
@@ -2194,16 +2195,18 @@
             if(reqCount > 0)
             {
                 var paths = [];
+                let user_id = $('#user_id').val();
+                let event_id = $('#event_id').val();
                 for (var i = 1; i <= reqCount; i++) 
                 {
-                    let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
+                    // let src = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') img').attr('src').split('/').slice(4, ).join('/');
+                    let filename = $('#image-file-upload > .ajax-file-upload-statusbar:nth-child('+i+') > .ajax-file-upload-filename').text().trim();
+                    let src = user_id +'/event/'+ event_id + '/pictures/'+filename ;
                     paths.push(src);
                 }               
                 localStorage.setItem('imagePaths', JSON.stringify(paths));
             }
        }
-
-       
 
        const imageUploadFunction = () => {
             var ImageUploader = $('#image_uploader').uploadFile({
@@ -2221,12 +2224,14 @@
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                showPreview: true,
+                // showPreview: true,
+                showDownload: true,
+                downloadStr: `<i class="la la-download"></i>`,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 onLoad: function(obj) {
                     var url = "{{route('event.get_uploaded_eventImages', ':id')}}";
                     url = url.replace(':id', $('#event_id').val());
@@ -2242,24 +2247,35 @@
                                     for(data of data) {
                                         const d = data["path"].split("/");
                                         let docName = d[d.length - 1];
-                                        obj.createProgress('', "{{asset('storage')}}"+'/' + data["path"], '');
+                                        obj.createProgress(docName, "{{asset('storage')}}"+'/' + data["path"], '');
                                     }
                                 }
                             }
                         });
-
-        
                 },
                 downloadCallback: function (files, pd) {
-                    let file_path = files;
-                    let path = file_path.replace('public/','');
-                        window.open(
-                    "{{url('storage')}}"+'/' + path,
-                    '_blank'
-                    );
+                   if(files.filepath)
+                   {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                   }else {
+                        let user_id = $('#user_id').val();
+                        let event_id = $('#event_id').val();
+                        let path = user_id + '/event/' + event_id + '/pictures/'+files;
+                            window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                   }
                 },
                 deleteCallback: function(data,pd)
                 {
+                   if(data.filepath)
+                   {
                     $.ajax({
                         url: "{{route('event.deleteUploadedEventPic')}}",
                         type: 'POST',
@@ -2267,6 +2283,7 @@
                         success: function (result) {
                         }   
                     });
+                   }
                 }
             });
             $('#image_uploader div').attr('id', 'image-upload');

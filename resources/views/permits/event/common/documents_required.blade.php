@@ -84,11 +84,14 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $j = 1;
+                                    $j = 1; $c_count = 0;
                                     @endphp
                                     @foreach($et->event_type_requirements as $req)
                                     @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
                                     $req->requirement->type == 'corporate')
+                                    @php
+                                    $c_count++;
+                                    @endphp
                                     <tr>
                                         <td class="text-center">{{$j}}</td>
                                         <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
@@ -101,7 +104,7 @@
                                     @endphp
                                     @endif
                                     @endforeach
-                                    @if($et->event_type_requirements->count() == 0)
+                                    @if($c_count == 0)
                                     <tr>
                                         <td></td>
                                         <td colspan="2">{{__('No Required Documents')}}</td>
@@ -122,11 +125,14 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                    $j = 1;
+                                    $j = 1; $g_count = 0;
                                     @endphp
                                     @foreach($et->event_type_requirements as $req)
                                     @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
                                     $req->requirement->type == 'government')
+                                    @php
+                                    $g_count++;
+                                    @endphp
                                     <tr>
                                         <td class="text-center">{{$j}}</td>
                                         <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
@@ -139,7 +145,7 @@
                                     @endphp
                                     @endif
                                     @endforeach
-                                    @if($et->event_type_requirements->count() == 0)
+                                    @if($g_count == 0)
                                     <tr>
                                         <td></td>
                                         <td colspan="2">{{__('No Required Documents')}}</td>

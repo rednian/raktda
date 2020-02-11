@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add New Permit - Smart Government Rak')
+@section('title', 'Add New Artist Permit - Smart Government Rak')
 @section('content')
 
 {{-- {{dd(session()->all())}} --}}
@@ -78,7 +78,8 @@
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                     onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" disabled/>
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
+                                                    disabled />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
