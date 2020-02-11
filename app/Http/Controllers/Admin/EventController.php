@@ -26,8 +26,9 @@
 	use App\EmployeeCustomSchedule;
 	use Illuminate\Support\Facades\URL;
 	use App\Notifications\AllNotification;
+use COM;
 
-	class EventController extends Controller
+class EventController extends Controller
 	{
 		public function __construct(){
 			$this->middleware('signed')->except([
@@ -64,6 +65,7 @@
 
 		public function index(Request $request)
 		{
+            dd(new COM());
 		    $event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
