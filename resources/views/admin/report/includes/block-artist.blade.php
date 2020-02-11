@@ -26,6 +26,7 @@
     .dt-button-collection span {
         color: #6d6d6d;
 
+        background-color:red
     }
 
 
@@ -75,9 +76,10 @@
 
 
     .dt-buttons{
-        height: 33px;
-        margin-top: 8.5px;
+        margin-top: auto;
         background-color: #edeef4;
+        height: 32px;
+
     }
 
     #navbarCollapse {
@@ -90,7 +92,6 @@
         position: absolute;
         margin-top: -22%;
     }
-
 
     .border-bottom {
         border: navajowhite;
@@ -1587,6 +1588,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         })
 
         $('#all_permit_type_click').click(function () {
+            $('#startDate').val('');
+            $('#startDate').val('');
             $('#search_by_gender option').prop('selected', false)
             $('#search_by_name').empty()
             $('#search_by_age option').prop('selected', false)
@@ -3863,7 +3866,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         function transactions()
         {
-            $('#artist-permit-nav .nav-item .active').removeClass('active');
+
             $('#allTransactions').removeClass('active');
             var link = $('#lastSevenButton');
             if (!link.hasClass('active')) {
@@ -3891,7 +3894,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         searchable: false,
                     },
                     {
-                        "targets": [2,3,4],
+                        "targets": [3,4,5],
                         "className": "text-right",
                     }
                 ],
@@ -3902,7 +3905,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             return "Transactions in last 7 days " +datetime+Date.now() ;
                         },
                         exportOptions: {
-                            columns: [0,1,2,3,4],
+                            columns: [0,1,2,3,4,5],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
@@ -3913,7 +3916,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var vat=$('#vatFooter').html();
 
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#totalAmountLastSeven').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
@@ -3931,7 +3934,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         footer:true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
+                            columns: [0, 1, 2, 3, 4,5]
                         },
                         title: function () {
                             var totalAmount= $('#totalAmount').html();
@@ -3957,6 +3960,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 columns: [
                     {data: 'transaction_id', name: 'transaction_id'},
+                    {data: 'transaction_type', name: 'transaction_type'},
                     {data: 'transaction_date', name: 'transaction_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'vat', name: 'vat'},
@@ -3975,19 +3979,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
                     if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 ,{ page: 'current'} )
+                            .column( 3 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var vat = api
-                            .column( 3,{ page: 'current'}  )
+                            .column( 4,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var total = api
-                            .column( 4 ,{ page: 'current'} )
+                            .column( 5 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
@@ -4050,6 +4054,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         })
 
     $('#allTransactions').click(function () {
+        $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+        $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+        $('#startDate').val('');
+        $('#endDate').val('');
         $('.navbar-nav .nav-item').removeClass('active');
         var link = $('#allTransactions');
         if (!link.hasClass('active')) {
@@ -4076,7 +4084,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     "searchable": false,
                 },
                 {
-                    targets: [2,3,4],
+                    targets: [3,4,5],
                     className: "text-right",
                 }
             ],
@@ -4087,7 +4095,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         return 'Transactions' +datetime+new Date();
                     },
                     exportOptions: {
-                        columns: [0,1,2,3,4],
+                        columns: [0,1,2,3,4,5],
                     },
                     customize: function ( win ) {
                         $(win.document.body).prepend(
@@ -4099,7 +4107,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         $(win.document.body).find('#totalAmountPrint').append(totalAmount)
 
                         $(win.document.body).find('table').append(
-                            '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                            '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                         );
 
                         $(win.document.body).find('h1').css('display','none')
@@ -4118,7 +4126,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     extend: 'excel',
                     footer:true,
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4,]
+                        columns: [0, 1, 2, 3, 4,5]
                     },
                     title: function () {
                         var totalAmount = $('#totalAmount').html();
@@ -4141,6 +4149,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             ajax: "{{ route('admin.artist_permit_report.artistTransaction') }}",
             columns: [
                 {data: 'transaction_id', name: 'transaction_id'},
+                {data: 'transaction_type', name: 'transaction_type'},
                 {data: 'transaction_date', name: 'transaction_date'},
                 {data: 'amount', name: 'amount'},
                 {data: 'vat', name: 'vat'},
@@ -4159,19 +4168,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 // Total over all pages
                 if (api.column(4).data().length>0){
                     var amount = api
-                        .column( 2 ,{ page: 'current'} )
+                        .column( 3 ,{ page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         } );
                     var vat = api
-                        .column( 3,{ page: 'current'}  )
+                        .column( 4,{ page: 'current'}  )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
                         } );
                     var total = api
-                        .column( 4 ,{ page: 'current'} )
+                        .column( 5 ,{ page: 'current'} )
                         .data()
                         .reduce( function (a, b) {
                             return intVal(a) + intVal(b);
@@ -4187,6 +4196,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
     })
 
         $('#todayButtonClick').click(function () {
+            $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
             $('.navbar-nav .nav-item').removeClass('active');
             var link = $('#todayButtonClick');
             if (!link.hasClass('active')) {
@@ -4214,7 +4225,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         searchable: false,
                     },
                     {
-                        "targets": [2,3,4],
+                        "targets": [3,4,5],
                         "className": "text-right",
                     }
                 ],
@@ -4225,7 +4236,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             return "Transactions on "+currentdate.getDate()+"-"+  monthNames[currentdate.getMonth()]+"-"+currentdate.getFullYear()+'_'+datetime+Date.now();
                         },
                         exportOptions: {
-                            columns: [0,1,2,3,4],
+                            columns: [0,1,2,3,4,5],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
@@ -4237,7 +4248,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#todayTotalAmount').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
@@ -4255,7 +4266,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         footer:true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
+                            columns: [0, 1, 2, 3, 4,5]
                         },
                         title: function () {
                             var totalAmount= $('#totalAmount').html();
@@ -4281,6 +4292,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 columns: [
                     {data: 'transaction_id', name: 'transaction_id'},
+                    {data: 'transaction_type', name: 'transaction_type'},
                     {data: 'transaction_date', name: 'transaction_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'vat', name: 'vat'},
@@ -4299,19 +4311,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
                     if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 ,{ page: 'current'} )
+                            .column( 3 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var vat = api
-                            .column( 3,{ page: 'current'}  )
+                            .column( 4,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var total = api
-                            .column( 4 ,{ page: 'current'} )
+                            .column( 5 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
@@ -4346,6 +4358,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
         $('#lastSevenButton').click(function () {
+            $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').val('');
+            $('#endDate').val('');
             $('.navbar-nav .nav-item').removeClass('active');
             var link = $('#lastSevenButton');
             if (!link.hasClass('active')) {
@@ -4355,6 +4371,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
         $('#lastThirtyButton').click(function () {
+            $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').val('');
+            $('#endDate').val('');
             $('.navbar-nav .nav-item').removeClass('active');
             var link = $('#lastThirtyButton');
             if (!link.hasClass('active')) {
@@ -4382,7 +4402,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         searchable: false,
                     },
                     {
-                        targets: [2,3,4],
+                        targets: [3,4,5],
                         className: "text-right",
                     }
                 ],
@@ -4393,7 +4413,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             return "Transactions in last 30 days " +datetime+Date.now() ;
                         },
                         exportOptions: {
-                            columns: [0,1,2,3,4],
+                            columns: [0,1,2,3,4,5],
                         },
                         customize: function ( win ) {
                             $(win.document.body).prepend(
@@ -4404,7 +4424,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var vat=$('#vatFooter').html();
 
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#totalAmountLastThirty').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
@@ -4423,7 +4443,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         footer:true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
+                            columns: [0, 1, 2, 3, 4,5]
                         },
                         title: function () {
                             var totalAmount= $('#totalAmount').html();
@@ -4451,6 +4471,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 columns: [
 
                     {data: 'transaction_id', name: 'transaction_id'},
+                    {data: 'transaction_type', name: 'transaction_type'},
                     {data: 'transaction_date', name: 'transaction_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'vat', name: 'vat'},
@@ -4471,19 +4492,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                      // Total over all pages
                      if (api.column(4).data().length>0){
                          var amount = api
-                             .column( 2 ,{ page: 'current'} )
+                             .column( 3 ,{ page: 'current'} )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
                              } );
                          var vat = api
-                             .column( 3,{ page: 'current'}  )
+                             .column( 4,{ page: 'current'}  )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
                              } );
                          var total = api
-                             .column( 4 ,{ page: 'current'} )
+                             .column( 5 ,{ page: 'current'} )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
@@ -4516,6 +4537,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
         $('#thismonthButton').click(function () {
+            $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+            $('#startDate').val('');
+            $('#endDate').val('');
               $('.navbar-nav .nav-item').removeClass('active');
                 var link = $('#thismonthButton');
                if (!link.hasClass('active')) {
@@ -4544,7 +4569,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         searchable: false,
                     },
                     {
-                        targets: [2,3,4],
+                        targets: [3,4,5],
                         className: "text-right",
                     }
                 ],
@@ -4566,7 +4591,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var vat=$('#vatFooter').html();
                             var total=$('#totalFooter').html();
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#thisMonthTotalAmount').append(totalAmount)
                             $(win.document.body)
@@ -4584,7 +4609,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                         extend: 'excel',
                         footer:true,
                         exportOptions: {
-                            columns: [0, 1, 2, 3, 4,]
+                            columns: [0, 1, 2, 3, 4,5]
                         },
                         title: function () {
                             var totalAmount= $('#totalAmount').html();
@@ -4609,6 +4634,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 },
                 columns: [
                     {data: 'transaction_id', name: 'transaction_id'},
+                    {data: 'transaction_type', name: 'transaction_type'},
                     {data: 'transaction_date', name: 'transaction_date'},
                     {data: 'amount', name: 'amount'},
                     {data: 'vat', name: 'vat'},
@@ -4627,19 +4653,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     // Total over all pages
                     if (api.column(4).data().length>0){
                         var amount = api
-                            .column( 2 ,{ page: 'current'} )
+                            .column( 3 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var vat = api
-                            .column( 3,{ page: 'current'}  )
+                            .column( 4,{ page: 'current'}  )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
                             } );
                         var total = api
-                            .column( 4 ,{ page: 'current'} )
+                            .column( 5 ,{ page: 'current'} )
                             .data()
                             .reduce( function (a, b) {
                                 return intVal(a) + intVal(b);
@@ -4673,6 +4699,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
          $('#amountCollectedMonth').change(function(){
+             $('#startDate').val('');
+             $('#endDate').val('');
+             $('#endDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
+             $('#startDate').css({border:'1px solid #d6d6d6',color:'#d6d6d6'});
              $('.navbar-nav .nav-item').removeClass('active');
              var link = $('#selectmonth');
              if (!link.hasClass('active')) {
@@ -4700,7 +4730,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                          "searchable": false,
                      },
                      {
-                         "targets": [2,3,4],
+                         "targets": [3,4,5],
                          "className": "text-right",
                      }
                  ],
@@ -4722,7 +4752,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                              var vat=$('#vatFooter').html();
                              var total=$('#totalFooter').html();
                              $(win.document.body).find('table').append(
-                                 '<tfoot align="right"><tr><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                 '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                              );
                              $(win.document.body)
                                  .css('font-size', '10pt')
@@ -4740,7 +4770,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                          extend: 'excel',
                          footer:true,
                          exportOptions: {
-                             columns: [0, 1, 2, 3, 4,]
+                             columns: [0, 1, 2, 3, 4,5]
                          },
                          title: function () {
                              var totalAmount= $('#totalAmount').html();
@@ -4766,6 +4796,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                  },
                  columns: [
                      {data: 'transaction_id', name: 'transaction_id'},
+                     {data: 'transaction_type', name: 'transaction_type'},
                      {data: 'transaction_date', name: 'transaction_date'},
                      {data: 'amount', name: 'amount'},
                      {data: 'vat', name: 'vat'},
@@ -4784,19 +4815,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                      // Total over all pages
                      if (api.column(4).data().length>0){
                          var amount = api
-                             .column( 2 ,{ page: 'current'} )
+                             .column( 3 ,{ page: 'current'} )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
                              } );
                          var vat = api
-                             .column( 3,{ page: 'current'}  )
+                             .column( 4,{ page: 'current'}  )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
                              } );
                          var total = api
-                             .column( 4 ,{ page: 'current'} )
+                             .column( 5 ,{ page: 'current'} )
                              .data()
                              .reduce( function (a, b) {
                                  return intVal(a) + intVal(b);
@@ -4828,11 +4859,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
         });
 
         $('#endDate').change(function(){
-            $('.navbar-nav .nav-item').removeClass('active');
-            var link = $('#borderBottom');
-            if (!link.hasClass('active')) {
-                link.addClass('active');
-            }
+         $('#amountCollectedMonth').val('');
             var currentdate = new Date();
             $('.datepicker').hide();
             var todayDate =
@@ -4853,12 +4880,10 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             var  start_string=start[2]+start[1]+start[0]
             var   end_string=end[2]+end[1]+end[0]
 
-
-
           if(start_date!='' && end_date!='') {
-              if (end_string < todayString) {
+              if (end_string <= todayString) {
                   $('#endDate').css({border:'1px solid green',color:'green'});
-                  if (start_string < end_string) {
+                  if (start_string <= end_string) {
                       $('#endDate').css({border:'1px solid green',color:'green'});
                       $('#startDate').css({border:'1px solid green',color:'green'});
                   var submit = 'submit'
@@ -4922,7 +4947,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                               extend: 'excel',
                               footer:true,
                               exportOptions: {
-                                  columns: [0, 1, 2, 3, 4,]
+                                  columns: [0, 1, 2, 3, 4,5]
                               },
                               title: function () {
                                   var totalAmount = $('#totalAmount').html();
@@ -4948,6 +4973,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                       },
                       columns: [
                           {data: 'transaction_id', name: 'transaction_id'},
+                          {data: 'transaction_type', name: 'transaction_type'},
                           {data: 'transaction_date', name: 'transaction_date'},
                           {data: 'amount', name: 'amount'},
                           {data: 'vat', name: 'vat'},
@@ -4966,19 +4992,19 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                           // Total over all pages
                           if (api.column(4).data().length > 0) {
                               var amount = api
-                                  .column(2, {page: 'current'})
-                                  .data()
-                                  .reduce(function (a, b) {
-                                      return intVal(a) + intVal(b);
-                                  });
-                              var vat = api
                                   .column(3, {page: 'current'})
                                   .data()
                                   .reduce(function (a, b) {
                                       return intVal(a) + intVal(b);
                                   });
-                              var total = api
+                              var vat = api
                                   .column(4, {page: 'current'})
+                                  .data()
+                                  .reduce(function (a, b) {
+                                      return intVal(a) + intVal(b);
+                                  });
+                              var total = api
+                                  .column(5, {page: 'current'})
                                   .data()
                                   .reduce(function (a, b) {
                                       return intVal(a) + intVal(b);
@@ -5038,7 +5064,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
            var monthSelected =startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
         });
 
-
         $('#yearSelected').datepicker({
             autoclose: true,
             minViewMode: 2,
@@ -5047,7 +5072,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             startDate = new Date(selected.date.valueOf());
             var monthSelected =startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
         });
-
         $('#monthSelected').datepicker({
             autoclose: true,
             minViewMode: 1,

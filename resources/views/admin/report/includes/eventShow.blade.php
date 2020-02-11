@@ -25,41 +25,45 @@
             background-color: black;
         }
         @media print {
-            #DivToPrint {
-               background-color: red;
-            }
-        }
 
+        }
     </style>
 @endsection
 @section('content')
     <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
              style="padding: 20px">
-        <table class="table table-bordered container-fluid " id="DivToPrint" style="padding: 3px">
+        <div class="container-fluid"  id="DivToPrint">
+            <img style="width: 100%;margin-left: -8px" src="{{asset('img/raktdalogo.png')}}" alt="">
+        <table class="table table-bordered container-fluid " style="padding: 3px">
             <tr>
-                <th colspan="2">
-                    <img style="width: 100%;margin-left: -8px" src="{{asset('img/raktdalogo.png')}}" alt="">
-                </th>
+                <th colspan="2"><h2  style="padding: 5px;
+                                                height: 8px;
+                                                line-height: 8px;
+                                                font-weight: bold;
+                                                text-align: center;
+                                                font-size: 16px;">{{__('EVENTS DETAILS')}}</h2></th>
             </tr>
-            <tr>
-                <th colspan="2" align="center" style="padding: 5px;height: 34px">{{__('EVENTS DETAILS')}}</th>
-            </tr>
+
             <tr>
                 <th width="35%">{{__('REFERENCE NUMBER')}}</th>
                 <td>{{$event->reference_number}}</td>
             </tr>
+
             <tr>
                 <th>{{__('NAME')}}</th>
                 <td>{{ucwords($event->name_en)}}</td>
             </tr>
+
             <tr>
                 <th>{{__('PERMIT NUMBER')}}</th>
-                <td class="col-6">{{$event->permit_number}}</td>
+                <td>{{$event->permit_number}}</td>
             </tr>
+
             <tr>
                 <th>{{__('COMPANY')}}</th>
                 <td>{{ucwords($event->company?$event->company->name_en:'')}}</td>
             </tr>
+
             <tr>
                 <th>{{__('VENUE')}}</th>
                 <td>{{$event->venue_en}}</td>
@@ -68,31 +72,39 @@
                 <th>{{__('DESCRIPTION')}}</th>
                 <td>{{$event->description_en}}</td>
             </tr>
+
             <tr>
                 <th>{{__('EMIRATE')}}</th>
                 <td>{{$event->emirate->name_en}}</td>
             </tr>
+
             <tr>
                 <th>{{__('ADDRESS')}}</th>
                 <td>{{$event->address}}</td>
             </tr>
+
             <tr>
                 <th>{{__('ISSUED DATE')}}</th>
                 <td>{{$event->issued_date}}</td>
             </tr>
+
             <tr>
                 <th>{{__('EXPIRY DATE')}}</th>
                 <td>{{$event->expired_date}}</td>
             </tr>
+
             <tr>
                 <th>{{__('APPLICATION TYPE')}}</th>
                 <td>{{$event->firm}}</td>
             </tr>
+
             <tr>
                 <th>{{__('EVENT TYPE')}}</th>
                 <td>{{$event->type?$event->type->name_en:''}}</td>
             </tr>
+
         </table>
+        </div>
         <div class="container" align="center">
             <button class="btn print_button btn-sm" id="ClicktoPrintEvent" style="text-align: center">PRINT</button>
         </div>
@@ -106,7 +118,8 @@
         </iframe>
         </div>
         <div class="col-md-5">
-            <a href="{{url('artist_reports#event-report-section')}}"><button style="    background-color: #b45454; color: white; box-shadow: -1px 6px 11px -6px #969696; border: none; border-radius: 3px;" class="btn blue-gradient pull-right"><-BACK</button></a>
+            <a href="{{url('artist_reports#event-report-section')}}"><button style="    background-color: #b45454; color: white; line-height: 14px; box-shadow: -1px 6px 11px -6px #969696; border: none; border-radius: 3px;" class="btn blue-gradient pull-right">
+                    <i class="fa fa-arrow-left"></i>BACK</button></a>
             <div class="border kt-padding-10">
                 <div class="kt-widget kt-widget--user-profile-4">
                     <div class="kt-widget__head kt-margin-t-5">
@@ -211,12 +224,11 @@
                                 @endif
                                 </tr>
                         </table>
-                        <div class="d-flex justify-content-center">
+                {{--        <div class="d-flex justify-content-center">
                             @if ($event->transaction()->exists())
                                 <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
                             @endif
-
-                        </div>
+                        </div>--}}
                         <hr>
                         <h6 class="kt-font-dark">{{ __('Establishment Details') }}</h6>
                         @if ($event->owner->company()->exists())
@@ -255,26 +267,21 @@
 
 @endsection
 @section('script')
+    <script src="{{asset('js/print.js')}}"></script>
     <script>
         $('#ClicktoPrintEvent').click(function () {
-
-            var divToPrint = document.getElementById('DivToPrint');
-            $(divToPrint).css({
-                'font-size': '13px',
-
-                'text-align': 'left',
-                'border': '1px solid grey',
-                'padding': '4%',
-                'font-family':
-               'arial'
-            })
-            newWin = window.open("");
-            newWin.document.write(divToPrint.outerHTML);
-            newWin.focus();
-            newWin.print();
-            newWin.close();
-
-
+            $('#DivToPrint').print({
+                addGlobalStyles : true,
+                stylesheet:'{{asset('css/printCss.css')}}',
+                rejectWindow : true,
+                noPrintSelector : ".no-print",
+                iframe : true,
+                title:'EVENT REPORT',
+                filename:'Event Report'+new Date(),
+                /*     prepend : "Hello World!!!<br/>",*/
+                //Add this on bottom
+                append : "",
+            });
         })
     </script>
 

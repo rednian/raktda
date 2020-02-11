@@ -37,6 +37,10 @@ class TransactionReportController extends Controller
                 }
             })->addColumn('transaction_id', function ($transaction) {
                 return $transaction->reference_number;
+
+            })->addColumn('transaction_type', function ($transaction) {
+                return $transaction->transaction_type;
+
             })->addColumn('amount', function ($transaction) {
                 if ($transaction->artistPermitTransaction != '' || $transaction->eventTransaction != '') {
                     return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') : 0), 2);
@@ -48,20 +52,14 @@ class TransactionReportController extends Controller
                 return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0), 2);
             })->addColumn('action', function ($transaction) {
                 $transaction->transaction_id;
-                return "<button style='height: 22px;line-height: 4px;border-radius: 3px;' class='btn btn-outline-warning btn-sm' onclick='transactionFunction($transaction->transaction_id)'>
-  View
-</button>";
-
+                return "<button style='height: 22px;line-height: 4px;border-radius: 3px;' class='btn btn-outline-warning btn-sm'
+                onclick='transactionFunction($transaction->transaction_id)'>View</button>";
             })->rawColumns(['action', 'transaction_id', 'amount', 'vat'])->make(true);
     }
 
-
     //END ARTIST SECTION
-
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
     //START EVENT SECTION
-
     public function eventTransactionDatatable()
     {
         $transactions = EventTransaction::wherehas('transaction')->with('event')->whereHas('event', function ($q) {
@@ -114,9 +112,7 @@ class TransactionReportController extends Controller
 
          $page_title='Event Transactions';
            return view('admin.report.includes.event-transactions',compact('transactions','page_title'));
-
     }
-
 
     public function eventTransactionDateRange(Request $request)
     {
@@ -129,17 +125,48 @@ class TransactionReportController extends Controller
                         $query->where('event_type_id', $request->selectEventTypeId);
                     })->with('country');
                 });
-        })
+              })
          -> when($request->end_date,function($date) use ($request){
            $date-> wherehas('transaction',function ($query) use ($request){
                $start = Carbon::parse($request->start_date)->format('y-m-d');
                $end = Carbon::parse($request->end_date)->format('y-m-d');
                $query->whereDate('transaction_date', '>', $start)->whereDate('transaction_date', '<', $end)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'));
              })->with('event');
-           })
+            })
+            ->when($request->selectApplicationTypeId,function ($id) use ($request) {
+                $id->wherehas('transaction',function ($trans){
+                    $start = Carbon::now()->format('y-m-d');
+                    $trans->whereDate('transaction_date','<',$start);
+                })->with('event')->whereHas('event', function ($q) use ($request) {
+                    if($request->selectApplicationTypeId==Event::GOVERNMENT) {
+                        $q->where('firm', 'government');
+                    }
+                    if($request->selectApplicationTypeId==Event::CORPORATE){
+                        $q->where('firm', 'corporate');
+                    }
+                });
+            })
+            ->when($request->days,function ($q) use ($request) {
+                $q->whereHas('transaction', function ($query) use ($request) {
+                    if ($request->days == '-7') {
+                        $start = Carbon::now()->subDays(7);
+                        $end = Carbon::now();
+                        $query->whereDate('transaction_date', '>', $start)->whereDate('transaction_date', '<', $end);
+                    }
+                    if ($request->days == 'all') {
+                        $query->whereDate('transaction_date', '<',Carbon::now());
+                    }
+                    if ($request->days == '-30') {
+                        $start = Carbon::now()->subDays(30);
+                        $end = Carbon::now();
+                        $query->whereDate('transaction_date', '>=', $start)->whereDate('transaction_date', '<', $end);
+                    }
+                    if ($request->days == 'current') {
+                        $query->whereDate('transaction_date', Carbon::now());
+                    }
+                });
+            })
        ->with('transaction')->get();
-
-
 
         return Datatables::of($transactions)
             ->addColumn('reference_number', function (EventTransaction $user) {
@@ -175,14 +202,10 @@ class TransactionReportController extends Controller
             ->addColumn('application_type', function (EventTransaction $user) {
                 return $user->event->firm;
             })
-
             ->rawColumns(['reference_number', 'event_type', 'total','application_type', 'event_name'])
             ->make(true);
 
          }
-
-
-
 
     public function customEventDate(Request $request)
     {
@@ -209,10 +232,10 @@ class TransactionReportController extends Controller
             ->addColumn('event_name', function (EventTransaction $artist) {
                 return Auth()->user()->LanguageId == 1 ? $artist->event->name_en : $artist->event->name_ar;
             })
-            ->addColumn('description_en', function (EventTransaction $user) {
+            ->addColumn('description_en', function(EventTransaction $user) {
                 return Auth()->user()->LanguageId == 1 ? $user->event->description_en : $user->event->description_ar;
             })
-            ->addColumn('venue_en', function (EventTransaction $user) {
+            ->addColumn('venue_en', function(EventTransaction $user) {
                 return Auth()->user()->LanguageId == 1 ? $user->event->venue_en : $user->event->venue_ar;
             })
             ->addColumn('owner_name', function (EventTransaction $user) {
@@ -253,7 +276,7 @@ class TransactionReportController extends Controller
                 $q->whereDate('transaction_date', '>', $start)->whereDate('transaction_date', '<', $end);
             })
             ->when($request->thisMonth, function ($q) use ($request) {
-                $q->whereMonth('transaction_date', Carbon::now()->month);
+                $q->whereMonth('transaction_date', Carbon::now()->month)->whereDate('transaction_date','<',Carbon::now()->subDays(-1));
             })
             ->when($request->end_date, function ($q) use ($request) {
                 $start = Carbon::parse($request->start_date)->format('Y-m-d');
@@ -264,7 +287,7 @@ class TransactionReportController extends Controller
                 $date = '01-' . $request->month;
                 $month = Carbon::parse($date)->month;
                 $year = Carbon::parse($date)->year;
-                $q->whereMonth('transaction_date', $month)->whereYear('transaction_date', $year);
+                $q->whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date','<',Carbon::now()->subDays(-1));
             })
             ->get();
 
@@ -284,6 +307,11 @@ class TransactionReportController extends Controller
                     }
                 })->addColumn('transaction_id', function ($transaction) {
                     return $transaction->reference_number;
+
+
+                })->addColumn('transaction_type', function ($transaction) {
+                    return $transaction->transaction_type;
+
                 })->addColumn('amount', function ($transaction) {
                     if ($transaction->artistPermitTransaction != '' || $transaction->eventTransaction != '') {
                         return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') : 0), 2);

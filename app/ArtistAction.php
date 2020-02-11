@@ -24,6 +24,6 @@ class ArtistAction extends Model
 
 	public function getRemarksAttribute()
 	{
-		return Auth::user()->LanguageId == 1 ? ucfirst($this->remarks) : ucfirst($this->remarks_ar);
+		return Auth::user()->LanguageId == 1 ? ucfirst($this->remarks_en) : ucfirst($this->remarks_ar);
 	}
 }

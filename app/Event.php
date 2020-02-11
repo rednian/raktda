@@ -24,6 +24,8 @@ class Event extends Model
         'exempt_by', 'approved_by', 'approved_date'];
 
 
+    const GOVERNMENT=1;
+    const CORPORATE=2;
 
     public function subType()
     {
