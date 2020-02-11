@@ -32,7 +32,7 @@
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
 										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
-								</li>{{-- 
+								</li>{{--
 								<li class="kt-nav__item">
 									<a href="#" class="kt-nav__link">
 										<i class="kt-nav__link-icon flaticon2-power"></i>
@@ -65,7 +65,7 @@
                     <div class="form-group form-group-sm">
                         <label for="example-search-input" class="kt-font-dark">{{ __('Event Type') }}
                             <span class="text-danger">*</span>
-                       
+
                         </label>
                         <input value="{{ $event_type->name_en }}" type="text" name="name_en" required class="form-control form-control-sm">
                     </div>
@@ -100,10 +100,18 @@
             <section class="row kt-margin-t-10">
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
-                        <label for="example-search-input" class="kt-font-dark">{{ __('Amount') }}
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Event Type Fee') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input value="{{ $event_type->amount }}" type="text" name="amount" required class="form-control form-control-sm">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Event Type Color') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input value="{{ $event_type->color }}" type="color" name="color" required class="form-control form-control-sm">
                     </div>
                 </div>
             </section>
@@ -186,7 +194,7 @@
                      </div>
                 </div>
              </section>
-             
+
             <div class="requirements"></div>
             <div class="required_requirements"></div>
             <div class="removed_subcategories"></div>
@@ -229,7 +237,7 @@
 @stop
 @section('script')
 	<script>
-	
+
 	var tblRequirement;
     var requiredRequirements = {!! json_encode($required) !!};
     var requirementSelected = {!! json_encode($selected) !!};
@@ -285,9 +293,9 @@
                                 .insertAfter($template);
 
             $clone.find('input.sub_name_en').attr('name', 'sub_name['+subCount+'][en]');
-            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');     
+            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');
 
-            subCount++;              
+            subCount++;
         });
 
         $(document).on('click', '.btnRemoveSub', function(){
@@ -301,12 +309,12 @@
                 $(this).closest('tr').find('input').attr('disabled', true);
 
                 $(this).data('type', 'restore');
-                
+
                 removedSub.push(id);
                 console.log(removedSub);
             }
 
-            if(type == 'restore'){    
+            if(type == 'restore'){
 
                 $(this).html('<i class="la la-minus"></i>{{ __('Remove') }}');
                 $(this).closest('tr').css('background', 'none');

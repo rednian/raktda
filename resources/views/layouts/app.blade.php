@@ -187,15 +187,15 @@
         $('input[dir=rtl], textarea[dir=rtl]').keypress(function(e){
             var arabicAlphabet = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[0-9\s]/g;
              var key = String.fromCharCode(e.which);
-             return arabicAlphabet.test(key) ? true : false;    
+             return arabicAlphabet.test(key) ? true : false;
         });
-        
-        
-        //english, numbers and special character allowed    
+
+
+        //english, numbers and special character allowed
         $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){
             var alphanumeric = /[\w\d]|[\s]/g;
-             var key = String.fromCharCode(e.which);    
-             return alphanumeric.test(key) ? true : false; 
+             var key = String.fromCharCode(e.which);
+             return alphanumeric.test(key) ? true : false;
         });
 
 
@@ -204,10 +204,13 @@
         var notif = setInterval(refreshNotification, 60000);
 
         //REAL TIME NOTIFICATIONS APPEND TO NOTIFICATION PANE
+        @if(Auth::check())
         window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
                 .notification((notification) => {
                     addNotification(notification);
                 });
+        @endif
+
 
         //FUNCTION TO PUT THE NOTIFICATION TO PANE
         function addNotification(data){
@@ -257,7 +260,7 @@
                 },
             });
             @endif
-            
+
                 $('span[data-lang=en]').click(function(){
                   getLang(1);
                 });
@@ -278,8 +281,8 @@
         @endif
     });
 
-    
-    @if(Auth::user()->LanguageId != 1)
+
+    @if(Auth::check() && Auth::user()->LanguageId != 1)
     // JQUERY VALIDATOR LOCALIZATION AR
     $.extend( $.validator.messages, {
       required: "هذا الحقل إلزامي",
@@ -332,7 +335,7 @@
         error: function(){
             alert('error');
         }
-        }); 
+        });
     }
 </script>
 <!-- end::Body -->

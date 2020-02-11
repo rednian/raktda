@@ -22,8 +22,8 @@ class ArtistAction extends Model
 		return $this->belongsTo(Artist::class, 'artist_id');
 	}
 
-	public function getRemarksAttribute()
-	{
-		return Auth::user()->LanguageId == 1 ? ucfirst($this->remarks) : ucfirst($this->remarks_ar);
-	}
+	// public function getRemarksAttribute()
+	// {
+	// 	return Auth::user()->LanguageId == 1 ? ucfirst($this->remarks) : ucfirst($this->remarks_ar);
+	// }
 }
