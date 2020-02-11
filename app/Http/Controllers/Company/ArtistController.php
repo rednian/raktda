@@ -164,8 +164,7 @@ class ArtistController extends Controller
                     $approved_artist = true;
                 }
             }
-            switch ($status) {
-                case 'applied':
+            if($status == 'applied') {
                     if ($permit->permit_status == 'approved-unpaid') {
                          if($permit->event) {
                               if($permit->event->firm == 'government' || $permit->event->exempt_payment == 1)
@@ -194,8 +193,8 @@ class ArtistController extends Controller
                     } else if ($permit->permit_status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     }
-                    break;
-                case 'valid':
+                }
+               else if($status == 'valid'){
                     $issued_date = strtotime($permit->issued_date);
                     $expired_date = strtotime($permit->expired_date);
                     $approved_date = strtotime($permit->approved_date);
@@ -213,12 +212,13 @@ class ArtistController extends Controller
                         }
                     }
                     
-                    if($permit->status == 'expired'){
-                        return '<div class="alert-text">'.__('Expired').'</div>';
-                    }
                     return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
-                    break;
-            }
+                }else if($status == 'expired') {
+                    $today = strtotime(date('Y-m-d 00:00:00'));
+                    $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
+                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
+                    return  '<span class="d-flex flex-column">'  . $renewBtn . '</span>';
+                }
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->permit_status;
             $ret_status = '';

@@ -241,7 +241,7 @@
     @include('permits.artist.modals.leave_page')
 
 
-    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ]);
+    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ])
 
     @endsection
 

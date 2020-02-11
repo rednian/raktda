@@ -571,7 +571,7 @@
             </div>
 
 
-            <a href="{{route('event.index')}}#applied">
+            <a href="{{URL::signedRoute('event.index')}}#applied">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                     {{__('Back')}}
                 </div>
