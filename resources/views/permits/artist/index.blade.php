@@ -52,6 +52,12 @@
                 </ul>
             </div>
         </section>
+
+        {{-- <form action="{{route('sendSms')}}" method="post">
+        <input type="text" id="phonenumber" name="phonenumber" class="form-control">
+        <input type="submit" value="send">
+        </form> --}}
+
         <div class="tab-content">
             <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">

@@ -54,9 +54,8 @@
                 <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br>
                 <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
                 <span>{{ __('Birthdate') }} : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
-                <span>{{ __('Gender') }} : {{$artistpermit->gender->name_en}}</span><br>
-                <span>{{ __('Religion') }} : {{$artistpermit->religion->name_en}}</span><br>
-                <span>Identification Number : {{$artistpermit->identification_number}}</span><br>
+                <span>{{ __('Gender') }} : {{$artistpermit->gender->name}}</span><br>
+                <span>{{ __('Religion') }} : {{$artistpermit->religion->name}}</span><br>
                 <span>{{ __('UID No.') }} : {{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span><br>
                 <span>{{ __('UID Expiry Date') }} : {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br>
                 <span>{{ __('Visa Type') }} : {{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span><br>
@@ -232,12 +231,29 @@ $('form#frm-status').validate();
         statusHistory();
 
         $('form#frm-update-status').validate({
+          // debug: true,
           rules: {
               remarks: {
                 required: true,
                 minlength: 3,
                 maxlength: 255
               }
+          },
+          submitHandler: function(form){
+            // alert();
+              KTApp.block('body', {
+                  overlayColor: '#000000',
+                  type: 'v2',
+                  state: 'success',
+                  message: 'Please wait...'
+              });
+
+          },
+
+          invalidHandler: function(form, validator){
+            if (validator.numberOfInvalids()) {
+              alert();
+            }
           }
         });
     });

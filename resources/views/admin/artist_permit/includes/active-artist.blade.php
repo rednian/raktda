@@ -59,7 +59,7 @@
 <table class="table table-hover table-borderless table-striped border table-sm" id="active-artist">
 	 <thead>
 	 <tr>
-			<th></th>
+			{{-- <th></th> --}}
 			<th>{{ __('ACTIVE PERMITS') }}</th>
 			<th>{{ __('PERSON CODE') }}</th>
 			<th>{{ __('ARTIST NAME') }}</th>

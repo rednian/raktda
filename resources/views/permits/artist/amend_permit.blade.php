@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Amend Permit - Smart Government Rak')
+@section('title', 'Amend Artist Permit - Smart Government Rak')
 
 @section('content')
 <div class="kt-portlet kt-portlet--mobile">

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', __('Event Permit'))
+@section('title', __('Event Permits') . ' - ' . __('Smart Government Rak'))
+
 @section('style')
 <style>
     .fc-unthemed .fc-event .fc-title,

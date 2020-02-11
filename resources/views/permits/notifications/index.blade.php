@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('title', __('Notifications') . ' - ' . __('Smart Government Rak'))
+
 @section('style')
 <style>
 	.unread {
