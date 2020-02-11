@@ -19,6 +19,23 @@ class ArtistPermit extends Model implements Auditable
         'artist_permit_status', 'artist_id', 'permit_id', 'permit_type_id', 'created_by', 'updated_by', 'deleted_by', 'original', 'thumbnail', 'sponsor_name_ar', 'sponsor_name_en', 'visa_expire_date', 'visa_number', 'visa_type_id', 'language_id', 'mobile_number', 'type', 'email', 'fax_number', 'po_box', 'phone_number', 'address_ar',  'emirate_id', 'area_id', 'address_en', 'passport_expire_date', 'passport_number', 'uid_expire_date', 'religion_id', 'identification_number', 'uid_number', 'profession_id', 'firstname_en', 'firstname_ar', 'lastname_en', 'lastname_ar', 'birthdate', 'country_id', 'gender_id', 'is_paid', 'old_artist_id' ,'is_checked'
     ];
 
+    public function getNameAttribute()
+    {
+        $first_name = Auth::user()->LanguageId == 1 ? ucfirst($this->firstname_en) : ucfirst($this->firstname_ar);
+        $last_name = Auth::user()->LanguageId == 1 ? ucfirst($this->lastname_en) : ucfirst($this->lastname_ar);
+        return "{$first_name} {$last_name}";
+    }
+
+    public function getFirstNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->firstname_en) : ucfirst($this->firstname_ar);
+    }
+
+    public function getLastNameAttribute()
+    {
+        return Auth::user()->LanguageId == 1 ? ucfirst($this->lastname_en) : ucfirst($this->lastname_ar);
+    }
+
     public function oldArtist()
     {
         return $this->belongsTo(Artist::class, 'old_artist_id', 'artist_id');
@@ -140,6 +157,13 @@ class ArtistPermit extends Model implements Auditable
     public function getReplaceReasonAttribute()
     {
         return Auth::user()->LanguageId == 1 ? ucfirst($this->replace_reason_en) : ucfirst($this->replace_reason_ar);
+    }
+
+
+    public function getAddressAttribute()
+    {
+        $address =  Auth::user()->LanguageId == 1 ? ucfirst($this->address_en) : ucfirst($this->address_ar);
+        return "{$address}, {$this->area->name} {$this->emirate->name}";
     }
 
 }

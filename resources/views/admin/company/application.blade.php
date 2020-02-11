@@ -90,63 +90,45 @@
                   </div>
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-6">
-                         <label class="kt-font-dark">{{ __('Trade License Number') }}</label>
-                          <div class="input-group input-group-sm">
-                           <input value="{{ ucfirst($company->trade_license) }}" name="event_type" readonly="readonly" type="text"
-                                        class="form-control">
-                           <div class="input-group-append">
-                              <span class="input-group-text">
-                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                    <input data-step="step-1" type="checkbox" name="check[]">
-                                    <span></span>
-                                 </label>
-                               </span>
+                      <section class="row">
+                        <div class="col-md-6">
+                          <label class="kt-font-dark">{{ __('Trade License Number') }}</label>
+                           <div class="input-group input-group-sm">
+                            <input value="{{ ucfirst($company->trade_license) }}" name="event_type" readonly="readonly" type="text"
+                                         class="form-control">
+                            <div class="input-group-append">
+                               <span class="input-group-text">
+                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                     <input data-step="step-1" type="checkbox" name="check[]">
+                                     <span></span>
+                                  </label>
+                                </span>
+                            </div>
                            </div>
-                          </div>
+                        </div>
+                        <div class="col-md-6">
+                           <label class="kt-font-dark">{{ __('Trade License Expired Date') }}</label>
+                           <div class="input-group input-group-sm">
+                            <input value="{{ date('d-F-Y', strtotime($company->trade_license_expired_date)) }}" name="name_ar" readonly="readonly" type="text"
+                                         class="form-control">
+                            <div class="input-group-append">
+                               <span class="input-group-text">
+                                  <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                     <input data-step="step-1" type="checkbox">
+                                     <span></span>
+                                  </label>
+                                </span>
+                            </div>
+                           </div>
+                        </div>
+                      </section>
                      </div>
+
                      <div class="col-sm-6">
-                        <section class="row form-group form-group-sm">
-                           <div class="col-sm-6">
-                              <label class="kt-font-dark">{{ __('Trade License Issued Date') }} </label>
-                              <div class="input-group input-group-sm">
-                               <input value="{{ date('d-F-Y', strtotime($company->trade_license_issued_date)) }}" name="name_ar" readonly="readonly" type="text"
-                                            class="form-control">
-                               <div class="input-group-append">
-                                  <span class="input-group-text">
-                                     <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                        <input data-step="step-1" type="checkbox" name="check[]">
-                                        <span></span>
-                                     </label>
-                                   </span>
-                               </div>
-                              </div>
-                           </div>
-                           <div class="col-sm-6">
-                              <label class="kt-font-dark">{{ __('Trade License Expired Date') }}</label>
-                              <div class="input-group input-group-sm">
-                               <input value="{{ date('d-F-Y', strtotime($company->trade_license_expired_date)) }}" name="name_ar" readonly="readonly" type="text"
-                                            class="form-control">
-                               <div class="input-group-append">
-                                  <span class="input-group-text">
-                                     <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                        <input data-step="step-1" type="checkbox">
-                                        <span></span>
-                                     </label>
-                                   </span>
-                               </div>
-                              </div>
-                           </div>
-                        </section>
-                       
-                          
-                     </div>
-                  </div>
-                  <div class="row form-group form-group-sm">
-                     <div class="col-sm-6">
-                        <section class="row form-group form-group-sm">
-                           <div class="col-sm-12">
-                              <label class="kt-font-dark">{{ __('Phone Number') }}</label>
-                              <div class="input-group input-group-sm">
+                      <section class="row">
+                        <div class="col-md-6">
+                           <label class="kt-font-dark">{{ __('Phone Number') }}</label>
+                           <div class="input-group input-group-sm">
                                <input value="{{ $company->phone_number }}" name="name_ar" readonly="readonly" type="text"
                                             class="form-control"> 
                                <div class="input-group-append">
@@ -158,14 +140,10 @@
                                    </span>
                                </div>
                               </div>
-                           </div>
-                        </section>
-                     </div>
-                     <div class="col-sm-6">
-                        <section class="row form-group form-group-sm">
-                           <div class="col-sm-6">
-                              <label class="kt-font-dark">{{ __('Establishment Email') }} </label>
-                              <div class="input-group input-group-sm">
+                        </div>
+                        <div class="col-md-6">
+                           <label class="kt-font-dark">{{ __('Establishment Email') }} </label>
+                           <div class="input-group input-group-sm">
                                <input value="{{ $company->company_email }}" name="name_ar" readonly="readonly" type="text"
                                             class="form-control">
                                <div class="input-group-append">
@@ -177,21 +155,25 @@
                                    </span>
                                </div>
                               </div>
+                        </div>
+                      </section>              
+                     </div>
+
+                  </div>
+                  <div class="row form-group form-group-sm">
+                     <div class="col-sm-6">
+                        <section class="row form-group form-group-sm">
+                           <div class="col-sm-12">
+                             
+                              
                            </div>
+                        </section>
+                     </div>
+                     <div class="col-sm-6">
+                        <section class="row form-group form-group-sm">
                            <div class="col-sm-6">
-                              <label class="kt-font-dark">{{ __('Website') }}</label>
-                              <div class="input-group input-group-sm">
-                               <input value="{{ $company->website ? $company->website : 'N/A' }}" name="name_ar" readonly="readonly" type="text"
-                                            class="form-control">
-                               <div class="input-group-append">
-                                  <span class="input-group-text">
-                                     <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                        <input data-step="step-1" type="checkbox">
-                                        <span></span>
-                                     </label>
-                                   </span>
-                               </div>
-                              </div>
+                             
+                              
                            </div>
                         </section>
                        
@@ -199,70 +181,11 @@
                      </div>
                   </div>
                   <div class="row form-group form-group-sm">
-                     <div class="col-sm-9">
+                     <div class="col-sm-12">
                          <label class="kt-font-dark">{{ __('Address') }} </label>
-                        <div class="input-group input-group-sm">
-                         <input value="{{ ucfirst($company->address) }}" name="name_ar" readonly="readonly" type="text"
-                                      class="form-control">
-                         <div class="input-group-append">
-                            <span class="input-group-text">
-                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                  <input data-step="step-1" type="checkbox">
-                                  <span></span>
-                               </label>
-                             </span>
-                         </div>
-                        </div>
-                     </div>
-                     <div class="col-sm-3">
-                         <label class="kt-font-dark">{{ __('Area') }} </label>
-                        <div class="input-group input-group-sm">
-                         <input value="{{ ucfirst(Auth::user()->LanguageId == 1 ? $company->area->area_en : $company->area->area_ar) }}" name="name_ar" readonly="readonly" type="text"
-                                      class="form-control">
-                         <div class="input-group-append">
-                            <span class="input-group-text">
-                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                  <input data-step="step-1" type="checkbox">
-                                  <span></span>
-                               </label>
-                             </span>
-                         </div>
-                        </div>
+                         <textarea rows="3" class="form-control form-control-sm" readonly>{{ucfirst($company->fullAddress)}}</textarea>
                      </div>
                   </div>
-                  <div class="row form-group form-group-sm">
-                     <div class="col-sm-6">
-                         <label class="kt-font-dark">{{ __('Emirate') }} </label>
-                        <div class="input-group input-group-sm">
-                         <input value="{{ ucfirst( Auth::user()->LanguageId == 1 ? $company->emirate->name_en : $company->emirate->name_ar) }}" name="name_ar" readonly="readonly" type="text"
-                                      class="form-control">
-                         <div class="input-group-append">
-                            <span class="input-group-text">
-                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                  <input data-step="step-1" type="checkbox">
-                                  <span></span>
-                               </label>
-                             </span>
-                         </div>
-                        </div>
-                     </div>
-                     <div class="col-sm-6">
-                         <label class="kt-font-dark">{{ __('Country') }} </label>
-                        <div class="input-group input-group-sm">
-                         <input value="{{ Auth::user()->LanguageId == 1 ? $company->country->name_en : $company->country->name_ar }}" name="name_ar" readonly="readonly" type="text"
-                                      class="form-control">
-                         <div class="input-group-append">
-                            <span class="input-group-text">
-                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                  <input data-step="step-1" type="checkbox">
-                                  <span></span>
-                               </label>
-                             </span>
-                         </div>
-                        </div>
-                     </div>
-                  </div>
-                  
                </div>
              </div>
          </div>
@@ -341,21 +264,6 @@
                      </div>
                   </section>
                   <section class="row form-group form-group-sm">
-                     <div class="col-sm-6">
-                        <label class="kt-font-dark">{{ __('Email') }} </label>
-                        <div class="input-group input-group-sm">
-                         <input value="{{ $company->contact->email }}" name="name_ar" readonly="readonly" type="text"
-                                      class="form-control">
-                         <div class="input-group-append">
-                            <span class="input-group-text">
-                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                  <input data-step="step-1" type="checkbox">
-                                  <span></span>
-                               </label>
-                             </span>
-                         </div>
-                        </div>
-                     </div>
                      <div class="col-sm-6">
                         <label class="kt-font-dark">{{ __('Mobile Number') }} </label>
                         <div class="input-group input-group-sm">

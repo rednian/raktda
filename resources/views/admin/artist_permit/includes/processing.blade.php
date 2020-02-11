@@ -1,4 +1,4 @@
-<section class="form-row">
+<section class="form-row kt-hide">
 	<div class="col-1">
 		<div>
 			<select name="length_change" id="processing-length-change" class="form-control-sm form-control custom-select custom-select-sm" aria-controls="artist-permit">
@@ -68,7 +68,7 @@
 			</th>
 			<th>{{ __('CHECKED DATE') }}</th>
 			<th>{{ __('LAST CHECKED STATUS') }}</th>
-			<th>{{ __('REQUEST TYPE') }}</th>
+
 	 </tr>
 	 </thead>
 </table>

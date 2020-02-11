@@ -254,6 +254,8 @@
 				 })
 				 ->make(true);
 		}
+
+		
 		public  function checked_list(Request $request){
 		    $data=[];
             foreach ($request->id as $item) {

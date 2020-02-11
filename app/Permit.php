@@ -59,7 +59,7 @@ class Permit extends Model
 
     public function approvedBy()
     {
-       return $this->belongsTo(User::class, 'approved_by', 'user_id'); 
+       return $this->belongsTo(User::class, 'approved_by', 'user_id');
     }
 
     public function exemptBy()

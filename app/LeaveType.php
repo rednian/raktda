@@ -19,4 +19,9 @@ class LeaveType extends Model
     public function getEmployeeLeaves(){
     	return $this->hasMany(EmployeeLeave::class, 'employee_leave_id');
     }
+
+    public function getNameAttribute()
+    {
+        return auth()->user()->LanguageId = 1 ? ucfirst($this->leave_type_name) : ucfirst($this->leave_type_name_ar); 
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class ArtistAction extends Model
@@ -19,5 +20,10 @@ class ArtistAction extends Model
 	public function  artist()
 	{
 		return $this->belongsTo(Artist::class, 'artist_id');
+	}
+
+	public function getRemarksAttribute()
+	{
+		return Auth::user()->LanguageId == 1 ? ucfirst($this->remarks) : ucfirst($this->remarks_ar);
 	}
 }

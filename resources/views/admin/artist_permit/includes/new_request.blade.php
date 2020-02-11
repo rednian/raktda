@@ -17,7 +17,7 @@
 				<div class="input-group input-group-sm">
 					<div class="kt-input-icon kt-input-icon--right">
 						<input autocomplete="off" type="text" class="form-control form-control-sm"
-							aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+							aria-label="Text input with checkbox" placeholder="{{ __('SUBMITTED DATE') }}"
 							id="new-applied-date">
 						<span class="kt-input-icon__icon kt-input-icon__icon--right">
 							<span><i class="la la-calendar"></i></span>
@@ -26,12 +26,11 @@
 				</div>
 			</div>
 			<div class="col-3">
-				<select name="" id="new-request-type"
+				<select name="" id="new-permit-term"
 					class="form-control-sm form-control custom-select custom-select-sm " onchange="artistPermit.draw()">
-					<option selected disabled>{{ __('REQUEST TYPE') }}</option>
-					<option value="new">{{ __('New Application') }}</option>
-					<option value="amend">{{ __('Amend Application') }}</option>
-					<option value="renew">{{ __('Renew Application') }}</option>
+					<option selected disabled>{{ __('PERMIT TERM') }}</option>
+					<option value="short">{{ __('Short Term') }} (Less than 30 Days Permit)</option>
+					<option value="long">{{ __('Long Term') }} (More than 30 Days Permit)</option>
 				</select>
 			</div>
 			{{-- <div class="col-3">

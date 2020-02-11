@@ -80,10 +80,7 @@
                                         </div>
                                     @else
                                         <div class="kt-widget__pic kt-widget__pic--danger kt-font-success kt-font-bold kt-font-light" >
-                                            {{ Auth()->user()->LanguageId==1? profile($artist_permit->firstname_en, $artist_permit->lastname_en): profile($artist_permit->firstname_ar, $artist_permit->lastname_ar) }}
-
-
-
+                                            {{profile($artist_permit->firstname_en, $artist_permit->lastname_en) }}
                                         </div>
                                     @endif
 
@@ -91,22 +88,22 @@
                                     <div class="kt-widget__content">
                                         <div class="kt-widget__head">
                                             <div class="kt-widget__user">
-                                                <span class="kt-widget__username kt-padding-b-10 kt-margin-r-5">{{ ucwords($artist_permit->fullname) }}</span>
+                                                <span class="kt-widget__username kt-padding-b-10 kt-margin-r-5">{{ ucwords($artist_permit->name) }}</span>
                                                 <span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">
-                                                                            <label>
-                                                                                <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
-                                                                                <span></span>
-                                                                            </label>
-                                                                        </span>
+                                                <label>
+                                                    <input {{ $artist_permit->artist->artist_status == 'active'? 'checked': null }} id="artist-status" type="checkbox"  name="">
+                                                    <span></span>
+                                                </label>
+                                            </span>
                                             </div>
                                         </div>
 
                                         <div class="kt-widget__subhead">
-																 <span>{{ __('Current Company') }} :
-                                                                    <span class="kt-font-dark kt-font-bolder">
-                                                                        {{Auth()->user()->LanguageId==1? $artist_permit->permit()->latest()->first()->owner->company->name_en : $artist_permit->permit()->latest()->first()->owner->company->name_ar}}
-                                                                    </span>
-                                                                </span>
+    										 <span>{{ __('Current Company') }} :
+                                                <span class="kt-font-dark kt-font-bolder">
+                                                    {{Auth()->user()->LanguageId==1? $artist_permit->permit()->latest()->first()->owner->company->name_en : $artist_permit->permit()->latest()->first()->owner->company->name_ar}}
+                                                </span>
+                                            </span>
                                             {{--										 <a href="#"><i class="flaticon2-calendar-3"></i>PR Manager </a>--}}
                                             {{--										 <a href="#"><i class="flaticon2-placeholder"></i>Melbourne</a>--}}
                                         </div>

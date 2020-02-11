@@ -63,10 +63,10 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <span class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</span>
+                <span class="kt-widget24__title" title="Click to edit">{{ __('Processing') }}</span>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
-              <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+              <span class="kt-widget24__stats kt-font-default">{{ $processing }}</span>
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@
             });
 
             // active_permit_table.responsive.recalc();
-                
+
 
            $('td:not(:first-child)' ,row).click(function () { location.href = data.show_link; });
 
@@ -503,7 +503,7 @@
               $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
               $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
               $('.btn-download', row).click(function(e){ e.stopPropagation(); });
-              
+
             }
          });
 
@@ -548,9 +548,9 @@
         });
 
          processingPermit = $('table#artist-permit-processing').DataTable({
-          dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+          {{--  dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",  --}}
             ajax: {
                url: '{{ route('admin.artist_permit.datatable') }}',
                data: function (d) {
@@ -570,7 +570,7 @@
                // { data: 'company_type'},
                {data: 'updated_at'},
                {data: 'permit_status'},
-               {data: 'request_type'},
+               //{data: 'request_type'},
             ],
 
             createdRow: function (row, data, index) {
@@ -628,8 +628,8 @@
           url: '{{ route('admin.artist_permit.datatable') }}',
           data: function (d) {
              // var status = $('select#pending-permit-status').val();
-             d.request_type = $('select#pending-request-type').val();
-             d.status =  ['checked'];//ADDED BY DONSKIE
+             d.term = $('select#pending-permit-term').val();
+             d.status =  ['checked', 'modified'];//ADDED BY DONSKIE
              d.date = $('#pending-applied-date').val()  ? selected_date : null;
            }
          },
@@ -709,8 +709,8 @@
           url: '{{ route('admin.artist_permit.datatable') }}',
           data: function (d) {
              // var status = $('select#new-permit-status').val();
-             d.request_type = $('select#new-request-type').val();
-             d.status = ['new', 'modified'];
+             d.term = $('select#new-permit-term').val();
+             d.status = ['new'];
              d.date = $('#new-applied-date').val()  ? selected_date : null;
            }
          },

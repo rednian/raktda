@@ -32,4 +32,14 @@ class EventType extends Model
     public function event_type_requirements(){
         return $this->hasMany(EventTypeRequirement::class, 'event_type_id');
     }
+
+    public function getNameAttribute()
+    {
+        return auth()->user()->LanguageId == 1 ? ucfirst($this->name_en) : ucfirst($this->name_ar);
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return auth()->user()->LanguageId == 1 ? ucfirst($this->description_en) : ucfirst($this->description_ar); 
+    }
 }

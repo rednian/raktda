@@ -12,7 +12,7 @@
 		}
 		@endif
 	</style>
-	
+
 @endsection
 @section('content')
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border" id="app-wizard">
@@ -83,7 +83,7 @@
 										@include('admin.artist_permit.includes.comment')
 										@endif
 
-										@include('admin.artist_permit.includes.personal-info-tab')	
+										@include('admin.artist_permit.includes.personal-info-tab')
 										@include('admin.artist_permit.includes.address-info-tab')
 										@include('admin.artist_permit.includes.address1-info-tab')
 									</div>
@@ -400,7 +400,7 @@
 				$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
 				$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 			}
-			
+
 		}
 	</script>
 @endsection

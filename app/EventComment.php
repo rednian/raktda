@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class EventComment extends Model
@@ -32,6 +33,11 @@ class EventComment extends Model
 
 	public function role(){
 		return $this->belongsTo(Roles::class, 'role_id');
+	}
+
+	public function getRemarksAttribute()
+	{
+		return Auth::user()->LanguageId == 1 ? ucfirst($this->comment) : ucfirst($this->comment_ar);
 	}
 
 }
