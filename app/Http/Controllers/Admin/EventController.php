@@ -65,7 +65,6 @@ class EventController extends Controller
 
 		public function index(Request $request)
 		{
-            dd(new COM());
 		    $event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
@@ -404,7 +403,7 @@ class EventController extends Controller
 					'title' => $title,
 					'content' => $content,
 					'button' => 'View Permit',
-					'url' => $url
+                    'url' => $url,
 				]));
 			}
 		}

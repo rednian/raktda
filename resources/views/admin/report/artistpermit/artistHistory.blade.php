@@ -4,6 +4,9 @@
         #artist-permit-history_filter{
             float: right;
         }
+        #status-history_filter{
+            float: right;
+        }
     </STYLE>
     <section class="kt-portlet kt-portlet--head-sm">
         <div class="kt-portlet__head kt-portlet__head--sm kt-padding-l-15 kt-padding-r-15">
@@ -63,7 +66,7 @@
                             <hr class="kt-margin-b-5  kt-margin-t-0">
                             <span>{{ __('Person Code') }} : <span id="person_code">{{$artist->person_code }}</span></span><br>
                             <span>{{ __('Age') }} : <span id="age">{{$artistpermit->birthdate->age }}</span></span><br>
-                            <span>{{ __('Birthdate') }} : <span id="birthday">{{$artistpermit->birthdate->format('d-F-Y')}}</span></span><br>
+                            <span>{{ __('Birthday') }} : <span id="birthday">{{$artistpermit->birthdate->format('d-F-Y')}}</span></span><br>
                             <span>{{ __('Gender') }} : <span id="gender">{{$artistpermit->gender->name_en}}</span></span><br>
                             <span>{{ __('Religion') }} : <span id="religion">{{$artistpermit->religion->name_en}}</span></span><br>
                             <span>{{ __('Identification Number') }} : <span id="identification">{{$artistpermit->identification_number}}</span></span><br>
@@ -185,7 +188,7 @@
 
                                     <div id="artist_details"></div>
 
-                                    <table class="table table-striped table-borderless table-hover border" id="artist-permit-history">
+                                    <table class="table table-striped table-bordered table-hover border" id="artist-permit-history">
                                         <thead>
                                         <tr style="font-weight: bold;font-size: 12px">
                                             <th></th>
@@ -203,7 +206,7 @@
 
                                 </div>
                                 <div class="tab-pane" id="kt_tabs_6_3" role="tabpanel">
-                                    <table class="table table-striped table-borderless table-hover border table-hover table-sm" id="status-history">
+                                    <table class="table table-striped table-bordered table-hover border table-hover table-sm" id="status-history">
                                         <thead>
                                         <tr>
                                             <th>{{ __('NAME') }}</th>
@@ -248,14 +251,91 @@
 
         function statusHistory() {
             $('table#status-history').DataTable({
+                dom: 'Bfrtip',
+                "columnDefs": [
+
+                    {
+                        targets: [],
+                        className: "text-right",
+                    },
+
+                ],
+
+                buttons: ['pageLength',
+                    {
+                        extend: 'print',
+                        title: function () {
+                            return 'Permit History' +new Date();
+                        },
+                        exportOptions: {
+                            columns: [0,1,2,3],
+                        },
+                        customize: function ( win ) {
+                            $(win.document.body).prepend(
+                                '<h5 style="font-family:arial;text-align:center;font-weight:bold;color: black">STATUS HISTORY</h5>'
+                            );
+                            var person_code=$('#person_code').html();
+                            var uid_expiry=$('#uid_expiry').html();
+                            var uid_no=$('#uid_no').html();
+                            var visa_expiry=$('#visa_expiry').html();
+                            var visa_type=$('#visa_type').html();
+                            var visa_no=$('#visa_no').html();
+                            var pass_expiry=$('#pass_expiry').html();
+                            var pass_no=$('#pass_no').html();
+                            var birthday=$('#birthday').html();
+                            var age=$('#age').html();
+                            var sponsor_name=$('#sponsor_name').html();
+                            var address=$('#address').html();
+                            var email=$('#email').html();
+
+
+                            $(win.document.body).prepend(
+                                '<div class="container-fluid"><h4 style="font-size: 15px;color:black;font-weight: 600;text-align: center">ARTIST DETAILS</h4></div><table STYLE="color: #000000" class="table table-striped table-bordered">'+
+                                '<tr><th>Person Code</th><td>'+person_code+'</td><th>Age</th><td>'+age+'</td><th>Birthday</th><td>'+birthday+'</td></tr>' +
+                                '<tr><th>UID No.</th><td>'+uid_no+'</td><th>UID Expiry</th><td>'+uid_expiry+'</td><th>E-mail</th><td>'+email+'</td></tr>' +
+                                '<tr><th>Visa Type</th><td>'+visa_type+'</td><th>Visa No.</th><td>'+visa_no+'</td><th>Passport No.</th><td>'+pass_no+'</td></tr>' +
+                                '<tr><th>Passport Expiry</th><td>'+pass_expiry+'</td><th>Sponsor</th><td>'+sponsor_name+'</td><th>Address</th><td>'+address+'</td></tr></table>'
+                            );
+
+                            $(win.document.body).find('h1').css('display','none')
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                );
+
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css({ 'font-size': '12px'});
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0,1,2,3]
+                        },
+                        title: function () {
+                            return 'Status History '+new Date();
+                        },
+                    },
+                ],
+                lengthMenu: [
+                    [10, 25, 50],
+                    ['10 rows', '25 rows', '50 rows']
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                searching: true,
                 ajax: {
                     url: '{{ route('admin.artist.status_history', $artist_permit->artist_id) }}',
                     data: function (d) {
                     }
                 },
-                columnDefs: [
-                    {targets: [0, 2, 3], className: 'no-wrap'}
-                ],
+
                 columns: [
                     {data: 'name'},
                     {data: 'remarks'},
@@ -308,7 +388,7 @@
 
 
                             $(win.document.body).prepend(
-                                '<table STYLE="color: #000000" class="table table-striped"><tr><th colspan="6" class="text-center" style="font-weight: bold;font-size: 15px">ARTIST DETAILS</th></tr>' +
+                                '<div class="container-fluid"><h4 style="font-size: 15px;color:black;font-weight: 600;text-align: center">ARTIST DETAILS</h4></div><table STYLE="color: #000000" class="table table-striped table-bordered">'+
                                 '<tr><th>Person Code</th><td>'+person_code+'</td><th>Age</th><td>'+age+'</td><th>Birthday</th><td>'+birthday+'</td></tr>' +
                                 '<tr><th>UID No.</th><td>'+uid_no+'</td><th>UID Expiry</th><td>'+uid_expiry+'</td><th>E-mail</th><td>'+email+'</td></tr>' +
                                 '<tr><th>Visa Type</th><td>'+visa_type+'</td><th>Visa No.</th><td>'+visa_no+'</td><th>Passport No.</th><td>'+pass_no+'</td></tr>' +

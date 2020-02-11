@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\URL;
 use Hash;
 
 class UserController extends Controller
-{	
+{
 
 	public function __construct(){
 		$this->middleware('signed')->except([
-			'updateLanguage', 
-			'datatable', 
+			'updateLanguage',
+			'datatable',
 			'store',
 			'updateUSer',
 			'getSchedule',
@@ -66,7 +66,7 @@ class UserController extends Controller
     		$active_sched = ScheduleType::where('is_active', 1)->first();
     		$user = User::create( array_merge($request->except(['password']), ['password' => bcrypt($request->password), 'type' => 4, 'IsActive' => 1, 'CreatedBy' => $request->user()->user_id ]) );
 
-    		//SELECT SCHEDULE 
+    		//SELECT SCHEDULE
     		$user->workschedule()->create([
     			'schedule_type_id' => $active_sched->schedule_type_id
     		]);
@@ -125,7 +125,7 @@ class UserController extends Controller
     }
 
     public function updateUSer(Request $request, User $user){
-    	
+
     	try {
     		if($request->has('change_password')){
                 if(!Hash::check($request->admin_password, $request->user()->password)){
@@ -162,7 +162,7 @@ class UserController extends Controller
     	}
 
     	return view('admin.user_management.partial.schedules', ['sched' => $type, 'type' => $request->type, 'user' => $user, 'empSched' => $user->workschedule ]);
-    }	
+    }
 
     public function setScheduleActive(Request $request){
     	$user = User::findOrFail($request->user_id);
@@ -187,7 +187,7 @@ class UserController extends Controller
     		}else{
     			$user->workschedule()->create($data);
     		}
-    		
+
     		$result = ['success', 'Schedule Type has been set to active.', 'Success'];
 
     	} catch (\Exception $e) {
@@ -195,7 +195,7 @@ class UserController extends Controller
     	}
 
     	return redirect(URL::signedRoute('user_management.details', ['user' => $request->user_id]) . '#work_schedule')->with('message', $result);
-        
+
     }
 
     public function addCustomSchedule(User $user, Request $request){
@@ -231,7 +231,7 @@ class UserController extends Controller
             if($request->submit_type == 'continue'){
                 return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#work_schedule')->with('message', $result);
             }
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             $result = ['error', $e->getMessage(), 'Error'];
@@ -270,7 +270,7 @@ class UserController extends Controller
             if($request->submit_type == 'continue'){
                 return redirect(URL::signedRoute('user_management.details', ['user' => $user->user_id]) . '#work_schedule')->with('message', $result);
             }
-            
+
         } catch (\Exception $e) {
             DB::rollBack();
             $result = ['error', $e->getMessage(), 'Error'];
@@ -303,16 +303,16 @@ class UserController extends Controller
     public function saveLeave(User $user, Request $request){
         try {
             $dates = [
-                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)), 
-                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end)) 
+                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)),
+                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end))
             ];
 
             $data = array_merge( $request->except(['leave_start', 'leave_end']), $dates );
 
             if(!is_null($user->user_id)){
-                $user->leave()->create($data); 
+                $user->leave()->create($data);
             }else{
-                EmployeeLeave::create($data); 
+                EmployeeLeave::create($data);
             }
             $result = ['success', 'Leave has been saved successfully.', 'Success'];
 
@@ -360,7 +360,7 @@ class UserController extends Controller
             ];
         });
 
-        return response()->json($leaves);   
+        return response()->json($leaves);
     }
 
     public function showLeave(EmployeeLeave $leave, User $user, Request $request){
@@ -370,8 +370,8 @@ class UserController extends Controller
     public function updateLeave(EmployeeLeave $leave, User $user, Request $request){
         try {
             $dates = [
-                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)), 
-                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end)) 
+                'leave_start' => date('Y-m-d H:i:s', strtotime($request->leave_start)),
+                'leave_end' => date('Y-m-d H:i:s', strtotime($request->leave_end))
             ];
             $data = array_merge( $request->except(['leave_start', 'leave_end']), $dates );
             $leave->update($data);
@@ -415,8 +415,8 @@ class UserController extends Controller
     public function saveHoliday(Request $request){
         try {
             $dates = [
-                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)), 
-                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end)) 
+                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)),
+                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end))
             ];
             $data = array_merge( $request->except(['holiday_start', 'holiday_end']), $dates );
 
@@ -456,7 +456,7 @@ class UserController extends Controller
             ];
         });
 
-        return response()->json($holidays);   
+        return response()->json($holidays);
     }
 
     public function showHoliday(Holiday $holiday, Request $request){
@@ -466,8 +466,8 @@ class UserController extends Controller
     public function updateHoliday(Holiday $holiday, Request $request){
         try {
             $dates = [
-                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)), 
-                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end)) 
+                'holiday_start' => date('Y-m-d H:i:s', strtotime($request->holiday_start)),
+                'holiday_end' => date('Y-m-d H:i:s', strtotime($request->holiday_end))
             ];
             $data = array_merge( $request->except(['holiday_start', 'holiday_end']), $dates );
 
@@ -506,7 +506,7 @@ class UserController extends Controller
     }
 
     public function getNotificationsDatatable(Request $request){
-        $data = $request->user()->notifications()->orderBy('created_at');
+        $data = $request->user()->unreadNotifications()->orderBy('created_at');
         return Datatables::of($data)->addColumn('notification', function($notification){
 
             $unread = is_null($notification->read_at) ? '' : '';
@@ -526,7 +526,7 @@ class UserController extends Controller
                                     </span>
                                 </div>
                                 <span class="kt-widget3__status kt-font-info">
-                                    
+
                                 </span>
                             </div>
                             <div class="kt-widget3__body">
