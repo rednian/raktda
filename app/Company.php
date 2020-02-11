@@ -5,26 +5,40 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Company extends Model
 {
     //use SoftDeletes;
+    use Notifiable;
     protected $table = 'company';
     protected $primaryKey = 'company_id';
     protected $fillable = [
-        'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license', 
-        'trade_license_issued_date', 'trade_license_expired_date', 'area_id', 'emirate_id', 'country_id', 'address', 'application_date', 
+        'name_en', 'name_ar', 'logo_original', 'logo_thumbnail', 'status', 'company_email', 'phone_number', 'website', 'trade_license',
+        'trade_license_issued_date', 'trade_license_expired_date', 'area_id', 'emirate_id', 'country_id', 'address', 'application_date',
         'reference_number', 'company_type_id', 'registered_date', 'registered_by', 'company_description_ar','company_description_en',
         'request_type'
     ];
-    
+
+    public function routeNotificationForMail($notification)
+    {
+        return $this->company_email;
+    }
+
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.Company.' . $this->company_id;
+    }
+
+
     protected $dates = ['created_at', 'updated_at', 'application_date', 'registered_date', 'trade_license_issued_date', 'trade_license_expired_date'];
 
     public function getFullAddressAttribute()
     {
         return ucfirst($this->address).", {$this->area->name}, {$this->emirate->name}, {$this->country->name}";
     }
-    
+
 
     public function artists()
     {
@@ -45,7 +59,7 @@ class Company extends Model
     public function setTradeLicenseIssuedDateAttribute($date)
     {
         $this->attributes['trade_license_issued_date'] = Carbon::parse($date)->format('Y-m-d');
-    } 
+    }
 
     public function setTradeLicenseExpiredDateAttribute($date)
     {
@@ -61,7 +75,7 @@ class Company extends Model
     public function event()
     {
         return $this->hasManyThrough(Event::class, User::class, 'EmpClientId', 'created_by', 'company_id', 'user_id')->where('status','!=', 'draft');
-    }  
+    }
 
     public function permit()
     {

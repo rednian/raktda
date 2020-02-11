@@ -101,6 +101,46 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
+        //REFRESH NOTIFICATIONS EVERY MINUTE
+    var notif = setInterval(refreshNotification, 60000);
+    //REAL TIME NOTIFICATIONS APPEND TO NOTIFICATION PANE
+    // window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
+    //         .notification((notification) => {
+    //             addNotification(notification);
+    //         });
+
+    window.Echo.private(`App.User.{{ Auth::user()->user_id }}`).notification(function(notification){
+        addNotification(notification);
+    });
+    //FUNCTION TO PUT THE NOTIFICATION TO PANE
+    function addNotification(data){
+        var html = '<a href="' + data.url + '" class="kt-notification__item">\
+                        <div class="kt-notification__item-icon"> <i\
+                                class="flaticon2-bell-2"></i> </div>\
+                        <div class="kt-notification__item-details">\
+                            <div class="kt-notification__item-title"> ' + data.title + '\
+                            </div>\
+                            <div class="kt-notification__item-time">2 seconds ago</div>\
+                        </div>\
+                    </a>';
+        $('#topbar_notifications_notifications .kt-notification').prepend(html);
+    }
+    //FUNCTION TO UPDATE THE NOTIFICATION
+    function refreshNotification(){
+      $.ajax({
+        url: '{{ route('getnotifications') }}',
+        dataType: 'html',
+        type: 'GET',
+        success: function(notification){
+          $('#topbar_notifications_notifications .kt-notification').html(notification);
+        }
+      });
+    }
+    //MARK AS READ NOTIFICATION ON CLICK
+    $(document).on('click', '.kt-notification__item.notification-item', function(){
+        toRead($(this).data('id'), $(this).data('url'));
+    });
+
 
     // $('form').validate({
     //   submitHandler: function(){
@@ -204,6 +244,21 @@
       type: 'post'
     }).done(function(response){
       if(response.success) location.reload();
+    });
+  }
+
+  function toRead(id, url){
+    $.ajax({
+      url: '{{ route('admin.notifications.update_read') }}',
+      data: { id: id },
+      type: 'GET',
+      dataType: 'JSON',
+      success: function(data){
+        location.href = url;
+      },
+      error: function(){
+        alert('error');
+      }
     });
   }
 </script>
