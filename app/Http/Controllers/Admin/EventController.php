@@ -404,7 +404,6 @@ class EventController extends Controller
 					'content' => $content,
 					'button' => 'View Permit',
                     'url' => $url,
-                    ''
 				]));
 			}
 		}

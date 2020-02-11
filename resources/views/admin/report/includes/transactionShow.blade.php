@@ -1,6 +1,5 @@
 @extends('layouts.admin.admin-app')
 @section('content')
-
     <div class="kt-portlet kt-portlet--mobile">
         <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
             <div class="kt-portlet__head-label">
@@ -18,9 +17,9 @@
                          border-radius: 3px;">
                         <i class="la la-arrow-left"></i>
                         {{__('Back')}}
-                 </a>
-                </div>
-                <div class="my-auto float-right permit--action-bar--mobile">
+                    </a>
+                    </div>
+                    <div class="my-auto float-right permit--action-bar--mobile">
                     {{-- <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id])}}"
                     target="_blank">
                     <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
@@ -37,17 +36,17 @@
         </div>
 
         <div class="kt-portlet__body kt-padding-t-0" id="main-div">
-            <div id="image" style="display: none">
+            <div id="image" >
                 <img class="card-img-top" src="{{asset('img/raktdalogo.png')}}" alt="">
             </div>
             <div class="container-fluid kt-padding-l-0">
                 <div class="col-md-12" id="headerContents">
                     <div class="row">
                         <div class="col-md-4 col-sm-12 row">
-                            <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
-                            <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                              <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
+                              <p class="col col-md-6 form-control-plaintext kt-font-bolder">
                                 {{$transaction->reference_number}}
-                            </p>
+                              </p>
                         </div>
                         <div class="col-md-4 col-sm-12 row">
                             <label class="col col-md-6 col-form-label">{{__('Transaction Date')}}</label>
@@ -143,6 +142,7 @@
                         <table class="table table-hover table-borderless border table-striped">
                             <thead>
                             <tr class="kt-font-transform-u">
+                                <th class="text-left ">{{__('Reference No.')}}</th>
                                 <th class="text-left">{{__('Event Name')}}</th>
                                 <th class="text-left">{{__('Event Type')}}</th>
                                 <th class="text-right">{{__('Fee')}} (AED)</th>
@@ -155,7 +155,9 @@
                             @foreach($transaction->eventTransaction as $et)
                                 @if($transaction->transaction_type == 'event')
                                     <tr>
-                                        <td>{{$et->event->name_en}}</td>
+                                        <td>{{$et->event->reference_number}}</td>
+                                        <td>{{Auth()->user()->LanguageId==1?$et->event->name_en:$et->event->name_ar}}</td>
+
                                         <td>{{$et->event->type->name_en}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
                                         <td class="text-right">{{number_format($et->vat,2)}}</td>
@@ -199,7 +201,6 @@
                             </tbody>
                         </table>
                     </div>
-
                 @endif
 
                 <div class="table-responsive">
@@ -210,17 +211,17 @@
                                 <td>
                                     {{__('Total Amount')}}
                                 </td>
-                                <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
+                                <td id="total_amt" class="pull-right kt-font-bold">AED{{' '.number_format($feetotal,2)}}</td>
                             </tr>
                             <tr style="border-bottom:1px solid black;">
-                                <td>{{__('Total Vat')}}</td>
-                                <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
+                                <td>{{__('Total VAT(5%)')}}</td>
+                                <td id="total_vat" class="pull-right kt-font-bold">AED {{' '.number_format($vattotal,2)}}</td>
                             </tr>
                             <tr>
                                 <td class="kt-font-transform-u">
                                     {{__('Grand Total')}}
                                 </td>
-                                <td id="grand_total" class="pull-right kt-font-bold">{{number_format($grandtotal,2)}}
+                                <td id="grand_total" class="pull-right kt-font-bold">AED{{' '.number_format($grandtotal,2)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -231,7 +232,6 @@
         </div>
     </div>
 
-
 @endsection
 @section('script')
     <script src="{{asset('js/print.js')}}"></script>
@@ -239,7 +239,7 @@
         $(document).ready(function() {
             $(function () {
                 $('#print_button').click(function () {
-                $('#image').css({display:'block'})
+           /*     $('#image').css({display:'block'})*/
                 $('#main-div').print({
                     addGlobalStyles : true,
                     stylesheet : '{{asset('css/printCss.css')}}',
@@ -251,11 +251,13 @@
                     append : "",
                     title:'TRANSACTION REPORT'
                 });
-                    $('#image').hide(100)
+               /*     $('#image').hide(100)*/
+                   $('##main-div').prepend('{{asset('img/raktdalogo.png')}}')
                 });
             });
         });
     </script>
+
 
     @endsection
 
