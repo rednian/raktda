@@ -2,45 +2,13 @@
 @section('style')
 <style>
   .widget-toolbar{ cursor: pointer; }
+
+   #transaction-report-tab:hover ul{
+       display: block;
+   }
+
 </style>
-{{-- <style>
-  .twitter-typeahead {
-    display: inline !important;
-}
 
-.typeahead-content {
-    box-shadow: 0 1px 2px rgba(0,0,0,.26);
-    background-color: #fff;
-    cursor: pointer;
-    margin-top: -15px;
-    min-width: 100px;
-    width: 100%;
-    max-height: 200px;
-    overflow-y: auto;
-    position: absolute;
-    white-space: nowrap;
-    z-index: 1001;
-    will-change: width,height;
-}
-
-.typeahead-highlight {
-    font-weight: 900;
-}
-
-.typeahead-suggestion {
-    padding: 5px 0px 10px 10px;
-}
-
-.typeahead-suggestion:hover {
-    background-color: #42A5F5;
-    color: #FFF;
-}
-
-.typeahead-notfound {
-    cursor:not-allowed;
-    padding: 5px 0px 10px 10px;
-}
-</style> --}}
 @endsection
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
@@ -48,7 +16,22 @@
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" id="artist-report-tab" data-toggle="tab" href="#artist-report" data-target="#artist-report">{{ __('Artist Report') }}</a></li>
                         <li class="nav-item"><a class="nav-link" id="event-report-tab" data-toggle="tab" href="#event-report-section" data-target="#event-report-section">{{__('Event Report') }}</a></li>
-                          <li class="nav-item artist_transaction_tab"><a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">{{__('Transactions') }}</a></li>
+
+                          <li class="nav-item artist_transaction_tab">
+                              <div class="btn-group">
+                                  <a class="nav-link" id="transaction-report-tab" data-toggle="tab" href="#transaction-report-tab" data-target="#transaction-report-section">
+                                      {{__('Transactions')}}
+                                  </a>
+                                  <button style="border: none" type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <span class="sr-only">Toggle Dropdown</span>
+                                  </button>
+                                      <a href="{{route('admin.artist_permit_report.eventTransaction')}}">
+                                          <button class="btn btn-dark btn-sm dropdown-menu" style="height: 20px;
+    line-height: 2px;
+    text-align: center; box-shadow: -1px 6px 11px -6px black;">{{__('EVENT TRANSACTIONS')}}</button></a>
+                              </div>
+                          </li>
+
 
 {{--
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#artist-permit-report" data-target="#artist-permit-report">{{ __('Artist Permit Report') }}</a></li>
@@ -126,9 +109,5 @@
 				 </div>
             </div>
 	 </section>
-
 @endsection
-    @section('script')
 
-
-      @endsection

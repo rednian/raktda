@@ -51,7 +51,7 @@
               <div class="kt-widget__body kt-padding-l-5 kt-padding-r-5">
                 <h6 class="kt-font-dark kt-font-bold ">{{__('Artist Details')}}</h6>
                 <hr class="kt-margin-b-5  kt-margin-t-0">
-                <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br> 
+                <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br>
                 <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
                 <span>{{ __('Birthdate') }} : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
                 <span>{{ __('Gender') }} : {{$artistpermit->gender->name_en}}</span><br>
@@ -63,14 +63,14 @@
                 <span>{{ __('Visa No.') }} : {{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span><br>
                 <span>{{ __('Passport No.') }} : {{$artistpermit->passport_number ? $artistpermit->passport_number : '-' }}</span><br>
                 <span>{{ __('Passport Expiry Date') }} : {{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span><br>
-                
+
                 <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Contact Information')}}</h6>
                 <hr class="kt-margin-b-5  kt-margin-t-0">
                 <span>{{ __('Email') }} : {{$artistpermit->email }}</span><br>
                 <span>{{ __('Mobile Number') }} : {{$artistpermit->mobile_number }}</span><br>
                 <span>{{ __('Phone Number') }} : {{$artistpermit->phone_number }}</span><br>
                 <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br>
-                
+
                 <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Address Details')}}</h6>
                 <hr class="kt-margin-b-5  kt-margin-t-0">
                 @php
@@ -88,9 +88,9 @@
       </div>
         <div class="col-md-8">
           <div class="kt-widget kt-widget--user-profile-3">
-              
+
               <div class="kt-widget__bottom kt-margin-t-0 kt-hide">
-                
+
                 <div class="kt-widget__item">
                   <div class="kt-widget__icon">
                     <i class="flaticon-confetti"></i>
@@ -142,11 +142,11 @@
                         <div class="form-group row form-group-sm">
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                            <textarea required="" name="remarks" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="remarks" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
-                            <textarea required="" name="remarks_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="remarks_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -208,11 +208,11 @@
         </div>
       </section>
 
-        
-        
-        
-        
-        
+
+
+
+
+
 
     </div>
   </section>
@@ -287,11 +287,11 @@ $('form#frm-status').validate();
             {data: 'permit_number'},
             {data: 'issued_date'},
             {data: 'expired_date'},
-              
+
           ],
           createdRow: function(row, data, index){
               $('td:not(:first-child)',row).click(function(e){ location.href = '{{ url('/artist_permit') }}/'+data.permit_id; });
-              
+
               $('.btn-document', row).click(function(e){
                   e.stopPropagation();
                   documents(data);
@@ -302,12 +302,12 @@ $('form#frm-status').validate();
         });
     }
 
-    
+
     function documents(data){
       console.log(data)
         $('#document-modal').on('shown.bs.modal', function(){
             $('table#table-document').DataTable({
-                ajax:{ 
+                ajax:{
                     url: '{{ url('/artist_permit') }}/'+data.permit_id+'/application/'+'{{ $artist_permit->artist_permit_id }}'+'/documentDatatable',
                 },
                 columns:[
