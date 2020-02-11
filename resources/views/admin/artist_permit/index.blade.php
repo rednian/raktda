@@ -161,6 +161,10 @@
     $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){
      $('.nav-tabs a[href="#pending-request"]').tab('show');
     });
+
+    
+
+    // {
     //   $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){
     //  $('.nav-tabs a[href="#new-request"]').tab('show');
     // });
@@ -244,7 +248,6 @@
         responsive:true,
         columnDefs: [ {targets: '_all', className: 'no-wrap'} ],
         columns: [
-            {render: function(){ return null;}},
            {data: 'active_permit'},
            {data: 'person_code'},
            {data: 'name'},
@@ -274,9 +277,10 @@
                   {data: 'location'},
                   ],
                     createdRow: function(row, data, index){
-                      $('td:not(:first-child)', row).click(function(){
-                          location.href = data.link;
-                      });
+
+                      $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
+
+                      $(row).click(function(){ location.href = data.link; });
                     }
                 });
 

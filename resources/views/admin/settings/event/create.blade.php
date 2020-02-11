@@ -32,7 +32,7 @@
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
 										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
-								</li>{{-- 
+								</li>{{--
 								<li class="kt-nav__item">
 									<a href="#" class="kt-nav__link">
 										<i class="kt-nav__link-icon flaticon2-power"></i>
@@ -104,6 +104,14 @@
                         <input value="" type="text" name="amount" required class="form-control form-control-sm">
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group form-group-sm">
+                        <label for="example-search-input" class="kt-font-dark">{{ __('Event Type Color') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input value="" type="color" name="color" value="#ff616f" required class="form-control form-control-sm" autocomplete="off">
+                    </div>
+                </div>
             </section>
 
             <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-detail">
@@ -171,7 +179,7 @@
 
 
         	</form>
-			
+
 			<section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-20" id="accordion-detail">
 				<div class="card">
 					<div class="card-header" id="heading-detail">
@@ -209,7 +217,7 @@
 @stop
 @section('script')
 	<script>
-	
+
 	var tblRequirement;
     var requiredRequirements = [];
     var requirementSelected = [];
@@ -261,9 +269,9 @@
                                 .insertAfter($template);
 
             $clone.find('input.sub_name_en').attr('name', 'sub_name['+subCount+'][en]');
-            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');     
+            $clone.find('input.sub_name_ar').attr('name', 'sub_name['+subCount+'][ar]');
 
-            subCount++;              
+            subCount++;
         });
 
         $(document).on('click', '.btnRemoveSub', function(){
@@ -284,7 +292,7 @@
      			$('#action-alert-unselected').removeClass('d-none');
      			return false;
      		}
-     		
+
             $.each(rows_selected, function(index, requirement_id){
                 $('#formAddEventType .requirements').append(
                     $('<input>')
@@ -309,7 +317,7 @@
             // });
 
             $('#formAddEventType').trigger('submit');
-     		
+
      	});
 
         //IS REQUIRED REQUIREMENT
@@ -363,11 +371,11 @@
                { data: 'validity', name: 'validity'},
            ],
            fnCreatedRow: function(row, data, index){
-                
+
                 console.log(requirementSelected);
 
                 if( requirementSelected.includes( data.requirement_id ) ){
-                  
+
                     console.log('test');
                     $('.requirement_is_required', row).attr('disabled', false);
                     $('.requirement_is_required', row).prop('disabled', false);
