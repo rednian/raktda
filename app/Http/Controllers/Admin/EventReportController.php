@@ -191,7 +191,7 @@ class EventReportController extends Controller
         if ($request->events == '+60') {
             $end = Carbon::now()->subDays(-60);
             $start = Carbon::now();
-            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->get();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->latest();
             return Datatables::of($events)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -246,7 +246,7 @@ class EventReportController extends Controller
         if ($request->events == '-30') {
             $start = Carbon::now()->subDays(30);
             $end = Carbon::now();
-            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->with('company')->with('type')->get();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->with('company')->with('type')->latest();
 
             return Datatables::of($events)
                 ->addColumn('reference_number', function (Event $user) {
@@ -302,7 +302,7 @@ class EventReportController extends Controller
         if ($request->events == '+30') {
             $end = Carbon::now()->subDays(-30);
             $start = Carbon::now();
-            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->get();
+            $events = Event::where('issued_date', '>', $start)->where('issued_date', '<', $end)->where('expired_date', '>', $start)->where('status', 'active')->with('company')->with('type')->latest();
             return Datatables::of($events)
                 ->addColumn('reference_number', function (Event $user) {
 
@@ -360,7 +360,7 @@ class EventReportController extends Controller
     {
         if ($request->applied_date == 1) {
             $users = Event::where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->whereDate('issued_date', Carbon::now())->with('type')->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->whereDate('issued_date', Carbon::now())->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -412,7 +412,7 @@ class EventReportController extends Controller
 
         if ($request->applied_date == 2) {
             $users = Event::whereDate('issued_date', Carbon::yesterday())->where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -465,7 +465,7 @@ class EventReportController extends Controller
             $date = new Carbon;
             $date->subWeek();
             $users = Event::where('issued_date', '>', $date->toDateTimeString())->where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -514,7 +514,7 @@ class EventReportController extends Controller
 
         if ($request->applied_date == 4) {
             $users = Event::whereDate('issued_date', '>', Carbon::now()->subDays(30))->where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -566,7 +566,7 @@ class EventReportController extends Controller
         if ($request->applied_date == 5) {
             $date = Carbon::today()->subDays(2);
             $users = Event::where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->whereMonth('issued_date', Carbon::now()->month)->with('type')->whereYear('issued_date', Carbon::now()->year)->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->whereMonth('issued_date', Carbon::now()->month)->with('type')->whereYear('issued_date', Carbon::now()->year)->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -620,7 +620,7 @@ class EventReportController extends Controller
         }
 
         if ($request->applied_date == 6) {
-            $users = Event::where('issued_date', '<', (new Carbon)->submonths(1))->where('issued_date', '>', (new Carbon)->submonths(2))->with('type')->get();
+            $users = Event::where('issued_date', '<', (new Carbon)->submonths(1))->where('issued_date', '>', (new Carbon)->submonths(2))->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -673,7 +673,7 @@ class EventReportController extends Controller
         }
         if ($request->applied_date == '') {
             $users = Event::where('status', 'active')
-                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->get();
+                ->whereDate('expired_date', '>', Carbon::now())->with('company')->with('type')->latest();
             return Datatables::of($users)
                 ->addColumn('reference_number', function (Event $user) {
                     return $user->reference_number;
@@ -729,7 +729,7 @@ class EventReportController extends Controller
     public function application_type(Request $request)
     {
         $data = Event::where('status', 'active')
-            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('firm', 'LIKE', "%$request->application_type%")->with('type')->get();
+            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('firm', 'LIKE', "%$request->application_type%")->with('type')->latest();
         return Datatables::of($data)
             ->addColumn('reference_number', function (Event $user) {
                 return $user->reference_number;
@@ -784,7 +784,7 @@ class EventReportController extends Controller
     public function status(Request $request)
     {
         $data = Event::where('status', 'active')
-            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('status', 'LIKE', "%$request->status%")->with('type')->get();
+            ->whereDate('expired_date', '>', Carbon::now())->with('company')->where('status', 'LIKE', "%$request->status%")->with('type')->latest();
         return Datatables::of($data)
             ->addColumn('reference_number', function (Event $user) {
                 return $user->reference_number;

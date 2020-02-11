@@ -729,10 +729,10 @@
         if('#active-permit' == current_tab ){ active(); }
         if('#archive-permit' == current_tab){ archive(); }
       });
-      
+
      });
 
-    
+
      function archive() {
      eventArchiveTable = $('table#new-event-archive').DataTable({
       dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
@@ -921,7 +921,6 @@
       var start = moment().subtract(29, 'days');
       var end = moment();
       var new_selected_date = null;
-
       $('input#processing-applied-date').daterangepicker({
         autoUpdateInput: false,
         buttonClasses: 'btn',
