@@ -1,5 +1,5 @@
 <div class="kt-portlet__body" style="margin-top: -40px">
-    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist"
+    <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-1x nav-tabs-line-danger" role="tablist"
         id="artist-permit-nav">
         <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request"
                                 style="font-size: 11px">{{ __('NEW REQUEST PERMIT REPORT') }}</a></li>

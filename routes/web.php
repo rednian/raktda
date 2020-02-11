@@ -19,7 +19,7 @@ Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
     return "Cache is cleared";
 });
-    
+
 Route::get('/shutdown', function () {
     return Artisan::call('down');
 });
@@ -182,12 +182,15 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('/artist_reports', 'Admin\ReportController@reports')
         ->name('admin.artist_permit_reports.reports');
 
-        Route::get('/artist_permit_reports', 'Admin\ReportController@artist_reports')
+        Route::post('/artist_permit_reports', 'Admin\ReportController@artist_reports')
         ->name('admin.artist_permit_reports.artist_reports');
 
 
     Route::post('/artist_reports/search_artist', 'Admin\ReportController@search_artist')
         ->name('admin.artist_permit_reports.search_artist');
+
+    Route::post('/artist_reports/search_active_artist', 'Admin\ReportController@search_active_artist')
+        ->name('admin.artist_permit_reports.search_active_artist');
 
     Route::post('/artist_reports/search_artist_select', 'Admin\ReportController@onChangeSelect')
         ->name('admin.artist_permit_reports.search_artist_select');
@@ -223,35 +226,37 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::get('artist_reports/artist_permit_report/all_permit_report', 'Admin\ReportController@all_permit_report')
         ->name('admin.artist_permit_report.all_permit_report');
 
+    Route::get('artist_reports/artist_permit_report/transactionShow/{id}', 'Admin\TransactionReportController@transactionShow')
+        ->name('admin.artist_permit_report.transaction');
+    Route::post('artist_reports/artist_permit_report/eventTransactionDateRange', 'Admin\TransactionReportController@eventTransactionDateRange')
+        ->name('admin.artist_permit_report.eventTransactionDateRange');
+
+
     //Transactions
     Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')
         ->name('admin.artist_permit_report.artistTransaction');
-
     Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
         ->name('admin.artist_permit_report.eventTransaction');
-
-
-
+    Route::get('artist_reports/event_transaction_report/eventTransactionDatatable', 'Admin\TransactionReportController@eventTransactionDatatable')
+        ->name('admin.artist_permit_report.eventTransactionDatatable');
     Route::get('artist_reports/eventSevenDaysReport', 'Admin\TransactionReportController@sevenDaysEvent')
         ->name('admin.artist_permit_report.sevenDaysEvent');
-
     Route::get('artist_reports/thirtyDaysEvent', 'Admin\TransactionReportController@thirtyDaysEvent')
         ->name('admin.artist_permit_report.thirtyDaysEvent');
-
-
     Route::post('artist_reports/customEventDate', 'Admin\TransactionReportController@customEventDate')
         ->name('admin.artist_permit_report.customEventDate');
-
-
     Route::get('artist_reports/artistSevenDaysReport', 'Admin\TransactionReportController@sevenDaysArtist')
         ->name('admin.artist_permit_report.sevenDaysArtist');
-
     Route::get('artist_reports/thirtyDaysArtist', 'Admin\TransactionReportController@thirtyDaysArtist')
         ->name('admin.artist_permit_report.thirtyDaysArtist');
-
-
     Route::post('artist_reports/customArtistDate', 'Admin\TransactionReportController@customArtistDate')
         ->name('admin.artist_permit_report.customArtistDate');
+    Route::get('artist_reports/transactionDate', 'Admin\TransactionReportController@transactionDate')
+        ->name('admin.artist_permit_report.transactionDate');
+    Route::get('artist_reports/artistHistory/{id}', 'Admin\ReportController@artistHistory')
+        ->name('admin.artist_permit_report.artistHistory');
+    Route::post('artist_reports/chartData', 'Admin\TransactionReportController@chartData')
+        ->name('admin.artist_permit_report.chartData');
 
 
 
