@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Dashboard - Smart Government Rak')
 @section('style')
 <style>
     .element-wrapper {

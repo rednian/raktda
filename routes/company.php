@@ -183,6 +183,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
 
+    Route::post('sendsms', [ 'uses' => 'smsController@sendSms' , 'as' => 'sendSms' ]);
+
     //REPORTS
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
