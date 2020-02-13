@@ -1,10 +1,51 @@
 <?php
+use App\Http\Controllers\Custom\Smpp;
 Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
 Route::get('/test', function(){
-    $permit = App\Approval::find(2)->permit;
-    dd($permit);
+
+
+    // $src  = "83.111.150.62"; // or text
+    $src  = "RAKTOURISM"; // or text
+$dst  = "+971568835006";
+$message = "Test Message";
+
+$s = new Smpp();
+$s->debug=1;
+
+// $host,$port,$system_id,$password
+$s->open("86.96.241.55", 2775, "raktda", "Hpwfso0!");
+
+// $source_addr,$destintation_addr,$short_message,$utf=0,$flash=0
+$s->send_long($src, $dst, $message);
+
+/* To send unicode
+$utf = true;
+$message = iconv('Windows-1256','UTF-16BE',$message);
+$s->send_long($src, $dst, $message, $utf);
+*/
+
+$s->close();
+
+    // $transport = new SocketTransport(['86.96.241.55', '83.111.150.62'],2775);
+	// $transport->setRecvTimeout(10000);
+    // $smpp = new SmppClient($transport);
+
+
+	// $transport->open();
+    // dd($transport->isOpen());
+	// $smpp->bindTransmitter("raktda","Hpwfso0!");
+
+	// // Prepare message
+	// $message = 'Hello World €$£';
+	// $encodedMessage = GsmEncoder::utf8_to_gsm0338($message);
+	// $from = new SmppAddress('MelroseLabs',SMPP::TON_ALPHANUMERIC);
+	// $to = new SmppAddress(447712345678,SMPP::TON_INTERNATIONAL,SMPP::NPI_E164);
+
+	// $messageID = $smpp->sendSMS($from,$to,$encodedMessage,$tags);
+
+	// $smpp->close();
 });
 
 Route::get('/link', function () {
