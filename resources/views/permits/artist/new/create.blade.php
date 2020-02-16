@@ -260,7 +260,6 @@
                 $('#events_div').css('display', 'none');
             }
             checkFilled();
-            
         }
 
         $(document).ready(function(){
@@ -278,6 +277,7 @@
         });
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        
         $('#permit_from').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,

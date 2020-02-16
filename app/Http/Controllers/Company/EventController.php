@@ -418,6 +418,12 @@ class EventController extends Controller
 
             }
         // }
+            if(isset($request->from) && $request->from == "amend")
+            {
+                Event::where('event_id', $request->event_id)->update([
+                        'status' => 'amended'
+                    ]);
+            }
             DB::commit();
             if($old_event_liquor_id)
             {
@@ -1202,11 +1208,12 @@ class EventController extends Controller
             'default_font_size' => 10
         ]);
         
-        if($event_details->truck()->exists()){
+        if($event_details->truck()->where('paid',1)->exists()){
             $pdf->getMpdf()->AddPage();
             $pdf->getMpdf()->WriteHTML(\View::make('permits.event.truckprint')->with($data)->render());
         }
-        if($event_details->liquor()->exists()){
+
+        if($event_details->liquor()->exists() && $event_details->liquor()->value('paid') == 1){
             if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
             {
                 $pdf->getMpdf()->AddPage();

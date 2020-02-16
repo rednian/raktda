@@ -2,6 +2,14 @@
 
 @section('title', 'Add Event Permit - Smart Government Rak')
 
+@section('style')
+<style>
+    .dropdown-menu {
+        min-width: auto !important;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">

@@ -20,7 +20,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $table = 'smartrak_smartgov.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at', 'user_id', 'government_id'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at', 'user_id', 'government_id', 'phoneCode'
     ];
     // protected $auditInclude = [
     //     'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'

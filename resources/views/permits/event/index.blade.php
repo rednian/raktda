@@ -213,7 +213,7 @@
                     <textarea name="cancel_reason" rows="3" placeholder="{{__('Enter the reason here')}}"
                         style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
-                    <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="{{__('Cancel')}}">
+                    <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="{{__('Submit')}}">
                 </form>
             </div>
 

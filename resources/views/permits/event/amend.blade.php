@@ -117,7 +117,7 @@
                             @if(!$event->truck()->exists())
                             {{-- <button type="button" class="btn btn-sm btn-secondary btn-hover-warning">{{__('Add')}}</button>
                             --}}
-                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" id="add_new_truck"></i>
+                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" onclick="addTruck()"></i>
                             @endif
                         </div>
                     </div>
@@ -449,9 +449,13 @@
 
 @include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
+@if($event->truck()->exists())
 @include('permits.event.common.amend_food_truck', ['truck_req'=>$truck_req])
+@else
+@include('permits.event.common.edit_food_truck', ['truck_req'=>$truck_req])
+@endif
 
-@include('permits.event.common.liquor', ['liquor_req'=>$liquor_req])
+@include('permits.event.common.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
 
 @endsection
 
@@ -493,7 +497,9 @@
 
     $(document).ready(function(){
         liquorDocUpload();
+        @if($event->truck()->exists())
         editTruck();
+        @endif
         var provided = $('#liquor_provided').val();
         checkLiquorVenue(provided);
         changeLiquorService();
@@ -801,6 +807,7 @@
                             liquorDetails: liquorDetails,
                             // liquorDocDetails: JSON.stringify(liquorDocDetails),
                             liquorNames: JSON.stringify(liquorNames),
+                            from: 'amend',
                             type: type,
                             event_id: $('#event_id').val(),
                             event_liquor_id: $('#event_liquor_id').val()
@@ -818,7 +825,16 @@
                 $('#liquor_details').modal('hide');
             }
         });
+        
 
+        function addTruck(){
+            // $('#edit_food_truck').modal('show');
+            $('#edit_food_truck').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        }
 
         function deleteThisTruck()
         {
@@ -919,6 +935,7 @@
                         data: {
                             event_id: $('#event_id').val(),
                             truckDetails: JSON.stringify(truck_details),
+                            from: 'amend',
                             // truckDocDetails: truckDocDetails,
                             truck_id: ''
                         },

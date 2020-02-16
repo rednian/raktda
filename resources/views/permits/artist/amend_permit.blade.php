@@ -257,7 +257,6 @@
 
     $('#back_btn , #back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
-
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {

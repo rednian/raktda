@@ -8,7 +8,7 @@ use URL;
 use Cookie;
 use DB;
 use PDF;
-
+use App\Http\Controllers\Custom\Smpp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
@@ -907,8 +907,10 @@ class ArtistController extends Controller
 		$result = ['error', __($e->getMessage()), 'Error'];
     }
     $too = '';
-    if ($from == 'amend' || $from == 'renew' || $from == 'edit') {
+    if ($from == 'edit') {
         $too = '#applied';
+    } else if($from == 'amend' || $from == 'renew') {
+        $too = '#valid';
     } else if ($from == 'add_new') {
         $too = '#draft';
     }
@@ -1909,7 +1911,7 @@ class ArtistController extends Controller
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
             }
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">'.__('View').'</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">'.__('Remove').'</span>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">'.__('View').'</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
@@ -1928,6 +1930,25 @@ class ArtistController extends Controller
         ])->where('permit_id', $permit_id)->get();
       
         return view('permits.artist.view_draft_details', $data);
+    }
+
+    
+    public function send_sms($message, $phonenumber)
+    {
+        $src  = 'RAKTOURISM'; // or text 
+        $dst  = '+'.$phonenumber;
+
+        $s = new smpp();
+        $s->debug=1;
+
+        $s->open('86.96.241.55', 2775, "raktda", "Hpwfso0!");
+
+        $utf = true;
+        $message = iconv('Windows-1256','UTF-16BE',$message);
+        $s->send_long($src, $dst, $message, $utf);
+        
+        $s->close();
+
     }
 
     
