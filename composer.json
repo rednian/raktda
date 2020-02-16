@@ -53,7 +53,8 @@
     },
     "autoload": {
         "files": [
-            "app/Helpers/Helper.php"
+            "app/Helpers/Helper.php",
+            "app/Library/Smpp.php"
         ],
         "psr-4": {
             "App\\": "app/"

@@ -1,5 +1,26 @@
 <?php
 
+use App\Http\Controllers\Custom\Smpp;
+
+function sendSms($user_mobile_number = null, $message)
+{
+    $sender = 'RAKTOURISM';
+    $smpp = new Smpp();
+    $username = 'raktda';
+    $password = 'Hpwfso0!';
+    $destination_ip = '86.96.241.55';
+    $port = '2775';
+
+    $smpp->open($destination_ip, $port, $username, $password);
+
+    $utf = true;
+    $message = iconv('Windows-1256','UTF-16BE',$message);
+    $smpp->send_long($sender, $user_mobile_number, $message, $utf);
+    $smpp->close();
+
+}
+
+
 function requestType($type)
 {
     if (in_array($type, ['amend request'])) {
