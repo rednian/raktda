@@ -8,7 +8,6 @@ use URL;
 use Cookie;
 use DB;
 use PDF;
-use App\Http\Controllers\Custom\Smpp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
@@ -1930,25 +1929,6 @@ class ArtistController extends Controller
         ])->where('permit_id', $permit_id)->get();
       
         return view('permits.artist.view_draft_details', $data);
-    }
-
-    
-    public function send_sms($message, $phonenumber)
-    {
-        $src  = 'RAKTOURISM'; // or text 
-        $dst  = '+'.$phonenumber;
-
-        $s = new smpp();
-        $s->debug=1;
-
-        $s->open('86.96.241.55', 2775, "raktda", "Hpwfso0!");
-
-        $utf = true;
-        $message = iconv('Windows-1256','UTF-16BE',$message);
-        $s->send_long($src, $dst, $message, $utf);
-        
-        $s->close();
-
     }
 
     
