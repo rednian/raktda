@@ -99,6 +99,18 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
+function blockPage(){
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        type: 'v2',
+        state: 'success',
+        message: 'Please wait...'
+    });
+}
+
+function unblockPage(){
+    KTApp.unblockPage();
+}
   $(document).ready(function(){
 
         //REFRESH NOTIFICATIONS EVERY MINUTE

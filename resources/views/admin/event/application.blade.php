@@ -863,7 +863,7 @@
 													<a class="nav-link" data-toggle="tab" href="#food-truck-tab" role="tab">
 														{{__('FOOD TRUCK REQUIREMENTS')}}
 														<span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
-													</a>
+													</a>s
 												</li>
 											@endif
 

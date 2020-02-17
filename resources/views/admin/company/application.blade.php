@@ -324,8 +324,8 @@
                         <tr>
                            <th>{{__('REQUIREMENT NAME')}}</th>
                            <th>{{__('FILES')}}</th>
-                           <th>{{__('ISSUED DATE')}}</th>
-                           <th>{{__('EXPIRY DATE')}}</th>
+                           {{-- <th>{{__('ISSUED DATE')}}</th>
+                           <th>{{__('EXPIRY DATE')}}</th> --}}
                         </tr>
                      </thead>
                   </table>
@@ -350,7 +350,7 @@
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
-              <form name="submit_application" action="{{ route('admin.company.submit', $company->company_id) }}" class="kt_form border kt-padding-10" method="post" accept-charset="utf-8">
+              <form id="frm-action" name="submit_application" action="{{ route('admin.company.submit', $company->company_id) }}" class="kt_form border kt-padding-10" method="post" accept-charset="utf-8">
                  @csrf
                  <div class="form-group row">
                   <div class="col-6">
@@ -426,8 +426,6 @@
 
 
    function validation(){
-
-
       $(document).on('change','input[type=checkbox]', function(){
          if($(this).is(':checked')){
             $(this).parents('.input-group').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
@@ -473,8 +471,8 @@
          // {data: 'requirement'},
          {data: 'name'},
          {render:function(){return null;}},
-         {render:function(){return null;}},
-         {render:function(){return null;}},
+        //  {render:function(){return null;}},
+        //  {render:function(){return null;}},
          // {data: 'expired_date'}
          ],
          "order": [[ 0, 'asc' ]],
@@ -483,8 +481,8 @@
               var row_data = rows.data()[0];
               return $('<tr/>').append( '<td >'+group+'</td>' )
                          .append( '<td>'+rows.count()+'</td>' )
-                         .append( '<td>'+row_data.issued_date+'</td>' )
-                         .append( '<td>'+row_data.expired_date+'</td>' )
+                        //  .append( '<td>'+row_data.issued_date+'</td>' )
+                        //  .append( '<td>'+row_data.expired_date+'</td>' )
                          // .append( '<td></td>' )
                          // .append( '<td>'+row_data.action+'</td>' )
                          .append( '<tr/>' );
