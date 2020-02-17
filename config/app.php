@@ -179,6 +179,7 @@ return [
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+
     ],
     /*
     |--------------------------------------------------------------------------

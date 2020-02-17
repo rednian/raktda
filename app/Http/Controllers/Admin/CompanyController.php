@@ -41,10 +41,9 @@ class CompanyController extends Controller
         DB::beginTransaction();
         try {
             $request['user_id'] = $request->user()->user_id;
-            // dd($request->all());
             switch ($request->status) {
                 case 'active':
-
+                    // dd($request->all());
                     $company->update(['status'=>$request->status, 'registered_date'=>Carbon::now(), 'registered_by'=>$request->user()->user_id]);
 
                     $request['action'] = 'approved';

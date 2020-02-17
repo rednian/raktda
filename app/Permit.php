@@ -22,6 +22,10 @@ class Permit extends Model
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock', 'approved_date', 'cancel_date'];
 
+    public function smsNotification()
+    {
+        return $this->hasMany(SMSNotfication::class, 'permit_id', 'module_id')->whereType('artist');
+    }
 
     public function transaction()
     {

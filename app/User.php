@@ -20,7 +20,8 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     protected $table = 'smartrak_smartgov.user';
     protected $primaryKey = 'user_id';
     protected $fillable = [
-        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId', 'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at', 'user_id', 'government_id', 'phoneCode'
+        'NameAr', 'NameEn', 'username', 'password', 'type', 'IsActive', 'CreatedBy', 'modifiedby', 'EmpClientId',
+         'LanguageId', 'designation', 'email', 'mobile_number', 'email_verified_at', 'user_id', 'government_id', 'phoneCode'
     ];
     // protected $auditInclude = [
     //     'nameAr', 'nameEn', 'username', 'password', 'type', 'isactive','createby', 'modifiedby', 'EmpClientId', 'LanguageId'
@@ -62,6 +63,10 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
         return Auth::user()->LanguageId == 1 ? ucfirst($this->NameEn) : ucfirst($this->NameAr);
     }
 
+    public function getNumberAttribute()
+    {
+        return '+'.$this->phoneCode.$this->mobile_number;
+    }
 
     public function approver()
     {
