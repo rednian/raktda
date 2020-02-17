@@ -72,8 +72,7 @@ $user_lang = $user->languageId;
         </div>
         <div class="kt-widget__content">
           <div class="kt-widget__head">
-            <span
-              class="kt-widget__title">{{$user_lang == 1 ? ucfirst($company->name_en) : ucfirst($company->name_ar) }}</span>
+            <span class="kt-widget__title">{{ucfirst($company->name_en).' '.$company->name_ar }}</span>
 
             @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
             <div class="kt-widget__action">
@@ -87,19 +86,23 @@ $user_lang = $user->languageId;
 
           </div>
           <div class="kt-widget__subhead">
-            <span class="kt-margin-r-10"> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
+            <span> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
               'back',
-              'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>
-            <a href="#"><i class="flaticon2-new-email"></i>{{$company->company_email}}</a>
-            <a href="#"><i class="flaticon2-phone"></i>{{$company->phone_number}}</a>
-            <a href="#"><i class="flaticon-placeholder-3"></i>Melbourne</a>
+              'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>&emsp;
+          </div>
+          <div class="kt-widget__subhead">
+            <span><i class="flaticon2-new-email"></i> {{$company->company_email}}</span>&emsp;
+            <span><i class="flaticon2-phone"></i> {{$company->phone_number}}</span>&emsp;
+            <span><i class="flaticon-placeholder-3"></i> {{$company->getFullAddressAttribute()}}</span>
           </div>
           <div class="kt-widget__info row">
             <div class="col-md-8">
               @if ($company->company_description_en)
               <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
-                <h6>{{__('Establishment Details')}}</h6>
-                {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
+                <h6>{{__('Establishment Details')}} :-</h6>
+                <p>
+                  {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
+                </p>
               </div>
               @endif
               <div class="kt-widget__stats">
@@ -172,7 +175,7 @@ $user_lang = $user->languageId;
             <i class="flaticon-confetti"></i>
           </div>
           <div class="kt-widget__details">
-            <span class="kt-widget__title kt-font-transform-u">{{__('Active Event')}}</span>
+            <span class="kt-widget__title kt-font-transform-u">{{__('Active Event Permits')}}</span>
             <a href="#"
               class="kt-widget__value kt-font-brand">{{ $company->event()->whereStatus('active')->count() }}</a>
           </div>
@@ -183,7 +186,7 @@ $user_lang = $user->languageId;
             <i class="flaticon-file-2"></i>
           </div>
           <div class="kt-widget__details">
-            <span class="kt-widget__title kt-font-transform-u">{{__('Active Artist Permit')}}</span>
+            <span class="kt-widget__title kt-font-transform-u">{{__('Active Artist Permits')}}</span>
             <a href="#"
               class="kt-widget__value kt-font-brand">{{$company->permit()->where('permit_status', 'active')->count()}}</a>
           </div>
@@ -241,8 +244,9 @@ $user_lang = $user->languageId;
                   <tr>
                     <th>{{__('REQUIREMENT NAME')}}</th>
                     <th>{{__('FILE')}}</th>
-                    <th>{{__('ISSUED DATE')}}</th>
-                    <th>{{__('EXPIRED DATE')}}</th>
+                    {{-- <th>{{__('ISSUED DATE')}}</th> --}}
+                    {{-- <th>{{__('EXPIRED DATE')}}</th> --}}
+                    <th></th>
                   </tr>
                 </thead>
               </table>
@@ -299,8 +303,6 @@ $user_lang = $user->languageId;
              console.log()
              return $('<tr/>').append( '<td >'+group+'</td>' )
                         .append( '<td>'+rows.count()+'</td>' )
-                        .append( '<td>'+ row_data.issued_date +'</td>' )
-                        .append( '<td>'+row_data.expired_date  +'</td>' )
                         .append( '<td></td>' )
                         // .append( '<td>'+row_data.action+'</td>' )
                         // .append( '<tr/>' );
@@ -311,7 +313,7 @@ $user_lang = $user->languageId;
         // {data: 'name'},
         {data: 'file'},
         {render: function(data){ return null}},
-        {render: function(data){ return null}},
+        // {render: function(data){ return null}},
         {render: function(data){ return null}},
         ],
         createdRow: function(row, data, index){

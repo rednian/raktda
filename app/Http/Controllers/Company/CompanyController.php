@@ -24,6 +24,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Notifications\AllNotification;
 
 class CompanyController extends Controller
 {
@@ -80,6 +81,7 @@ class CompanyController extends Controller
          $user->sendEmailVerificationNotification();
          $user->phoneCode = $request->mobile_number_phoneCode ;
          $user->save();
+
          DB::commit();
          Auth::login($user);
          $result = ['success', 'Successfully Registered.', 'Success'];
@@ -92,6 +94,31 @@ class CompanyController extends Controller
          return redirect()->back()->with('error', $e->getMessage());
       }
    }
+
+   public function sendNotification($company, $user){
+
+      $reason = 'registered';
+      $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
+
+      $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
+      $title = 'New Company <b>#' . $company->name_en . '</b> '.$reason;
+      $buttonText = "View Application";
+      $content = 'New Company <b>' . $company->name_en . '</b> is '.$reason.'.  Please click the link below.';
+
+      $users = User::whereHas('roles', function($q){
+      $q->where('roles.role_id', 1);
+      })->get();
+
+      foreach ($users as $user) {
+          $user->notify(new AllNotification([
+              'subject' => $subject,
+              'title' => $title,
+              'content' => $content,
+              'button' => $buttonText,
+              'url' => $url
+          ]));
+      }
+  }
 
    public function edit(Request $request, Company $company)
    {
@@ -240,10 +267,6 @@ class CompanyController extends Controller
                 //     $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
                 // }
 
-
-
-
-
 //                  dd($company);
 
                   $result = ['success', 'Successfully submitted!', 'Success'];
@@ -274,7 +297,7 @@ class CompanyController extends Controller
              $company->contact()->create($request->all());
          }
 
-
+         $this->sendNotification($company ,User::find(Auth::user()->user_id));
          DB::commit();
          return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
       } catch (Exception $e) {

@@ -466,8 +466,8 @@
                         <tr>
                             <th>{{__('REQUIREMENT NAME')}}</th>
                             <th>{{__('FILE')}}</th>
-                            <th>{{__('ISSUED DATE')}}</th>
-                            <th>{{__('EXPIRED DATE')}}</th>
+                            {{-- <th>{{__('ISSUED DATE')}}</th>
+                            <th>{{__('EXPIRED DATE')}}</th> --}}
                             <th>{{__('ACTION')}}</th>
                         </tr>
                     </thead>
@@ -641,8 +641,8 @@
                                 var row_data = rows.data()[0];
                                 return $('<tr/>').append('<td >' + group + '</td>')
                                     .append('<td>' + rows.count() + '</td>')
-                                    .append('<td>' + row_data.issued_date + '</td>')
-                                    .append('<td>' + row_data.expired_date + '</td>')
+                                    // .append('<td>' + row_data.issued_date + '</td>')
+                                    // .append('<td>' + row_data.expired_date + '</td>')
                                     .append('<td></td>')
                                     // .append( '<td>'+row_data.action+'</td>' )
                                     .append('<tr/>');
@@ -657,16 +657,16 @@
                                     return null
                                 }
                             },
-                            {
-                                render: function (data) {
-                                    return null
-                                }
-                            },
-                            {
-                                render: function (data) {
-                                    return null
-                                }
-                            },
+                            // {
+                            //     render: function (data) {
+                            //         return null
+                            //     }
+                            // },
+                            // {
+                            //     render: function (data) {
+                            //         return null
+                            //     }
+                            // },
                             {data: 'action'},
                         ],
                         createdRow: function (row, data, index) {
