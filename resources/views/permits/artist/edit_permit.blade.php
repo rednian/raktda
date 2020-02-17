@@ -311,10 +311,10 @@
             });
             if($('#permit_from').length)
             {
-               var minDate = $('#permit_from').val() ;
+               var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
                var maxDate = moment(minDate).add(3, 'M').toDate(); 
-               $('#permit_to').datepicker('setEndDate', maxDate );
                $('#permit_to').datepicker('setStartDate', minDate );
+               $('#permit_to').datepicker('setEndDate', maxDate );
             }
           
         })
@@ -504,7 +504,7 @@
             {
                 $('#showwarning').modal('show');
             }
-            var permit_to = x.add(30, 'days').calendar();
+            var permit_to = x.add(1, 'days').calendar();
             var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
             $('#permit_to').datepicker('setStartDate', permit_to_date);
             $('#permit_to').val(permit_to_date).datepicker('update');

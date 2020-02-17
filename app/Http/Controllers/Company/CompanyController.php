@@ -29,7 +29,8 @@ class CompanyController extends Controller
 {
    public function create()
    {
-      return view('permits.company.create', ['page_title'=>'Register Company']);
+      $codes = Country::orderBy('nationality_en', 'asc')->get();
+      return view('permits.company.create', ['page_title'=>'Register Company', 'codes' => $codes]);
    }
 
    public function account(Request $request, Company $company)
@@ -72,12 +73,13 @@ class CompanyController extends Controller
          $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
          $company = Company::create(array_merge($valid_company, ['status'=>'draft'], $this->addressRelated() ));
          $user = $company->user()->create(array_merge(
-             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
+             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password) 
              ])
          );
          $user->roles()->attach(2);
          $user->sendEmailVerificationNotification();
-
+         $user->phoneCode = $request->mobile_number_phoneCode ;
+         $user->save();
          DB::commit();
          Auth::login($user);
          $result = ['success', 'Successfully Registered.', 'Success'];
@@ -112,7 +114,8 @@ class CompanyController extends Controller
             'NameAr' => $request->acccount_name_ar,
             'NameEn' => $request->acccount_name_en,
             'email' => $request->account_email,
-            'mobile_number' => $request->account_mobile
+            'mobile_number' =>$request->account_mobile,
+            'phoneCode' =>  $request->account_mobile_phoneCode
         ]);
 
         DB::commit();
@@ -122,7 +125,7 @@ class CompanyController extends Controller
         $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-      return redirect(URL::signedRoute('company.edit', $company->company_id).'#user-profile')->with(['message'=> $result]);
+      return redirect(URL::signedRoute('company.account', $company->company_id))->with(['message'=> $result]);
    }
 
    public function changePassword(Request $request, Company $company) {
@@ -395,10 +398,10 @@ class CompanyController extends Controller
         }
         return $name;
       })->editColumn('issued_date', function($data){
-        return;
+        return !is_null($data->issued_date) ? Carbon::parse($data->issued_date)->format('d-m-Y') : '';
       })->editColumn('expired_date', function($data){
       //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
-      return ;
+      return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
           $name = $data->requirement->requirement_name;
@@ -434,7 +437,8 @@ class CompanyController extends Controller
       }
 
       if($request->mobile_number){
-         $result =  User::where('mobile_number', $request->mobile_number)->exists() ?  false : true;
+        $phoneCode = $request->phoneCode;
+         $result =  User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->exists() ?  false : true;
       }
 
       if($request->name_en){

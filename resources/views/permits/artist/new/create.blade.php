@@ -241,7 +241,7 @@
     @include('permits.artist.modals.leave_page')
 
 
-    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ]);
+    @include('permits.artist.modals.show_warning_modal',['day_count' =>getSettings()->artist_start_after ])
 
     @endsection
 
@@ -260,7 +260,6 @@
                 $('#events_div').css('display', 'none');
             }
             checkFilled();
-            
         }
 
         $(document).ready(function(){
@@ -278,6 +277,7 @@
         });
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        
         $('#permit_from').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,

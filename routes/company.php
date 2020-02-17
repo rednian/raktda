@@ -22,7 +22,8 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
             $result =  \App\User::where('email', $request->email)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
         }
         if($request->mobile_number){
-            $result =  \App\User::where('mobile_number', $request->mobile_number)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
+            $phoneCode = $request->phoneCode;
+            $result =  \App\User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
         }
         if($request->old_password){
             $password = \App\User::where('user_id', Auth::user()->user_id)->first()->value('password');
@@ -182,8 +183,6 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
-
-    Route::post('sendsms', [ 'uses' => 'smsController@sendSms' , 'as' => 'sendSms' ]);
 
     //REPORTS
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');

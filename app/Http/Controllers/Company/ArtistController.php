@@ -8,7 +8,6 @@ use URL;
 use Cookie;
 use DB;
 use PDF;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Storage;
@@ -164,8 +163,7 @@ class ArtistController extends Controller
                     $approved_artist = true;
                 }
             }
-            switch ($status) {
-                case 'applied':
+            if($status == 'applied') {
                     if ($permit->permit_status == 'approved-unpaid') {
                          if($permit->event) {
                               if($permit->event->firm == 'government' || $permit->event->exempt_payment == 1)
@@ -194,8 +192,8 @@ class ArtistController extends Controller
                     } else if ($permit->permit_status == 'cancelled') {
                         return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                     }
-                    break;
-                case 'valid':
+                }
+               else if($status == 'valid'){
                     $issued_date = strtotime($permit->issued_date);
                     $expired_date = strtotime($permit->expired_date);
                     $approved_date = strtotime($permit->approved_date);
@@ -213,12 +211,13 @@ class ArtistController extends Controller
                         }
                     }
                     
-                    if($permit->status == 'expired'){
-                        return '<div class="alert-text">'.__('Expired').'</div>';
-                    }
                     return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
-                    break;
-            }
+                }else if($status == 'expired') {
+                    $today = strtotime(date('Y-m-d 00:00:00'));
+                    $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
+                    $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
+                    return  '<span class="d-flex flex-column">'  . $renewBtn . '</span>';
+                }
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->permit_status;
             $ret_status = '';
@@ -907,8 +906,10 @@ class ArtistController extends Controller
 		$result = ['error', __($e->getMessage()), 'Error'];
     }
     $too = '';
-    if ($from == 'amend' || $from == 'renew' || $from == 'edit') {
+    if ($from == 'edit') {
         $too = '#applied';
+    } else if($from == 'amend' || $from == 'renew') {
+        $too = '#valid';
     } else if ($from == 'add_new') {
         $too = '#draft';
     }
@@ -1909,7 +1910,7 @@ class ArtistController extends Controller
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
             }
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">'.__('View').'</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">'.__('Remove').'</span>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">'.__('View').'</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">'.__('Delete').'</span>';
         })->addColumn('details', function ($permit) {
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
         })->rawColumns(['action', 'details'])->make(true);
