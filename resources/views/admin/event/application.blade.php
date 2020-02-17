@@ -88,7 +88,7 @@
 													</div>
 													<div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 													<div class="card-body">
-														
+
 														<div class="row form-group form-group-sm">
 															<div class="col-sm-6">
 																<section class="row">
@@ -543,7 +543,7 @@
 														</div>
 														<div id="collapse-liquor" class="collapse show" aria-labelledby="heading-liquor" data-parent="#accordion-liquor">
 															<div class="card-body">
-																	
+
                                                                 <section class="row">
                                                                     <div class="col-6">
                                                                         @if ($event->liquor->provided)
@@ -574,7 +574,7 @@
 																		</section>
 																	</div>
                                                                 </section>
-																
+
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Establishment Name') }} <span class="text-danger">*</span></label>
@@ -625,7 +625,7 @@
 																				</div>
 																	</div>
 																	</div>
-																		
+
 																	@else
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
@@ -679,14 +679,14 @@
 																		</div>
 																	</div>
 																	@endif
-																	
-																	
+
+
 															</div>
 														</div>
 												</div>
 											</section>
 											@endif
-											
+
 											<section class="accordion accordion-solid accordion-toggle-plus border" id="accordion-address">
 												<div class="card">
 														<div class="card-header" id="heading-address">
@@ -781,11 +781,11 @@
 																		<div class="col-sm-3">
 																			<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
 																			<div class="input-group input-group-sm">
-																				<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																				<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" >
 																				<div class="input-group-append">
 																					<span class="input-group-text">
 																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox"> 
+																							<input data-step="step-1" type="checkbox">
 																							<span></span>
 																						</label>
 																					</span>
@@ -795,21 +795,21 @@
 																		<div class="col-sm-3">
 																			<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
 																			<div class="input-group input-group-sm">
-																				<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
+																				<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" >
 																				<div class="input-group-append">
 																					<span class="input-group-text">
 																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox"> 
+																							<input data-step="step-1" type="checkbox">
 																							<span></span>
 																						</label>
 																					</span>
 																				</div>
 																			</div>
 																		</div>
-																		
-																		
+
+
 																	</div>
-																	
+
 																	<div class="row form-group form-group-sm">
 																		<div class="col-md-6">
 																			<label for="">{{__('Address')}} <span>*</span></label>
@@ -831,7 +831,7 @@
 														</div>
 												</div>
 											</section>
-											
+
 									</div>
 									</section>
 							</div>
@@ -851,7 +851,7 @@
 												</a>
 											</li>
 											@if ($event->liquor()->count() > 0)
-												<li class="nav-item">
+												<li class="nav-item kt-hide">
 													<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
 														{{__('LIQUOR REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->liquor()->count()}}</span>
 													</a>
@@ -866,7 +866,7 @@
 													</a>
 												</li>
 											@endif
-											
+
 											{{-- @if ($event->otherUpload()->count() > 0) --}}
 											<li class="nav-item">
 												<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
@@ -902,7 +902,7 @@
 													</thead>
 													</table>
 											</div>
-											
+
 											<div class="tab-pane" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
 												<table class="table border borderless table-hover table-sm" id="liquor-table">
 													<thead>
@@ -925,7 +925,7 @@
 													</thead>
 													</table>
 											</div>
-										</div>												 
+										</div>
 										</div>
 									</section>
 							</div>
@@ -1047,7 +1047,7 @@
 																<div class="col">
 																	<p style="display: inline;" class="kt-font-dark">
 																		Do you want to add additional Requirement before sending back to client?
-																		
+
 																	</p>
 																	<label class="kt-checkbox kt-checkbox--single kt-checkbox--default kt-margin-b-0 ">
 																		<input type="checkbox"  class="step-2"><span></span>
@@ -1068,7 +1068,7 @@
 																	</div>
 																</div>
 															</section>
-															
+
 														</div>
 														@endif
 
@@ -1300,7 +1300,7 @@
 			dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
 			'pageLength': 20,
 		ajax:{ url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'},
-		serverSide: false,	
+		serverSide: false,
 		columnDefs:[
 		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
 		],
@@ -1341,8 +1341,8 @@
 		counter++;
 		add_requirements_table.row.add(data).draw();
 		});
-		
-		
+
+
 	$('form#kt_form').submit(function(e){
 		var form = this;
 			var rows_selected = add_requirements_table.column(0).checkboxes.selected();
@@ -1471,7 +1471,7 @@
 				],
 		});
 	}
-	
+
 	function requirementTable(){
 
 	var dt = $('table#requirement-table').DataTable({
@@ -1509,7 +1509,7 @@
 			return html;
 			}
 		}
-				],				
+				],
 			});
 
 
@@ -1541,9 +1541,9 @@
 		var val = $(this).val();
 		if(val.indexOf('4') > -1){
 			$('input#site-inspection').parents('.form-group').removeClass('kt-hide');
-		}	
+		}
 		else{
-			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
 			$('input#site-inspection').removeAttr('checked', true);
 			$('input#site-inspection').prop('checked', false);
 		}
@@ -1552,7 +1552,7 @@
 			$('select#select-department').val('').trigger('change');
 			$('select#select-department').parents('.form-group').removeClass('kt-hide');
 			$('select#select-department').removeAttr('disabled', true);
-		}	
+		}
 		else{
 			$('select#select-department').parents('.form-group').addClass('kt-hide');
 			$('select#select-department').attr('disabled', true);
@@ -1584,7 +1584,7 @@
 		}
 		else{
 				$('#accordion-requirements').addClass('kt-hide');
-		} 
+		}
 
 		if($(this).val() == 'approved-unpaid'){
 			$('#printed-note').removeClass('d-none').find('textarea').removeAttr('disabled', true);
@@ -1593,13 +1593,13 @@
 			$('#printed-note').addClass('d-none').find('textarea').attr('disabled', true);
 		}
 
-	
+
 
 		if($(this).val() == 'need approval'){
-				approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true); 
+				approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true);
 		}
 		else{
-			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true);
 			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
 			$('select#select-department').val('').trigger('change');
 			$('select#select-approver').val('').trigger('change');
@@ -1686,7 +1686,7 @@ function checkedAttr(obj) {
 		$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
 		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 	}
-	
+
 }
 </script>
 @stop

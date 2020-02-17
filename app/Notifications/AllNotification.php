@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+// use App\Channels\SmsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,7 +33,8 @@ class AllNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail', 'broadcast'];
+        return ['database', 'mail'];
+        // return ['database', 'mail', 'broadcast', SmsNotification::class];
     }
 
     /**
@@ -64,6 +66,13 @@ class AllNotification extends Notification
             'title' => $this->data['title'],
             'content' => $this->data['content'],
             'url' => $this->data['url'],
+        ];
+    }
+
+    public function toSms($notifiable)
+    {
+        return [
+            'sms' => $this->data['sms'],
         ];
     }
 

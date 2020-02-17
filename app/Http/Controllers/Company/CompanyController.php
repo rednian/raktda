@@ -225,6 +225,10 @@ class CompanyController extends Controller
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
                   }
 
+                  if($company->status == 'active'){
+                    $company->update($request->all());
+                  }
+
 
 
                 // //renew

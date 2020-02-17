@@ -208,10 +208,12 @@ class EventController extends Controller
 						}
 
 						//SEND NOTIFICATION
-						$this->sendNotificationCompany($event, 'reject');
+                        $this->sendNotificationCompany($event, 'reject');
+                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' was rejected. Please contact RAKTDA.');
 
 						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
-						break;
+                        break;
+
 					case 'approved-unpaid':
 					$request['approved_by']  =  $request->user()->user_id;
 					$request['approved_date']  =  Carbon::now();
@@ -226,7 +228,9 @@ class EventController extends Controller
 						$event->comment()->create($request->all());
 
 						//SEND NOTIFICATION
-						$this->sendNotificationCompany($event, 'approve');
+                        $this->sendNotificationCompany($event, 'approve');
+                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' was approved.');
+
 
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
 						break;
@@ -254,7 +258,8 @@ class EventController extends Controller
 							}
 						}
 
-						//SEND NOTIFICATION
+                        //SEND NOTIFICATION
+                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' is bounced back. Please check you application information.');
 						$this->sendNotificationCompany($event, 'amend');
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];

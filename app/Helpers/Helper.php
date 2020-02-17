@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Custom\Smpp;
+use App\Library\Smpp;
 
 function sendSms($user_mobile_number = null, $message)
 {
@@ -17,7 +17,6 @@ function sendSms($user_mobile_number = null, $message)
     $message = iconv('Windows-1256','UTF-16BE',$message);
     $smpp->send_long($sender, $user_mobile_number, $message, $utf);
     $smpp->close();
-
 }
 
 

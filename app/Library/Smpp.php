@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Custom;
+namespace App\Library;
 /* **************************************************
  * SMPP v3.4
  * PHP Class to send SMS messages using SMPP v3.4 protocol

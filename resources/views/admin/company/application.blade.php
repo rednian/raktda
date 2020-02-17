@@ -28,7 +28,7 @@
           </div>
         </div>
       @endif
-   
+
 
        <section class="accordion kt-margin-b-10 accordion-solid accordion-toggle-plus border" id="accordion-detail">
          <div class="card">
@@ -39,6 +39,19 @@
              </div>
              <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
                <div class="card-body">
+                <section class="kt-form kt-form--label-right ">
+                    <div class="form-group form-group-sm  row">
+                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all establishment details </label>
+                        <div class="col-1">
+                            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                                <label>
+                                    <input type="checkbox" id="checked-all-details" name="">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </section>
                   {{-- <div class="row form-group form-group-sm">
                     <div class="col-sm-6">
                         <label class="kt-font-dark">{{ __('Establishment Type') }} </label>
@@ -130,7 +143,7 @@
                            <label class="kt-font-dark">{{ __('Phone Number') }}</label>
                            <div class="input-group input-group-sm">
                                <input value="{{ $company->phone_number }}" name="name_ar" readonly="readonly" type="text"
-                                            class="form-control"> 
+                                            class="form-control">
                                <div class="input-group-append">
                                   <span class="input-group-text">
                                      <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
@@ -156,7 +169,7 @@
                                </div>
                               </div>
                         </div>
-                      </section>              
+                      </section>
                      </div>
 
                   </div>
@@ -164,20 +177,20 @@
                      <div class="col-sm-6">
                         <section class="row form-group form-group-sm">
                            <div class="col-sm-12">
-                             
-                              
+
+
                            </div>
                         </section>
                      </div>
                      <div class="col-sm-6">
                         <section class="row form-group form-group-sm">
                            <div class="col-sm-6">
-                             
-                              
+
+
                            </div>
                         </section>
-                       
-                          
+
+
                      </div>
                   </div>
                   <div class="row form-group form-group-sm">
@@ -199,6 +212,19 @@
              </div>
              <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
                <div class="card-body">
+                <section class="kt-form kt-form--label-right ">
+                    <div class="form-group form-group-sm  row">
+                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all contact details </label>
+                        <div class="col-1">
+                            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+                                <label>
+                                    <input type="checkbox" id="checked-all-contact" name="">
+                                    <span></span>
+                                </label>
+                            </span>
+                        </div>
+                    </div>
+                </section>
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-6">
                          <label class="kt-font-dark">{{ __('Name') }} </label>
@@ -335,7 +361,7 @@
                     <label class="kt-font-dark">{{ __('Remarks (AR)') }}</label>
                     <textarea name="comment_ar" maxlength="255" class="form-control form-control-sm" rows="5"></textarea>
                   </div>
-                   
+
                  </div>
                  <div class="form-group">
                     <div class="kt-radio-inline">
@@ -382,7 +408,7 @@
       documentRequirement();
       validation();
       comment();
-
+      checkAll();
    });
 
    function comment(){
@@ -400,7 +426,7 @@
 
 
    function validation(){
-      
+
 
       $(document).on('change','input[type=checkbox]', function(){
          if($(this).is(':checked')){
@@ -419,7 +445,7 @@
         status = $(this).val();
       });
 
-      $('form[name=submit_application]').submit(function(){ 
+      $('form[name=submit_application]').submit(function(){
         if(status != 'active'){
           $(this).find('textarea').attr('required', true);
         }
@@ -453,7 +479,7 @@
          ],
          "order": [[ 0, 'asc' ]],
            rowGroup: {
-             startRender: function ( rows, group ) { 
+             startRender: function ( rows, group ) {
               var row_data = rows.data()[0];
               return $('<tr/>').append( '<td >'+group+'</td>' )
                          .append( '<td>'+rows.count()+'</td>' )
@@ -467,5 +493,28 @@
          }
       });
    }
+
+   function checkAll(){
+	$('input[type=checkbox]#checked-all-details').change(function(){ checkedAttr($(this)); });
+	$('input[type=checkbox]#checked-all-contact').change(function(){ checkedAttr($(this)); });
+	// $('input[type=checkbox]#checked-all-address').change(function(){ checkedAttr($(this)); });
+	// $('input[type=checkbox]#checked-all-truck').change(function(){ checkedAttr($(this)); });
+	// $('input[type=checkbox]#checked-all-liquor').change(function(){ checkedAttr($(this)); });
+}
+
+function checkedAttr(obj) {
+	if($(obj).is(':checked')){
+		$(obj).parents('.card-body').find('input[type=checkbox]').attr('checked', true);
+		$(obj).parents('.card-body').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
+		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+	}
+	else{
+		$(obj).parents('.card-body').find('input[type=checkbox]').removeAttr('checked', true);
+		$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
+		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
+	}
+
+}
+
 </script>
 @stop
