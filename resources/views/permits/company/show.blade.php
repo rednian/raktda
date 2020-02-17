@@ -31,10 +31,9 @@ $user_lang = $user->languageId;
     <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
       <div class="alert-icon"><i class="flaticon-warning"></i></div>
       <div class="alert-text">
-        <ul>
-          <li>Your registration is still in <span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span> .
-            The RAKTDA representative will check your application and will respond your request.</li>
-        </ul>
+        <p>Your registration is still in <span class="kt-badge kt-badge--warning kt-badge--inline">Pending</span> ,
+          <br />
+          The RAKTDA representative will check your application and will respond your request.</p>
       </div>
       <div class="alert-close">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -48,12 +47,14 @@ $user_lang = $user->languageId;
     <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
       <div class="alert-icon"><i class="flaticon-warning"></i></div>
       <div class="alert-text">
-        Your application was bounced back, see the comment below:
-        <hr class="kt-margin-t-5">
-        @if ($company->comment()->exists())
-        <p>{{$company->comment()->latest()->first()->comment}}</p>
-        @endif
-
+        <div class="kt-font-bold">Your application was bounced back, see the comment below:</div>
+        <ul class="kt-margin-t-10">
+          @if ($company->comment()->latest()->exists())
+          <li>
+            {{ getLangId() == 1 ? ucfirst($company->comment()->latest()->first()->comment_en) : $company->comment()->latest()->first()->comment_ar}}
+          </li>
+          @endif
+        </ul>
       </div>
       <div class="alert-close">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

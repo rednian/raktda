@@ -96,12 +96,17 @@ class CompanyController extends Controller
    }
 
    public function sendNotification($company, $user){
-
-      $reason = 'registered';
+      if($company->request_type=="amendment request")
+      {
+        $reason = 'requested for Amendment';
+      }else {
+        $reason = 'registered';
+      }
+      
       $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
 
       $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
-      $title = 'New Company <b>#' . $company->name_en . '</b> '.$reason;
+      $title = 'New Company <b>' . $company->name_en . '</b> '.$reason;
       $buttonText = "View Application";
       $content = 'New Company <b>' . $company->name_en . '</b> is '.$reason.'.  Please click the link below.';
 

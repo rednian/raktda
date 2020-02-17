@@ -56,7 +56,7 @@
                                                 <input type="text"
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
-                                                    data-date-start-date="+0d" onchange="checkFilled();givWarn()"
+                                                    data-date-start-date="+0d" onchange="givWarn();checkFilled();"
                                                     value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) :  ( session($user_id.'_apn_from_date') ? session($user_id.'_apn_from_date') : '') }}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
@@ -80,6 +80,7 @@
                                                     onchange="checkFilled()"
                                                     value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
                                                     disabled />
+
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -89,6 +90,7 @@
                                         </div>
                                     </div>
 
+                                    <input type="hidden" id="permit_to_hidden" name="permit_to_hidden" />
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
@@ -329,6 +331,7 @@
             if(from && to && loc && loc_ar) {
                 if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
                 {
+                    console.log('two')
                     $('#add_artist').attr('disabled', false);
                     $('#add_artist_sm').attr('disabled', false);
                     if(artistcount > 0)
@@ -553,6 +556,7 @@
                 var permit_to = x.add(30, 'days').calendar();
                 var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
                 $('#permit_to').val(permit_to_date).datepicker('update');
+                
             }
         }
 
