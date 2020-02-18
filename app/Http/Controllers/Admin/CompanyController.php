@@ -77,7 +77,8 @@ class CompanyController extends Controller
             'title' => $title,
             'content' => $content,
             'button' => $button,
-            'url' => $url
+            'url' => $url,
+            'mail'=>true
         ]));
 
         foreach ($users as $user) {
@@ -86,7 +87,8 @@ class CompanyController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => $button,
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
             sms($user->number, $sms_content);
         }

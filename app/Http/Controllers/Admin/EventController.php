@@ -127,7 +127,8 @@ class EventController extends Controller
 						'title' => $title,
 						'content' => $content,
 						'button' => $buttonText,
-						'url' => $url
+                        'url' => $url,
+                        'mail'=>true
 					]));
 				}
 		        //END SEND NOTIFICATION COMPANY
@@ -407,6 +408,7 @@ class EventController extends Controller
 					'content' => $content,
 					'button' => 'View Permit',
                     'url' => $url,
+                    'mail'=>true
 				]));
 			}
 		}
@@ -428,7 +430,8 @@ class EventController extends Controller
 					'title' => $title,
 					'content' => $content,
 					'button' => 'View Permit',
-					'url' => $url
+                    'url' => $url,
+                    'mail'=>true
 				]));
 			}
 		}

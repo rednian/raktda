@@ -118,7 +118,8 @@ class ArtistPermitController extends Controller
                     'title' => $title,
                     'content' => $content,
                     'button' => $buttonText,
-                    'url' => $url
+                    'url' => $url,
+                    'mail'=>true
                 ]));
             }
             //END SEND NOTIFICATION COMPANY
@@ -396,7 +397,8 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => $buttonText,
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
             sms($user->number, $sms_content);
         }
@@ -416,7 +418,8 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => 'View Permit',
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
         }
     }
@@ -438,7 +441,8 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => 'View Permit',
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
         }
     }
