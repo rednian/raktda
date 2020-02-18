@@ -234,14 +234,16 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('artist_reports/artist_permit_report/eventTransactionDateRange', 'Admin\TransactionReportController@eventTransactionDateRange')
         ->name('admin.artist_permit_report.eventTransactionDateRange');
 
-
     //Transactions
     Route::get('artist_reports/artist_transaction_report', 'Admin\TransactionReportController@artistTransaction')
         ->name('admin.artist_permit_report.artistTransaction');
     Route::get('artist_reports/event_transaction_report', 'Admin\TransactionReportController@eventTransaction')
         ->name('admin.artist_permit_report.eventTransaction');
+
     Route::get('artist_reports/event_transaction_report/eventTransactionDatatable', 'Admin\TransactionReportController@eventTransactionDatatable')
         ->name('admin.artist_permit_report.eventTransactionDatatable');
+
+
     Route::get('artist_reports/eventSevenDaysReport', 'Admin\TransactionReportController@sevenDaysEvent')
         ->name('admin.artist_permit_report.sevenDaysEvent');
     Route::get('artist_reports/thirtyDaysEvent', 'Admin\TransactionReportController@thirtyDaysEvent')
@@ -254,6 +256,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
         ->name('admin.artist_permit_report.thirtyDaysArtist');
     Route::post('artist_reports/customArtistDate', 'Admin\TransactionReportController@customArtistDate')
         ->name('admin.artist_permit_report.customArtistDate');
+
     Route::get('artist_reports/transactionDate', 'Admin\TransactionReportController@transactionDate')
         ->name('admin.artist_permit_report.transactionDate');
     Route::get('artist_reports/artistHistory/{id}', 'Admin\ReportController@artistHistory')
@@ -261,10 +264,8 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
     Route::post('artist_reports/chartData', 'Admin\TransactionReportController@chartData')
         ->name('admin.artist_permit_report.chartData');
 
-
-
-
-
+    Route::post('artist_reports/transactionDate', 'Admin\TransactionReportController@transactionDate')
+        ->name('admin.artist_permit_report.transactionDate');
 
     //---------------------------------------------------------------------------------------------------------------
     // Inspection Appointments

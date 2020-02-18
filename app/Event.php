@@ -23,6 +23,7 @@ class Event extends Model
         'owner_name','owner_name_ar', 'request_type', 'additional_location_info','cancel_date', 'event_type_sub_id','exempt_payment',
         'exempt_by', 'approved_by', 'approved_date'];
 
+
     public function smsNotification()
     {
         return $this->hasMany(SMSNotfication::class, 'event_id', 'module_id')->whereType('event');

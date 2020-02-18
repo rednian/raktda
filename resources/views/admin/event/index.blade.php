@@ -921,7 +921,6 @@
       var start = moment().subtract(29, 'days');
       var end = moment();
       var new_selected_date = null;
-
       $('input#processing-applied-date').daterangepicker({
         autoUpdateInput: false,
         buttonClasses: 'btn',

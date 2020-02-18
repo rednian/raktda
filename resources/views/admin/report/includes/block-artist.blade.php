@@ -403,7 +403,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             newWin.document.write(divToPrint.outerHTML);
             newWin.document.write($('#artistPersonalDetails').val());
             newWin.print();
-            newWin.close();
+            setTimeout(function () { newWin.close(); }, 500);
         }
 
         function onclickevent(id) {

@@ -181,6 +181,7 @@
 
 		public function statusHistory(Request $request, Artist $artist)
 		{
+
 			$action = ArtistAction::where('artist_id', $artist->artist_id)->latest();
 			return DataTables::of($action)
 				 ->editColumn('created_at', function($action){
@@ -193,6 +194,7 @@
 					 return artistStatus($action->action);
 				 })
 				 ->editColumn('remarks', function($action){
+
 					 return ucfirst($action->remarks);
 				 })
 				 ->rawColumns(['action', 'name', 'created_at'])
@@ -257,7 +259,7 @@
 				 ->make(true);
 		}
 
-		
+
 		public  function checked_list(Request $request){
 		    $data=[];
             foreach ($request->id as $item) {
