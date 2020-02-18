@@ -229,6 +229,7 @@
             $i = 1 ;
             @endphp
             @foreach($truck as $truc)
+            @if($truc->paid == 1)
             <tr>
                 <td>{{$i}}</td>
                 <td>{{$truc->company_name_ar}} <br /> {{$truc->company_name_en}}</td>
@@ -239,6 +240,7 @@
             @php
             $i++;
             @endphp
+            @endif
             @endforeach
         </tbody>
 

@@ -202,7 +202,7 @@
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
-              <th>{{ __('TIME') }}</th>
+              {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
               <th>{{ __('HAS LIQUOR') }}</th>
@@ -298,7 +298,7 @@
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
-              <th>{{ __('TIME') }}</th>
+              {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
               <th>{{ __('HAS LIQUOR') }}</th>
@@ -396,7 +396,7 @@
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
-              <th>{{ __('TIME') }}</th>
+              {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
               <th>{{ __('HAS LIQUOR') }}</th>
@@ -492,7 +492,7 @@
               <th>{{ __('PERMIT NUMBER') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
-              <th>{{ __('TIME') }}</th>
+              {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
               <th>{{ __('HAS LIQUOR') }}</th>
@@ -592,7 +592,7 @@
               <th>{{ __('PERMIT NUMBER') }}</th>
               <th>{{ __('START DATE') }}</th>
               <th>{{ __('END DATE') }}</th>
-              <th>{{ __('TIME') }}</th>
+              {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
               <th>{{ __('HAS LIQUOR') }}</th>
@@ -766,7 +766,7 @@
           {data: 'permit_number'},
           {data: 'start'},
           {data: 'end'},
-          {data: 'time'},
+        //   {data: 'time'},
           {data: 'owner'},
           {data: 'expected_audience'},
           {data: 'has_liquor'},
@@ -834,7 +834,7 @@
           {data: 'permit_number'},
           {data: 'start'},
           {data: 'end'},
-          {data: 'time'},
+        //   {data: 'time'},
           {data: 'owner'},
           {data: 'expected_audience'},
           {data: 'has_liquor'},
@@ -975,7 +975,7 @@
           {data: 'type'},
           {data: 'start'},
           {data: 'end'},
-          {data: 'time'},
+        //   {data: 'time'},
           {data: 'owner'},
           {data: 'expected_audience'},
           {data: 'has_liquor'},
@@ -1036,7 +1036,7 @@
            {data: 'type'},
            {data: 'start'},
            {data: 'end'},
-           {data: 'time'},
+        //    {data: 'time'},
            {data: 'owner'},
            {data: 'expected_audience'},
            {data: 'has_liquor'},
@@ -1097,7 +1097,7 @@
            {data: 'type'},
            {data: 'start'},
            {data: 'end'},
-           {data: 'time'},
+        //    {data: 'time'},
            {data: 'owner'},
            {data: 'expected_audience'},
            {data: 'has_liquor'},
@@ -1170,7 +1170,7 @@
                 textColor : '#ffffff',
               },
               eventRender: function(info) {
-               
+
                   var element = $(info.el);
                   if (info.event.extendedProps && info.event.extendedProps.description) {
                       if (element.hasClass('fc-day-grid-event')) {

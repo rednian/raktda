@@ -59,17 +59,13 @@
                 <li
                     class="kt-menu__item {{ (\Request::is('company/event/*') || \Request::is('company/event')) ? 'kt-menu__item--active' : ''}}">
                     <a href="{{URL::signedRoute('event.index')}}" class="kt-menu__link ">
-
                         <span class="kt-menu__link-text">{{__('Event Permit')}}</span>
                     </a>
-
                 <li
                     class="kt-menu__item {{ (\Request::is('company/reports') || \Request::is('company/reports/*')) ? 'kt-menu__item--active' : ''}}">
                     <a href="{{URL::signedRoute('company.reports')}}" class="kt-menu__link ">
                         <span class="kt-menu__link-text">{{__('Reports')}}</span>
                     </a>
-
-
                 </li>
                 <li class="kt-menu__item {{ \Request::is('company/profile/*') ? 'kt-menu__item--active' : ''}}">
                     <a href="{{ URL::signedRoute('company.show', ['company'  => Auth::user()->company->company_id ]) }}"

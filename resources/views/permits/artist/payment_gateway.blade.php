@@ -299,12 +299,12 @@
                                         <td id="total_amt" class="pull-right kt-font-bold"></td>
                                     </tr>
                                     <tr style="border-bottom:1px solid black;">
-                                        <td>{{__('Total Vat')}}</td>
+                                        <td>{{__('Total Vat')}} (5%)</td>
                                         <td id="total_vat" class="pull-right kt-font-bold"></td>
                                     </tr>
                                     <tr>
                                         <td class="kt-font-transform-u">
-                                            {{__('Grand Total')}}
+                                            {{__('Grand Total')}} (AED)
                                         </td>
                                         <td id="grand_total" class="pull-right kt-font-bold"></td>
                                     </tr>

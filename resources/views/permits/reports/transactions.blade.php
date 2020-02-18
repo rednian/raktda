@@ -41,7 +41,7 @@
                         <div class="input-group input-daterange input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
                                 <input type="text" class="form-control form-control-sm"
-                                    placeholder="{{ __('From Date') }}" id="applied-date-from">
+                                    placeholder="{{ __('Added on') }}" id="applied-date-from">
                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                     <span><i class="la la-calendar"></i></span>
                                 </span>

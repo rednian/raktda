@@ -24,8 +24,10 @@ class Event extends Model
         'exempt_by', 'approved_by', 'approved_date'];
 
 
-    const GOVERNMENT=1;
-    const CORPORATE=2;
+    public function smsNotification()
+    {
+        return $this->hasMany(SMSNotfication::class, 'event_id', 'module_id')->whereType('event');
+    }
 
     public function subType()
     {

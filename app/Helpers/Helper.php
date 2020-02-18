@@ -1,5 +1,25 @@
 <?php
 
+use App\Library\Smpp;
+
+function sendSms($user_mobile_number = null, $message)
+{
+    $sender = 'RAKTOURISM';
+    $smpp = new Smpp();
+    $username = 'raktda';
+    $password = 'Hpwfso0!';
+    $destination_ip = '86.96.241.55';
+    $port = '2775';
+
+    $smpp->open($destination_ip, $port, $username, $password);
+
+    $utf = true;
+    $message = iconv('Windows-1256','UTF-16BE',$message);
+    $smpp->send_long($sender, $user_mobile_number, $message, $utf);
+    $smpp->close();
+}
+
+
 function requestType($type)
 {
     if (in_array($type, ['amend request'])) {
@@ -397,7 +417,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  250);
+        $payment_no = sprintf("%07d",  350);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];

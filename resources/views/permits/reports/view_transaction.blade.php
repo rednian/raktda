@@ -48,8 +48,10 @@
                 <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
                 </button>
                 </a> --}}
-                <button class="btn btn-sm btn--yellow" onclick="printThis()"><i class="la la-print"></i> {{__('Print')}}
-                </button>
+                <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
+                    target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
+                    </button>
+                </a>
                 <a href="{{URL::signedRoute('company.reports')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
@@ -63,32 +65,38 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Transaction No.')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->reference_number}}
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Transaction Date')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction Date')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{date('d-M-Y', strtotime($transaction->transaction_date))}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Made From')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Made From')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{ucwords($transaction->transaction_type)}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Transaction ID')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction ID')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->payment_transaction_id}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Receipt No')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Receipt No')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->payment_receipt_no}}
+                        </p>
+                    </div>
+                    <div class="col-md-4 col-sm-12 row">
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Currency')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
+                            AED
                         </p>
                     </div>
                 </div>
@@ -207,7 +215,7 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
                             <td></td>
@@ -221,7 +229,7 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
                             <td></td>

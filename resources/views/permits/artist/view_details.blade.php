@@ -119,7 +119,7 @@
 
 
                             <td class="text-center"> <a
-                                    href="{{URL::signedRoute('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => 'details'])}}">
+                                    href="{{URL::signedRoute('artist_details.view' , [ 'id' => $artistPermit->artist_permit_id , 'from' => $tab])}}">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
                                 </a></td>

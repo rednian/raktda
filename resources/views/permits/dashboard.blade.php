@@ -121,33 +121,31 @@
             <h6 class="element-header">{{__('Artist Permits')}}</h6>
             <div class="element-content">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Applied')}}</label>
                             <div class="value" id="artist_applied">{{$artist_applied}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Valid')}}</label>
                             <div class="value" id="artist_valid">{{$artist_valid}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Drafts')}}</label>
                             <div class="value" id="artist_drafts">{{$artist_drafts}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Expired')}}</label>
                             <div class="value" id="artist_expired">{{$artist_expired}}</div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Cancelled')}}</label>
                             <div class="value" id="artist_cancelled">{{$artist_cancelled}}</div>
@@ -162,33 +160,31 @@
             <h6 class="element-header">{{__('Event Permits')}}</h6>
             <div class="element-content">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Applied')}}</label>
                             <div class="value" id="event_applied">{{$event_applied}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Valid')}}</label>
                             <div class="value" id="event_valid">{{$event_valid}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Drafts')}}</label>
                             <div class="value" id="event_drafts">{{$event_drafts}}</div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Expired')}}</label>
                             <div class="value" id="event_expired">{{$event_expired}}</div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="element-box el-tablo">
                             <label class="label">{{__('Cancelled')}}</label>
                             <div class="value" id="event_cancelled">{{$event_cancelled}}</div>

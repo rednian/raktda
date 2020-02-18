@@ -2,6 +2,14 @@
 
 @section('title', 'Add Artist - Smart Government Rak')
 
+@section('style')
+<style>
+    .dropdown-menu {
+        min-width: auto !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <link href="{{ asset('/css/uploadfile.css') }}" rel="stylesheet">
 
@@ -862,8 +870,8 @@
         setWizard();
         uploadFunction();
         PicUploadFunction();
+        // wizard.goTo(2);
 
-        // wizard.goTo(3);
         $('.hd-eu').hide();
         getAreas(5);
         wizard.on("change", function(wizard) {
