@@ -16,6 +16,8 @@ class Transaction extends Model
     {
         return $this->hasMany(ArtistPermitTransaction::class, 'transaction_id');
     }
+
+
     public function eventTransaction()
     {
         return $this->hasMany(EventTransaction::class, 'transaction_id');

@@ -18,19 +18,19 @@
                         <i class="la la-arrow-left"></i>
                         {{__('Back')}}
                     </a>
-                    </div>
-                    <div class="my-auto float-right permit--action-bar--mobile">
+                </div>
+                <div class="my-auto float-right permit--action-bar--mobile">
                     {{-- <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id])}}"
                     target="_blank">
                     <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
                     </button>
                     </a> --}}
-                   {{-- <button class="btn btn-sm btn--yellow" onclick="printThis()"><i class="la la-print"></i> {{__('Print')}}
-                    </button>--}}
-              {{--      <a href="{{URL::signedRoute('company.reports')}}"
-                       class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                        <i class="la la-arrow-left"></i>
-                    </a>--}}
+                    {{-- <button class="btn btn-sm btn--yellow" onclick="printThis()"><i class="la la-print"></i> {{__('Print')}}
+                     </button>--}}
+                    {{--      <a href="{{URL::signedRoute('company.reports')}}"
+                             class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                              <i class="la la-arrow-left"></i>
+                          </a>--}}
                 </div>
             </div>
         </div>
@@ -43,10 +43,10 @@
                 <div class="col-md-12" id="headerContents">
                     <div class="row">
                         <div class="col-md-4 col-sm-12 row">
-                              <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
-                              <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                            <label class="col col-md-6 col-form-label">{{__('Transaction No.')}}</label>
+                            <p class="col col-md-6 form-control-plaintext kt-font-bolder">
                                 {{$transaction->reference_number}}
-                              </p>
+                            </p>
                         </div>
                         <div class="col-md-4 col-sm-12 row">
                             <label class="col col-md-6 col-form-label">{{__('Transaction Date')}}</label>
@@ -92,7 +92,7 @@
                                 <th class="text-right">{{__('Amount')}} (AED)</th>
                                 <th class="text-right">{{__('Vat')}} (5%)</th>
                                 <th class="text-right">{{__('Total')}} (AED)</th>
-                             {{--   <th class="text-center">{{__('View')}}</th>--}}
+                                {{--   <th class="text-center">{{__('View')}}</th>--}}
                             </tr>
                             </thead>
                             <tbody>
@@ -120,12 +120,12 @@
                                     <td class="text-right">
                                         {{number_format($total,2)}}
                                     </td>
-                              {{--      <td class="text-center">
-                                        <a
-                                            href="{{URL::signedRoute('artist_details.view', ['id' => $at->artistPermit->artist_permit_id , 'from' => 'transaction'])}}">
-                                            <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
-                                            </button></a>
-                                    </td>--}}
+                                    {{--      <td class="text-center">
+                                              <a
+                                                  href="{{URL::signedRoute('artist_details.view', ['id' => $at->artistPermit->artist_permit_id , 'from' => 'transaction'])}}">
+                                                  <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                                  </button></a>
+                                          </td>--}}
                                 </tr>
                             @endforeach
                             </tbody>
@@ -221,7 +221,7 @@
                                 <td class="kt-font-transform-u">
                                     {{__('Grand Total')}}
                                 </td>
-                                <td id="grand_total" class="pull-right kt-font-bold">AED{{' '.number_format($feetotal+$vattotal,2)}}
+                                <td id="grand_total" class="pull-right kt-font-bold">AED{{' '.number_format($grandtotal,2)}}
                                 </td>
                             </tr>
                             </tbody>
@@ -239,25 +239,24 @@
         $(document).ready(function() {
             $(function () {
                 $('#print_button').click(function () {
-           /*     $('#image').css({display:'block'})*/
-                $('#main-div').print({
-                    addGlobalStyles : true,
-                    stylesheet : '{{asset('css/printCss.css')}}',
-                    rejectWindow : true,
-                    noPrintSelector : ".no-print",
-                    iframe : true,
-               /*     prepend : "Hello World!!!<br/>",*/
-                    //Add this on bottom
-                    append : "",
-                    title:'TRANSACTION REPORT'
-                });
-               /*     $('#image').hide(100)*/
-                   $('##main-div').prepend('{{asset('img/raktdalogo.png')}}')
+                    /*     $('#image').css({display:'block'})*/
+                    $('#main-div').print({
+                        addGlobalStyles : true,
+                        stylesheet : '{{asset('css/printCss.css')}}',
+                        rejectWindow : true,
+                        noPrintSelector : ".no-print",
+                        iframe : true,
+                        /*     prepend : "Hello World!!!<br/>",*/
+                        //Add this on bottom
+                        append : "",
+                        title:'TRANSACTION REPORT'
+                    });
+                    /*     $('#image').hide(100)*/
+                    $('##main-div').prepend('{{asset('img/raktdalogo.png')}}')
                 });
             });
         });
     </script>
 
 
-    @endsection
-
+@endsection
