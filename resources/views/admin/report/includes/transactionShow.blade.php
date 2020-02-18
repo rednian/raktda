@@ -221,7 +221,7 @@
                                 <td class="kt-font-transform-u">
                                     {{__('Grand Total')}}
                                 </td>
-                                <td id="grand_total" class="pull-right kt-font-bold">AED{{' '.number_format($grandtotal,2)}}
+                                <td id="grand_total" class="pull-right kt-font-bold">AED{{' '.number_format($feetotal+$vattotal,2)}}
                                 </td>
                             </tr>
                             </tbody>
