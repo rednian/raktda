@@ -233,56 +233,82 @@
                         <tr class="kt-font-transform-u">
                             <th class="text-left">{{__('Event Name')}}</th>
                             <th class="text-left">{{__('Event Type')}}</th>
-                            <th class="text-right">{{__('Fee')}} (AED)</th>
-                            <th class="text-right">{{__('Vat')}}(5%)</th>
+                            <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                            <th class="text-center">{{__('No.of.days')}}</th>
+                            <th class="text-center">{{__('Qty')}}</th>
                             <th class="text-right">{{__('Total')}} (AED) </th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($transaction->eventTransaction as $et)
+                        @php
+                        $from_d = strtotime($et->event->issued_date);
+                        $to_d = strtotime($et->event->expired_date);
+                        $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
+                        @endphp
                         @if($et->type == 'event')
                         <tr>
-                            <td class="text-left">{{$et->event->name_en}}</td>
-                            <td class="text-left">{{$et->event->type->name_en}}</td>
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-                            <td class="text-right">{{number_format($et->vat,2)}}</td>
+                            <td class="text-left">
+                                {{getLangId() == 1 ? ucfirst($et->event->name_en) : $et->event->name_ar}}</td>
+                            <td class="text-left">
+                                {{getLangId() == 1 ? ucfirst($et->event->type->name_en) : $et->event->type->name_en }}
+                            </td>
+                            <td class="text-right">{{number_format($et->event->type->amount,2)}}</td>
+                            @php
+                            $noofdays = abs($et->amount / $et->event->type->amount );
+                            @endphp
+                            <td class="text-center">
+                                {{$noofdays}}
+                            </td>
+                            <td class="text-right">-</td>
                             @php
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($total,2)}}</td>
-
-
+                            <td class="text-right">{{number_format($feetotal,2)}}</td>
                         </tr>
                         @elseif($et->type == 'truck')
                         <tr>
-                            <td style="text-align:left">{{__('Truck Fee')}}</td>
+                            <td class="text-left">{{__('Truck Fee')}}</td>
                             <td></td>
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-                            <td class="text-right">{{number_format($et->vat,2)}}</td>
+                            @php
+                            $truck_count = $et->total_trucks;
+                            $per_truck_fee = $et->amount / ( $truck_count * $noofdays ) ;
+                            @endphp
+                            <td class="text-right">{{number_format($per_truck_fee,2)}} / truck</td>
+                            <td class="text-center">
+                                {{$noofdays}}
+                            </td>
+                            <td class="text-center">{{$truck_count}}</td>
                             @php
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($total,2)}}</td>
+                            <td class="text-right">{{number_format($feetotal,2)}}</td>
                         </tr>
                         @elseif($et->type == 'liquor')
                         <tr>
-                            <td style="text-align:left">{{__('Liqour Fee')}}</td>
+                            <td class="text-left">{{__('Liqour Fee')}}</td>
                             <td></td>
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-                            <td class="text-right">{{number_format($et->vat,2)}}</td>
+                            @php
+                            $per_liquor_fee = $et->amount / $noofdays ;
+                            @endphp
+                            <td class="text-right">{{number_format($per_liquor_fee,2)}}</td>
+                            <td class="text-center">
+                                {{$noofdays}}
+                            </td>
+                            <td>-</td>
                             @php
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($total,2)}}</td>
+                            <td class="text-right">{{number_format($et->amount,2)}}</td>
                         </tr>
                         @endif
                         @endforeach
@@ -305,6 +331,7 @@
                             <td>{{__('Total Vat')}} (5%)</td>
                             <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
                         </tr>
+                        <hr>
                         <tr>
                             <td class="kt-font-transform-u">
                                 {{__('Grand Total')}} (AED)

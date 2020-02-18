@@ -2478,7 +2478,7 @@ class ArtistController extends Controller
 
             if($permit->event->is_truck == 1)
             {
-                $totaltrucks = count(EventTruck::where('event_id', $event_id)->where('paid', 0)->get());
+                $totaltrucks = EventTruck::where('event_id', $event_id)->where('paid', 0)->count();
 
                 if($totaltrucks > 0)
                 {
@@ -2489,9 +2489,9 @@ class ArtistController extends Controller
                         'user_id' => Auth::user()->user_id,
                         'transaction_id' => $trans->transaction_id,
                         'amount' => $tr_amount,
-                        'vat' => 0,
+                        'vat' => $tr_amount * 0.05,
                         'type'=> 'truck',
-                        'total_trucks' => count($permit->event->truck)
+                        'total_trucks' => $totaltrucks
                     ]);
     
                     EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
@@ -2509,7 +2509,7 @@ class ArtistController extends Controller
                         'transaction_id' => $trans->transaction_id,
                         'type' => 'liquor',
                         'amount' => $lq_amount,
-                        'vat' => 0,
+                        'vat' => $lq_amount * 0.05,
                         'user_id' => Auth::user()->user_id
                     ]);
     

@@ -168,18 +168,18 @@
                                     </td>
                                 </tr> --}}
                                 {{-- {{dd($event->time_start)}} --}}
-                                <tr>
+                                {{-- <tr>
                                     <td>{{ __('Start Time') }} : </td>
-                                    <td class="kt-font-dark">
-                                        {{ date('h:i a', strtotime($event->time_start)) }}
-                                    </td>
+                                <td class="kt-font-dark">
+                                    {{ date('h:i a', strtotime($event->time_start)) }}
+                                </td>
                                 </tr>
                                 <tr>
                                     <td>{{ __('End Time') }} : </td>
                                     <td class="kt-font-dark">
                                         {{ date('h:i a', strtotime($event->time_end)) }}
                                     </td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td>{{ __('Applied Date') }} : </td>
                                     <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>

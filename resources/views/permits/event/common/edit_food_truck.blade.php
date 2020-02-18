@@ -58,13 +58,13 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off">
+                                id="company_name_en" dir="ltr" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" dir="rtl" autocomplete="off">
+                                id="company_name_ar" dir="rtl" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
@@ -76,7 +76,7 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off">
+                                autocomplete="off" dir="ltr" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}

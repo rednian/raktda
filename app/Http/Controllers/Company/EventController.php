@@ -2161,20 +2161,20 @@ class EventController extends Controller
                 'vat' => $vat,
                 'user_id' => Auth::user()->user_id
             ]);
-
+            
             if($truck_fee > 0)
             {
-                $totaltrucks = count(EventTruck::where('event_id', $event_id)->where('paid', 0)->get());
+                $totaltrucks = EventTruck::where('event_id', $event_id)->where('paid', 0)->count();
+
                 EventTransaction::create([
                     'event_id' => $event_id,
                     'transaction_id' => $trnx_id->transaction_id,
                     'type' => 'truck',
                     'amount' => $truck_fee,
                     'total_trucks' => $totaltrucks,
-                    'vat' => 0,
+                    'vat' => $truck_fee * 0.05,
                     'user_id' => Auth::user()->user_id,
                 ]);
-
                 EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
             }
 
@@ -2185,7 +2185,7 @@ class EventController extends Controller
                     'transaction_id' => $trnx_id->transaction_id,
                     'type' => 'liquor',
                     'amount' => $liquor_fee,
-                    'vat' => 0,
+                    'vat' => $liquor_fee * 0.05,
                     'user_id' => Auth::user()->user_id
                 ]);
 

@@ -169,6 +169,23 @@
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
                 <td class="subhead">المالك<br />License owner</td>
             </tr>
+            <tr>
+                <td colspan="2">{{$event_details->name_en}}</td>
+                <td>{{$event_details->name_ar}}</td>
+                <td class="subhead">اسم الفعالية <br />Event Name</td>
+            </tr>
+            <tr>
+                <td colspan="2">{{$event_details->type['name_en']}}
+                    {{$event_details->subType->sub_name_en ?  ' - ' . $event_details->subType['sub_name_en'] : ''}}
+                </td>
+                <td>{{$event_details->subType->sub_name_ar ? $event_details->subType['sub_name_ar'] . ' - ' : ''}}
+                    {{$event_details->type['name_ar']}}</td>
+                <td class="subhead">نوع التصريح <br />Permit Type</td>
+            </tr>
+            <tr>
+                <td colspan="3">{{$event_details->permit_number}}</td>
+                <td class="subhead">رقم التصريح <br />Permit No</td>
+            </tr>
         </tbody>
     </table>
 
@@ -176,7 +193,7 @@
     <table id="permit_data" border="1">
         <thead>
             <tr>
-                <th colspan="2" scope="col">Permit Data</th>
+                <th colspan="2" scope="col">Liquor Data</th>
                 <th colspan="2" scope="col">بيانات التصريح</th>
             </tr>
         </thead>

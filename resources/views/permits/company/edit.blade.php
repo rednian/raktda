@@ -272,7 +272,7 @@
             <div class="row form-group form-group-sm">
                 <div class="col-sm-12">
                     <label>Address in Ras Al Khaimah<span class="text-danger">*</span></label>
-                    <textarea required name="address" autocomplete="off" rows="2"
+                    <textarea required dir="ltr" name="address" autocomplete="off" rows="2"
                         class="form-control @error('address') is-invalid @enderror">{{old('address', $company->address)}}</textarea>
                     @if ($errors->has('address'))
                     <div class="invalid-feedback"> {{$errors->first('address')}}</div>
@@ -286,7 +286,7 @@
     <section class="row form-group form-group-sm">
         <div class="col-md-6">
             <label>Establishment Details<span class="text-danger">*</span></label>
-            <textarea required rows="3" autocomplete="off" class="form-control form-control-sm
+            <textarea required rows="3" autocomplete="off" dir="ltr" class="form-control form-control-sm
                                                                @error('company_description_en') is-invalid @enderror"
                 name="company_description_en">{{old('company_description_en',$company->company_description_en)}}</textarea>
             @if ($errors->has('company_description_en'))

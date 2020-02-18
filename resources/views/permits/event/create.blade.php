@@ -357,256 +357,252 @@
                                         </div>
 
 
-                                        <div class="col-md-3 form-group form-group-xs">
+                                        {{-- <div class="col-md-3 form-group form-group-xs">
                                             <label class="col-form-label">{{__('From Time')}} <span
-                                                    class="text-danger">*</span></label>
-                                            <div class="input-group input-group-sm timepicker">
-                                                <div class="kt-input-icon kt-input-icon--right">
-                                                    <input class="form-control form-control-sm"
-                                                        value="{{date('h:i a', strtotime('10:00 AM'))}}"
-                                                        name="time_start" id="time_start" type="text" />
-                                                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                        <span>
-                                                            <i class="la la-clock-o"></i>
-                                                        </span>
+                                            class="text-danger">*</span></label>
+                                        <div class="input-group input-group-sm timepicker">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input class="form-control form-control-sm"
+                                                    value="{{date('h:i a', strtotime('10:00 AM'))}}" name="time_start"
+                                                    id="time_start" type="text" />
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-clock-o"></i>
                                                     </span>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="col-md-3 form-group form-group-xs ">
-                                            <label for="expired_date"
-                                                class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
-                                                <span class="text-danger">*</span></label>
-                                            <div class="input-group input-group-sm date">
-                                                <div class="kt-input-icon kt-input-icon--right">
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="expired_date" id="expired_date" placeholder="DD-MM-YYYY">
-                                                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                        <span>
-                                                            <i class="la la-calendar"></i>
-                                                        </span>
-                                                    </span>
-                                                </div>
+                                                </span>
                                             </div>
                                         </div>
 
+                                    </div> --}}
+
+
+
+                                    <div class="col-md-3 form-group form-group-xs ">
+                                        <label for="expired_date"
+                                            class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group input-group-sm date">
+                                            <div class="kt-input-icon kt-input-icon--right">
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="expired_date" id="expired_date" placeholder="DD-MM-YYYY">
+                                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                    <span>
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- 
                                         <div class="col-md-3 form-group form-group-xs">
                                             <label class="col-form-label">{{__('To Time')}} <span
-                                                    class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
 
-                                            <div class="input-group input-group-sm timepicker">
-                                                <div class="kt-input-icon kt-input-icon--right">
-                                                    <input class="form-control form-control-sm"
-                                                        value="{{date('h:i a', strtotime('5:00 PM'))}}" name="time_end"
-                                                        id="time_end" type="text" />
-                                                    <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                        <span>
-                                                            <i class="la la-clock-o"></i>
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                    <div class="input-group input-group-sm timepicker">
+                                        <div class="kt-input-icon kt-input-icon--right">
+                                            <input class="form-control form-control-sm"
+                                                value="{{date('h:i a', strtotime('5:00 PM'))}}" name="time_end"
+                                                id="time_end" type="text" />
+                                            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                <span>
+                                                    <i class="la la-clock-o"></i>
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
+
                             </div>
                         </div>
-                    </section>
-
-                    <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                        id="accordionExample7">
-                        <div class="card">
-                            <div class="card-header" id="headingTwo6">
-                                <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo5"
-                                    aria-expanded="false" aria-controls="collapseTwo6">
-                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                        {{__('Location Details')}}
-                                    </h6>
-                                </div>
-                            </div>
-
-                            <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample7"
-                                id="collapseTwo5">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5 form-group form-group-xs ">
-                                            <label for="venue_en" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Venue')}} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-sm" name="venue_en"
-                                                dir="ltr" id="venue_en" maxlength="255">
-
-                                        </div>
-
-                                        <div class="col-md-5 form-group form-group-xs ">
-                                            <label for="venue_ar" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Venue (AR)')}} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-sm" name="venue_ar"
-                                                dir="rtl" id="venue_ar" maxlength="255">
-                                        </div>
-
-
-
-                                        <input type="hidden" name="emirate_id" id="emirate_id" value="5">
-                                        <input type="hidden" name="country_id" id="country_id" value="232">
-
-
-                                        <div class="col-md-2 form-group form-group-xs ">
-                                            <label for="area_id"
-                                                class=" col-form-label kt-font-bold text-right">{{__('Area')}} <span
-                                                    class="text-danger">*</span>
-                                            </label>
-                                            <select class="  form-control form-control-sm " name="area_id" id="area_id">
-                                                <option value="">{{__('Select')}}</option>
-                                                @foreach($areas as $ar)
-                                                <option value="{{$ar->id}}">
-                                                    {{$ar->area_en}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                        id="accordionExample8">
-                        <div class="card">
-                            <div class="card-header" id="headingTwo6">
-                                <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
-                                    aria-expanded="false" aria-controls="collapseTwo6">
-                                    <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                                        {{__('Map Details')}}
-                                    </h6>
-                                </div>
-                            </div>
-
-                            <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample8"
-                                id="collapseTwo4">
-                                <div class="card-body">
-                                    <div class="row">
-
-                                        <div class="col-md-8 col-sm-12 form-group form-group-xs ">
-                                            <label for="address"
-                                                class=" col-form-label kt-font-bold text-right">{{__('Address')}}
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <input type="text" class="form-control form-control-sm map-input"
-                                                name="address" id="address-input" dir="ltr" value="" maxlength="255">
-                                        </div>
-
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="street" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Street')}} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-sm" dir="ltr"
-                                                name="street" id="street">
-                                        </div>
-
-                                        <input type="hidden" id="full_address" name="full_address">
-
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="longitude" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Longitude')}} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-sm" dir="ltr"
-                                                name="longitude" id="longitude">
-                                        </div>
-
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="latitude" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Latitude')}} <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control form-control-sm" dir="ltr"
-                                                name="latitude" id="latitude">
-                                        </div>
-
-                                        <div class="col-md-4 form-group form-group-xs ">
-                                            <label for="addi_loc_info" class=" col-form-label kt-font-bold text-right">
-                                                {{__('Additional Location Information')}}</label>
-                                            <textarea class="form-control form-control-sm" name="addi_loc_info"
-                                                id="addi_loc_info" dir="ltr" maxlength="255"></textarea>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
-                                    <div style="width: 100%; height: 100%" id="map"></div>
-                                </div>
-                            </div>
-                    </section>
-                </form>
             </div>
         </div>
+        </section>
 
+        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordionExample7">
+            <div class="card">
+                <div class="card-header" id="headingTwo6">
+                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo5"
+                        aria-expanded="false" aria-controls="collapseTwo6">
+                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                            {{__('Location Details')}}
+                        </h6>
+                    </div>
+                </div>
 
-
-        <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
-
-        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-            <div class="kt-form__section kt-form__section--first ">
-                <div class="">
-                    @include('permits.components.requirements')
-                    <form id="documents_required" method="post">
-
-                    </form>
-                    <form id="image_upload_form">
+                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample7"
+                    id="collapseTwo5">
+                    <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-4 col-sm-12"><label
-                                    class="kt-font-bold text--maroon">{{__('Images')}}</label>
-                                <p class="reqName">{{__('Add multiple images')}}</p>
+                            <div class="col-md-5 form-group form-group-xs ">
+                                <label for="venue_en" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Venue')}} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" name="venue_en" dir="ltr"
+                                    id="venue_en" maxlength="255">
+
                             </div>
-                            <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
-                                <div id="image_uploader">{{__('Upload')}}</div>
+
+                            <div class="col-md-5 form-group form-group-xs ">
+                                <label for="venue_ar" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Venue (AR)')}} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" name="venue_ar" dir="rtl"
+                                    id="venue_ar" maxlength="255">
+                            </div>
+
+
+
+                            <input type="hidden" name="emirate_id" id="emirate_id" value="5">
+                            <input type="hidden" name="country_id" id="country_id" value="232">
+
+
+                            <div class="col-md-2 form-group form-group-xs ">
+                                <label for="area_id" class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <select class="  form-control form-control-sm " name="area_id" id="area_id">
+                                    <option value="">{{__('Select')}}</option>
+                                    @foreach($areas as $ar)
+                                    <option value="{{$ar->id}}">
+                                        {{$ar->area_en}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordionExample8">
+            <div class="card">
+                <div class="card-header" id="headingTwo6">
+                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
+                        aria-expanded="false" aria-controls="collapseTwo6">
+                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
+                            {{__('Map Details')}}
+                        </h6>
+                    </div>
+                </div>
+
+                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample8"
+                    id="collapseTwo4">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                <label for="address" class=" col-form-label kt-font-bold text-right">{{__('Address')}}
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control form-control-sm map-input" name="address"
+                                    id="address-input" dir="ltr" value="" maxlength="255">
+                            </div>
+
+                            <div class="col-md-4 form-group form-group-xs ">
+                                <label for="street" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Street')}} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" dir="ltr" name="street"
+                                    id="street">
+                            </div>
+
+                            <input type="hidden" id="full_address" name="full_address">
+
+                            <div class="col-md-4 form-group form-group-xs ">
+                                <label for="longitude" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Longitude')}} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" dir="ltr" name="longitude"
+                                    id="longitude">
+                            </div>
+
+                            <div class="col-md-4 form-group form-group-xs ">
+                                <label for="latitude" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Latitude')}} <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-sm" dir="ltr" name="latitude"
+                                    id="latitude">
+                            </div>
+
+                            <div class="col-md-4 form-group form-group-xs ">
+                                <label for="addi_loc_info" class=" col-form-label kt-font-bold text-right">
+                                    {{__('Additional Location Information')}}</label>
+                                <textarea class="form-control form-control-sm" name="addi_loc_info" id="addi_loc_info"
+                                    dir="ltr" maxlength="255"></textarea>
                             </div>
 
                         </div>
-                    </form>
+                    </div>
+                    <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                        <div style="width: 100%; height: 100%" id="map"></div>
+                    </div>
+                </div>
+        </section>
+        </form>
+    </div>
+</div>
+
+
+
+<input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
+
+<div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+    <div class="kt-form__section kt-form__section--first ">
+        <div class="">
+            @include('permits.components.requirements')
+            <form id="documents_required" method="post">
+
+            </form>
+            <form id="image_upload_form">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                        <p class="reqName">{{__('Add multiple images')}}</p>
+                    </div>
+                    <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
+                        <div id="image_uploader">{{__('Upload')}}</div>
+                    </div>
 
                 </div>
-            </div>
-        </div>
+            </form>
 
-
-        <div class="kt-form__actions">
-            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                data-ktwizard-type="action-prev" id="prev_btn">
-                {{__('Previous')}}
-            </div>
-
-
-            <a href="{{URL::signedRoute('event.index')}}#applied">
-                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                    {{__('Back')}}
-                </div>
-            </a>
-
-            <div class="btn-group" role="group" id="submit--btn-group">
-                <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{__('Submit')}}
-                </button>
-                <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                        value="finished" id="submit_btn">{{__('Finish & Submit')}}</button>
-                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger"
-                        value="finished" id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
-                    <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                        id="draft_btn">{{__('Save as Draft')}}</button>
-                </div>
-            </div>
-
-
-            <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                data-ktwizard-type="action-next" id="next_btn">
-                {{__('Next')}}
-            </div>
         </div>
     </div>
+</div>
+
+
+<div class="kt-form__actions">
+    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev"
+        id="prev_btn">
+        {{__('Previous')}}
+    </div>
+
+
+    <a href="{{URL::signedRoute('event.index')}}#applied">
+        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+            {{__('Back')}}
+        </div>
+    </a>
+
+    <div class="btn-group" role="group" id="submit--btn-group">
+        <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{__('Submit')}}
+        </button>
+        <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
+            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success" value="finished"
+                id="submit_btn">{{__('Finish & Submit')}}</button>
+            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger" value="finished"
+                id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
+            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
+                id="draft_btn">{{__('Save as Draft')}}</button>
+        </div>
+    </div>
+
+
+    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next"
+        id="next_btn">
+        {{__('Next')}}
+    </div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -861,7 +857,7 @@
                 street: 'required',
                 description_en: 'required',
                 description_ar: 'required',
-                time_start: 'required',
+                // time_start: 'required',
                 venue_en: 'required',
                 area_id: 'required',
                 longitude: 'required',
@@ -870,7 +866,7 @@
                     required: true,
                     dateNL: true
                 },
-                time_end: 'required',
+                // time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
                 firm_type: 'required',
@@ -883,7 +879,7 @@
                 name_en: '',
                 name_ar: '',
                 issued_date: '',
-                time_start: '',
+                // time_start: '',
                 street: '',
                 description_en: '',
                 description_ar: '',
@@ -963,10 +959,10 @@
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),
-                    time_start: $('#time_start').val(),
+                    time_start: '',
                     venue_en: $('#venue_en').val(),
                     expired_date: $('#expired_date').val(),
-                    time_end: $('#time_end').val(),
+                    time_end: '',
                     venue_ar: $('#venue_ar').val(),
                     address: $('#address-input').val(),
                     emirate_id: $('#emirate_id').val(),
@@ -1087,8 +1083,8 @@
             orientation: "bottom left"
         });
 
-        $('#time_start').timepicker();
-        $('#time_end').timepicker();
+        // $('#time_start').timepicker();
+        // $('#time_end').timepicker();
 
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
@@ -1511,7 +1507,7 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
                            if(result.length > 1){
                                $('#append_'+s+'').append('<span onclick="deleteThisTruck('+result[s].event_truck_id+')"><i class="fa fa-trash fnt-16 text-danger"></i></span>');

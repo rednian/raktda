@@ -366,288 +366,275 @@
                                                     </div>
 
 
-                                                    <div class="col-md-3 form-group form-group-xs">
+                                                    {{-- <div class="col-md-3 form-group form-group-xs">
                                                         <label class="col-form-label">{{__('From Time')}} <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="input-group input-group-sm timepicker">
-                                                            <div class="kt-input-icon kt-input-icon--right">
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{date('d-m-Y',strtotime($event->time_start))}}"
-                                                                    name="time_start" id="time_start" type="text" />
-                                                                <span
-                                                                    class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                    <span>
-                                                                        <i class="la la-clock-o"></i>
-                                                                    </span>
+                                                        class="text-danger">*</span></label>
+                                                    <div class="input-group input-group-sm timepicker">
+                                                        <div class="kt-input-icon kt-input-icon--right">
+                                                            <input class="form-control form-control-sm"
+                                                                value="{{date('d-m-Y',strtotime($event->time_start))}}"
+                                                                name="time_start" id="time_start" type="text" />
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                <span>
+                                                                    <i class="la la-clock-o"></i>
                                                                 </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-
-
-                                                    <div class="col-md-3 form-group form-group-xs ">
-                                                        <label for="expired_date"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
-                                                            <span class="text-danger">*</span></label>
-                                                        <div class="input-group input-group-sm date">
-                                                            <div class="kt-input-icon kt-input-icon--right">
-                                                                <input type="text" class="form-control form-control-sm"
-                                                                    name="expired_date" id="expired_date"
-                                                                    placeholder="DD-MM-YYYY"
-                                                                    value="{{date('d-m-Y',strtotime($event->expired_date))}}">
-                                                                <span
-                                                                    class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                    <span>
-                                                                        <i class="la la-calendar"></i>
-                                                                    </span>
-                                                                </span>
-                                                            </div>
+                                                            </span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-3 form-group form-group-xs">
-                                                        <label class="col-form-label">{{__('To Time')}} <span
-                                                                class="text-danger">*</span></label>
+                                                </div> --}}
 
-                                                        <div class="input-group input-group-sm timepicker">
-                                                            <div class="kt-input-icon kt-input-icon--right">
-                                                                <input class="form-control form-control-sm"
-                                                                    value="{{$event->time_end}}" name="time_end"
-                                                                    id="time_end" type="text" />
-                                                                <span
-                                                                    class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                    <span>
-                                                                        <i class="la la-clock-o"></i>
-                                                                    </span>
+
+
+                                                <div class="col-md-3 form-group form-group-xs ">
+                                                    <label for="expired_date"
+                                                        class=" col-form-label kt-font-bold text-right">{{__('To Date')}}
+                                                        <span class="text-danger">*</span></label>
+                                                    <div class="input-group input-group-sm date">
+                                                        <div class="kt-input-icon kt-input-icon--right">
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                name="expired_date" id="expired_date"
+                                                                placeholder="DD-MM-YYYY"
+                                                                value="{{date('d-m-Y',strtotime($event->expired_date))}}">
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                <span>
+                                                                    <i class="la la-calendar"></i>
                                                                 </span>
-                                                            </div>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                </section>
 
+                                                {{-- <div class="col-md-3 form-group form-group-xs">
+                                                    <label class="col-form-label">{{__('To Time')}} <span
+                                                    class="text-danger">*</span></label>
 
-                                <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                    id="location-details">
-                                    <div class="card ">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title show" data-toggle="collapse"
-                                                data-target="#collapseTwo5" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u kt-font-dark">{{__('Location Details')}}
-                                                </h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#location-details" id="collapseTwo5">
-                                            <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-md-5 form-group form-group-xs ">
-                                                        <label for="venue_en"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Venue')}} <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            dir="ltr" name="venue_en" id="venue_en"
-                                                            placeholder="{{__('Venue')}}" value="{{$event->venue_en}}">
-
+                                                <div class="input-group input-group-sm timepicker">
+                                                    <div class="kt-input-icon kt-input-icon--right">
+                                                        <input class="form-control form-control-sm"
+                                                            value="{{$event->time_end}}" name="time_end" id="time_end"
+                                                            type="text" />
+                                                        <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                            <span>
+                                                                <i class="la la-clock-o"></i>
+                                                            </span>
+                                                        </span>
                                                     </div>
-
-                                                    <div class="col-md-5 form-group form-group-xs ">
-                                                        <label for="venue_ar"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Venue (AR)')}} <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="venue_ar" dir="rtl" id="venue_ar"
-                                                            placeholder="{{__('Venue (AR)')}}"
-                                                            value="{{$event->venue_ar}}">
-                                                    </div>
-
-
-
-
-
-                                                    <input type="hidden" name="emirate_id" id="emirate_id" value="5">
-
-
-
-                                                    <div class="col-md-2 form-group form-group-xs ">
-                                                        <label for="area_id"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Area')}}
-                                                            <span class="text-danger">*</span>
-                                                        </label>
-                                                        <select class="  form-control form-control-sm " name="area_id"
-                                                            id="area_id">
-                                                            <option value="">{{__('Select')}}</option>
-                                                            @foreach($areas as $ar)
-                                                            <option value="{{$ar->id}}"
-                                                                {{$ar->id == $event->area_id ? 'selected' : ''}}>
-                                                                {{$ar->area_en}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    <input type="hidden" name="country_id" id="country_id" value="232">
-
-
                                                 </div>
-                                            </div>
+                                            </div> --}}
+
                                         </div>
                                     </div>
-                                </section>
-
-                                <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
-                                    id="map-detials">
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo6">
-                                            <div class="card-title show" data-toggle="collapse"
-                                                data-target="#collapseTwo4" aria-expanded="false"
-                                                aria-controls="collapseTwo6">
-                                                <h6 class="kt-font-transform-u kt-font-dark">{{__('Map Details')}}
-                                                </h6>
-                                            </div>
-                                        </div>
-
-                                        <div class="collapse show" aria-labelledby="headingTwo6"
-                                            data-parent="#map-detials" id="collapseTwo4">
-                                            <div class="card-body">
-                                                <div class="row">
-
-                                                    <div class="col-md-8 col-sm-12 form-group form-group-xs ">
-                                                        <label for="address"
-                                                            class=" col-form-label kt-font-bold text-right">{{__('Address')}}
-                                                            <span class="text-danger">*</span>
-                                                        </label>
-                                                        <input type="text"
-                                                            class="form-control form-control-sm map-input"
-                                                            name="address" id="address-input" dir="ltr"
-                                                            placeholder="Address" value="{{$event->address}}">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="street"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Street')}} <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="street" id="street" dir="ltr" placeholder="Street"
-                                                            value="{{$event->street}}">
-                                                    </div>
-
-                                                    <input type="hidden" id="full_address" name="full_address"
-                                                        value="{{$event->full_address}}">
-
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="longitude"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Longitude')}} <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="longitude" id="longitude" dir="ltr"
-                                                            placeholder="Longitude" value="{{$event->longitude}}">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="latitude"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Latitude')}} <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control form-control-sm"
-                                                            name="latitude" id="latitude" dir="ltr"
-                                                            placeholder="Latitude" value="{{$event->latitude}}">
-                                                    </div>
-
-                                                    <div class="col-md-4 form-group form-group-xs ">
-                                                        <label for="addi_loc_info"
-                                                            class=" col-form-label kt-font-bold text-right">
-                                                            {{__('Additional Location Information')}} </label>
-                                                        <textarea class="form-control form-control-sm"
-                                                            name="addi_loc_info" id="addi_loc_info" dir="ltr"
-                                                            rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}</textarea>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div id="address-map-container"
-                                                style="width:100%;height:200px;padding:15px;">
-                                                <div style="width: 100%; height: 100%" id="map"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-
-
-                            </form>
-
                         </div>
-                    </div>
-
-                    <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
+                        </section>
 
 
-                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                        <div class="kt-form__section kt-form__section--first ">
-                            @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
-                            @endcomponent
-                            @include('permits.components.requirements')
-                            <input type="hidden" id="requirements_count" value="0" />
-                            <form id="documents_required" novalidate>
-
-                            </form>
-                            <input type="hidden" id="addi_requirements_count">
-                            <form id="addi_documents_required" novalidate>
-                            </form>
-                            <form id="image_upload_form">
-                                <div class="row">
-                                    <div class="col-lg-4 col-sm-12"><label
-                                            class="kt-font-bold text--maroon">{{__('Images')}}</label>
-                                        <p class="reqName">{{__('Add multiple images')}}</p>
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="location-details">
+                            <div class="card ">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo5"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-transform-u kt-font-dark">{{__('Location Details')}}
+                                        </h6>
                                     </div>
-                                    <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
-                                        <div id="image_uploader">{{__('Upload')}}</div>
-                                    </div>
-
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
-                        </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#location-details"
+                                    id="collapseTwo5">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-5 form-group form-group-xs ">
+                                                <label for="venue_en" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Venue')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" dir="ltr"
+                                                    name="venue_en" id="venue_en" placeholder="{{__('Venue')}}"
+                                                    value="{{$event->venue_en}}">
+
+                                            </div>
+
+                                            <div class="col-md-5 form-group form-group-xs ">
+                                                <label for="venue_ar" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Venue (AR)')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="venue_ar"
+                                                    dir="rtl" id="venue_ar" placeholder="{{__('Venue (AR)')}}"
+                                                    value="{{$event->venue_ar}}">
+                                            </div>
 
 
-                        <a href="{{URL::signedRoute('event.index')}}#applied">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+
+
+
+                                            <input type="hidden" name="emirate_id" id="emirate_id" value="5">
+
+
+
+                                            <div class="col-md-2 form-group form-group-xs ">
+                                                <label for="area_id"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Area')}}
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <select class="  form-control form-control-sm " name="area_id"
+                                                    id="area_id">
+                                                    <option value="">{{__('Select')}}</option>
+                                                    @foreach($areas as $ar)
+                                                    <option value="{{$ar->id}}"
+                                                        {{$ar->id == $event->area_id ? 'selected' : ''}}>
+                                                        {{$ar->area_en}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <input type="hidden" name="country_id" id="country_id" value="232">
+
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </a>
+                        </section>
+
+                        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border"
+                            id="map-detials">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo6">
+                                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
+                                        aria-expanded="false" aria-controls="collapseTwo6">
+                                        <h6 class="kt-font-transform-u kt-font-dark">{{__('Map Details')}}
+                                        </h6>
+                                    </div>
+                                </div>
+
+                                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#map-detials"
+                                    id="collapseTwo4">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-8 col-sm-12 form-group form-group-xs ">
+                                                <label for="address"
+                                                    class=" col-form-label kt-font-bold text-right">{{__('Address')}}
+                                                    <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="text" class="form-control form-control-sm map-input"
+                                                    name="address" id="address-input" dir="ltr" placeholder="Address"
+                                                    value="{{$event->address}}">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="street" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Street')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="street"
+                                                    id="street" dir="ltr" placeholder="Street"
+                                                    value="{{$event->street}}">
+                                            </div>
+
+                                            <input type="hidden" id="full_address" name="full_address"
+                                                value="{{$event->full_address}}">
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="longitude" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Longitude')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="longitude"
+                                                    id="longitude" dir="ltr" placeholder="Longitude"
+                                                    value="{{$event->longitude}}">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="latitude" class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Latitude')}} <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control form-control-sm" name="latitude"
+                                                    id="latitude" dir="ltr" placeholder="Latitude"
+                                                    value="{{$event->latitude}}">
+                                            </div>
+
+                                            <div class="col-md-4 form-group form-group-xs ">
+                                                <label for="addi_loc_info"
+                                                    class=" col-form-label kt-font-bold text-right">
+                                                    {{__('Additional Location Information')}} </label>
+                                                <textarea class="form-control form-control-sm" name="addi_loc_info"
+                                                    id="addi_loc_info" dir="ltr"
+                                                    rows="2">{{$event->additional_location_info ? $event->additional_location_info : ''}}</textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div id="address-map-container" style="width:100%;height:200px;padding:15px;">
+                                        <div style="width: 100%; height: 100%" id="map"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
 
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            {{__('Submit')}}
-                        </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
 
 
+                <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                    <div class="kt-form__section kt-form__section--first ">
+                        @component('permits.components.eventcomments', ['staff_comments' => $staff_comments])
+                        @endcomponent
+                        @include('permits.components.requirements')
+                        <input type="hidden" id="requirements_count" value="0" />
+                        <form id="documents_required" novalidate>
 
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
-                        </div>
+                        </form>
+                        <input type="hidden" id="addi_requirements_count">
+                        <form id="addi_documents_required" novalidate>
+                        </form>
+                        <form id="image_upload_form">
+                            <div class="row">
+                                <div class="col-lg-4 col-sm-12"><label
+                                        class="kt-font-bold text--maroon">{{__('Images')}}</label>
+                                    <p class="reqName">{{__('Add multiple images')}}</p>
+                                </div>
+                                <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
+                                    <div id="image_uploader">{{__('Upload')}}</div>
+                                </div>
 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="kt-form__actions">
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-prev" id="prev_btn">
+                        {{__('Previous')}}
                     </div>
 
 
+                    <a href="{{URL::signedRoute('event.index')}}#applied">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            {{__('Back')}}
+                        </div>
+                    </a>
+
+
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                        {{__('Submit')}}
+                    </div>
+
+
+
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        {{__('Next')}}
+                    </div>
 
                 </div>
+
+
+
             </div>
         </div>
     </div>
+</div>
 </div>
 </div>
 
@@ -906,7 +893,7 @@
                 street: 'required',
                 description_en: 'required',
                 description_ar: 'required',
-                time_start: 'required',
+                // time_start: 'required',
                 venue_en: 'required',
                 area_id: 'required',
                 longitude: 'required',
@@ -915,7 +902,7 @@
                     required: true,
                     dateNL: true
                 },
-                time_end: 'required',
+                // time_end: 'required',
                 venue_ar: 'required',
                 address: 'required',
                 firm_type: 'required',
@@ -935,7 +922,7 @@
                 street: '',
                 description_en: '',
                 description_ar: '',
-                time_start: '',
+                // time_start: '',
                 venue_en: '',
                 area_id: '',
                 longitude: '',
@@ -944,7 +931,7 @@
                     required: '' ,
                     dateNL: ''
                 },
-                time_end: '',
+                // time_end: '',
                 venue_ar: '',
                 address: '',
                 firm_type: '',
@@ -1021,10 +1008,10 @@
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),
-                    time_start: $('#time_start').val(),
+                    time_start: '',
                     venue_en: $('#venue_en').val(),
                     expired_date: $('#expired_date').val(),
-                    time_end: $('#time_end').val(),
+                    time_end: '',
                     venue_ar: $('#venue_ar').val(),
                     address: $('#address-input').val(),
                     emirate_id: $('#emirate_id').val(),
@@ -1132,8 +1119,8 @@
             orientation: "bottom left"
         });
 
-        $('#time_start').timepicker();
-        $('#time_end').timepicker();
+        // $('#time_start').timepicker();
+        // $('#time_end').timepicker();
 
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
@@ -1511,7 +1498,7 @@
                         {
                             var k = s + 1 ;
 
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
                             if(result.length > 1){
                                 $('#append_'+s+'').append('<span onclick="deleteThisTruck('+result[s].event_truck_id+')"><i class="fa fa-trash fnt-16 text-danger"></i></span>');
