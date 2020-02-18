@@ -362,6 +362,9 @@ class ArtistPermitController extends Controller
             $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
             $url = URL::signedRoute('company.make_payment', $permit->permit_id);
             $buttonText = 'Make Payment';
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'approved', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('company.make_payment', $permit->permit_id), 'payment'=>true];
         }
 
         if($type == 'amend'){
@@ -369,6 +372,9 @@ class ArtistPermitController extends Controller
             $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Requires Amendment';
             $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
             $url = URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']);
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'bounced back for amendment', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend'])];
         }
 
         if($type == 'reject'){
@@ -377,6 +383,9 @@ class ArtistPermitController extends Controller
             $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been rejected. To view the details, please click the button below.';
             //$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
             $url = '#';
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'rejected', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id])];
         }
 
         $users = $permit->owner->company->users;
@@ -389,6 +398,7 @@ class ArtistPermitController extends Controller
                 'button' => $buttonText,
                 'url' => $url
             ]));
+            sms($user->number, $sms_content);
         }
     }
 
@@ -759,6 +769,7 @@ class ArtistPermitController extends Controller
         $comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
         return DataTables::of($comments)
             ->addColumn('comment', function ($comments){
+                // if(is_null($comments->comment)){ return '-'; }
                 return ucfirst($comments->comment);
             })
             ->addColumn('commented_on', function ($comments){

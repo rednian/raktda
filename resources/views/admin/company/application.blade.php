@@ -120,7 +120,7 @@
                            </div>
                         </div>
                         <div class="col-md-6">
-                           <label class="kt-font-dark">{{ __('Trade License Expired Date') }}</label>
+                           <label class="kt-font-dark">{{ __('Trade License Expiry Date') }}</label>
                            <div class="input-group input-group-sm">
                             <input value="{{ date('d-F-Y', strtotime($company->trade_license_expired_date)) }}" name="name_ar" readonly="readonly" type="text"
                                          class="form-control">
@@ -172,26 +172,6 @@
                       </section>
                      </div>
 
-                  </div>
-                  <div class="row form-group form-group-sm">
-                     <div class="col-sm-6">
-                        <section class="row form-group form-group-sm">
-                           <div class="col-sm-12">
-
-
-                           </div>
-                        </section>
-                     </div>
-                     <div class="col-sm-6">
-                        <section class="row form-group form-group-sm">
-                           <div class="col-sm-6">
-
-
-                           </div>
-                        </section>
-
-
-                     </div>
                   </div>
                   <div class="row form-group form-group-sm">
                      <div class="col-sm-12">
@@ -323,7 +303,7 @@
                      <thead>
                         <tr>
                            <th>{{__('REQUIREMENT NAME')}}</th>
-                           <th>{{__('FILES')}}</th>
+                           <th>{{__('NO. OF FILES')}}</th>
                            {{-- <th>{{__('ISSUED DATE')}}</th>
                            <th>{{__('EXPIRY DATE')}}</th> --}}
                         </tr>
@@ -354,11 +334,11 @@
                  @csrf
                  <div class="form-group row">
                   <div class="col-6">
-                    <label class="kt-font-dark">{{ __('Remarks') }}</label>
+                    <label class="kt-font-dark">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                     <textarea dir="ltr" name="comment_en" maxlength="255" class="form-control form-control-sm" rows="4"></textarea>
                   </div>
                   <div class="col-6">
-                    <label class="kt-font-dark">{{ __('Remarks (AR)') }}</label>
+                    <label class="kt-font-dark">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
                     <textarea dir="rtl" name="comment_ar" maxlength="255" class="form-control form-control-sm" rows="4"></textarea>
                   </div>
 

@@ -6,7 +6,7 @@ Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
 Route::get('/test', function(){
-sendSms('+971568835006', 'Your ATM was access 2 minutes ago. Please change your ATM Password.');
+sendSms('+971568835006', "Your ATM \n was access 2 minutes ago. Please change your ATM Password.");
 
 });
 
@@ -87,7 +87,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 	Route::get('/event/{event}/lock','Admin\EventController@updateLock')->name('admin.event.lock');
 	Route::post('/event/{event}','Admin\EventController@submit')->name('admin.event.submit');
     Route::get('/event/{event}/download','Admin\EventController@download')->name('admin.event.download');
-    Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@addRequirementDatatable')->name('admin.event.additionalrequirementdatatable');
+    Route::get('/event/{event}/addition-requirement-datatable','Admin\EventController@`addRequirementDatatable`')->name('admin.event.additionalrequirementdatatable');
     Route::get('/event/{event}/requirement-datatable','Admin\EventController@uploadedRequiremet')->name('admin.event.uploadedRequiremet');
     Route::get('/event/{event}/comment-datatable','Admin\EventController@commentDatatable')->name('admin.event.comment');
     Route::get('/event/{event}/liquor-datatable','Admin\EventController@liquorRequirementDatatable')->name('admin.event.liquor.requirement');

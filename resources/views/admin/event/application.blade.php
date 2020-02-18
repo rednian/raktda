@@ -1303,7 +1303,7 @@
 			html += '	<div class="col-sm-4">';
 			html + '		<div class="form-group form-group-xs">';
 			html += '			<div class="kt-checkbox--inline kt-forn-dark">';
-			html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Requires Date Validation') }}<span></span></label>';
+			html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Require Date Validation') }}<span></span></label>';
 			html += '			</div>';
 			html += '		</div>';
 			html += '	</div>';
@@ -1492,15 +1492,16 @@
 	function eventDetails() {
 
 	$('form#kt_form').validate({
+        invalidHandler: function (event, validator) {
+		KTUtil.scrollTop();
+		},
 		rules: {
 		status: {required: true},
 		},
 		messages: {
 		status: 'Please select an action.'
 		},
-		invalidHandler: function (event, validator) {
-		KTUtil.scrollTop();
-		}
+
 	});
 
 	var approver = $('select#select-approver');
@@ -1583,6 +1584,8 @@
 		if(status != 'approved-unpaid' && $(this).find('textarea[name=comment]').val() == '' ){
 		$(this).find('textarea[name=comment]').addClass('is-invalid');
 			e.preventDefault();
+            KTUtil.scrollTop();
+            $(this).find('textarea[name=comment]').focus();
 		}
 	});
 

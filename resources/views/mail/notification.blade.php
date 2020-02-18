@@ -3,10 +3,12 @@
 # {!! $data['title'] !!}
 @endif
 
+{{-- <p>Dear Customer,</p> --}}
 @if(array_key_exists('content', $data))
 {!! $data['content'] !!}
 @endif
 
+{{-- {{ dd($data) }} --}}
 
 @if(array_key_exists('button', $data))
 @component('mail::button', ['url' => array_key_exists('url', $data) ? $data['url'] : '#' ])

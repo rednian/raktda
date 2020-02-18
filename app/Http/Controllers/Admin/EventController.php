@@ -196,7 +196,7 @@ class EventController extends Controller
 				$request['role_id'] = $request->user()->roles()->first()->role_id;
 
 				$event->check()->where('event_id', $event->event_id)->delete();
-				$event->check()->create($request->all());
+                $event->check()->create($request->all());
 
 				switch ($request->status) {
 					case 'rejected':
@@ -209,7 +209,6 @@ class EventController extends Controller
 
 						//SEND NOTIFICATION
                         $this->sendNotificationCompany($event, 'reject');
-                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' was rejected. Please contact RAKTDA.');
 
 						$result = ['success', ucfirst($event->name_en).'Rejected Successfully', 'Success'];
                         break;
@@ -229,7 +228,6 @@ class EventController extends Controller
 
 						//SEND NOTIFICATION
                         $this->sendNotificationCompany($event, 'approve');
-                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' was approved.');
 
 
 						$result = ['success', ucfirst($event->name_en).' Approved Successfully', 'Success'];
@@ -242,7 +240,8 @@ class EventController extends Controller
 						$event->comment()->create($request->all());
 
 						if($request->requirements_id){
-							$requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
+
+                            $requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
 							$event->additionalRequirements()->sync($requirements_id);
 						}
 
@@ -259,22 +258,11 @@ class EventController extends Controller
 						}
 
                         //SEND NOTIFICATION
-                        sendSms($event->owner->number, 'Your event application with reference number: '. $event->reference_number.' is bounced back. Please check you application information.');
 						$this->sendNotificationCompany($event, 'amend');
 
 						$result = ['success', ucfirst($event->name_en).' has been checked successfully', 'Success'];
 						break;
 					case 'need approval':
-
-					// dd($request->all());
-
-						// $user = User::availableInspector($event->issued_date)->get();
-						// $emp = EmployeeWorkSchedule::getSchedule()->get();
-						// dd($emp);
-						// dd($user);
-
-						//ADD EVENT COMMENT
-
 
 
 						$event->update(['status'=>'need approval']);
@@ -365,21 +353,29 @@ class EventController extends Controller
 				$title = 'Application has been Approved';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
 				$url = URL::signedRoute('company.event.payment', ['event' => $event->event_id]);
-				$buttonText = 'Make Payment';
+                $buttonText = 'Make Payment';
+                $sms_content = ['name'=>'event permit', 'status'=> 'approved', 'reference_number'=>$event->reference_number,
+                'url'=> URL::signedRoute('company.event.payment', ['event' => $event->event_id]), 'payment'=>true];
 			}
 
 			if($type == 'amend'){
 				$subject = $event->reference_number . ' - Application Requires Amendment';
 				$title = 'Applications Requires Amendment';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.amend', ['event' => $event->event_id]);
+                $url = URL::signedRoute('event.amend', ['event' => $event->event_id]);
+
+                $sms_content = ['name'=>'event permit', 'status'=> 'bounced back for amendment', 'reference_number'=>$event->reference_number,
+                'url'=> URL::signedRoute('event.amend', ['event' => $event->event_id])];
 			}
 
 			if($type == 'reject'){
 				$subject = $event->reference_number . ' - Application Rejected';
 				$title = 'Application has been Rejected';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been rejected. To view the details, please click the button below.';
-				$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+                $url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
+
+                $sms_content = ['name'=>'event permit', 'status'=> 'rejected', 'reference_number'=>$event->reference_number,
+                'url'=> URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied'])];
 			}
 
 			$users = $event->owner->company->users;
@@ -391,7 +387,8 @@ class EventController extends Controller
 					'content' => $content,
 					'button' => $buttonText,
 					'url' => $url
-				]));
+                ]));
+            sms($user->number, $sms_content);
 			}
 		}
 
