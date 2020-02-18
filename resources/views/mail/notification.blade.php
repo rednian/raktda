@@ -10,14 +10,15 @@
 
 @if(array_key_exists('button', $data))
 @component('mail::button', ['url' => array_key_exists('url', $data) ? $data['url'] : '#' ])
+{{ $data['button'] }}
 @endcomponent
 @endif
 
-@if(array_key_exists('url', $data) && array_key_exists('button', $data))
+@if(array_key_exists('url', $data))
 <hr/>
 <p style="font-size:12px">If you’re having trouble clicking the "{{ $data['button'] }}" button, copy and paste the URL below into your web browser: {{ $data['url'] }}</p>
 @endif
 
-Thanks,<br>
+Thank you,<br>
 Ras Al Khaimah Tourism Development Authority
 @endcomponent

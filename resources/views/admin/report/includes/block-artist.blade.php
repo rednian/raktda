@@ -3,10 +3,10 @@
         color: #6d6d6d;
     }
 
-    body {
+    /* body {
         --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         font-size: 13px;
-    }
+    } */
 
     .activeButton {
         border-bottom: 2px solid #000000;
