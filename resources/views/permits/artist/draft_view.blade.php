@@ -69,7 +69,7 @@
                                                 <input type="text"
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_from" id="permit_from" placeholder="DD-MM-YYYY"
-                                                    data-date-start-date="+0d" onchange="checkFilled();givWarn()"
+                                                    data-date-start-date="+0d" onchange="givWarn();checkFilled();"
                                                     value="{{ count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->issue_date)) : '' }}" />
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>

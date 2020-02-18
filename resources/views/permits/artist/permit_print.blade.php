@@ -293,7 +293,7 @@
                                     <h5>Expiry Date</h5>
                                 </td>
                                 <td>
-                                    <p>{{date('d-m-Y', strtotime($permit_details['issued_date']))}}</p>
+                                    <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
                                 </td>
                                 <td>
                                     <h5>تاريخ الانتهاء</h5>
@@ -309,7 +309,7 @@
                                     <h5>Issued Date</h5>
                                 </td>
                                 <td>
-                                    <p>{{date('d-m-Y', strtotime($permit_details['expired_date']))}}</p>
+                                    <p>{{date('d-m-Y', strtotime($permit_details['issued_date']))}}</p>
                                 </td>
                                 <td>
                                     <h5>تاريخ الاصدار</h5>

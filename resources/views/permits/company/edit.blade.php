@@ -54,12 +54,14 @@
                 <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
                     <div class="alert-icon"><i class="flaticon-warning"></i></div>
                     <div class="alert-text">
-                        Your application was bounced back, see the comment below:
-                        <hr class="kt-margin-t-5">
-                        @if ($company->comment()->exists())
-                        <p>{{$company->comment()->latest()->first()->comment}}</p>
-                        @endif
-
+                        <div class="kt-font-bold"> Your application was bounced back, see the comment below:</div>
+                        <ul class="kt-margin-t-10">
+                            @if ($company->comment()->latest()->exists())
+                            <li>
+                                {{ getLangId() == 1 ? ucfirst($company->comment()->latest()->first()->comment_en) : $company->comment()->latest()->first()->comment_ar}}
+                            </li>
+                            @endif
+                        </ul>
                     </div>
                     <div class="alert-close">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -102,7 +104,7 @@
                                 @if ($company->status == 'active' && $company->event()->count() < 0 || $company->
                                     permit()->count() < 0) <div class="alert alert-success" role="alert">
                                         <div class="alert-text">
-                                            <h4 class="alert-heading">Congratulation your establishment is
+                                            <h4 class="alert-heading">Congratulations. Your establishment is
                                                 registered successfully!</h4>
                                             <p>You can now apply an <a href="{{ URL::signedRoute('event.create') }}"
                                                     class="btn btn-sm btn--maroon">EVENT
@@ -224,12 +226,12 @@
         <div class="col-md-6">
             <div class="row form-group form-group-sm">
                 <div class="col-sm-6">
-                    <label>Phone Number<span class="text-danger">*</span></label>
+                    <label>{{__('Phone Number')}} <span class="text-danger">*</span></label>
                     <input required name="phone_number" autocomplete="off" class="form-control form-control-sm"
                         type="text" value="{{old('phone_number', $company->phone_number)}}">
                 </div>
                 <div class="col-sm-6">
-                    <label>{{__('Establishment Email')}}</label>
+                    <label>{{__('Email')}} <span class="text-danger">*</span></label>
                     <input name="company_email" autocomplete="off"
                         class="form-control form-control-sm @error('company_email') is-invalid @enderror" type="text"
                         value="{{old('company_email', $company->company_email)}}">
@@ -405,7 +407,7 @@
         <div class="card-header" id="heading-requirement">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse"
                 data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                <h6 class="kt-font-dark "><span class="kt-font-transform-u">{{__('Document Requirements')}}</span>
+                <h6 class="kt-font-dark "><span class="kt-font-transform-u">{{__('Required Documents')}}</span>
                     {{-- <small>Please upload the  documents.</small> --}}
                 </h6>
             </div>
@@ -441,7 +443,7 @@
                         <select name="requirement_id" class=" form-control"></select>
                     </div>
                     <div class="col-md-4">
-                        <label>{{__('Upload Requirement')}} <span class="text-danger">*</span></label>
+                        <label>{{__('Upload document')}} <span class="text-danger">*</span></label>
                         <input id="file" onchange="readUrl(this);" type="file" multiple class="form-control">
                     </div>
                     {{--                                                      <div class="col-md-2 date-required">--}}
@@ -479,16 +481,16 @@
 
     </div>
 </div>
-<div class="form-group row kt-margin-t-10">
+<div class="form-group row kt-margin-t-10 text-right">
     <div class="col-sm-12">
         @if ($company->status == 'draft')
         <button style="padding: 0.5rem 1rem;" type="submit" name="submit" value="draft"
-            class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark">
-            Save as Draft
+            class="btn btn-secondary btn-sm kt-font-transform-u kt-font-dark btn-hover-warning">
+            {{__('Save as Draft')}}
         </button>
         @endif
         <button {{$company->status == 'rejected' ? 'disabled' : null}} type="submit" name="submit" value="submitted"
-            class="btn btn--maroon btn-sm kt-font-transform-u">Submit Application</button>
+            class="btn btn--maroon btn-sm kt-font-transform-u">{{__('Submit Application')}}</button>
     </div>
 
 </div>

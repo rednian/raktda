@@ -250,7 +250,7 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
 
@@ -266,7 +266,7 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
                         </tr>
@@ -280,7 +280,7 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
                             <td class="text-right">{{number_format($total,2)}}</td>
                         </tr>
