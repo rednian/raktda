@@ -386,7 +386,8 @@ class EventController extends Controller
 					'title' => $title,
 					'content' => $content,
 					'button' => $buttonText,
-					'url' => $url
+                    'url' => $url,
+                    'mail'=>true
                 ]));
             sms($user->number, $sms_content);
 			}
