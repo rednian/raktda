@@ -293,7 +293,7 @@
     @include('admin.artist_permit.includes.document')
 		@include('admin.artist_permit.includes.check-existing-permit')
 	<div id="action-container">
-			<button id="btn-action" class="btn btn-warning btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">{{ __('Take Action For Application') }}</button>
+			<button id="btn-action" class="btn btn-maroon btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">{{ __('Take Action For Application') }}</button>
 	</div>
 @endsection
 @section('script')

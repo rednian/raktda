@@ -2,16 +2,16 @@
    <div class="alert-icon"><i class="flaticon-warning"></i></div>
    <div class="alert-text">
       <ul>
-         @if ($is_local) <li>{{ __('The artist is an UAE national.') }}</li> @endif
-         @if ($is_europe) <li>{{ __('The artist is from Europe & visa is not required.') }}</li> @endif
+         {{-- @if ($is_local) <li>{{ __('The artist is an UAE national.') }}</li> @endif
+         @if ($is_europe) <li>{{ __('The artist is from Europe & visa is not required.') }}</li> @endif --}}
          @if ($age < 18) <li>{{ __('The artist age is below 18 years old.') }}</li> @endif
-         @if ($status != 'active') 
+         @if ($status != 'active')
             <li>
             {{ __('The artist is currently blocked with the reason below:') }}
             <ul>
                <li>{{ ucfirst($reason) }}</li>
             </ul>
-            </li> 
+            </li>
          @endif
          @if ($permit_count > 0)
             <li>

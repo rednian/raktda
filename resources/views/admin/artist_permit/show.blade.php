@@ -10,24 +10,26 @@
                 <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+            @if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by))
+                <a target="_blank" class="kt-font-transform-u btn btn-warning btn-sm kt kt-margin-l-5"
+                href="{{ URL::signedRoute('admin.artist_permit.download', $permit->permit_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
+            @endif
             <div class="dropdown dropdown-inline">
                 <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="flaticon-more"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-                    
+
                     <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
                         {{ __('Establishment Details') }}
                     </a>
-                    @if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by))
-                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.artist_permit.download', $permit->permit_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
-                    @endif
+
                 </div>
             </div>
             @endif
         </div>
     </div>
-  
+
 
 
     <div class="kt-portlet__body kt-padding-t-5">
@@ -117,7 +119,7 @@
                 </div>
               <section class="kt-section kt-margin-t-5">
                  <div class="kt-section__desc">
-                    
+
                     <table class="table table-borderless table-sm">
                        <tr>
                           <td width="25%">{{ __('Reference Number') }} :</td>
@@ -148,8 +150,8 @@
                         <tr>
                             <td>{{ __('Approved By') }} :</td>
                             @php
-                                $name = Auth::user()->LanguageId == 1 ? ucwords($permit->approvedBy->NameEn) : ucwords($permit->approvedBy->NameAr); 
-                                $role = Auth::user()->LanguageId == 1 ? ucwords($permit->approvedBy->roles()->first()->NameEn) : ucwords($permit->approvedBy->roles()->first()->NameAr); 
+                                $name = Auth::user()->LanguageId == 1 ? ucwords($permit->approvedBy->NameEn) : ucwords($permit->approvedBy->NameAr);
+                                $role = Auth::user()->LanguageId == 1 ? ucwords($permit->approvedBy->roles()->first()->NameEn) : ucwords($permit->approvedBy->roles()->first()->NameAr);
                             @endphp
                             <td>{!! profileName($name, $role) !!}</td>
                         </tr>
@@ -163,8 +165,8 @@
                         <tr>
                             <td>{{ __('Cancelled By') }} :</td>
                             @php
-                                $name = Auth::user()->LanguageId == 1 ? ucwords($permit->cancelBy->NameEn) : ucwords($permit->cancelBy->NameAr); 
-                                $role = Auth::user()->LanguageId == 1 ? ucwords($permit->cancelBy->roles()->first()->NameEn) : ucwords($permit->cancelBy->roles()->first()->NameAr); 
+                                $name = Auth::user()->LanguageId == 1 ? ucwords($permit->cancelBy->NameEn) : ucwords($permit->cancelBy->NameAr);
+                                $role = Auth::user()->LanguageId == 1 ? ucwords($permit->cancelBy->roles()->first()->NameEn) : ucwords($permit->cancelBy->roles()->first()->NameAr);
                             @endphp
                             <td>{!! profileName($name, $role) !!}</td>
                         </tr>
@@ -173,7 +175,7 @@
                            <td>{{ ucfirst($permit->cancel_reason) }}</td>
                         </tr>
                        @endif
-                     
+
                        <tr>
                           <td>{{ __('Work Location') }} :</td>
                           <td>{{ ucwords($permit->work_location) }}</td>
@@ -181,7 +183,7 @@
                     </table>
                  </div>
               </section>
-            
+
                 <div class="kt-widget__content border-top kt-margin-t-5">
                   <div class="kt-widget__details">
                     <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Revision Number')}}</span>
@@ -218,7 +220,7 @@
                 </div>
                 <hr>
               </div>
-              
+
             </div>
           </div>
           <div class="col-md-4">
@@ -306,7 +308,7 @@
             </div>
         </section>
         @endif
-        
+
         <div class="accordion accordion-solid accordion-toggle-plus" id="accordionExample5">
             <div class="card kt-hide">
                 <div class="card-header" id="headingOne5">
@@ -429,11 +431,11 @@
                 </div>
                 @endif
             </div>
-                        
-                      
+
+
 				 </div>
-				  
-	 
+
+
 </div>
 		<?php
 		$artist_number = $permit->artistpermit()->count();
@@ -446,7 +448,7 @@
 <script type="text/javascript">
     var artist = {};
     $(document).ready(function () {
-      
+
       artistTable();
       permitHistory();
       hasUrl();
@@ -547,7 +549,7 @@
                 $('#comment-modal').modal('show');
              });
 
-           
+
           },
           initComplete: function (settings, json) {
              $('#artist-total').html(json.recordsTotal);
@@ -558,7 +560,7 @@
     function documents(data){
         $('#document-modal').on('shown.bs.modal', function(){
             $('table#table-document').DataTable({
-                ajax:{ 
+                ajax:{
                     url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
                 },
                 columns:[
