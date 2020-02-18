@@ -38,7 +38,7 @@
                </div>
              </div>
              <div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
-               <div class="card-body">
+               <div class="card-body kt-font-dark">
                 <section class="kt-form kt-form--label-right ">
                     <div class="form-group form-group-sm  row">
                         <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all establishment details </label>
@@ -211,7 +211,7 @@
                </div>
              </div>
              <div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-               <div class="card-body">
+               <div class="card-body kt-font-dark">
                 <section class="kt-form kt-form--label-right ">
                     <div class="form-group form-group-sm  row">
                         <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all contact details </label>
@@ -318,7 +318,7 @@
                </div>
              </div>
              <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
-               <div class="card-body">
+               <div class="card-body kt-font-dark">
                   <table class="table table-borderless table-striped table-hover border" id="requirement-table">
                      <thead>
                         <tr>
@@ -355,11 +355,11 @@
                  <div class="form-group row">
                   <div class="col-6">
                     <label class="kt-font-dark">{{ __('Remarks') }}</label>
-                    <textarea name="comment_en" maxlength="255" class="form-control form-control-sm" rows="5"></textarea>
+                    <textarea dir="ltr" name="comment_en" maxlength="255" class="form-control form-control-sm" rows="4"></textarea>
                   </div>
                   <div class="col-6">
                     <label class="kt-font-dark">{{ __('Remarks (AR)') }}</label>
-                    <textarea name="comment_ar" maxlength="255" class="form-control form-control-sm" rows="5"></textarea>
+                    <textarea dir="rtl" name="comment_ar" maxlength="255" class="form-control form-control-sm" rows="4"></textarea>
                   </div>
 
                  </div>

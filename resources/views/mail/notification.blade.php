@@ -9,7 +9,6 @@
 
 
 @if(array_key_exists('button', $data))
-{{ dd($data) }}
 @component('mail::button', ['url' => array_key_exists('url', $data) ? $data['url'] : '#' ])
 @endcomponent
 @endif
@@ -20,5 +19,5 @@
 @endif
 
 Thanks,<br>
-{{ config('app.name') }}
+Ras Al Khaimah Tourism Development Authority
 @endcomponent

@@ -278,9 +278,27 @@
 															</div>
 														</div>
 														<div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
+                                                                <div class="row form-group form-group-sm">
+                                                                    <div class="col-6"></div>
+                                                                    <div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-date" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
+																	</div>
+																	</div>
 																	<div class="row form-group form-group-sm">
-																	<div class="col-6">
+                                                                        <div class="col-4">
 																			<label class="kt-font-dark">{{ __('Event Duration') }} <span class="text-danger">*</span></label>
 																			<div class="input-group input-group-sm">
 																			@php
@@ -299,24 +317,7 @@
 																				</div>
 																			</div>
 																	</div>
-																	<div class="col-6">
-																		<section class="kt-form kt-form--label-right ">
-																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
-																		        <div class="col-1">
-																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
-																		                <label>
-																		                    <input type="checkbox" id="checked-all-date" name="">
-																		                    <span></span>
-																		                </label>
-																		            </span>
-																		        </div>
-																		    </div>
-																		</section>
-																	</div>
-																	</div>
-																	<div class="row form-group form-group-sm">
-																		<div class="col-3">
+																		<div class="col-4">
 																				<label class="kt-font-dark">{{ __('Start Date') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ date('d-F-Y', strtotime($event->issued_date)) }}" name="issued_date" readonly="readonly" type="text"
@@ -331,7 +332,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-4">
 																				<label class="kt-font-dark">{{ __('End Date') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ date('d-F-Y', strtotime($event->expired_date)) }}" name="expired_date" readonly="readonly" type="text"
@@ -346,7 +347,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-3 kt-hide">
 																				<label class="kt-font-dark">{{ __('Time Start') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
@@ -360,7 +361,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-3 kt-hide">
 																				<label class="kt-font-dark">{{ __('Time End') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
@@ -390,7 +391,7 @@
 															</div>
 														</div>
 														<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
 																<section class="row form-group form-group-sm">
 																	<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Number of Food Truck') }} <span class="text-danger">*</span></label>
@@ -542,18 +543,18 @@
 															</div>
 														</div>
 														<div id="collapse-liquor" class="collapse show" aria-labelledby="heading-liquor" data-parent="#accordion-liquor">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
 
                                                                 <section class="row">
                                                                     <div class="col-6">
                                                                         @if ($event->liquor->provided)
                                                                             <p class=" kt-font-bold">
-                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                <span class="kt-font-danger">{{ __('Note:') }}</span>
                                                                                 {{__('Liquor will be provided by the venue.')}}
                                                                             </p>
                                                                         @else
                                                                             <p class=" kt-font-bold">
-                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                <span class="kt-font-danger">{{ __('Note:') }}</span>
                                                                                 {{__('Liquor was purchased from a licensed store.')}}
                                                                             </p>
                                                                         @endif
@@ -696,7 +697,7 @@
 															</div>
 														</div>
 														<div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
 																<div class="row form-group form-group-sm">
 																	<div class="col-6"></div>
 																	<div class="col-6">
@@ -748,7 +749,7 @@
 																		</div>
 																	</div>
 																	<div class="row form-group form-group-sm">
-																		<div class="col-3">
+																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Street') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ ucfirst($event->street) }}" name="address" readonly="readonly" type="text"
@@ -763,7 +764,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Area') }}</label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
@@ -778,36 +779,6 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-sm-3">
-																			<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
-																			<div class="input-group input-group-sm">
-																				<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" >
-																				<div class="input-group-append">
-																					<span class="input-group-text">
-																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox">
-																							<span></span>
-																						</label>
-																					</span>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-sm-3">
-																			<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
-																			<div class="input-group input-group-sm">
-																				<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" >
-																				<div class="input-group-append">
-																					<span class="input-group-text">
-																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox">
-																							<span></span>
-																						</label>
-																					</span>
-																				</div>
-																			</div>
-																		</div>
-
-
 																	</div>
 
 																	<div class="row form-group form-group-sm">
@@ -1058,13 +1029,13 @@
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note') }}</label>
-																		<textarea disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
+																		<textarea dir="ltr" disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
 																	</div>
 																</div>
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note (AR)') }}</label>
-																		<textarea disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
+																		<textarea dir="rtl" disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 																	</div>
 																</div>
 															</section>
@@ -1527,9 +1498,7 @@
 		messages: {
 		status: 'Please select an action.'
 		},
-
 		invalidHandler: function (event, validator) {
-		console.log(validator);
 		KTUtil.scrollTop();
 		}
 	});
@@ -1650,6 +1619,7 @@ function updateLock() {
 				$(this).parents('.input-group').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
 				$(this).parents('.input-group').find('textarea').removeClass('is-valid').addClass('is-invalid');
 				wizardObj.stop();
+                KTUtil.scrollTop();
 			}
 		});
 	}
@@ -1680,6 +1650,7 @@ function checkedAttr(obj) {
 		$(obj).parents('.card-body').find('input[type=checkbox]').attr('checked', true);
 		$(obj).parents('.card-body').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
 		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+
 	}
 	else{
 		$(obj).parents('.card-body').find('input[type=checkbox]').removeAttr('checked', true);

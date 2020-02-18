@@ -298,7 +298,7 @@ $user_lang = $user->languageId;
         // columnDefs:[{targets: [4], className:'no-wrap'}],
         "order": [[ 0, 'asc' ]],
           rowGroup: {
-            startRender: function ( rows, group ) { 
+            startRender: function ( rows, group ) {
              var row_data = rows.data()[0];
              console.log()
              return $('<tr/>').append( '<td >'+group+'</td>' )
@@ -331,7 +331,7 @@ $user_lang = $user->languageId;
                 });
               }
             }).done(function(response, textStatus, xhr){
-              if(xhr.status == 200){ 
+              if(xhr.status == 200){
                  KTApp.unblockPage();
                 requirementTable.ajax.reload();
               }
