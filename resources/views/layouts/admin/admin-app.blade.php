@@ -123,7 +123,7 @@ function unblockPage(){
 
         //english, numbers and special character allowed
         $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){
-            var alphanumeric = /[\w\d]|[\s]/g;
+            var alphanumeric = /[\w\d\-\.\?\!\&\%\#\*\()]|[\s]/g;
              var key = String.fromCharCode(e.which);
              return alphanumeric.test(key) ? true : false;
         });

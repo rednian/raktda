@@ -43,7 +43,9 @@ class CompanyController extends Controller
             $title = 'Application has been Approved';
             $content = 'Your application has been approved. To view the details, please click the button below.';
             $url = URL::signedRoute('company.show', ['company' => $company->company_id]);
-            // $buttonText = 'Profile';
+            $button = 'Profile';
+            $sms_content = ['name'=>'company', 'status'=> 'approved', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.show', $company->company_id)];
 
         }
 
@@ -52,13 +54,19 @@ class CompanyController extends Controller
             $title = 'Applications Requires Amendment';
             $content = 'Your application has been bounced back for amendment. To view the details, please click the button below.';
             $url = URL::signedRoute('company.edit', ['company' => $company->company_id]);
+            $button ='Update Information';
+            $sms_content = ['name'=>'company', 'status'=> 'bounced back for amendment', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.edit', $company->company_id)];
         }
 
         if($type == 'rejected'){
             $subject = $company->name . ' - Application Rejected';
             $title = 'Application has been Rejected';
             $content = 'Your application has been rejected. To view the details, please click the button below.';
+            $button ='Profile';
             $url = URL::signedRoute('company.show', ['company' => $company->company_id]);
+            $sms_content = ['name'=>'company', 'status'=> 'rejected', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.show', $company->company_id)];
         }
         $buttonText = null;
 
@@ -68,8 +76,9 @@ class CompanyController extends Controller
             'subject' => $subject,
             'title' => $title,
             'content' => $content,
-            // 'button' => $buttonText,
-            'url' => $url
+            'button' => $button,
+            'url' => $url,
+            'mail'=>true
         ]));
 
         foreach ($users as $user) {
@@ -77,10 +86,11 @@ class CompanyController extends Controller
                 'subject' => $subject,
                 'title' => $title,
                 'content' => $content,
-                // 'button' => $buttonText,
-                'url' => $url
+                'button' => $button,
+                'url' => $url,
+                'mail'=>true
             ]));
-            sendSms($user->number, $subject);
+            sms($user->number, $sms_content);
         }
     }
 

@@ -2,6 +2,14 @@
 
 use App\Library\Smpp;
 
+function sms($number, $message = [])
+{
+    $is_payment =array_key_exists('payment', $message) ? 'payment': 'details';
+    $content = "Dear Customer,\nYour {$message['name']} application with reference number: {$message['reference_number']} has been {$message['status']}. Please click the link below for the {$is_payment}.\n{$message['url']}";
+    sendSms($number, $content);
+}
+
+
 function sendSms($user_mobile_number = null, $message)
 {
     $sender = 'RAKTOURISM';

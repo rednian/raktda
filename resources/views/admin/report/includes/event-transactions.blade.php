@@ -8,7 +8,7 @@
         font-size: 10px;font-weight: bold;white-space: nowrap;
     }
     td{
-        font-size: 10px;font-weight:400
+        /* font-size: 10px;font-weight:400 */
     }
     #eventTransactionTable_filter{
         float: right;

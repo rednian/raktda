@@ -3,10 +3,10 @@
         color: #6d6d6d;
     }
 
-    body {
+    /* body {
         --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         font-size: 13px;
-    }
+    } */
 
     .activeButton {
         border-bottom: 2px solid #000000;
@@ -403,7 +403,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
             newWin.document.write(divToPrint.outerHTML);
             newWin.document.write($('#artistPersonalDetails').val());
             newWin.print();
-            newWin.close();
+            setTimeout(function () { newWin.close(); }, 500);
         }
 
         function onclickevent(id) {

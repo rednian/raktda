@@ -32,7 +32,7 @@
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
 										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
-								</li>{{-- 
+								</li>{{--
 								<li class="kt-nav__item">
 									<a href="#" class="kt-nav__link">
 										<i class="kt-nav__link-icon flaticon2-power"></i>
@@ -69,14 +69,14 @@
 					 </div>
 					 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
 						<div class="card-body">
-							
+
 							<section class="row kt-margin-t-10">
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Name') }}
 				                            <span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="NameEn" required class="form-control form-control-sm">
+				                        <input  value="" type="text" name="NameEn" required class="form-control form-control-sm" autocomplete="off" autofocus>
 				                    </div>
 				                </div>
 				                <div class="col-sm-6">
@@ -84,7 +84,7 @@
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Name (AR)') }}
 				                        	<span class="text-danger">*</span>
 				                        </label>
-				                        <input dir="rtl" value="" type="text" name="NameAr" required class="form-control form-control-sm">
+				                        <input dir="rtl" value="" type="text" name="NameAr" required class="form-control form-control-sm" autocomplete="off">
 				                    </div>
 				                </div>
 				            </section>
@@ -106,13 +106,13 @@
 				                    </div>
 				                </div>
 				            	@endif
-				                
+
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Designation') }}
 				                        	<span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="designation" class="form-control form-control-sm">
+				                        <input  autocomplete="off" value="" type="text" name="designation" class="form-control form-control-sm">
 				                    </div>
 				                </div>
 				            </section>
@@ -123,7 +123,7 @@
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Email Address') }}
 				                            <span class="text-danger">*</span>
 				                        </label>
-				                        <input type="text" name="email" class="form-control form-control-sm">
+				                        <input autocomplete="off" type="text" name="email" class="form-control form-control-sm">
 				                    </div>
 				                </div>
 				                <div class="col-sm-6">
@@ -131,7 +131,7 @@
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Mobile Number') }}
 				                        	<span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="mobile_number" class="form-control form-control-sm">
+				                        <input autocomplete="off"  value="" type="text" name="mobile_number" class="form-control form-control-sm">
 				                    </div>
 				                </div>
 				            </section>
@@ -150,7 +150,7 @@
 					 </div>
 					 <div id="event-settings-details" class="collapse show" aria-labelledby="event-settings-heading" data-parent="#event-settings">
 						<div class="card-body">
-							
+
 							<section class="row kt-margin-t-10">
 								@if(is_null($type))
 								<div class="col-sm-6">
@@ -176,7 +176,7 @@
 				                        <label for="example-search-input" class="kt-font-dark">{{ __('Username') }}
 				                            <span class="text-danger">*</span>
 				                        </label>
-				                        <input value="" type="text" name="username" required class="form-control form-control-sm">
+				                        <input autocomplete="off"  value="" type="text" name="username" required class="form-control form-control-sm">
 				                    </div>
 				                </div>
 				            </section>
