@@ -99,7 +99,34 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
+function blockPage(){
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        type: 'v2',
+        state: 'success',
+        message: 'Please wait...'
+    });
+}
+
+function unblockPage(){
+    KTApp.unblockPage();
+}
   $(document).ready(function(){
+
+          //only arabic, numbers and space allowed in arabic with dir=rtl
+          $('input[dir=rtl], textarea[dir=rtl]').keypress(function(e){
+            var arabicAlphabet = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[0-9\s]/g;
+             var key = String.fromCharCode(e.which);
+             return arabicAlphabet.test(key) ? true : false;
+        });
+
+
+        //english, numbers and special character allowed
+        $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){
+            var alphanumeric = /[\w\d]|[\s]/g;
+             var key = String.fromCharCode(e.which);
+             return alphanumeric.test(key) ? true : false;
+        });
 
         //REFRESH NOTIFICATIONS EVERY MINUTE
     var notif = setInterval(refreshNotification, 60000);

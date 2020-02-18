@@ -74,7 +74,7 @@ class CompanyController extends Controller
          $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
          $company = Company::create(array_merge($valid_company, ['status'=>'draft'], $this->addressRelated() ));
          $user = $company->user()->create(array_merge(
-             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password) 
+             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
              ])
          );
          $user->roles()->attach(2);

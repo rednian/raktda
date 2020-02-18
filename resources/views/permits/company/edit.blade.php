@@ -385,7 +385,7 @@
                                 @endif
                             </div>
                             <div class="col-sm-6">
-                                <label>{{__('Emirates ID Expiry Date')}}
+                                <label>{{__('Emirates ID Expired Date')}}
                                     <span class="text-danger">*</span></label>
                                 <input required autocomplete="off" name="emirate_id_expired_date"
                                     class="date-picker end form-control form-control-sm @error('emirate_id_expired_date') is-invalid @enderror"
