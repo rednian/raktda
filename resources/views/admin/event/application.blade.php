@@ -1292,12 +1292,12 @@
 		var html = '<section class="row">';
 			html += '	<div class="col-sm-4">'
 			html += '		<div class="form-group form-group-xs">';
-			html += '			<input type="text" autocomplete="off" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
+			html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
 			html += '		</div>';
 			html += '	</div>';
 			html += ' <div class="col-sm-4">';
 			html += ' 	<div  class="form-group form-group-xs">';
-			html += '		<input placeholder="{{ __('Description') }}" autocomplete="off" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
+			html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
 			html += ' 	</div>';
 			html += ' </div>';
 			html += '	<div class="col-sm-4">';
@@ -1317,11 +1317,9 @@
 	$('form#kt_form').submit(function(e){
 		var form = this;
 			var rows_selected = add_requirements_table.column(0).checkboxes.selected();
-
 			rows_selected.each(function(v){
 				$(form).append( $('<input>').attr('type', 'hidden').attr('name', 'requirements_id[]').val(v) );
 			});
-            e.preventDefault();
 	});
 	}
 
@@ -1553,7 +1551,6 @@
 		if($(this).val() == 'need modification'){
 			$('#accordion-requirements').removeClass('kt-hide');
 			additionalRequirementTable();
-
 		}
 		else{
 				$('#accordion-requirements').addClass('kt-hide');
@@ -1582,7 +1579,6 @@
 	});
 
 
-//prevent submit if bounce back and no remarks written
 	$('form#kt_form').submit(function(e){
 		var status  = $(this).find('input[type=radio][name=status]:checked').val();
 		if(status != 'approved-unpaid' && $(this).find('textarea[name=comment]').val() == '' ){

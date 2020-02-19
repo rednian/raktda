@@ -187,7 +187,6 @@ class EventController extends Controller
 
 		public function submit(Request $request, Event $event)
 		{
-            dd($request->all());
 			try {
 				DB::beginTransaction();
 
