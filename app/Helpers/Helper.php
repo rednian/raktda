@@ -491,3 +491,5 @@ function paymentNotification($event, $artist, $files) {
 
 }
 
+
+

@@ -346,7 +346,7 @@
                                                 <div class="kt-input-icon kt-input-icon--right">
                                                     <input type="text" class="form-control form-control-sm"
                                                         name="issued_date" id="issued_date" placeholder="DD-MM-YYYY"
-                                                        onchange="givWarn()" />
+                                                        onchange="givWarn();check_duration()" />
                                                     <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                         <span>
                                                             <i class="la la-calendar"></i>
@@ -384,7 +384,8 @@
                                         <div class="input-group input-group-sm date">
                                             <div class="kt-input-icon kt-input-icon--right">
                                                 <input type="text" class="form-control form-control-sm"
-                                                    name="expired_date" id="expired_date" placeholder="DD-MM-YYYY">
+                                                    name="expired_date" id="expired_date" onchange="check_duration()"
+                                                    placeholder="DD-MM-YYYY">
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
                                                         <i class="la la-calendar"></i>
@@ -412,27 +413,41 @@
                                     </div>
                                 </div> --}}
 
+                                <div class="col-md-3 form-group form-group-xs ">
+                                    <label for="duration"
+                                        class=" col-form-label kt-font-bold text-right">{{__('Duration')}}
+                                        <span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-sm date">
+                                        <div class="kt-input-icon kt-input-icon--right">
+                                            <input type="text" class="form-control form-control-sm" id="date_duration"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
             </div>
         </div>
         </section>
 
-        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordionExample7">
+
+        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordionExample8">
             <div class="card">
                 <div class="card-header" id="headingTwo6">
-                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo5"
+                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
                         aria-expanded="false" aria-controls="collapseTwo6">
                         <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                            {{__('Location Details')}}
+                            {{__('Location & Map Details')}}
                         </h6>
                     </div>
                 </div>
 
-                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample7"
-                    id="collapseTwo5">
+                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample8"
+                    id="collapseTwo4">
                     <div class="card-body">
                         <div class="row">
+
                             <div class="col-md-5 form-group form-group-xs ">
                                 <label for="venue_en" class=" col-form-label kt-font-bold text-right">
                                     {{__('Venue')}} <span class="text-danger">*</span></label>
@@ -466,30 +481,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus border" id="accordionExample8">
-            <div class="card">
-                <div class="card-header" id="headingTwo6">
-                    <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4"
-                        aria-expanded="false" aria-controls="collapseTwo6">
-                        <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                            {{__('Map Details')}}
-                        </h6>
-                    </div>
-                </div>
-
-                <div class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample8"
-                    id="collapseTwo4">
-                    <div class="card-body">
-                        <div class="row">
 
                             <div class="col-md-8 col-sm-12 form-group form-group-xs ">
                                 <label for="address" class=" col-form-label kt-font-bold text-right">{{__('Address')}}
@@ -721,6 +712,12 @@
         $('#limited_types').hide();
     });
 
+    function check_duration() {
+        var iss = $('#issued_date').val();
+        var exp = $('#expired_date').val();
+        var diff = dayCount(iss, exp);
+        $('#date_duration').val(diff + (diff > 1 ? ' days' : ' day'));
+    }
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
