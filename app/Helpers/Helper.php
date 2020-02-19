@@ -457,7 +457,7 @@ function getPaymentOrderId($from, $id)
     return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
 }
 
-function paymentNotification($event, $artist) {
+function paymentNotification($event, $artist, $files) {
     $subject = $title = $content = '';
     if($event && $artist)
     {
@@ -485,7 +485,8 @@ function paymentNotification($event, $artist) {
         'button' => $buttonText,
         'url' => $url,
         'mail' => true,
-        'attach' => true
+        'attach' => true, 
+        'file' => $files
     ]));
 
 }
