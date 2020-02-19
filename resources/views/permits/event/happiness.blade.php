@@ -434,75 +434,74 @@
                                                         </div>
 
 
-                                                        <div class="col-md-3 form-group form-group-xs">
+                                                        {{-- <div class="col-md-3 form-group form-group-xs">
                                                             <label class="col-form-label">{{__('From Time')}} <span
-                                                                    class="text-danger">*</span></label>
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm"
-                                                                        value="{{date('d-m-Y',strtotime($event->time_start))}}"
-                                                                        name="time_start" id="time_start" type="text"
-                                                                        disabled />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
+                                                            class="text-danger">*</span></label>
+                                                        <div class="input-group input-group-sm timepicker">
+                                                            <div class="kt-input-icon kt-input-icon--right">
+                                                                <input class="form-control form-control-sm"
+                                                                    value="{{date('d-m-Y',strtotime($event->time_start))}}"
+                                                                    name="time_start" id="time_start" type="text"
+                                                                    disabled />
+                                                                <span
+                                                                    class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                    <span>
+                                                                        <i class="la la-clock-o"></i>
                                                                     </span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-
-                                                        <div class="col-md-3 form-group form-group-xs ">
-                                                            <label for="expired_date"
-                                                                class=" col-form-label kt-font-bold text-right">
-                                                                {{__('To Date')}}
-                                                                <span class="text-danger">*</span></label>
-                                                            <div class="input-group input-group-sm date">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input type="text"
-                                                                        class="form-control form-control-sm"
-                                                                        name="expired_date" id="expired_date"
-                                                                        placeholder="{{__('To Date')}}"
-                                                                        value="{{date('d-m-Y',strtotime($event->expired_date))}}"
-                                                                        disabled>
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-calendar"></i>
-                                                                        </span>
-                                                                    </span>
-                                                                </div>
+                                                                </span>
                                                             </div>
                                                         </div>
 
-                                                        <div class="col-md-3 form-group form-group-xs">
-                                                            <label class="col-form-label">{{__('To Time')}} <span
-                                                                    class="text-danger">*</span></label>
+                                                    </div> --}}
 
-                                                            <div class="input-group input-group-sm timepicker">
-                                                                <div class="kt-input-icon kt-input-icon--right">
-                                                                    <input class="form-control form-control-sm"
-                                                                        value="{{$event->time_end}}" name="time_end"
-                                                                        id="time_end" type="text" disabled />
-                                                                    <span
-                                                                        class="kt-input-icon__icon kt-input-icon__icon--right">
-                                                                        <span>
-                                                                            <i class="la la-clock-o"></i>
-                                                                        </span>
+
+
+                                                    <div class="col-md-3 form-group form-group-xs ">
+                                                        <label for="expired_date"
+                                                            class=" col-form-label kt-font-bold text-right">
+                                                            {{__('To Date')}}
+                                                            <span class="text-danger">*</span></label>
+                                                        <div class="input-group input-group-sm date">
+                                                            <div class="kt-input-icon kt-input-icon--right">
+                                                                <input type="text" class="form-control form-control-sm"
+                                                                    name="expired_date" id="expired_date"
+                                                                    placeholder="{{__('To Date')}}"
+                                                                    value="{{date('d-m-Y',strtotime($event->expired_date))}}"
+                                                                    disabled>
+                                                                <span
+                                                                    class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                    <span>
+                                                                        <i class="la la-calendar"></i>
                                                                     </span>
-                                                                </div>
+                                                                </span>
                                                             </div>
-
                                                         </div>
-
-
-
                                                     </div>
-                                                </div>
+
+                                                    {{-- <div class="col-md-3 form-group form-group-xs">
+                                                        <label class="col-form-label">{{__('To Time')}} <span
+                                                        class="text-danger">*</span></label>
+
+                                                    <div class="input-group input-group-sm timepicker">
+                                                        <div class="kt-input-icon kt-input-icon--right">
+                                                            <input class="form-control form-control-sm"
+                                                                value="{{$event->time_end}}" name="time_end"
+                                                                id="time_end" type="text" disabled />
+                                                            <span
+                                                                class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                                <span>
+                                                                    <i class="la la-clock-o"></i>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                </div> --}}
+
+
+
+                                            </div>
+                                        </div>
                                     </section>
 
 
@@ -705,10 +704,10 @@
                                         <div class="pb-2">
                                             <span>{{__('From Date')}}:</span>&emsp;
                                             <span class="kt-font-info">{{$event->issued_date}}
-                                                {{$event->time_start}}</span>&emsp;&emsp;
+                                            </span>&emsp;&emsp;
                                             <span>{{__('To Date')}}:</span>&emsp;
                                             <span class="kt-font-info">{{$event->expired_date}}
-                                                {{$event->time_end}}</span>&emsp;&emsp;
+                                            </span>&emsp;&emsp;
                                             <span>{{__('Venue')}}:</span>&emsp;
                                             <span
                                                 class="kt-font-info">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
@@ -1286,7 +1285,7 @@
                 name_en: 'required',
                 name_ar: 'required',
                 issued_date: 'required',
-                time_start: 'required',
+                // time_start: 'required',
                 venue_en: 'required',
                 expired_date: 'required',
                 time_end: 'required',
@@ -1298,7 +1297,7 @@
                 name_en: '',
                 name_ar: '',
                 issued_date: '',
-                time_start: '',
+                // time_start: '',
                 venue_en: '',
                 expired_date: '',
                 time_end: '',
@@ -1374,10 +1373,10 @@
                     name: $('#name_en').val(),
                     name_ar: $('#name_ar').val(),
                     issued_date: $('#issued_date').val(),
-                    time_start: $('#time_start').val(),
+                    time_start: '',
                     venue_en: $('#venue_en').val(),
                     expired_date: $('#expired_date').val(),
-                    time_end: $('#time_end').val(),
+                    time_end: '',
                     venue_ar: $('#venue_ar').val(),
                     address: $('#address').val(),
                     emirate_id: $('#emirate_id').val(),
@@ -1476,7 +1475,7 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td>'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
                         
                         }
@@ -1614,8 +1613,8 @@
             orientation: "bottom left"
         });
 
-        $('#time_start').timepicker();
-        $('#time_end').timepicker();
+        // $('#time_start').timepicker();
+        // $('#time_end').timepicker();
 
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');

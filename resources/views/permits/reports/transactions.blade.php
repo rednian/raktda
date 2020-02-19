@@ -40,8 +40,8 @@
                     <div class="col-7">
                         <div class="input-group input-daterange input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
-                                <input type="text" class="form-control form-control-sm"
-                                    placeholder="{{ __('Added on') }}" id="applied-date-from">
+                                <input type="text" class="form-control form-control-sm" placeholder="{{ __('Date') }}"
+                                    id="applied-date-from">
                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                     <span><i class="la la-calendar"></i></span>
                                 </span>
@@ -65,10 +65,10 @@
     <div class="col-md-2">
         <div class="form-group form-group-sm">
             <button class="btn btn-sm" style="background-color: #eee" onclick="printTransactions()">
-                <i class='fa fa-print'></i>
+                <i class='fa fa-print text-info kt-padding-0'></i>
             </button>
             <button class="btn btn-sm" style="background-color: #eee" onclick="excelTransactions()">
-                <i class='fa fa-file-excel'></i>
+                <i class='fa fa-file-excel text-success kt-padding-0'></i>
             </button>
         </div>
     </div>
@@ -94,7 +94,7 @@
                 <th>{{__('VAT')}}(5%)</th>
                 <th>{{__('Total')}}(AED)</th>
                 <th>{{__('From')}}</th>
-                <th>{{__('Added On')}}</th>
+                <th>{{__('Date')}}</th>
 
                 <th>{{__('View')}}</th>
                 {{-- <th class="text-center">{{__('Action')}}</th> --}}

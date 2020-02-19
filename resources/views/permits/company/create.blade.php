@@ -209,7 +209,7 @@
     <div class="col-sm-12">
       <div class="form-group">
         <label>{{__('Address in Ras Al Khaimah')}} <span class="text-danger">*</span></label>
-        <textarea required name="address" rows="2" autocomplete="off"
+        <textarea required name="address" rows="2" dir="ltr" autocomplete="off"
           class="form-control @error('address') is-invalid @enderror">{{old('address')}}</textarea>
         @if ($errors->has('address'))
         <div class="help-block"> {{$errors->first('address')}}</div>

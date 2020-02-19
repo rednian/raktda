@@ -59,6 +59,7 @@
             <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
+
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('PERMIT TERM')}}</th>
@@ -172,7 +173,7 @@
                             <label>{{__('Are you sure to Cancel this Permit of Ref No. ')}} <span class="text--maroon"
                                     id="cancel_permit_number"></span>
                                 ?</label>
-                            <textarea name="cancel_reason" rows="3" placeholder="Enter the reason here..."
+                            <textarea name="cancel_reason" rows="3" dir="ltr" placeholder="Enter the reason here..."
                                 style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                             <input type="hidden" id="cancel_permit_id" name="permit_id">
                             <input type="submit" class="btn btn-sm btn--maroon popup-submit-btn" value="Cancel">

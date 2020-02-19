@@ -83,11 +83,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
+
                                     @php
                                     $j = 1; $c_count = 0;
                                     @endphp
                                     @foreach($et->event_type_requirements as $req)
-                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    @if(isset($req->requirement) && strtolower($req->requirement->requirement_name) !=
+                                    'other documents' &&
                                     $req->requirement->type == 'corporate')
                                     @php
                                     $c_count++;
@@ -128,7 +131,8 @@
                                     $j = 1; $g_count = 0;
                                     @endphp
                                     @foreach($et->event_type_requirements as $req)
-                                    @if(strtolower($req->requirement->requirement_name) != 'other documents' &&
+                                    @if(isset($req->requirement) && strtolower($req->requirement->requirement_name) !=
+                                    'other documents' &&
                                     $req->requirement->type == 'government')
                                     @php
                                     $g_count++;

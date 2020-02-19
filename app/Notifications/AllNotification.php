@@ -49,10 +49,12 @@ class AllNotification extends Notification
         //             ->line('The introduction to the notification.')
         //             ->action('Notification Action', url('/'))
         //             ->line('Thank you for using our application!');
-        return (new MailMessage)
+        $send =  (new MailMessage)
             ->subject($this->data['subject'])
             ->markdown('mail.notification', ['data' => $this->data]);
 
+        return array_key_exists('attach', $this->data) ? $send->attach($this->data['file']) : $send;
+        
     }
 
     /**

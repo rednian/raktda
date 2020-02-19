@@ -2407,8 +2407,7 @@ class ArtistController extends Controller
 
     public function payment(Request $request)
     {
-       
-
+    
         $permit_id = $request->permit_id;
         $amount = $request->amount;
         $vat = $request->vat;
@@ -2453,6 +2452,9 @@ class ArtistController extends Controller
 
         $permit = Permit::where('permit_id', $permit_id)->first();
 
+        $eventArray = [];
+        $eventpermitnumber = '';
+
         if($paidEventFee)
         {
 
@@ -2468,17 +2470,21 @@ class ArtistController extends Controller
                 'type'=> 'event'
             ]);
 
+            $eventpermitnumber = generateEventPermitNumber();
+
             \App\Event::where('event_id', $permit->event_id)->update([
                 'paid' => 1,
                 'status' => 'active',
-                'permit_number' => generateEventPermitNumber()
+                'permit_number' => $eventpermitnumber
             ]);
+
+            $eventArray = \App\Event::where('event_id', $permit->event_id)->first();
 
             $event_id = $permit->event_id ;
 
             if($permit->event->is_truck == 1)
             {
-                $totaltrucks = count(EventTruck::where('event_id', $event_id)->where('paid', 0)->get());
+                $totaltrucks = EventTruck::where('event_id', $event_id)->where('paid', 0)->count();
 
                 if($totaltrucks > 0)
                 {
@@ -2489,9 +2495,9 @@ class ArtistController extends Controller
                         'user_id' => Auth::user()->user_id,
                         'transaction_id' => $trans->transaction_id,
                         'amount' => $tr_amount,
-                        'vat' => 0,
+                        'vat' => $tr_amount * 0.05,
                         'type'=> 'truck',
-                        'total_trucks' => count($permit->event->truck)
+                        'total_trucks' => $totaltrucks
                     ]);
     
                     EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
@@ -2509,7 +2515,7 @@ class ArtistController extends Controller
                         'transaction_id' => $trans->transaction_id,
                         'type' => 'liquor',
                         'amount' => $lq_amount,
-                        'vat' => 0,
+                        'vat' => $lq_amount * 0.05,
                         'user_id' => Auth::user()->user_id
                     ]);
     
@@ -2544,6 +2550,19 @@ class ArtistController extends Controller
             'is_paid' => 1
         ]);
 
+        if($paidEventFee)
+        {
+            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." and ".$$eventpermitnumber." are successfully completed. You can download the permit from the app.";
+        }else {
+            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." is successfully completed. You can download the permit from the app.";
+        }
+        
+        $files = [
+            url('storage').'/2/artist/1/1/file.pdf'
+        ];
+
+        paymentNotification($paidEventFee ? $eventArray : '', $permit, $files);
+        sendSms(Auth::user()->number, $message);
 
             DB::commit();
             $result = ['success', __('Payment Done Successfully'), 'Success'];
