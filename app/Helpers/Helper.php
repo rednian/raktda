@@ -1,6 +1,8 @@
 <?php
 
 use App\Library\Smpp;
+use App\User;
+use App\Notifications\AllNotification;
 
 function sms($number, $message = [])
 {
@@ -425,7 +427,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  350);
+        $payment_no = sprintf("%07d",  370);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -455,4 +457,36 @@ function getPaymentOrderId($from, $id)
     return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
 }
 
+function paymentNotification($event, $artist) {
+    $subject = $title = $content = '';
+    if($event && $artist)
+    {
+        $subject = 'Payment for #' . $event->permit_number . ' and '. $artist->permit_number.' is successfully completed.';
+        $title .= 'Payment for <b>#' . $event->permit_number .  ' and #'. $artist->permit_number.' is completed successfully';
+        $content = 'The payment for Event Permit <b>' . $event->permit_number . '</b> and Artist Permit  <b>' . $artist->permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index').'#valid'; 
+    }else if($event){
+        $subject = 'Payment for #' . $event->permit_number . ' is successfully completed.';
+        $title .= 'Payment for <b>#' . $event->permit_number .  ' is completed successfully';
+        $content = 'The payment for Event Permit <b>' . $event->permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index').'#valid'; 
+    }else { 
+        $subject = 'Payment for #'. $artist->permit_number.' is successfully completed.';
+        $title .= 'Payment for #'. $artist->permit_number.' is completed successfully';
+        $content = 'The payment for Artist Permit  <b>' . $artist->permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('artist.index').'#valid'; 
+    }
+    $buttonText = "Download Permit";
+    $user = User::where('user_id', \Auth::user()->user_id)->first();
+    $user->notify(new AllNotification([
+        'subject' => $subject,
+        'title' => $title,
+        'content' => $content,
+        'button' => $buttonText,
+        'url' => $url,
+        'mail' => true,
+        'attach' => true
+    ]));
+
+}
 

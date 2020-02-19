@@ -231,12 +231,12 @@
                 <table class="table table-hover table-borderless border table-striped" border="1">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th class="text-left">{{__('Event Name')}}</th>
-                            <th class="text-left">{{__('Event Type')}}</th>
-                            <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                            <th style="text-align:left">{{__('Event Name')}}</th>
+                            <th style="text-align:left">{{__('Event Type')}}</th>
+                            <th style="text-align:right">{{__('Fee')}} (AED) / Day</th>
                             <th class="text-center">{{__('No.of.days')}}</th>
                             <th class="text-center">{{__('Qty')}}</th>
-                            <th class="text-right">{{__('Total')}} (AED) </th>
+                            <th style="text-align:right">{{__('Total')}} (AED) </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -248,15 +248,12 @@
                         @endphp
                         @if($et->type == 'event')
                         <tr>
-                            <td class="text-left">
+                            <td style="text-align:left">
                                 {{getLangId() == 1 ? ucfirst($et->event->name_en) : $et->event->name_ar}}</td>
-                            <td class="text-left">
+                            <td style="text-align:left">
                                 {{getLangId() == 1 ? ucfirst($et->event->type->name_en) : $et->event->type->name_en }}
                             </td>
-                            <td class="text-right">{{number_format($et->event->type->amount,2)}}</td>
-                            @php
-                            $noofdays = abs($et->amount / $et->event->type->amount );
-                            @endphp
+                            <td style="text-align:right">{{number_format($et->event->type->amount,2)}}</td>
                             <td class="text-center">
                                 {{$noofdays}}
                             </td>
@@ -267,17 +264,17 @@
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($feetotal,2)}}</td>
+                            <td style="text-align:right">{{number_format($feetotal,2)}}</td>
                         </tr>
                         @elseif($et->type == 'truck')
                         <tr>
-                            <td class="text-left">{{__('Truck Fee')}}</td>
+                            <td style="text-align:left">{{__('Truck Fee')}}</td>
                             <td></td>
                             @php
                             $truck_count = $et->total_trucks;
                             $per_truck_fee = $et->amount / ( $truck_count * $noofdays ) ;
                             @endphp
-                            <td class="text-right">{{number_format($per_truck_fee,2)}} / truck</td>
+                            <td style="text-align:right">{{number_format($per_truck_fee,2)}} / truck</td>
                             <td class="text-center">
                                 {{$noofdays}}
                             </td>
@@ -288,16 +285,16 @@
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($feetotal,2)}}</td>
+                            <td style="text-align:right">{{number_format($feetotal,2)}}</td>
                         </tr>
                         @elseif($et->type == 'liquor')
                         <tr>
-                            <td class="text-left">{{__('Liqour Fee')}}</td>
+                            <td style="text-align:left">{{__('Liqour Fee')}}</td>
                             <td></td>
                             @php
                             $per_liquor_fee = $et->amount / $noofdays ;
                             @endphp
-                            <td class="text-right">{{number_format($per_liquor_fee,2)}}</td>
+                            <td style="text-align:right">{{number_format($per_liquor_fee,2)}}</td>
                             <td class="text-center">
                                 {{$noofdays}}
                             </td>
@@ -308,7 +305,7 @@
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
+                            <td style="text-align:right">{{number_format($et->amount,2)}}</td>
                         </tr>
                         @endif
                         @endforeach
@@ -331,7 +328,6 @@
                             <td>{{__('Total Vat')}} (5%)</td>
                             <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
                         </tr>
-                        <hr>
                         <tr>
                             <td class="kt-font-transform-u">
                                 {{__('Grand Total')}} (AED)

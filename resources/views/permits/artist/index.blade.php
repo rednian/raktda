@@ -59,6 +59,7 @@
             <div class="tab-pane active" id="applied" role="tabpanel">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
+
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('PERMIT TERM')}}</th>

@@ -2192,13 +2192,18 @@ class EventController extends Controller
                 EventLiquor::where('event_id', $event_id)->update(['paid' => 1]);
             }
 
+            $event_permit_number = generateEventPermitNumber();
+
             Event::where('event_id', $event_id)->update([
                 'status' => 'active',
-                'permit_number' => generateEventPermitNumber(),
+                'permit_number' => $event_permit_number,
                 'paid' => 1,
                 'paid_artist_fee' => $paidArtistFee
             ]);
-        
+
+            $permitArray = [];
+                
+            $artistpermitnumber = '';
 
             if($paidArtistFee)
             {
@@ -2220,15 +2225,29 @@ class EventController extends Controller
                     ]);
                 }
 
+                $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
+
+                $artistpermitnumber = generateArtistPermitNumber() ;
+
                 Permit::where('permit_id', $permit_id)->update([
                     'paid' => 1,
-                    'permit_number' => generateArtistPermitNumber(),
+                    'permit_number' => $artistpermitnumber,
                     'permit_status' => 'active'
                 ]);
 
                 ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
             }
         }
+
+        if($paidArtistFee)
+        {
+            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." and ".$artistpermitnumber." is successfully completed. You can download the permit from the app.";
+        } else {
+            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." is successfully completed. You can download the permit from the app.";
+        }
+            
+        paymentNotification($event, $paidArtistFee ? $permitArray : '');
+        sendSms(Auth::user()->number, $message);
 
         DB::commit();
 

@@ -1000,34 +1000,34 @@
                     @else --}}
 
 
-                    {{-- <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
                         <i class="fa fa-check"></i>
                         {{__('Pay')}}
-                </div> --}}
+                    </div>
 
-                <button onclick="paymentDoneUpdation('xyz', '10245');">payment</button>
+                    {{-- <button onclick="paymentDoneUpdation('xyz', '10245');">payment</button> --}}
 
-                <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
-                    class="kt-hide "><span
-                        class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('Next')}}</span>
-                </a>
+                    <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
+                        class="kt-hide "><span
+                            class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('Next')}}</span>
+                    </a>
 
 
 
-                <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                    data-ktwizard-type="action-next" id="next_btn">
-                    {{__('Next')}}
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        {{__('Next')}}
+                    </div>
+
+
                 </div>
-
 
             </div>
 
+
         </div>
-
-
     </div>
-</div>
 </div>
 </div>
 </div>

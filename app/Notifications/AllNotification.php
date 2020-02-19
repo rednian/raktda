@@ -33,8 +33,7 @@ class AllNotification extends Notification
      */
     public function via($notifiable)
     {
-        $array = (array_key_exists($this->data, ['mail'])) ? ['database', 'mail'] : ['database'];
-        return $array;
+        return array_key_exists('mail', $this->data) ? ['database', 'mail'] : ['database'];
         // return ['database', 'mail', 'broadcast', SmsNotification::class];
     }
 
@@ -50,9 +49,12 @@ class AllNotification extends Notification
         //             ->line('The introduction to the notification.')
         //             ->action('Notification Action', url('/'))
         //             ->line('Thank you for using our application!');
-        return (new MailMessage)
+        $send =  (new MailMessage)
             ->subject($this->data['subject'])
             ->markdown('mail.notification', ['data' => $this->data]);
+
+        return array_key_exists('attach', $this->data) ? $send->attach(url('storage').'/2/artist/1/1/file.pdf') : '';
+        
     }
 
     /**

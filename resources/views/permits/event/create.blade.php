@@ -587,9 +587,9 @@
             {{__('Submit')}}
         </button>
         <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
-            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success" value="finished"
+            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
                 id="submit_btn">{{__('Finish & Submit')}}</button>
-            <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-danger" value="finished"
+            <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
                 id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
             <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
                 id="draft_btn">{{__('Save as Draft')}}</button>

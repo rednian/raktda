@@ -345,6 +345,8 @@
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
                             onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
+                        {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
+
                         <a
                             href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
                                 class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide"
