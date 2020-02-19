@@ -238,23 +238,11 @@ class EventController extends Controller
 						$event->update(['status'=>$request->status]);
 						$request['type'] = 1;
 						$request['action'] = 'send back for amendments';
-						$event->comment()->create($request->all());
-
-						if($request->requirements_id){
-                            $requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
-                            // dd($request->requirements_id);
-							$event->additionalRequirements()->syncWithoutDetaching($requirements_id);
-						}
+                        $event->comment()->create($request->all());
 
 						if($request->requirements){
 							foreach ($request->requirements as $requirement) {
-								$requirement = Requirement::create([
-									'requirement_name'=>$requirement['name'],
-									'dates_required'=>!empty($requirement['date']) ? 1 : 0 ,
-									'requirement_description'=>$requirement['description'] ,
-									'requirement_type'=>'event'
-								]);
-								$event->additionalRequirements()->syncWithoutDetaching($requirement->requirement_id);
+                                $event->additionalRequirements()->create($requirement);
 							}
 						}
 
@@ -685,22 +673,23 @@ class EventController extends Controller
 
 		public function applicationDatatable(Request $request, Event $event)
 		{
-			$requirements = $event->requirements()->get();
-
-			$requirements = DataTables::of($requirements)
+            // dd($event->requirements()->get());
+			$requirements = DataTables::of($event->requirements)
 			->addColumn('name', function($requirement) use ($request){
-				return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
+                return $requirement;
+				// return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
 
 			})
 			->addColumn('issued_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+				//  return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
 			})
 			->addColumn('expired_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+				//  return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
 			})
 			->addColumn('files', function($requirement) use ($request){
-				$name = $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
-				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$requirement->pivot->path).'" data-fancybox="gallery"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($requirement->pivot->path).'</a>';
+                $name = null;
+				// $name = $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
+				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$requirement->path).'" data-fancybox="gallery"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($requirement->path).'</a>';
 			})
 			->rawColumns(['files', 'name'])
 			->make(true);

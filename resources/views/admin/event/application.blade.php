@@ -1272,6 +1272,7 @@
 			'pageLength': 20,
 		ajax:{ url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'},
 		serverSide: false,
+        order: [[1, 'desc']],
 		columnDefs:[
 		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
 		],
@@ -1292,12 +1293,12 @@
 		var html = '<section class="row">';
 			html += '	<div class="col-sm-4">'
 			html += '		<div class="form-group form-group-xs">';
-			html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
+			html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][requirement_name]" placeholder="{{ __('Requirement Name') }}">';
 			html += '		</div>';
 			html += '	</div>';
 			html += ' <div class="col-sm-4">';
 			html += ' 	<div  class="form-group form-group-xs">';
-			html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
+			html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][requirement_description]" class="form-control form-control-sm" >';
 			html += ' 	</div>';
 			html += ' </div>';
 			html += '	<div class="col-sm-4">';

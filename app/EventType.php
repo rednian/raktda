@@ -16,8 +16,8 @@ class EventType extends Model
 
     public function requirements()
     {
-        return $this->belongsToMany(Requirement::class, 'event_type_requirement', 'event_type_id', 'requirement_id')
-        ->withDefault(['requirement_id'=> null, 'requirement_name'=> null]);
+        return $this->belongsToMany(Requirement::class, 'event_type_requirement', 'event_type_id', 'requirement_id');
+        // ->withDefaults(['requirement_id'=> null, 'requirement_name'=> null]);
     }
 
     public function event()
