@@ -385,6 +385,7 @@
 @section('script')
 <script>
    $(document).ready(function(){
+       $('form')
       documentRequirement();
       validation();
       comment();
@@ -403,7 +404,6 @@
       ]
     });
    }
-
 
    function validation(){
       $(document).on('change','input[type=checkbox]', function(){

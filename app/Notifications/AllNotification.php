@@ -33,8 +33,7 @@ class AllNotification extends Notification
      */
     public function via($notifiable)
     {
-        $array = (array_key_exists('mail', $this->data)) ? ['database', 'mail'] : ['database'];
-        return $array;
+        return array_key_exists('mail', $this->data) ? ['database', 'mail'] : ['database'];
         // return ['database', 'mail', 'broadcast', SmsNotification::class];
     }
 
@@ -53,6 +52,7 @@ class AllNotification extends Notification
         return (new MailMessage)
             ->subject($this->data['subject'])
             ->markdown('mail.notification', ['data' => $this->data]);
+
     }
 
     /**

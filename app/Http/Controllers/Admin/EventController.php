@@ -128,7 +128,7 @@ class EventController extends Controller
 						'content' => $content,
 						'button' => $buttonText,
                         'url' => $url,
-                        'mail'=>true
+                        'mail'=> ['']
 					]));
 				}
 		        //END SEND NOTIFICATION COMPANY
@@ -187,6 +187,7 @@ class EventController extends Controller
 
 		public function submit(Request $request, Event $event)
 		{
+            dd($request->all());
 			try {
 				DB::beginTransaction();
 
