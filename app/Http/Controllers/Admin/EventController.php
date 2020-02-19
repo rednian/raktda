@@ -241,9 +241,9 @@ class EventController extends Controller
 						$event->comment()->create($request->all());
 
 						if($request->requirements_id){
-
                             $requirements_id = array_filter($request->requirements_id, function($v){ if(!empty($v)){ return ($v); } });
-							$event->additionalRequirements()->sync($requirements_id);
+                            // dd($request->requirements_id);
+							$event->additionalRequirements()->syncWithoutDetaching($requirements_id);
 						}
 
 						if($request->requirements){
@@ -254,7 +254,7 @@ class EventController extends Controller
 									'requirement_description'=>$requirement['description'] ,
 									'requirement_type'=>'event'
 								]);
-								$event->additionalRequirements()->sync($requirement->requirement_id);
+								$event->additionalRequirements()->syncWithoutDetaching($requirement->requirement_id);
 							}
 						}
 
