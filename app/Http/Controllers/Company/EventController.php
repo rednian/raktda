@@ -874,7 +874,7 @@ class EventController extends Controller
             return abort(401);
         }
         $data = $this->eventPreloadData();
-        $data['staff_comments'] = $event->comment()->where('type', 1)->get();
+        $data['staff_comments'] = $event->comment()->where('type', 1)->latest()->first();
         $data['event'] = $event;
         if (! $event) {
             abort(401);
@@ -1003,7 +1003,7 @@ class EventController extends Controller
         $add_req = Event::with('additionalRequirements')->where('event_id', $event_id)->first();
 
         foreach ($add_req->additionalRequirements as $req) {
-            array_push($requirement_ids, $req->requirement_id);
+            array_push($requirement_ids, $req->additional_requirement_id);
         }
 
         $total_addi = $add_req['additionalRequirements']->count();
@@ -1079,15 +1079,13 @@ class EventController extends Controller
                                     Storage::move(session($userid  . '_event_doc_file_' . $l)[$k], 'public/'.$newPathLink);
                                 }
 
-                                
-
                                 EventRequirement::create([
                                     'issued_date' => !empty((array) $dod[$m]) ? Carbon::parse($dod[$m]['issue_date'])->toDateTimeString() : '',
                                     'expired_date' => !empty((array) $dod[$m]) ? Carbon::parse($dod[$m]['exp_date'])->toDateTimeString() : '',
                                     'created_at' =>  Carbon::now()->toDateTimeString(),
-                                    'created_by' =>  Auth::user()->user_id,
+                                    // 'created_by' =>  Auth::user()->user_id,
                                     'event_type_id' => $evd['event_type_id'],
-                                    'type' => 'event',
+                                    'type' => ($m > (int) $total_req) ? 'additional' : 'event',
                                     'requirement_id' => $l,
                                     'event_id' => $event_id,
                                     'path' =>  $newPathLink,
@@ -1590,8 +1588,12 @@ class EventController extends Controller
         $event_id = $request->eventId;
         $req_id = $request->reqId;
 
-        $docs = EventRequirement::with('requirement')->where('event_id', $event_id)->where('requirement_id', $req_id)->orderBy('created_at', 'desc')->get();
-        // dd($docs);
+        if($request->type == 'event') {
+            return EventRequirement::with('requirement')->where('event_id', $event_id)->where('requirement_id', $req_id)->orderBy('created_at', 'desc')->get();
+        }else {
+            return EventRequirement::with('additionalRequirement')->where('event_id', $event_id)->where('requirement_id', $req_id)->orderBy('created_at', 'desc')->get();
+        }
+
         return $docs;
     }
 
@@ -2248,8 +2250,10 @@ class EventController extends Controller
 
              
         $files = [
-            url('storage').'/2/artist/1/1/file.pdf'
+           
         ];
+
+        $event = Event::where('event_id', $event_id)->first();
             
         paymentNotification($event, $paidArtistFee ? $permitArray : '', $files);
         sendSms(Auth::user()->number, $message);

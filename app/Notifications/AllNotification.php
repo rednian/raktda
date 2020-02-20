@@ -53,8 +53,13 @@ class AllNotification extends Notification
             ->subject($this->data['subject'])
             ->markdown('mail.notification', ['data' => $this->data]);
 
-        return array_key_exists('attach', $this->data) ? $send->attach($this->data['file']) : $send;
+        // if(array_key_exists('attach', $this->data)) {
+        //     foreach($this->data['file'] as $file) {
+        //          $send->attach($file) ;
+        //     }
+        // }  
         
+        return $send ;
     }
 
     /**
