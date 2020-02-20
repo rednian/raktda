@@ -2312,7 +2312,7 @@ class EventController extends Controller
             $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." is successfully completed. You can download the permit from the app.";
         }
 
-        
+
         $files = [
 
         ];

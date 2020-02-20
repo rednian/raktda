@@ -372,10 +372,10 @@ class ArtistPermitController extends Controller
             $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
             $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Requires Amendment';
             $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-            $url = URL::signedRoute('artist.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend']);
+            $url = URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend']);
 
             $sms_content = ['name'=>'artist permit', 'status'=> 'bounced back for amendment', 'reference_number'=>$permit->reference_number,
-            'url'=> URL::signedRoute('artist.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend'])];
+            'url'=> URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend'])];
         }
 
         if($type == 'reject'){

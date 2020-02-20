@@ -834,7 +834,7 @@
 													<a class="nav-link" data-toggle="tab" href="#food-truck-tab" role="tab">
 														{{__('FOOD TRUCK REQUIREMENTS')}}
 														<span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
-													</a>s
+													</a>
 												</li>
 											@endif
 
@@ -1489,7 +1489,7 @@
 
 	function eventDetails() {
 
-	$('form#kt_form').validate({
+	var form = $('form#kt_form').validate({
         invalidHandler: function (event, validator) {
 		KTUtil.scrollTop();
 		},
@@ -1501,6 +1501,18 @@
 		},
 
 	});
+
+    $('form#kt_form').submit(function(e){
+        var note = $(this).find('textarea[name=comment]').val().trim().length;
+            if(form.valid() && (note != 0)){
+                KTApp.block('.kt-portlet', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            }
+        });
 
 	var approver = $('select#select-approver');
 	var departmentsSelect2 = $('select#select-department');

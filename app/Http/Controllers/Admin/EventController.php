@@ -344,10 +344,10 @@ class EventController extends Controller
 				$subject = $event->reference_number . ' - Application Approved';
 				$title = 'Application has been Approved';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
-				$url = URL::signedRoute('company.event.payment', ['event' => $event->event_id]);
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id]);
                 $buttonText = 'Make Payment';
-                $sms_content = ['name'=>'event permit', 'status'=> 'approved', 'reference_number'=>$event->reference_number,
-                'url'=> URL::signedRoute('company.event.show', ['event' => $event->event_id]), 'payment'=>true];
+                $sms_content = ['name'=>'event show', 'status'=> 'approved', 'reference_number'=>$event->reference_number,
+                'url'=> URL::signedRoute('event.show', ['event' => $event->event_id]), 'payment'=>true];
 			}
 
 			if($type == 'amend'){
@@ -683,7 +683,7 @@ class EventController extends Controller
                     return $requirement->requirement->requirement_name;
                 }
                 if($requirement->type == 'additional'){
-                    return $requirement->additionalRequirement;
+                    return $requirement->additionalRequirement->requirement_name;
                     // return $requirement->additionalRequirement->requirement_name;
                 }
 			})
@@ -698,11 +698,13 @@ class EventController extends Controller
                     $name = $requirement->requirement->requirement_name;
                 }
                 if($requirement->type == 'additional'){
-                    $name = $requirement->additionalRequirement->requirement_name;
-                    // return $requirement->additionalRequirement->requirement_name;
+                    if($requirement->type == 'event'){
+                        $name = $requirement->requirement->requirement_name;
+                    }
+                    if($requirement->type == 'additional'){
+                        $name = $requirement->additionalRequirement->requirement_name;
+                    }
                 }
-                // $name = $requirement->type == 'event' ? $requirement->requirement->requirement_name :$requirement->additionalRequirement->requirement_name;
-				// $name = $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
 				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$requirement->path).'" data-fancybox="gallery"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($requirement->path).'</a>';
 			})
 			->rawColumns(['files', 'name'])
