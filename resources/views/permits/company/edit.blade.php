@@ -232,7 +232,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label>{{__('Email')}} <span class="text-danger">*</span></label>
-                    <input name="company_email" autocomplete="off"
+                    <input required name="company_email" autocomplete="off"
                         class="form-control form-control-sm @error('company_email') is-invalid @enderror" type="text"
                         value="{{old('company_email', $company->company_email)}}">
                 </div>
@@ -390,7 +390,7 @@
                                 <input required autocomplete="off" name="emirate_id_expired_date"
                                     class="date-picker end form-control form-control-sm @error('emirate_id_expired_date') is-invalid @enderror"
                                     type="text"
-                                    value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null }}">
+                                    value="{{ old('emirate_id_expired_date',($company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null))}}">
                                 @if ($errors->has('emirate_id_expired_date'))
                                 <div class="invalid-feedback"> {{$errors->first('emirate_id_expired_date')}}</div>
                                 @endif
@@ -524,6 +524,33 @@
         uploaded();
         hasUrl();
 
+
+       var form =  $('form[name=edit_company]').validate({
+           rules:{
+            trade_license_expired_date:{
+                required: true,
+                greaterThan: $(this).val()
+            }
+            },
+            invalidHandler: function(e, validator){
+                KTUtil.scrollTop();
+                // KTApp.unblock('.kt-portlet');
+            }
+        });
+
+
+        $('form[name=edit_company]').submit(function(){
+            if(form.valid()){
+                KTApp.block('.kt-portlet', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            }
+        });
+
+
         $('.select2').select2({
             placeholder: '{{__('Please select Area in Ras Al Khaimah')}}',
             allowClear: true
@@ -615,15 +642,6 @@
                     //   },
 
                     // });
-
-
-
-
-
-
-
-
-
 
 
     function hasUrl() {
@@ -920,6 +938,16 @@
     $.validator.addMethod("notEqual", function (value, element, param) {
         return this.optional(element) || value != param;
     }, "Should not be the same as username");
+
+    $.validator.addMethod("greaterThan", function(value, element, params) {
+
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date($(params).val());
+        }
+
+        return isNaN(value) && isNaN($(params).val())
+            || (Number(value) > Number($(params).val()));
+    },'Expiry date must be greater than today.');
 
     function datePicker() {
         var arrows;

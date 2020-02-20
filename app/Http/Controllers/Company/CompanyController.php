@@ -205,7 +205,7 @@ class CompanyController extends Controller
       return redirect()->back();
     }
     if ($this->hasRequirement($company) && $request->submit != 'draft') {
-      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error'])->withInput();
     }
        $validate = Validator::make($request->all(), [
                'name_en'=> 'required|max:255',

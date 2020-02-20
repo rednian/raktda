@@ -244,7 +244,7 @@
             <div class="input-group input-group-sm mk-fcf" style="display: flex;align-items: center">
               <input value="{{old('mobile_number')}}" type="text" required name="mobile_number" id="mobile_number"
                 class="form-control form-control-sm" pattern="[0-9]+" style="height:auto !important;border-radius:0;"
-                required autocomplete="off" min="0" autofocus>
+                required autocomplete="off" min="0" autofocus placeholder="e.g. 561234567">
             </div>
           </div>
         </div>
@@ -371,6 +371,11 @@
 
       mobile_number:{
         validators:{
+            stringLength: {
+            min: 6,
+            max: 10,
+            message: 'The mobile number must be more than 6 characters and less than 10 character long'
+          },
            remote: {
              url: '{{ route('company.isexist') }}',
              type: 'get',
@@ -379,7 +384,7 @@
              delay: 1000
            },
            regexp: {
-                regexp: '/^[0-9]*$/',
+                regexp: '/^((?!(0))[0-9]{9})$/',
                 message:' The mobile number can only accept number.'
             }
         }
