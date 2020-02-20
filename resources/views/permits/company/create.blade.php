@@ -339,7 +339,7 @@
           "countryCode":"ae"
         });
 
-        
+
 
         $('form').bootstrapValidator({
           message: 'This value is not valid',
@@ -377,7 +377,11 @@
              data: {mobile_number: $(this).val(), phoneCode: $('#mobile_number_phoneCode').val()},
              message: 'The mobile number is already exist.',
              delay: 1000
-           }
+           },
+           regexp: {
+                regexp: '/^[0-9]*$/',
+                message:' The mobile number can only accept number.'
+            }
         }
       },
 
@@ -435,6 +439,7 @@
             }
         }
       },
+
 
       password: {
         validators: {
@@ -507,7 +512,7 @@
     }
   });
 
-  
+
 
 });
   </script>

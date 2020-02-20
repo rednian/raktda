@@ -77,8 +77,8 @@ $user_lang = $user->languageId;
 
             @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
             <div class="kt-widget__action">
-              <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}" class="btn btn-sm btn-upper"
-                style="background: #edeff6">{{__('Update Details')}}</a>&nbsp;
+              <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}" class="btn btn-sm btn--maroon kt-font-transform-u"
+               >{{__('Update Details')}}</a>&nbsp;
               <button type="button" class="kt-hide btn btn-success btn-sm btn-upper">add user</button>&nbsp;
               <button type="button" class="kt-hide btn btn-brand btn-sm btn-upper">new task</button>
             </div>
