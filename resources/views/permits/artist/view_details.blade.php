@@ -16,11 +16,48 @@
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{URL::signedRoute('artist.index')}}#{{$tab}}"
-                    class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+
+                @if($permit_details->permit_status == 'approved-unpaid')
+                @if($permit_details->event)
+                @if($permit_details->event->firm == 'government' || $permit_details->event->exempt_payment == 1)
+                <a href="{{URL::signedRoute('company.happiness_center',  $permit_details->permit_id)}}"
+                    class="btn btn-success btn-sm kt-font-bold kt-font-transform-u kt-margin-r-10">
+                    {{__('Happiness')}}
                 </a>
+                @endif
+                @else
+                <a href="{{URL::signedRoute('company.make_payment',  $permit_details->permit_id)}}"
+                    class="btn btn-success btn-sm kt-font-bold kt-font-transform-u kt-margin-r-10">
+                    {{__('Payment')}}
+                    @endif
+                    @elseif($permit_details->permit_status == 'modification request')
+                    @php
+                    $approved_artist = false;
+                    foreach ($permit_details->artistPermit as $ap) {
+                    if ($ap->artist_permit_status == 'approved') {
+                    $approved_artist = true;
+                    }
+                    }
+                    @endphp
+                    <a href="{{URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit'])}}"><span
+                            class="btn btn-warning btn-sm kt-margin-r-10">{{__('Edit')}}</span></a>
+                    @if($approved_artist)
+                    @if($permit_details->event)
+                    @if($permit_details->event->firm == 'government')
+                    <a href="{{URL::signedRoute('company.happiness_center', $permit_details->permit_id)}}"><span
+                            class="btn btn-success btn-sm kt-margin-r-10">{{__('Happiness')}}</span></a>
+                    @endif
+                    @else
+                    <a href="{{URL::signedRoute('company.make_payment', $permit_details->permit_id)}}"><span
+                            class="btn btn-success btn-sm kt-margin-r-10">{{__('Payment')}}</span></a>
+                    @endif
+                    @endif
+                    @endif
+                    <a href="{{URL::signedRoute('artist.index')}}#{{$tab}}"
+                        class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
+                        <i class="la la-arrow-left"></i>
+                        {{__('Back')}}
+                    </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">

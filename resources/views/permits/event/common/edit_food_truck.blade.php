@@ -16,6 +16,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                @if(isset($from) && $from == 'amend')
+                <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
+                    <div class="alert-icon">
+                        <i class="flaticon-questions-circular-button"></i>
+                    </div>
+                    <div class="alert-text">{{__('If you Add or Update Food Truck Details, Permit will get Amended')}}
+                    </div>
+                </div>
+                @endif
                 @include('permits.event.common.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">

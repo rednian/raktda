@@ -445,7 +445,7 @@
 @if($event->truck()->exists())
 @include('permits.event.common.amend_food_truck', ['truck_req'=>$truck_req])
 @else
-@include('permits.event.common.edit_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.common.edit_food_truck', ['truck_req'=>$truck_req, 'from' => 'amend'])
 @endif
 
 @include('permits.event.common.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
