@@ -534,7 +534,6 @@
             },
             invalidHandler: function(e, validator){
                 KTUtil.scrollTop();
-                // KTApp.unblock('.kt-portlet');
             }
         });
 
