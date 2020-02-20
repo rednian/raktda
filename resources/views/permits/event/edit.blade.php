@@ -164,8 +164,6 @@
 
         $('#submit_btn').css('display', 'none');
 
-        
-
         var isTruck = $('#prev_val_isTruck').val();
         if(isTruck == 0){
             $('#truckEditBtn').hide();

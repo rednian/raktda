@@ -158,7 +158,8 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                     <i class="fa fa-edit fa-2x pull-right" id="truckEditBtn"
                                                         onclick="editTruck()"></i>
                                                 </div>
-                                                <input type="hidden" id="prev_val_isTruck" value="0">
+                                                <input type="hidden" id="prev_val_isTruck"
+                                                    value="{{isset($event) ? $event->is_truck == '1' ? '1': '0' : '0'}}">
                                             </div>
                                         </div>
 

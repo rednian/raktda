@@ -210,6 +210,7 @@
                                             <tr>
                                                 <th colspan="2">#</th>
                                                 <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                                                <th class="text-center">{{__('No.of.days')}}</th>
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>

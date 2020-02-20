@@ -427,7 +427,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  375);
+        $payment_no = sprintf("%07d",  386);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -457,7 +457,7 @@ function getPaymentOrderId($from, $id)
     return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
 }
 
-function paymentNotification($event, $artist, $files) {
+function paymentNotification($event, $artist, $files, $amount) {
     $subject = $title = $content = $artist_permit_number = $event_permit_number = '';
 
     $event_permit_number = isset($event->permit_number) ? $event->permit_number : '';
@@ -465,19 +465,19 @@ function paymentNotification($event, $artist, $files) {
 
     if($event && $artist)
     {
-        $subject = 'Payment for #' . $event_permit_number . ' and '. $artist_permit_number.' is successfully completed.';
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #'. $artist_permit_number;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('event.index').'#valid'; 
     }else if($event){
-        $subject = 'Payment for #' . $event_permit_number . ' is successfully completed.';
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number ;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('event.index').'#valid'; 
     }else { 
-        $subject = 'Payment for #'. $artist_permit_number.' is successfully completed.';
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
         $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('artist.index').'#valid'; 
     }
     $buttonText = "Download Permit";
