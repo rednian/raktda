@@ -21,12 +21,11 @@ class EventRequirement extends Model
     }
     public function requirement()
     {
-        if($this->type == 'event'){
-            return $this->belongsTo(Requirement::class, 'requirement_id');
-        }
-        if($this->type == 'additional'){
-            return $this->belongsTo(EventAdditionalRequiremment::class, 'requirement_id', 'additional_requirement_id');
-        }
+        return $this->belongsTo(Requirement::class, 'requirement_id')->withDefault();
+    }
 
+    public function additionalRequirement()
+    {
+        return $this->belongsTo(EventAdditionalRequiremment::class,  'requirement_id', 'additional_requirement_id')->withDefault();
     }
 }
