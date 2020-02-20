@@ -26,7 +26,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('NEW') }}</a>
                 <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
               <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_request }}</span>
@@ -39,7 +39,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('PENDING') }}</a>
                 <small class="kt-widget24__desc">{{ __('All Request') }}</small>
               </div>
               <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending_request }}</span>
@@ -52,7 +52,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Cancelled') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('CANCELLED') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $cancelled_permit }}</span>
@@ -65,10 +65,10 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Approved') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('PROCESSING') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
-              <span class="kt-widget24__stats kt-font-default">{{ $approved_permit }}</span>
+              <span class="kt-widget24__stats kt-font-default">{{ $processing }}</span>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Rejected') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('REJECTED') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $rejected_permit }}</span>
@@ -91,7 +91,7 @@
           <div class="kt-widget24 kt-widget24--solid">
             <div class="kt-widget24__details">
               <div class="kt-widget24__info">
-                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
+                <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('COMPLETED') }}</a>
                 <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
               </div>
               <span class="kt-widget24__stats kt-font-default">{{ $active_request }}</span>
@@ -104,19 +104,32 @@
       <div class="col-md-12">
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 "
           role="tablist" id="artist-permit-nav">
-          <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request"
-              data-target="#new-request">{{ __('New Requests') }} <span
-                class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span></a></li>
-          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#pending-request"
-              data-target="#pending-request">{{ __('Pending Request') }} <span
-                class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span></a></li>
-          <li class="nav-item"><a class="nav-link " data-toggle="tab"
-              href="#processing-permit">{{ __('Processing Events') }}</a></li>
-          <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Permit Actions') }}
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span></a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="tab"
-              href="#calendar">{{ __('All Events Calendar') }}</a></li>
+          <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('New Requests') }}
+                <span class="kt-badge kt-badge--outline kt-badge--info">{{ $new_request }}</span>
+            </a>
+        </li>
+          <li class="nav-item">
+              <a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }}
+                <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span>
+            </a>
+        </li>
+          <li class="nav-item">
+              <a class="nav-link " data-toggle="tab" href="#processing-permit">{{ __('Processing Events') }}
+                <span class="kt-badge kt-badge--outline kt-badge--info">{{ $processing }}</span>
+            </a>
+        </li>
+          <li class="nav-item">
+              <a class="nav-link " data-toggle="tab" href="#active-permit">{{ __('Permit Actions') }}
+                <span class="kt-badge kt-badge--outline kt-badge--info">{{ $active }}</span>
+            </a>
+        </li>
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a>
+            </li>
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a>
+            </li>
         </ul>
       </div>
     </section>
@@ -1113,7 +1126,8 @@
           initComplete: function(setting, json){
             $('#new-count').html(json.new_count);
             $('#pending-count').html(json.pending_count);
-            $('#cancelled-count-count').html(json.cancelled_count);
+            $('#cancelled-count').html(json.cancelled_count);
+            $('#processing-count').html(json.processing);
            $('[data-toggle="tooltip"]').tooltip();
         }
        });

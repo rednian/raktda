@@ -1115,7 +1115,7 @@
                                                                         </td>
                                                                         <td>
                                                                             <div class="form-group form-group-xs">
-                                                                               <button type="button" @click="remove(index)" class="btn btn-sm btn-clean btn-secondary"><span class="la la-times text-danger"></span></button>
+                                                                               <button tabindex="-1" type="button" @click="remove(index)" class="btn btn-sm btn-clean btn-secondary"><span class="la la-times text-danger"></span></button>
                                                                             </div>
                                                                         </td>
                                                                     </tr>

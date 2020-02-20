@@ -12,7 +12,7 @@
         </div>
         <div class="col-8">
             <form class="form-row">
-			<div class="col-4">
+			{{-- <div class="col-4">
 				  <div class="input-group input-group-sm">
 				  		<div class="kt-input-icon kt-input-icon--right">
 				  			<input type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="archive-applied-date" >
@@ -21,7 +21,7 @@
 				  			</span>
 				  		</div>
 				</div>
-			</div>
+			</div> --}}
 			<div class="col-3">
 				<select name="" id="archive-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="archivePermit.draw()" >
 					<option selected disabled >{{ __('REQUEST TYPE') }}</option>

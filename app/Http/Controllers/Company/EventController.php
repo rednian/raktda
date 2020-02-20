@@ -2250,12 +2250,12 @@ class EventController extends Controller
 
 
         $files = [
-           
+
         ];
 
 
         $event = Event::where('event_id', $event_id)->first();
-            
+
         paymentNotification($event, $paidArtistFee ? $permitArray : '', $files);
         sendSms(Auth::user()->number, $message);
 
