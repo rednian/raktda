@@ -16,17 +16,80 @@
         </div>
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
-                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
-                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                @if($event->status == '' && $event->firm == 'government')
+                <a href="{{URL::signedRoute('event.happiness', $event->event_id)}}" title="{{__('Happiness')}}"
+                    class="btn btn-sm btn-success kt-margin-r-10">{{__('Happiness')}}
                 </a>
+                @elseif($event->status == 'approved-unpaid')
+                <a href="{{URL::signedRoute('company.event.payment', $event->event_id)}}" title="{{__('Payment')}}"
+                    class="btn btn-sm btn-success kt-margin-r-10">{{__('Payment')}}
+                </a>
+
+                @elseif($event->status == 'need modification')
+                <a href="{{URL::signedRoute('event.edit', $event->event_id)}}" title="{{__('Edit')}}"
+                    class="btn btn-sm btn-warning  kt-margin-r-10">{{__('Edit')}}
+                </a>
+                <a href="{{URL::signedRoute('event.add_artist', $event->event_id)}}"
+                    class="kt-margin-r-10 kt-font-dark"><i class="fa fa-user-plus"></i>
+                </a>
+                @elseif($event->status == 'active')
+
+                @php
+                $amend_grace = getSettings()->event_grace_period_amendment;
+                $approved_date = strtotime($event->approved_date);
+                $today = strtotime(date('Y-m-d 00:00:00'));
+                $diff = abs($today - $approved_date) / 60 / 60 / 24;
+                @endphp
+
+                @if($diff <= $amend_grace) <a href="{{URL::signedRoute('event.amend', $event->event_id)}}" title="amend"
+                    class="btn btn-sm btn-warning kt-margin-r-10 ">{{__('Amend')}}</a>
+                    <a href="{{URL::signedRoute('event.add_artist', $event->event_id)}}"
+                        class="kt-font-dark kt-margin-r-10"><i class="fa fa-user-plus"></i></a>
+                    @endif
+                    @endif
+                    <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
+                        class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                        <i class="la la-arrow-left"></i>
+                        {{__('Back')}}
+                    </a>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
-                <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
-                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                @if($event->status == '' && $event->firm == 'government')
+                <a href="{{URL::signedRoute('event.happiness', $event->event_id)}}" title="{{__('Happiness')}}"
+                    class="btn-success btn btn-sm kt-margin-r-10">
+                    <i class="fa fa-smile"> </i>
                 </a>
+                @elseif($event->status == 'approved-unpaid')
+                <a href="{{URL::signedRoute('company.event.payment', $event->event_id)}}" title="{{__('Payment')}}"
+                    class="btn-success btn btn-sm  kt-margin-r-10"> <i class="fa fa-money-bill-wave"> </i>
+                </a>
+
+                @elseif($event->status == 'need modification')
+                <a href="{{URL::signedRoute('event.edit', $event->event_id)}}" title="{{__('Edit')}}"
+                    class="btn btn-sm btn-warning  kt-margin-r-10"><i class="fa fa-edit"></i>
+                </a>
+                <a href="{{URL::signedRoute('event.add_artist', $event->event_id)}}"
+                    class="kt-margin-r-10 kt-font-dark"><i class="fa fa-user-plus"></i>
+                </a>
+                @elseif($event->status == 'active')
+
+                @php
+                $amend_grace = getSettings()->event_grace_period_amendment;
+                $approved_date = strtotime($event->approved_date);
+                $today = strtotime(date('Y-m-d 00:00:00'));
+                $diff = abs($today - $approved_date) / 60 / 60 / 24;
+                @endphp
+
+                @if($diff <= $amend_grace) <a href="{{URL::signedRoute('event.amend', $event->event_id)}}"
+                    title="{{__('Amend')}}" class="btn btn-sm btn-warning kt-margin-r-10 "><i class="fa fa-edit"> </i>
+                    <a href="{{URL::signedRoute('event.add_artist', $event->event_id)}}"
+                        class="kt-font-dark kt-margin-r-10"><i class="fa fa-user-plus"></i></a>
+                    @endif
+                    @endif
+                    <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
+                        class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                        <i class="la la-arrow-left"></i>
+                    </a>
             </div>
         </div>
     </div>
@@ -350,14 +413,20 @@
                         @php
                         $pre_req = '';$j = 0;
                         @endphp
-                        @foreach($eventReq as $req)
+                        @foreach($eventReq as $reqd)
                         @php
-                        if($pre_req == $req->requirement_id){
+                        if($pre_req == $reqd->requirement_id){
                         $j++;
                         }else {
                         $j = 0;
                         }
-                        $pre_req = $req->requirement_id;
+                        $pre_req = $reqd->requirement_id;
+                        if($reqd->type == 'event')
+                        {
+                        $req = $reqd->requirement;
+                        }else if($reqd->type == 'additional') {
+                        $req = $reqd->additionalRequirement;
+                        }
                         @endphp
                         @if($j == 0)
                         <tr>
@@ -371,17 +440,18 @@
                                 {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}&nbsp;{{'-'.strval($j + 1)}}
                             </td>
                             <td class="text-center">
-                                {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
+                                {{$reqd->issued_date->year > 1 ? date('d-m-Y', strtotime($reqd->issued_date)) : ''}}
                             </td>
                             <td class="text-center">
-                                {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
+                                {{$reqd->expired_date->year > 1 ? date('d-m-Y', strtotime($reqd->expired_date)) : ''}}
                             </td>
                             <td class="text-center">
-                                <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
+                                <a href="{{asset('storage')}}{{'/'.$reqd->pivot['path']}}" target="blank" ">
                                     <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>
+
                         @endforeach
                     </tbody>
                 </table>

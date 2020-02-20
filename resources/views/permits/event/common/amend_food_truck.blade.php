@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="alert alert-outline-danger fade show" role="alert">
+                <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
                     <div class="alert-icon">
                         <i class="flaticon-questions-circular-button"></i>
                     </div>
