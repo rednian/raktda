@@ -1080,6 +1080,11 @@
 														</div>
 														<div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
 														<div class="card-body">
+                                                            <div v-if="show" class="alert alert-outline-danger kt-margin-b-5 kt-padding-b-5 kt-padding-t-5 fade show" role="alert">
+                                                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                                                <div class="alert-text">Maximum additional requirements limit reach!</div>
+
+                                                            </div>
                                                             <div class="form-group form-group-xs">
                                                                 <button @click="add" class="btn btn-sm btn-warning kt-font-transform-u kt-font-dark" type="button">
                                                                     <span class="la la-plus"></span>
@@ -1100,7 +1105,7 @@
                                                                         <td class="text-center">@{{ index+1 }}</td>
                                                                         <td>
                                                                             <div class="form-group form-group-xs">
-                                                                                <input v-model="requirement.name_en" :name="`requirements[${index}][requirement_name]`" type="text" class="form-control" autocomplete="off" autofocus>
+                                                                                <input v-model="requirement.name_en" :name="`requirements[${index}][requirement_name]`" type="text" class="form-control" autocomplete="off">
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -1179,6 +1184,7 @@
 	new Vue({
         el: '#app-wizard',
         data: {
+            show: false,
             comment: null,
             requirements: [
                 {name_en: null, description_en: null, name_ar: null, description_ar: null }
@@ -1186,9 +1192,16 @@
         },
         methods: {
             add: function(){
-                this.requirements.push({name_en: null, description_en: null, name_ar: null, description_ar: null });
+                if(this.requirements.length < 10){
+                    this.show = false;
+                    this.requirements.push({name_en: null, description_en: null, name_ar: null, description_ar: null });
+                }
+                else{
+                    this.show = true;
+                }
             },
             remove: function(index){
+                this.show = false;
                 this.$delete(this.requirements, index);
             }
         },
