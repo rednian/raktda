@@ -1074,20 +1074,54 @@
 													<div class="card-header" id="heading-requirements">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
 															<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL REQUIREMENTS') }}</span>
-																<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
+																<small class="text-muted">{{ __('Add additional requirement to display in the client uploads.') }}</small>
 															</h6>
 														</div>
 														</div>
 														<div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
 														<div class="card-body">
-															<table class="table table-borderless table-hover table-striped  border" id="additional-requirement">
-																<thead>
-																	<tr>
-																		<th></th>
-																		<th>{{ __('REQUIREMENT NAME') }}</th>
-																	</tr>
-																</thead>
-															</table>
+                                                            <div v-if="show" class="alert alert-outline-danger kt-margin-b-5 kt-padding-b-5 kt-padding-t-5 fade show" role="alert">
+                                                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                                                <div class="alert-text">Maximum additional requirements limit reach!</div>
+
+                                                            </div>
+                                                            <div class="form-group form-group-xs">
+                                                                <button @click="add" class="btn btn-sm btn-warning kt-font-transform-u kt-font-dark" type="button">
+                                                                    <span class="la la-plus"></span>
+                                                                    Add new requirement
+                                                                </button>
+                                                            </div>
+                                                            <table class="table table-borderless table-hover border table-sm">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="no-wrap">#</th>
+                                                                        <th>Requirement Name</th>
+                                                                        <th>Description</th>
+                                                                        <th class="no-wrap"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(requirement, index) in requirements" :key="index">
+                                                                        <td class="text-center">@{{ index+1 }}</td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                                <input v-model="requirement.name_en" :name="`requirements[${index}][requirement_name]`" type="text" class="form-control" autocomplete="off">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                                <input :name="`requirements[${index}][requirement_description]`"  v-model="requirement.description_en" type="text" class="form-control" autocomplete="off">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                               <button type="button" @click="remove(index)" class="btn btn-sm btn-clean btn-secondary"><span class="la la-times text-danger"></span></button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
 														</div>
 													</div>
 												</div>
@@ -1147,13 +1181,34 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	<script>
 	var add_requirements_table = {};
-	new Vue({ el: '#app-wizard', data: { comment: null } });
+	new Vue({
+        el: '#app-wizard',
+        data: {
+            show: false,
+            comment: null,
+            requirements: [
+                {name_en: null, description_en: null, name_ar: null, description_ar: null }
+            ]
+        },
+        methods: {
+            add: function(){
+                if(this.requirements.length < 10){
+                    this.show = false;
+                    this.requirements.push({name_en: null, description_en: null, name_ar: null, description_ar: null });
+                }
+                else{
+                    this.show = true;
+                }
+            },
+            remove: function(index){
+                this.show = false;
+                this.$delete(this.requirements, index);
+            }
+        },
+        });
 
 	$(document).ready(function () {
-
 		checkAll();
-
-
 
 	$("#event-table tbody").on("mousedown", "tr", function() {
 		$(".selected").not(this).removeClass("selected");
@@ -1263,64 +1318,6 @@
 		columns:[
 		{data: 'path'}
 		]
-	});
-	}
-
-	function additionalRequirementTable(){
-	add_requirements_table = $('table#additional-requirement').DataTable({
-			dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
-			'pageLength': 20,
-		ajax:{ url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'},
-		serverSide: false,
-        order: [[1, 'desc']],
-		columnDefs:[
-		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
-		],
-		language:{
-			'sEmptyTable': 'Requirement list is empty. <span class="kt-font-bold kt-font-transform-u kt-font-dark">Please add new requirements</span>'
-		},
-		select:{ style: 'multi' },
-		columns: [
-			{ data: 'requirement_id'},
-			{ data: 'name'},
-		]
-	});
-
-	var counter = 0;
-
-		$('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('ADD NEW REQUIREMENT') }}</button>');
-		$('#btn-add').on( 'click', function () {
-		var html = '<section class="row">';
-			html += '	<div class="col-sm-4">'
-			html += '		<div class="form-group form-group-xs">';
-			html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][requirement_name]" placeholder="{{ __('Requirement Name') }}">';
-			html += '		</div>';
-			html += '	</div>';
-			html += ' <div class="col-sm-4">';
-			html += ' 	<div  class="form-group form-group-xs">';
-			html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][requirement_description]" class="form-control form-control-sm" >';
-			html += ' 	</div>';
-			html += ' </div>';
-			html += '	<div class="col-sm-4">';
-			html + '		<div class="form-group form-group-xs">';
-			html += '			<div class="kt-checkbox--inline kt-forn-dark">';
-			html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Require Date Validation') }}<span></span></label>';
-			html += '			</div>';
-			html += '		</div>';
-			html += '	</div>';
-			html += '</section>';
-		var data = {requirement_id: '', name: html };
-		counter++;
-		add_requirements_table.row.add(data).draw();
-		});
-
-
-	$('form#kt_form').submit(function(e){
-		var form = this;
-			var rows_selected = add_requirements_table.column(0).checkboxes.selected();
-			rows_selected.each(function(v){
-				$(form).append( $('<input>').attr('type', 'hidden').attr('name', 'requirements_id[]').val(v) );
-			});
 	});
 	}
 
@@ -1551,7 +1548,7 @@
 	$('input[name=status][type=radio]').change(function(){
 		if($(this).val() == 'need modification'){
 			$('#accordion-requirements').removeClass('kt-hide');
-			additionalRequirementTable();
+			// additionalRequirementTable();
 		}
 		else{
 				$('#accordion-requirements').addClass('kt-hide');
