@@ -242,7 +242,9 @@ class EventController extends Controller
 
 						if($request->requirements){
 							foreach ($request->requirements as $requirement) {
-                                $event->additionalRequirements()->create($requirement);
+                                if(!is_null($requirement['requirement_name'])){
+                                    $event->additionalRequirements()->create($requirement);
+                                }
 							}
 						}
 
@@ -674,20 +676,31 @@ class EventController extends Controller
 		public function applicationDatatable(Request $request, Event $event)
 		{
             // dd($event->requirements()->get());
-			$requirements = DataTables::of($event->requirements)
+			$requirements = DataTables::of($event->eventRequirement)
 			->addColumn('name', function($requirement) use ($request){
-                return $requirement;
-				// return $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
-
+                if($requirement->type == 'event'){
+                    return $requirement->requirement->requirement_name;
+                }
+                if($requirement->type == 'additional'){
+                    return $requirement->additionalRequirement;
+                    // return $requirement->additionalRequirement->requirement_name;
+                }
 			})
 			->addColumn('issued_date', function($requirement){
-				//  return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
 			})
 			->addColumn('expired_date', function($requirement){
-				//  return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
 			})
 			->addColumn('files', function($requirement) use ($request){
-                $name = null;
+                if($requirement->type == 'event'){
+                    $name = $requirement->requirement->requirement_name;
+                }
+                if($requirement->type == 'additional'){
+                    $name = $requirement->additionalRequirement->requirement_name;
+                    // return $requirement->additionalRequirement->requirement_name;
+                }
+                // $name = $requirement->type == 'event' ? $requirement->requirement->requirement_name :$requirement->additionalRequirement->requirement_name;
 				// $name = $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
 				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$requirement->path).'" data-fancybox="gallery"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($requirement->path).'</a>';
 			})
