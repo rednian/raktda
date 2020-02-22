@@ -47,7 +47,7 @@
         </div>
     </div>
     <section class="kt-portlet__body kt-padding-t-15">
-        <div class="tab-content">
+        <div class="tab-content kt-font-dark">
             <div class="tab-pane active" id="company-edit" role="tabpanel">
 
                 @if ($company->status == 'back')
@@ -232,7 +232,7 @@
                 </div>
                 <div class="col-sm-6">
                     <label>{{__('Email')}} <span class="text-danger">*</span></label>
-                    <input name="company_email" autocomplete="off"
+                    <input required name="company_email" autocomplete="off"
                         class="form-control form-control-sm @error('company_email') is-invalid @enderror" type="text"
                         value="{{old('company_email', $company->company_email)}}">
                 </div>
@@ -390,7 +390,7 @@
                                 <input required autocomplete="off" name="emirate_id_expired_date"
                                     class="date-picker end form-control form-control-sm @error('emirate_id_expired_date') is-invalid @enderror"
                                     type="text"
-                                    value="{{$company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null }}">
+                                    value="{{ old('emirate_id_expired_date',($company->contact->emirate_id_expired_date ? $company->contact->emirate_id_expired_date->format('d-m-Y') :  null))}}">
                                 @if ($errors->has('emirate_id_expired_date'))
                                 <div class="invalid-feedback"> {{$errors->first('emirate_id_expired_date')}}</div>
                                 @endif
@@ -512,17 +512,109 @@
 <script src="{{ asset('assets/vendors/custom/jquery.filer/js/jquery.filer.js') }}"></script>
 <script>
     window.files = [];
-                var filenames = [];
-                var name = null;
-                var requirementTable = {};
-                var is_valid = false;
+    var filenames = [];
+    var name = null;
+    var requirementTable = {};
+    var is_valid = false;
 
-                $(document).ready(function () {
-                    requirement();
-                    datePicker();
-                    type();
-                    uploaded();
-                    hasUrl();
+    $(document).ready(function () {
+        requirement();
+        datePicker();
+        type();
+        uploaded();
+        hasUrl();
+
+
+       var form =  $('form[name=edit_company]').validate({
+           rules:{
+            trade_license_expired_date:{
+                required: true,
+                greaterThan: $(this).val()
+            }
+            },
+            invalidHandler: function(e, validator){
+                KTUtil.scrollTop();
+            }
+        });
+
+
+        $('form[name=edit_company]').submit(function(){
+            if(form.valid()){
+                KTApp.block('.kt-portlet', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            }
+        });
+
+
+        $('.select2').select2({
+            placeholder: '{{__('Please select Area in Ras Al Khaimah')}}',
+            allowClear: true
+        });
+
+
+        $('#btn-save').click(function () {
+            var name = $('#upload-row').find('select').val();
+            var file = document.getElementById('file').files;
+
+            if (file.length == 0) {
+                $('#upload-row').find('#file').addClass('is-invalid');
+                is_valid = false;
+            } else {
+                $('#upload-row').find('input#file').removeClass('is-invalid');
+                is_valid = true;
+            }
+
+            if (name == null) {
+                $('#upload-row').find('select').addClass('is-invalid');
+                is_valid = false;
+            } else {
+                $('#upload-row').find('select').addClass('is-valid');
+                is_valid = true;
+            }
+
+            if (is_valid) {
+                $(this).removeAttr('disabled', true);
+                upload();
+            } else {
+                $(this).attr('disabled', true);
+            }
+        });
+
+        $('#upload-row').find('select').change(function () {
+            var attr = $('#upload-row').find('input.date-picker');
+            if (typeof attr !== typeof undefined && attr !== false) {
+                attr.val(' ');
+            }
+
+            if ($(this).val() && $('input[type=file]').prop('files') > 0) {
+                $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
+                $(this).removeClass('is-invalid').addClass('is-valid');
+                $('inputfile]#file').val(' ');
+                // files = [];
+            } else {
+                $('#upload-row').find('button#btn-save').attr('disabled', true);
+                $(this).addClass('is-valid');
+            }
+        });
+
+
+        $('#upload-row').find('input#file').change(function () {
+                if ($(this).prop('files') > 0 && $('#upload-row').find('select').val() == null) {
+                    $('#upload-row').find('button#btn-save').attr('disabled', true);
+                    $(this).addClass('is-valid');
+                } else {
+                    $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                }
+            });
+
+
+    });
+
 
                     // $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     //   var current_tab = $(e.target).attr('href');
@@ -551,172 +643,65 @@
                     // });
 
 
-                    $('.select2').select2({
-                        placeholder: '{{__('Please select Area in Ras Al Khaimah')}}',
-                        allowClear: true
-                    });
-
-                    $('#btn-save').click(function () {
-                        var name = $('#upload-row').find('select').val();
-                        var file = document.getElementById('file').files;
-
-                        if (file.length == 0) {
-                            $('#upload-row').find('#file').addClass('is-invalid');
-                            is_valid = false;
-                        } else {
-                            $('#upload-row').find('input#file').removeClass('is-invalid');
-                            is_valid = true;
-                        }
-
-                        if (name == null) {
-                            $('#upload-row').find('select').addClass('is-invalid');
-                            is_valid = false;
-                        } else {
-                            $('#upload-row').find('select').addClass('is-valid');
-                            is_valid = true;
-                        }
-
-                        if (is_valid) {
-                            $(this).removeAttr('disabled', true);
-                            upload();
-                        } else {
-                            $(this).attr('disabled', true);
-                        }
+    function hasUrl() {
+        var hash = window.location.hash;
+        hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+        $('.nav-tabs a').click(function (e) {
+            $(this).tab('show');
+            var scrollmem = $('body').scrollTop();
+            window.location.hash = this.hash;
+            $('html,body').scrollTop(scrollmem);
+        });
+    }
 
 
-                    });
-
-
-                    $('#upload-row').find('select').change(function () {
-                        var attr = $('#upload-row').find('input.date-picker');
-                        if (typeof attr !== typeof undefined && attr !== false) {
-                            attr.val(' ');
-                        }
-
-                        if ($(this).val() && $('input[type=file]').prop('files') > 0) {
-                            $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
-                            $(this).removeClass('is-invalid').addClass('is-valid');
-                            $('inputfile]#file').val(' ');
-                            // files = [];
-                        } else {
-                            $('#upload-row').find('button#btn-save').attr('disabled', true);
-                            $(this).addClass('is-valid');
-                        }
-                    });
-
-                    $('#upload-row').find('input#file').change(function () {
-                        if ($(this).prop('files') > 0 && $('#upload-row').find('select').val() == null) {
-                            $('#upload-row').find('button#btn-save').attr('disabled', true);
-                            $(this).addClass('is-valid');
-                        } else {
-                            $('#upload-row').find('button#btn-save').removeAttr('disabled', true);
-                            $(this).removeClass('is-invalid').addClass('is-valid');
-                        }
-                    });
-
-
-                });
-
-
-                function hasUrl() {
-                    var hash = window.location.hash;
-                    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-                    $('.nav-tabs a').click(function (e) {
-                        $(this).tab('show');
-                        var scrollmem = $('body').scrollTop();
-                        window.location.hash = this.hash;
-                        $('html,body').scrollTop(scrollmem);
-                    });
-                }
-
-
-                function uploaded() {
-                    requirementTable = $('#upload-requirement-table').DataTable({
-                        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-                            "<'row'<'col-sm-12'tr>>" +
-                            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                        ajax: '{{ route('company.requirement.datatable', $company->company_id) }}',
-                        // columnDefs:[{targets: [4], className:'no-wrap'}],
-                        "order": [[0, 'asc']],
-                        rowGroup: {
-                            startRender: function (rows, group) {
-                                var row_data = rows.data()[0];
-                                return $('<tr/>').append('<td >' + group + '</td>')
-                                    .append('<td>' + rows.count() + '</td>')
-                                    // .append('<td>' + row_data.issued_date + '</td>')
-                                    // .append('<td>' + row_data.expired_date + '</td>')
-                                    .append('<td></td>')
-                                    // .append( '<td>'+row_data.action+'</td>' )
-                                    .append('<tr/>');
-                            },
-                            dataSrc: 'name'
-                        },
-                        columns: [
-                            // {data: 'name'},
-                            {data: 'file'},
-                            {
-                                render: function (data) {
-                                    return null
-                                }
-                            },
-                            // {
-                            //     render: function (data) {
-                            //         return null
-                            //     }
-                            // },
-                            // {
-                            //     render: function (data) {
-                            //         return null
-                            //     }
-                            // },
-                            {data: 'action'},
-                        ],
-                        createdRow: function (row, data, index) {
-                            $('.btn-remove', row).click(function () {
-                                $.ajax({
-                                    url: '{{ route('company.requirement.delete', $company->company_id) }}',
-                                    data: {company_requirement_id: data.company_requirement_id, path: data.path},
-                                    type: 'post',
-                                    beforeSend: function () {
-                                        KTApp.blockPage({
-                                            overlayColor: '#000000',
-                                            type: 'v2',
-                                            state: 'success',
-                                            message: '{{__("Please wait...")}}'
-                                        });
-                                    }
-                                }).done(function (response, textStatus, xhr) {
-                                    if (xhr.status == 200) {
-                                        KTApp.unblockPage();
-                                        requirementTable.ajax.reload();
-                                    }
-                                });
-
-                            });
-                        }
-                    });
-                }
-
-
-                function upload() {
-
-                    var formData = new FormData();
-                    files.forEach(function (v, i) {
-                        formData.append('files[]', v.file);
-                    });
-
-                    // formData.append('issued_date', $('#upload-date-start').val());
-                    // formData.append('expired_date', $('#upload-date-end').val());
-                    formData.append('requirement_id', $('select[name=requirement_id]').val());
-                    formData.append('requirement_name', name);
-
+    function uploaded() {
+        requirementTable = $('#upload-requirement-table').DataTable({
+            dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            ajax: '{{ route('company.requirement.datatable', $company->company_id) }}',
+            // columnDefs:[{targets: [4], className:'no-wrap'}],
+            "order": [[0, 'asc']],
+            rowGroup: {
+                startRender: function (rows, group) {
+                    var row_data = rows.data()[0];
+                    return $('<tr/>').append('<td >' + group + '</td>')
+                        .append('<td>' + rows.count() + '</td>')
+                        // .append('<td>' + row_data.issued_date + '</td>')
+                        // .append('<td>' + row_data.expired_date + '</td>')
+                        .append('<td></td>')
+                        // .append( '<td>'+row_data.action+'</td>' )
+                        .append('<tr/>');
+                },
+                dataSrc: 'name'
+            },
+            columns: [
+                // {data: 'name'},
+                {data: 'file'},
+                {
+                    render: function (data) {
+                        return null
+                    }
+                },
+                // {
+                //     render: function (data) {
+                //         return null
+                //     }
+                // },
+                // {
+                //     render: function (data) {
+                //         return null
+                //     }
+                // },
+                {data: 'action'},
+            ],
+            createdRow: function (row, data, index) {
+                $('.btn-remove', row).click(function () {
                     $.ajax({
-                        url: '{{ route('company.upload', $company->company_id) }}',
-                        type: 'POST',
-                        data: formData,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
+                        url: '{{ route('company.requirement.delete', $company->company_id) }}',
+                        data: {company_requirement_id: data.company_requirement_id, path: data.path},
+                        type: 'post',
                         beforeSend: function () {
                             KTApp.blockPage({
                                 overlayColor: '#000000',
@@ -724,231 +709,281 @@
                                 state: 'success',
                                 message: '{{__("Please wait...")}}'
                             });
-                        },
+                        }
                     }).done(function (response, textStatus, xhr) {
-
                         if (xhr.status == 200) {
-                            $('#upload-row').find('input').val('');
-                            $('#upload-row').find('input').removeClass('is-valid');
-                            $('#upload-row').find('select[name=requirement_id]').removeClass('is-valid');
-                            $('#upload-row').find('select[name=requirement_id]')[0].selectedIndex = 0;
-                            requirementTable.ajax.reload();
                             KTApp.unblockPage();
-                            files = [];
-                            $('#upload-date-start').val(' ');
-                            $('#upload-date-end').val('');
+                            requirementTable.ajax.reload();
                         }
                     });
-                }
 
-                function readUrl(input) {
+                });
+            }
+        });
+    }
 
-                    if (input.files.length > 0) {
-                        $.each(input.files, function (i, v) {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(v);
-                            files.push({file: v});
-                            reader.onload = function (e) {
-                                files.push(e.target.result);
-                            };
-                        });
+
+    function upload() {
+
+        var formData = new FormData();
+        files.forEach(function (v, i) {
+            formData.append('files[]', v.file);
+        });
+
+        // formData.append('issued_date', $('#upload-date-start').val());
+        // formData.append('expired_date', $('#upload-date-end').val());
+        formData.append('requirement_id', $('select[name=requirement_id]').val());
+        formData.append('requirement_name', name);
+
+        $.ajax({
+            url: '{{ route('company.upload', $company->company_id) }}',
+            type: 'POST',
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                KTApp.blockPage({
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: '{{__("Please wait...")}}'
+                });
+            },
+        }).done(function (response, textStatus, xhr) {
+
+            if (xhr.status == 200) {
+                $('#upload-row').find('input').val('');
+                $('#upload-row').find('input').removeClass('is-valid');
+                $('#upload-row').find('select[name=requirement_id]').removeClass('is-valid');
+                $('#upload-row').find('select[name=requirement_id]')[0].selectedIndex = 0;
+                requirementTable.ajax.reload();
+                KTApp.unblockPage();
+                files = [];
+                $('#upload-date-start').val(' ');
+                $('#upload-date-end').val('');
+            }
+        });
+    }
+
+    function readUrl(input) {
+
+        if (input.files.length > 0) {
+            $.each(input.files, function (i, v) {
+                var reader = new FileReader();
+                reader.readAsDataURL(v);
+                files.push({file: v});
+                reader.onload = function (e) {
+                    files.push(e.target.result);
+                };
+            });
+        }
+
+    }
+
+
+    function type() {
+        $('select[name=company_type_id]').change(function () {
+            //if establishment type is corporate
+            if ($(this).val() == 2) {
+                $('#trade-license-container').removeClass('kt-hide').find('input').removeAttr('disabled', true).attr('required', true);
+
+            } else {
+                $('#trade-license-container').addClass('kt-hide').find('input').attr('disabled', true).removeAttr('required', true);
+            }
+        });
+    }
+
+
+    function requirement() {
+        $('select[name=requirement_id]').change(function () {
+            if ($(this).find('option:selected').data('date') != 1) {
+                $('.date-required').find('input').attr('disabled', true);
+                $('.date-required').find('span').addClass('kt-hide');
+            } else {
+                $('.date-required').find('input').removeAttr('disabled', true);
+                $('.date-required').find('span').removeClass('kt-hide');
+            }
+            name = $(this).find('option:selected').data('name');
+        });
+
+        $('select[name=requirement_id]').html('');
+        $('select[name=requirement_id]').append('<option selected disabled>Select Requirement</option>');
+        $.ajax({
+            url: '{{ route('company.requirement') }}',
+            dataType: 'json',
+        }).done(function (response) {
+            if (response) {
+                $.each(response, function (i, v) {
+                    $('select[name=requirement_id]').append('<option data-name="' + v.requirement_name + '" data-date="' + v.dates_required + '" value="' + v.requirement_id + '">' + v.requirement_name + '</option>');
+                });
+                $('select[name=requirement_id]').append('<option value="other upload" >Other</option>');
+            }
+        });
+    }
+
+
+    $('#userdetails_form').validate({
+        rules: {
+            acccount_name_en: 'required',
+            account_username: {
+                required: true,
+                minlength: 5,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {
+                        username: function () {
+                            return $('#account_username').val();
+                        }
                     }
-
                 }
-
-
-                function type() {
-                    $('select[name=company_type_id]').change(function () {
-                        //if establishment type is corporate
-                        if ($(this).val() == 2) {
-                            $('#trade-license-container').removeClass('kt-hide').find('input').removeAttr('disabled', true).attr('required', true);
-
-                        } else {
-                            $('#trade-license-container').addClass('kt-hide').find('input').attr('disabled', true).removeAttr('required', true);
+            },
+            account_email: {
+                required: true,
+                email: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {
+                        email: function () {
+                            return $('#account_email').val();
                         }
-                    });
+                    }
                 }
-
-
-                function requirement() {
-                    $('select[name=requirement_id]').change(function () {
-                        if ($(this).find('option:selected').data('date') != 1) {
-                            $('.date-required').find('input').attr('disabled', true);
-                            $('.date-required').find('span').addClass('kt-hide');
-                        } else {
-                            $('.date-required').find('input').removeAttr('disabled', true);
-                            $('.date-required').find('span').removeClass('kt-hide');
-                        }
-                        name = $(this).find('option:selected').data('name');
-                    });
-
-                    $('select[name=requirement_id]').html('');
-                    $('select[name=requirement_id]').append('<option selected disabled>Select Requirement</option>');
-                    $.ajax({
-                        url: '{{ route('company.requirement') }}',
-                        dataType: 'json',
-                    }).done(function (response) {
-                        if (response) {
-                            $.each(response, function (i, v) {
-                                $('select[name=requirement_id]').append('<option data-name="' + v.requirement_name + '" data-date="' + v.dates_required + '" value="' + v.requirement_id + '">' + v.requirement_name + '</option>');
-                            });
-                            $('select[name=requirement_id]').append('<option value="other upload" >Other</option>');
-                        }
-                    });
-                }
-
-
-                $('#userdetails_form').validate({
-                    rules: {
-                        acccount_name_en: 'required',
-                        account_username: {
-                            required: true,
-                            minlength: 5,
-                            remote: {
-                                url: '{{route('company.account_exists')}}',
-                                type: 'post',
-                                data: {
-                                    username: function () {
-                                        return $('#account_username').val();
-                                    }
-                                }
-                            }
-                        },
-                        account_email: {
-                            required: true,
-                            email: true,
-                            remote: {
-                                url: '{{route('company.account_exists')}}',
-                                type: 'post',
-                                data: {
-                                    email: function () {
-                                        return $('#account_email').val();
-                                    }
-                                }
-                            }
-                        },
-                        account_mobile: {
-                            required: true,
-                            remote: {
-                                url: '{{route('company.account_exists')}}',
-                                type: 'post',
-                                data: {
-                                    mobile_number: function () {
-                                        return $('#account_mobile').val();
-                                    }
-                                },
-                            }
+            },
+            account_mobile: {
+                required: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {
+                        mobile_number: function () {
+                            return $('#account_mobile').val();
                         }
                     },
-                    messages: {
-                        acccount_name_en: 'Please fill in the name',
-                        account_username: {
-                            required: 'Please fill in the username',
-                            minlength: 'Minimum 5 characters required',
-                            remote: 'This Username already exists'
-                        },
-                        account_email: {
-                            required: 'Please fill in the Email',
-                            email: 'Please Enter a valid Email',
-                            remote: 'This Email already exists'
-                        },
-                        account_mobile: {
-                            required: 'Please fill in the mobile',
-                            remote: 'This Mobile Number already exists'
-                        }
-                    }
-                });
+                }
+            }
+        },
+        messages: {
+            acccount_name_en: 'Please fill in the name',
+            account_username: {
+                required: 'Please fill in the username',
+                minlength: 'Minimum 5 characters required',
+                remote: 'This Username already exists'
+            },
+            account_email: {
+                required: 'Please fill in the Email',
+                email: 'Please Enter a valid Email',
+                remote: 'This Email already exists'
+            },
+            account_mobile: {
+                required: 'Please fill in the mobile',
+                remote: 'This Mobile Number already exists'
+            }
+        }
+    });
 
 
-                $('#passwordChangeform').validate({
-                    rules: {
-                        old_password: {
-                            required: true,
-                            remote: {
-                                url: '{{route('company.account_exists')}}',
-                                type: 'post',
-                                data: {
-                                    old_password: function () {
-                                        return $('#old_password').val();
-                                    }
-                                },
-                                delay: 1000
-                            }
-                        },
-                        new_password: {
-                            required: true,
-                            minlength: 8,
-                            notEqual: "#account_username",
-                            pwcheck: true,
-                        },
-                        confirm_password: {
-                            required: true,
-                            equalTo: "#new_password"
+    $('#passwordChangeform').validate({
+        rules: {
+            old_password: {
+                required: true,
+                remote: {
+                    url: '{{route('company.account_exists')}}',
+                    type: 'post',
+                    data: {
+                        old_password: function () {
+                            return $('#old_password').val();
                         }
                     },
-                    messages: {
-                        old_password: {
-                            required: 'Please fill in the old password',
-                            remote: 'Password is wrong'
-                        },
-                        new_password: {
-                            required: 'Please fill in the new password',
-                            minlength: 'Minimum 8 characters required',
-                            pwcheck: 'At Least one lowercase letter and one digit'
-                        },
-                        confirm_password: {
-                            required: 'Please fill in the confirm password',
-                            equalTo: 'New password and confirm password should be same',
-                        }
-                    }
-                })
-
-                $.validator.addMethod("pwcheck", function (value) {
-                    return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
-                        && /[a-z]/.test(value) // has a lowercase letter
-                        && /\d/.test(value) // has a digit
-                });
-
-                $.validator.addMethod("notEqual", function (value, element, param) {
-                    return this.optional(element) || value != param;
-                }, "Should not be the same as username");
-
-                function datePicker() {
-                    var arrows;
-                    if (KTUtil.isRTL()) {
-                        arrows = {
-                            leftArrow: '<i class="la la-angle-right"></i>',
-                            rightArrow: '<i class="la la-angle-left"></i>'
-                        }
-                    } else {
-                        arrows = {
-                            leftArrow: '<i class="la la-angle-left"></i>',
-                            rightArrow: '<i class="la la-angle-right"></i>'
-                        }
-                    }
-
-                    var date = new Date();
-                    date.setDate(date.getDate() + 1);
-
-                    $('.date-picker.end').datepicker({
-                        rtl: KTUtil.isRTL(),
-                        autoclose: true,
-                        todayHighlight: true,
-                        orientation: "bottom left",
-                        startDate: date,
-                        templates: arrows,
-                        format: 'dd-mm-yyyy',
-                    });
-
-                    $('.date-picker.start').datepicker({
-                        rtl: KTUtil.isRTL(),
-                        todayHighlight: true,
-                        autoclose: true,
-                        orientation: "bottom left",
-                        endDate: '+0d',
-                        templates: arrows,
-                        format: 'dd-mm-yyyy',
-                    });
+                    delay: 1000
                 }
+            },
+            new_password: {
+                required: true,
+                minlength: 8,
+                notEqual: "#account_username",
+                pwcheck: true,
+            },
+            confirm_password: {
+                required: true,
+                equalTo: "#new_password"
+            }
+        },
+        messages: {
+            old_password: {
+                required: 'Please fill in the old password',
+                remote: 'Password is wrong'
+            },
+            new_password: {
+                required: 'Please fill in the new password',
+                minlength: 'Minimum 8 characters required',
+                pwcheck: 'At Least one lowercase letter and one digit'
+            },
+            confirm_password: {
+                required: 'Please fill in the confirm password',
+                equalTo: 'New password and confirm password should be same',
+            }
+        }
+    })
+
+    $.validator.addMethod("pwcheck", function (value) {
+        return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
+            && /[a-z]/.test(value) // has a lowercase letter
+            && /\d/.test(value) // has a digit
+    });
+
+    $.validator.addMethod("notEqual", function (value, element, param) {
+        return this.optional(element) || value != param;
+    }, "Should not be the same as username");
+
+    $.validator.addMethod("greaterThan", function(value, element, params) {
+
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date($(params).val());
+        }
+
+        return isNaN(value) && isNaN($(params).val())
+            || (Number(value) > Number($(params).val()));
+    },'Expiry date must be greater than today.');
+
+    function datePicker() {
+        var arrows;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+
+        $('.date-picker.end').datepicker({
+            rtl: KTUtil.isRTL(),
+            autoclose: true,
+            todayHighlight: true,
+            orientation: "bottom left",
+            startDate: date,
+            templates: arrows,
+            format: 'dd-mm-yyyy',
+        });
+
+        $('.date-picker.start').datepicker({
+            rtl: KTUtil.isRTL(),
+            todayHighlight: true,
+            autoclose: true,
+            orientation: "bottom left",
+            endDate: '+0d',
+            templates: arrows,
+            format: 'dd-mm-yyyy',
+        });
+    }
 </script>
 @endsection

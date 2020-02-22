@@ -660,7 +660,11 @@ class ArtistController extends Controller
                     $toURL = URL::signedRoute('company.add_new_permit', [ 'id' => $permit_id]);
                 }
             }else if($request->btnOption == 2) {
-                $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id]);
+                if ($request->fromPage == 'event') {
+                    $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id , 'from' => 'event']);
+                }else {
+                    $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id]);
+                }
             }
 
         $artistTempData  = ArtistTempData::create([

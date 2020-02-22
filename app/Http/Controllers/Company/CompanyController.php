@@ -102,7 +102,7 @@ class CompanyController extends Controller
       }else {
         $reason = 'registered';
       }
-      
+
       $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
 
       $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
@@ -205,7 +205,7 @@ class CompanyController extends Controller
       return redirect()->back();
     }
     if ($this->hasRequirement($company) && $request->submit != 'draft') {
-      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error'])->withInput();
     }
        $validate = Validator::make($request->all(), [
                'name_en'=> 'required|max:255',
@@ -253,7 +253,6 @@ class CompanyController extends Controller
                   //ammendment request
                   if ($company->status == 'back') {
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
-                    // $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
                   }
 
                   if ($company->status == 'blocked') {
@@ -264,16 +263,6 @@ class CompanyController extends Controller
                     $company->update($request->all());
                   }
 
-
-
-                // //renew
-                // if ($company->request_type == 'new registration' && $company->status == 'back'){
-                //     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'renew trade license request']));
-                //     $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
-                // }
-
-//                  dd($company);
-
                   $result = ['success', 'Successfully submitted!', 'Success'];
                   break;
               case 'draft':
@@ -281,7 +270,6 @@ class CompanyController extends Controller
                  $result = ['success', 'Draft saved!', 'Success'];
                   break;
           }
-
 
 
          if($company->contact()->exists()){

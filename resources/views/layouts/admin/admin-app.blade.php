@@ -131,14 +131,16 @@ function unblockPage(){
         //REFRESH NOTIFICATIONS EVERY MINUTE
     var notif = setInterval(refreshNotification, 60000);
     //REAL TIME NOTIFICATIONS APPEND TO NOTIFICATION PANE
-    // window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
-    //         .notification((notification) => {
-    //             addNotification(notification);
-    //         });
+    window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
+            .notification((notification) => {
+                console.log(notification);
+                addNotification(notification);
+            });
 
-    window.Echo.private(`App.User.{{ Auth::user()->user_id }}`).notification(function(notification){
-        addNotification(notification);
-    });
+    // window.Echo.private(`App.User.{{ Auth::user()->user_id }}`).notification(function(notification){
+    //     console.log(notification);
+    //     addNotification(notification);
+    // });
     //FUNCTION TO PUT THE NOTIFICATION TO PANE
     function addNotification(data){
         var html = '<a href="' + data.url + '" class="kt-notification__item">\

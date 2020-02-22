@@ -65,7 +65,7 @@ class EventController extends Controller
 
 		public function index(Request $request)
 		{
-		    $event = Event::whereIn('status', ['amended', 'approved-unpaid', 'active', 'expired', 'rejected', 'need-approval'])->whereHas('comment',function($q){
+		    $event = Event::whereIn('status', ['approved-unpaid', 'active'])->whereHas('comment',function($q){
 					$q->whereBetween('created_at', [Carbon::now()->subDays(30), Carbon::now()])->limit(1);
 				})->count();
 
@@ -81,6 +81,7 @@ class EventController extends Controller
 				'cancelled_permit'=> Event::lastMonth(['cancelled'])->count(),
 				'rejected_permit'=> Event::lastMonth(['rejected'])->count(),
 				'approved_permit'=> Event::lastMonth(['approved-unpaid'])->count(),
+				'processing'=> Event::whereIn('status', ['approved-unpaid', 'processing', 'need approval', 'need modification'])->count(),
 				'active'=> Event::whereStatus('active')->count(),
 
 			]);
@@ -343,20 +344,20 @@ class EventController extends Controller
 				$subject = $event->reference_number . ' - Application Approved';
 				$title = 'Application has been Approved';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been approved. To view the details, please click the button below.';
-				$url = URL::signedRoute('company.event.payment', ['event' => $event->event_id]);
+				$url = URL::signedRoute('event.show', ['event' => $event->event_id]);
                 $buttonText = 'Make Payment';
-                $sms_content = ['name'=>'event permit', 'status'=> 'approved', 'reference_number'=>$event->reference_number,
-                'url'=> URL::signedRoute('company.event.payment', ['event' => $event->event_id]), 'payment'=>true];
+                $sms_content = ['name'=>'event show', 'status'=> 'approved', 'reference_number'=>$event->reference_number,
+                'url'=> URL::signedRoute('event.show', ['event' => $event->event_id]), 'payment'=>true];
 			}
 
 			if($type == 'amend'){
 				$subject = $event->reference_number . ' - Application Requires Amendment';
 				$title = 'Applications Requires Amendment';
 				$content = 'Your application with the reference number <b>' . $event->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-                $url = URL::signedRoute('event.amend', ['event' => $event->event_id]);
+                $url = URL::signedRoute('event.show', ['event' => $event->event_id]);
 
                 $sms_content = ['name'=>'event permit', 'status'=> 'bounced back for amendment', 'reference_number'=>$event->reference_number,
-                'url'=> URL::signedRoute('event.amend', ['event' => $event->event_id])];
+                'url'=> URL::signedRoute('event.show', ['event' => $event->event_id])];
 			}
 
 			if($type == 'reject'){
@@ -682,7 +683,7 @@ class EventController extends Controller
                     return $requirement->requirement->requirement_name;
                 }
                 if($requirement->type == 'additional'){
-                    return $requirement->additionalRequirement;
+                    return $requirement->additionalRequirement->requirement_name;
                     // return $requirement->additionalRequirement->requirement_name;
                 }
 			})
@@ -697,11 +698,13 @@ class EventController extends Controller
                     $name = $requirement->requirement->requirement_name;
                 }
                 if($requirement->type == 'additional'){
-                    $name = $requirement->additionalRequirement->requirement_name;
-                    // return $requirement->additionalRequirement->requirement_name;
+                    if($requirement->type == 'event'){
+                        $name = $requirement->requirement->requirement_name;
+                    }
+                    if($requirement->type == 'additional'){
+                        $name = $requirement->additionalRequirement->requirement_name;
+                    }
                 }
-                // $name = $requirement->type == 'event' ? $requirement->requirement->requirement_name :$requirement->additionalRequirement->requirement_name;
-				// $name = $request->user()->LanguageId == 1 ? ucwords($requirement->requirement_name) : $requirement->requirement_name_ar;
 				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$requirement->path).'" data-fancybox="gallery"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($requirement->path).'</a>';
 			})
 			->rawColumns(['files', 'name'])
@@ -868,7 +871,7 @@ class EventController extends Controller
 				->get();
 
 
-				$table =  DataTables::of($events)
+				return DataTables::of($events)
                     ->addColumn('establishment_name', function($event) use ($user){
                         return $user->LanguageId != 2 ? ucfirst($event->owner->company->name_en) : ucfirst($event->owner->company->name_ar);
                     })
@@ -963,13 +966,20 @@ class EventController extends Controller
                         }
                         return '';
                     })
+                    ->with('pending_count', function(){
+                        return Event::whereIn('status', ['checked', 'amended'])->count();
+                    })
+                    ->with('new_count', function(){
+                        return Event::whereIn('status', ['new'])->count();
+                    })
+                    ->with('cancelled_count', function(){
+                        return Event::where('status', 'cancelled')->count();
+                    })
+                    ->with('processing', function(){
+                        return Event::whereIn('status', ['approved-unpaid', 'processing', 'need approval', 'need modification'])->count();
+                    })
                     ->rawColumns(['status', 'action', 'show', 'website', 'updated_at', 'duration', 'checked_status', 'event_type', 'approved_date', 'request_type'])
                     ->make(true);
-				$table = $table->getData(true);
-				$table['new_count'] = Event::whereIn('status', ['new', 'amended'])->count();
-				$table['pending_count'] = Event::whereIn('status', ['checked'])->count();
-				$table['cancelled_count'] = Event::where('status', 'cancelled')->count();
-				return response()->json($table);
 			}
 		}
 
