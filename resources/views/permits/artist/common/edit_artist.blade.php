@@ -6,199 +6,196 @@
 @section('content')
 <link href="{{asset('css/uploadfile.css')}}" rel="stylesheet">
 <!-- begin:: Content -->
-<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
-    <div class="kt-portlet">
-        <div class="kt-portlet__body kt-portlet__body--fit">
-            <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
-                <div class="kt-grid__item">
+<div class="kt-portlet">
+    <div class="kt-portlet__body kt-portlet__body--fit">
+        <div class="kt-grid kt-wizard-v3 kt-wizard-v3--white" id="kt_wizard_v3" data-ktwizard-state="step-first">
+            <div class="kt-grid__item">
 
-                    <!--begin: Form Wizard Nav -->
-                    @include('permits.artist.common.common-nav')
+                <!--begin: Form Wizard Nav -->
+                @include('permits.artist.common.common-nav')
 
-                    <!--end: Form Wizard Nav -->
-                </div>
-                @php
-                $language_id = getLangId();
-                @endphp
-                <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
-                <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
-                <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
-                <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
-                <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
-
-                <input type="hidden" id="language_id" value="{{$language_id}}">
-
-                <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
-
-                    <!--begin: Form Wizard Form-->
-                    {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
-                    <div class="kt-form w-100 px-5" id="kt_form">
-                        <!--begin: Form Wizard Step 1-->
-
-                        @include('permits.artist.common.wizard_instructions')
-
-                        <input type="hidden" id="fromPage" value={{$from}}>
-                        <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
-
-                        <!--end: Form Wizard Step 1-->
-
-                        @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
-                        $artist_details, 'from' => $from, 'staff_comments' => $staff_comments])
-
-                        <!--begin: Form Wizard Step 3-->
-                        <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
-                            <div class="kt-form__section kt-form__section--first ">
-                                @if($from == 'edit')
-                                @component('permits.components.artist_permit_comments', ['staff_comments' =>
-                                $staff_comments])
-                                @endcomponent
-                                @endif
-                                <div class="kt-wizard-v3__form">
-                                    <form id="documents_required" method="post" autocomplete="off">
-                                        <input type="hidden" id="artist_number_doc" value={{1}}>
-                                        <input type="hidden" id="requirements_count" value={{count($requirements)}}>
-                                        <div class="kt-form__section kt-form__section--first">
-
-                                            <div class="row">
-                                                <div class="col-lg-4 col-sm-12">
-                                                    <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}}
-                                                        <span class="text-danger">*</span></label>
-                                                    <p for="" class="reqName " title="Artist Photo">
-                                                        {{__('Use Passport size picture with white background')}}</p>
-                                                </div>
-                                                <div class="col-lg-4 col-sm-12">
-                                                    <label style="visibility:hidden">hidden</label>
-                                                    <div id="pic_uploader">{{__('Upload')}}
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            @php
-                                            $i = 1;
-                                            $user_id = Auth::user()->user_id;
-                                            $issued_date = strtotime($artist_details->issue_date);
-                                            $expired_date = strtotime($artist_details->expiry_date);
-                                            $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
-                                            @endphp
-                                            <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
-                                            @foreach ($requirements as $req)
-                                            <div class="row">
-                                                <div class="col-lg-4 col-sm-12">
-                                                    <label
-                                                        class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
-                                                        <span id="cnd_{{$i}}"></span>
-                                                    </label>
-                                                    <p for="" class="reqName">
-                                                        {{$req->requirement_description}}</p>
-                                                </div>
-                                                <input type="hidden" value="{{$req->requirement_id}}"
-                                                    id="req_id_{{$i}}">
-                                                <input type="hidden" value="{{$req->requirement_name}}"
-                                                    id="req_name_{{$i}}">
-
-                                                <div class="col-lg-4 col-sm-12">
-                                                    <label style="visibility:hidden">hidden</label>
-                                                    <div id="fileuploader_{{$i}}">Upload
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" id="datesRequiredCheck_{{$i}}"
-                                                    value="{{$req->dates_required}}">
-                                                <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
-                                                @if($req->dates_required == 1)
-                                                <div class="col-lg-2 col-sm-12">
-                                                    <label for="" class="text--maroon kt-font-bold"
-                                                        title="Issue Date">{{__('Issued Date')}}</label>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
-                                                        name="doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                                        id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
-                                                        onchange="setExpiryMindate('{{$i}}')" />
-                                                    <input type="hidden" id="doc_validity_{{$i}}"
-                                                        value="{{$req->validity}}">
-                                                </div>
-                                                <div class="col-lg-2 col-sm-12">
-                                                    <label for="" class="text--maroon kt-font-bold"
-                                                        title="Expiry Date">{{__('Expired Date')}}</label>
-                                                    <input type="text" class="form-control form-control-sm date-picker"
-                                                        name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
-                                                        id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                                                </div>
-                                                @endif
-                                            </div>
-
-
-                                            @php
-                                            $i++;
-                                            @endphp
-
-                                            @endforeach
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="kt-form__actions">
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
-                        </div>
-                        <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
-                        @php
-                        $backUrl = '';
-                        $status = '';
-                        $route_back = '';
-                        switch ($from) {
-                        case 'amend':
-                        $status = 'amend';
-                        break;
-                        case 'amend':
-                        $status = 'amend';
-                        break;
-                        case 'renew':
-                        $status = 'renew';
-                        break;
-                        case 'amend_edit':
-                        $status = 'amend';
-                        break;
-                        }
-
-                        $route_back = URL::signedRoute('artist.permit',[ 'id' => $artist_details->permit_id , 'status'=>
-                        $status]);
-
-                        if($from == 'new') {
-                        $route_back = URL::signedRoute('company.add_new_permit', [ 'id' => 1]);
-                        }
-
-                        if($from == 'event') {
-                        $route_back = URL::signedRoute('event.add_artist', [ 'id' => $artist_details->permit_id]);
-                        }
-
-                        @endphp
-
-                        <a href="{{$route_back}}">
-                            <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
-                            </div>
-                        </a>
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            <i class="la la-check"></i>
-                            {{__('Submit')}}
-                        </div>
-
-                        <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!--end: Form Wizard Form-->
+                <!--end: Form Wizard Nav -->
             </div>
+            @php
+            $language_id = getLangId();
+            @endphp
+            <input type="hidden" id="artist_permit_id" value="{{$artist_details->artist_permit_id }}">
+            <input type="hidden" id="temp_artist_id" value="{{$artist_details->artist_id }}">
+            <input type="hidden" id="temp_id" value="{{$artist_details->id}}">
+            <input type="hidden" id="issue_date" value="{{$artist_details->issue_date}}">
+            <input type="hidden" id="expiry_date" value="{{$artist_details->expiry_date}}">
+
+            <input type="hidden" id="language_id" value="{{$language_id}}">
+
+            <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v3__wrapper">
+
+                <!--begin: Form Wizard Form-->
+                {{-- <div class="kt-form p-0 pb-5" id="kt_form" > --}}
+                <div class="kt-form w-100 px-5" id="kt_form">
+                    <!--begin: Form Wizard Step 1-->
+
+                    @include('permits.artist.common.wizard_instructions')
+
+                    <input type="hidden" id="fromPage" value={{$from}}>
+                    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
+
+                    <!--end: Form Wizard Step 1-->
+
+                    @include('permits.artist.common.edit-artist-details-html', [ 'artist_details' =>
+                    $artist_details, 'from' => $from, 'staff_comments' => $staff_comments])
+
+                    <!--begin: Form Wizard Step 3-->
+                    <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
+                        <div class="kt-form__section kt-form__section--first ">
+                            @if($from == 'edit')
+                            @component('permits.components.artist_permit_comments', ['staff_comments' =>
+                            $staff_comments])
+                            @endcomponent
+                            @endif
+                            <div class="kt-wizard-v3__form">
+                                <form id="documents_required" method="post" autocomplete="off">
+                                    <input type="hidden" id="artist_number_doc" value={{1}}>
+                                    <input type="hidden" id="requirements_count" value={{count($requirements)}}>
+                                    <div class="kt-form__section kt-form__section--first">
+
+                                        <div class="row">
+                                            <div class="col-lg-4 col-sm-12">
+                                                <label class="kt-font-bold text--maroon"> {{__('Artist Photo')}}
+                                                    <span class="text-danger">*</span></label>
+                                                <p for="" class="reqName " title="Artist Photo">
+                                                    {{__('Use Passport size picture with white background')}}</p>
+                                            </div>
+                                            <div class="col-lg-4 col-sm-12">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <div id="pic_uploader">{{__('Upload')}}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        @php
+                                        $i = 1;
+                                        $user_id = Auth::user()->user_id;
+                                        $issued_date = strtotime($artist_details->issue_date);
+                                        $expired_date = strtotime($artist_details->expiry_date);
+                                        $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                        @endphp
+                                        <input type="hidden" id="permitNoOfDays" value="{{$diff}}" />
+                                        @foreach ($requirements as $req)
+                                        <div class="row">
+                                            <div class="col-lg-4 col-sm-12">
+                                                <label
+                                                    class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
+                                                    <span id="cnd_{{$i}}"></span>
+                                                </label>
+                                                <p for="" class="reqName">
+                                                    {{$req->requirement_description}}</p>
+                                            </div>
+                                            <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
+                                            <input type="hidden" value="{{$req->requirement_name}}"
+                                                id="req_name_{{$i}}">
+
+                                            <div class="col-lg-4 col-sm-12">
+                                                <label style="visibility:hidden">hidden</label>
+                                                <div id="fileuploader_{{$i}}">Upload
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="datesRequiredCheck_{{$i}}"
+                                                value="{{$req->dates_required}}">
+                                            <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
+                                            @if($req->dates_required == 1)
+                                            <div class="col-lg-2 col-sm-12">
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Issue Date">{{__('Issued Date')}}</label>
+                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                    name="doc_issue_date_{{$i}}" data-date-end-date="0d"
+                                                    id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
+                                                    onchange="setExpiryMindate('{{$i}}')" />
+                                                <input type="hidden" id="doc_validity_{{$i}}"
+                                                    value="{{$req->validity}}">
+                                            </div>
+                                            <div class="col-lg-2 col-sm-12">
+                                                <label for="" class="text--maroon kt-font-bold"
+                                                    title="Expiry Date">{{__('Expired Date')}}</label>
+                                                <input type="text" class="form-control form-control-sm date-picker"
+                                                    name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
+                                                    id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
+                                            </div>
+                                            @endif
+                                        </div>
+
+
+                                        @php
+                                        $i++;
+                                        @endphp
+
+                                        @endforeach
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="kt-form__actions">
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-prev" id="prev_btn">
+                        {{__('Previous')}}
+                    </div>
+                    <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
+                    @php
+                    $backUrl = '';
+                    $status = '';
+                    $route_back = '';
+                    switch ($from) {
+                    case 'amend':
+                    $status = 'amend';
+                    break;
+                    case 'amend':
+                    $status = 'amend';
+                    break;
+                    case 'renew':
+                    $status = 'renew';
+                    break;
+                    case 'amend_edit':
+                    $status = 'amend';
+                    break;
+                    }
+
+                    $route_back = URL::signedRoute('artist.permit',[ 'id' => $artist_details->permit_id , 'status'=>
+                    $status]);
+
+                    if($from == 'new') {
+                    $route_back = URL::signedRoute('company.add_new_permit', [ 'id' => 1]);
+                    }
+
+                    if($from == 'event') {
+                    $route_back = URL::signedRoute('event.add_artist', [ 'id' => $artist_details->permit_id]);
+                    }
+
+                    @endphp
+
+                    <a href="{{$route_back}}">
+                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
+                            {{__('Back')}}
+                        </div>
+                    </a>
+                    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
+                        <i class="la la-check"></i>
+                        {{__('Submit')}}
+                    </div>
+
+                    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
+                        data-ktwizard-type="action-next" id="next_btn">
+                        {{__('Next')}}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--end: Form Wizard Form-->
         </div>
     </div>
 </div>

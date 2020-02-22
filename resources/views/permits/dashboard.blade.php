@@ -96,7 +96,19 @@
         display: inline-block;
         vertical-align: middle;
     }
+
+    .element-header::after {
+        width: 125px;
+    }
 </style>
+
+@if(getLangId() != 1)
+<style>
+    .element-header::after {
+        right: 0;
+    }
+</style>
+@endif
 @endsection
 
 

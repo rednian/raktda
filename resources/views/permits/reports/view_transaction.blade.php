@@ -65,7 +65,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Transaction No.')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Transaction No')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->reference_number}}
                         </p>
@@ -116,15 +116,16 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('Artist Name')}}</th>
                             <th>{{__('Profession')}}</th>
-                            <th class="text-right">{{__('Amount')}} (AED)</th>
-                            <th class="text-right">{{__('Vat')}} (5%)</th>
+                            <th class="text-right">{{__('Profession Fee')}} (AED)</th>
+                            <th class="text-center">{{__('Term')}}</th>
                             <th class="text-right">{{__('Total')}} (AED)</th>
-                            <th class="text-center">{{__('View')}}</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @foreach($transaction->artistPermitTransaction as $at)
+                        @if($at->artistPermit->artist_permit_status == 'approved' && $at->artistPermit->is_paid == 1)
                         <tr>
                             <td>
                                 {{getLangId() == 1 ? ucfirst($at->artistPermit->firstname_en).' '. ucfirst($at->artistPermit->lastname_en) : $at->artistPermit->lastname_ar.' '.$at->artistPermit->firstname_ar}}
@@ -133,17 +134,20 @@
                                 {{getLangId() == 1 ? ucfirst($at->artistPermit->profession->name_en) : $at->artistPermit->profession->name_ar}}
                             </td>
                             <td class="text-right">
-                                {{number_format($at->amount,2)}}
-                            </td>
-                            <td class="text-right">
-                                {{number_format($at->vat,2)}}
+                                {{number_format($at->artistPermit->profession['amount'], 2)}}
                             </td>
                             @php
                             $total = $at->amount + $at->vat;
                             $feetotal += $at->amount;
                             $vattotal += $at->vat;
                             $grandtotal += $total;
+                            $from_d = strtotime($at->permit->issued_date);
+                            $to_d = strtotime($at->permit->expired_date);
+                            $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
                             @endphp
+                            <td class="text-center">
+                                {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
+                            </td>
                             <td class="text-right">
                                 {{number_format($total,2)}}
                             </td>
@@ -154,6 +158,7 @@
                                     </button></a>
                             </td>
                         </tr>
+                        @endif
                         @endforeach
                     </tbody>
                 </table>
@@ -206,9 +211,9 @@
                             $total = $et->amount + $et->vat;
                             $feetotal += $et->amount;
                             $vattotal += $et->vat;
-                            $grandtotal = $total;
+                            $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($feetotal,2)}}</td>
+                            <td class="text-right">{{number_format($et->amount,2)}}</td>
 
                             <td class="text-center">
                                 <a href="{{URL::signedRoute('report.view_event', ['id' => $et->event->event_id ])}}">
@@ -217,6 +222,8 @@
                                 </a>
                             </td>
                         </tr>
+
+
                         @elseif($et->type == 'truck')
                         <tr>
                             <td colspan="2">{{__('Truck Fee')}}</td>
@@ -235,9 +242,10 @@
                             $vattotal += $et->vat;
                             $grandtotal += $total;
                             @endphp
-                            <td class="text-right">{{number_format($feetotal,2)}}</td>
+                            <td class="text-right">{{number_format($et->amount,2)}}</td>
                             <td></td>
                         </tr>
+
                         @elseif($et->type == 'liquor')
                         <tr>
                             <td colspan="2">{{__('Liqour Fee')}}</td>

@@ -75,13 +75,23 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                             <label for="event_type_id"
                                                 class="col-md-4 col-form-label kt-font-bold text-right">
                                                 {{__('Event Sub Type')}} <span class="text-danger"
-                                                    id="event_sub_type_req"></span>
+                                                    id="event_sub_type_req"> @if(isset($event) ?
+                                                    $event->event_type_sub_id : false) *
+                                                    @endif</span>
+
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <select class="form-control form-control-sm"
                                                         name="event_sub_type_id" id="event_sub_type_id" {{$isDisabled}}>
+                                                        {{-- <option value="">{{__('Select')}}</option> --}}
+                                                        @if(isset($event) ? $event->event_type_sub_id : false)
+                                                        <option value="{{$event->event_type_sub_id}}" selected>
+                                                            {{getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
+                                                        </option>
+                                                        @else
                                                         <option value="">{{__('Select')}}</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>

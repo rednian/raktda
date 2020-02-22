@@ -6,7 +6,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
                         class="fa fa-truck"></i>
                 </h5>
-                <div class="d-flex" style="position: absolute;right: 5rem;">
+                <div class="d-flex" style="position: absolute;{{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
                         {{__('Add New')}}</button>
                     <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
