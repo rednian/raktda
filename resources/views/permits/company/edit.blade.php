@@ -526,12 +526,12 @@
 
 
        var form =  $('form[name=edit_company]').validate({
-           rules:{
-            trade_license_expired_date:{
-                required: true,
-                greaterThan: $(this).val()
-            }
-            },
+        //    rules:{
+        //     trade_license_expired_date:{
+        //         required: true,
+        //         greaterThan: $(this).val()
+        //     }
+        //     },
             invalidHandler: function(e, validator){
                 KTUtil.scrollTop();
             }

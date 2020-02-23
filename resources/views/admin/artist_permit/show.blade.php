@@ -1,7 +1,7 @@
 @extends('layouts.admin.admin-app')
 @section('content')
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile border">
-    <div class="kt-portlet__head kt-portlet__head--sm">
+<div class="kt-portlet__head kt-portlet__head--sm">
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {{$permit->reference_number}}</h3>
         </div>
@@ -133,7 +133,7 @@
                        @endif
                        <tr>
                           <td>{{ __('Request Type') }} :</td>
-                          <td>{{ ucfirst($permit->request_type) }} Application</td>
+                          <td>{{ ucfirst($permit->request_type) }}</td>
                        </tr>
                        <tr>
                           <td>{{ __('Permit Status') }} :</td>

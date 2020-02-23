@@ -30,10 +30,9 @@
 					<i class="flaticon-more"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
-					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist_permit.index') }}">{{ __('Artist Permit') }}</a>
+
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.artist.show', $artist_permit->artist_id) }}">{{ __('Artist Details') }}</a>
-					<a class="dropdown-item kt-font-transform-u" href="javascript:void(0)">{{ __('Establishment Details') }}</a>
 				</div>
 			</div>
 		</div>
@@ -227,11 +226,14 @@
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('button[name=artist_permit_status]#btn-reject').click(function(e){
-				var comment = $('form#kt_form').find('textarea[name=comment]').val();
-				if (comment == null) {
+				var comment = $('form#kt_form').find('textarea[name=comment]').val().trim().length;
+				if (comment == 0) {
 					e.preventDefault();
 					$('form#kt_form').find('textarea[name=comment]').addClass('is-invalid');
 				}
+                else{
+                    $('form#kt_form').find('textarea[name=comment]').removeClass('is-invalid');
+                }
 			});
 
 			$('textarea[name=comment]').keyup(function(){
