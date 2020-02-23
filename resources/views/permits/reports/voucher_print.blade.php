@@ -215,7 +215,7 @@
                                 {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
                             </td>
                             <td class="text-right">
-                                {{number_format($total,2)}}
+                                {{number_format( $at->amount,2)}}
                             </td>
                         </tr>
                         @endif

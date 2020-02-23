@@ -346,22 +346,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($eventReq as $req)
+                        @php
+                        $pre_req = '';$j = 0;
+                        @endphp
+                        @foreach($eventReq as $reqd)
+                        @php
+                        if($pre_req == $reqd->requirement_id){
+                        $j++;
+                        }else {
+                        $j = 0;
+                        }
+                        $pre_req = $reqd->requirement_id;
+                        if($reqd->type == 'event')
+                        {
+                        $req = $reqd->requirement;
+                        }else if($reqd->type == 'additional') {
+                        $req = $reqd->additionalRequirement;
+                        }
+                        @endphp
+                        @if($j == 0)
+                        <tr>
+                            <td colspan="4">
+                                <strong>{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</strong>
+                            </td>
+                        </tr>
+                        @endif
                         <tr>
                             <td style="width:50%;">
-                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</td>
-                            <td class="text-center">
-                                {{$req->pivot['issued_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['issued_date'])) : ''}}
+                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}&nbsp;{{'-'.strval($j + 1)}}
                             </td>
                             <td class="text-center">
-                                {{$req->pivot['expired_date'] != '0000-00-00' ? date('d-m-Y', strtotime($req->pivot['expired_date'])) : ''}}
+                                {{$reqd->issued_date->year > 1 ? date('d-m-Y', strtotime($reqd->issued_date)) : ''}}
                             </td>
                             <td class="text-center">
-                                <a href="{{asset('storage')}}{{'/'.$req->pivot['path']}}" target="blank" ">
+                                {{$reqd->expired_date->year > 1 ? date('d-m-Y', strtotime($reqd->expired_date)) : ''}}
+                            </td>
+                            <td class="text-center">
+                                <a href="{{asset('storage')}}{{'/'.$reqd->pivot['path']}}" target="blank" ">
                                     <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
                                     </button></a>
                             </td>
                         </tr>
+
                         @endforeach
                     </tbody>
                 </table>
