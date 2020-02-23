@@ -96,7 +96,19 @@
         display: inline-block;
         vertical-align: middle;
     }
+
+    .element-header::after {
+        width: 125px;
+    }
 </style>
+
+@if(getLangId() != 1)
+<style>
+    .element-header::after {
+        right: 0;
+    }
+</style>
+@endif
 @endsection
 
 
@@ -104,7 +116,7 @@
 
 
 <div class="kt-portlet__body kt-padding-t-0">
-    <div class="element-actions">
+    <div class="element-actions" style="float:{{ getLangId() == 1 ? 'right' : 'left'}}">
         <div class="form-inline justify-content-sm-end">
             <select name="filter_value" class="form-control form-control-sm" id="filter_value"
                 onchange="filter_dashboard()">
@@ -118,7 +130,7 @@
     </div>
     <div class="col-md-12">
         <div class="element-wrapper">
-            <h6 class="element-header">{{__('Artist Permits')}}</h6>
+            <h6 class="element-header">{{__('Artist Permit')}}</h6>
             <div class="element-content">
                 <div class="row">
                     <div class="col-md-2">
@@ -157,7 +169,7 @@
     </div>
     <div class="col-md-12">
         <div class="element-wrapper">
-            <h6 class="element-header">{{__('Event Permits')}}</h6>
+            <h6 class="element-header">{{__('Event Permit')}}</h6>
             <div class="element-content">
                 <div class="row">
                     <div class="col-md-2">

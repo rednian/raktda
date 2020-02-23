@@ -660,7 +660,11 @@ class ArtistController extends Controller
                     $toURL = URL::signedRoute('company.add_new_permit', [ 'id' => $permit_id]);
                 }
             }else if($request->btnOption == 2) {
-                $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id]);
+                if ($request->fromPage == 'event') {
+                    $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id , 'from' => 'event']);
+                }else {
+                    $toURL = URL::signedRoute('company.add_new_artist', ['id' => $permit_id]);
+                }
             }
 
         $artistTempData  = ArtistTempData::create([
@@ -1958,12 +1962,18 @@ class ArtistController extends Controller
 
         $user_id = Auth::user()->user_id;
 
-        ArtistTempData::where([
-            ['created_by', $user_id],
-            ['permit_id', $id],
-            ['status', 5],
-            ['del_status', 1]
-        ])->update(['del_status' => 0]);
+        $last_page = URL::previous();
+
+        if($last_page == URL::signedRoute('artist.index'))
+        {
+            ArtistTempData::where([
+                ['created_by', $user_id],
+                ['permit_id', $id],
+                ['status', 5],
+                ['del_status', 1]
+            ])->update(['del_status' => 0]);
+        }
+       
 
         $data['artist_details'] = ArtistTempData::with('profession', 'nationality', 'ArtistTempDocument', 'event')->where([
             ['status', 5],
@@ -2558,10 +2568,9 @@ class ArtistController extends Controller
         }
         
         $files = [
-            url('storage').'/2/artist/1/1/file.pdf'
         ];
 
-        paymentNotification($paidEventFee ? $eventArray : '', $permit, $files);
+        paymentNotification($paidEventFee ? $eventArray : '', $permit, $files, $amount);
         sendSms(Auth::user()->number, $message);
 
             DB::commit();

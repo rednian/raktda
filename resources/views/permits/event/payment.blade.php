@@ -210,6 +210,7 @@
                                             <tr>
                                                 <th colspan="2">#</th>
                                                 <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                                                <th class="text-center">{{__('No.of.days')}}</th>
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
@@ -309,7 +310,7 @@
                                 $artist_g_total = 0 ;
                                 @endphp
 
-                                @if($event->permit)
+                                @if($event->permit && $event->permit->permit_status == 'approved-unpaid')
                                 <div class="table-responsive col-md-12" id="artist_pay_table" style="display:none;">
                                     <table class="table table-borderless border table-hover table-striped">
                                         <thead>
@@ -344,7 +345,7 @@
                                                     {{number_format($ap->profession['amount'],2)}}
                                                 </td>
                                                 <td class="text-right">
-                                                    {{ucfirst($permit_details->term).' Term ('. $noofdays.' days )' }}
+                                                    {{ucfirst($ap->term).' Term ('. $noofdays.' days )' }}
                                                 </td>
                                                 <td class="text-right">
                                                     {{number_format($artist_fee, 2)}}

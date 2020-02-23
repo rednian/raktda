@@ -214,7 +214,7 @@
                     <label>Trade License Expiry Date<span class="text-danger">*</span></label>
                     <input required name="trade_license_expired_date" autocomplete="off"
                         class="date-picker end form-control form-control-sm
-                                                                      @error('trade_license_expired_date') is-invalid @enderror" type="text"
+                                                                      @error('trade_license_    _date') is-invalid @enderror" type="text"
                         value="{{$company->trade_license_expired_date ? $company->trade_license_expired_date->format('d-m-Y') :  null }}">
                     @if ($errors->has('trade_license_expired_date'))
                     <div class="invalid-feedback"> {{$errors->first('trade_license_expired_date')}}</div>
