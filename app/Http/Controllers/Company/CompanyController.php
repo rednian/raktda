@@ -525,7 +525,7 @@ class CompanyController extends Controller
 
    private function getReferenceNumber($company)
    {
-    if (Company::exists()) {
+    if ( Company::exists() && ( !is_null(Company::first()->reference_number) ) ) {
          $last_reference = Company::where('company_id', '!=', $company->company_id)
          ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
 

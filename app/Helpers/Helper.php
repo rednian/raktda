@@ -468,17 +468,17 @@ function paymentNotification($event, $artist, $files) {
         $subject = 'Payment for #' . $event_permit_number . ' and '. $artist_permit_number.' is successfully completed.';
         $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
         $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid'; 
+        $url = \URL::signedRoute('event.index').'#valid';
     }else if($event){
         $subject = 'Payment for #' . $event_permit_number . ' is successfully completed.';
         $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
         $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid'; 
-    }else { 
+        $url = \URL::signedRoute('event.index').'#valid';
+    }else {
         $subject = 'Payment for #'. $artist_permit_number.' is successfully completed.';
         $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
         $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('artist.index').'#valid'; 
+        $url = \URL::signedRoute('artist.index').'#valid';
     }
     $buttonText = "Download Permit";
     $user = User::where('user_id', \Auth::user()->user_id)->first();
@@ -489,7 +489,7 @@ function paymentNotification($event, $artist, $files) {
         'button' => $buttonText,
         'url' => $url,
         'mail' => true,
-        'attach' => true, 
+        'attach' => true,
         'file' => $files
     ]));
 
