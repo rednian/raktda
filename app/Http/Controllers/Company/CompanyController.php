@@ -24,12 +24,14 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Notifications\AllNotification;
 
 class CompanyController extends Controller
 {
    public function create()
    {
-      return view('permits.company.create', ['page_title'=>'Register Company']);
+      $codes = Country::orderBy('nationality_en', 'asc')->get();
+      return view('permits.company.create', ['page_title'=>'Register Company', 'codes' => $codes]);
    }
 
    public function account(Request $request, Company $company)
@@ -77,6 +79,8 @@ class CompanyController extends Controller
          );
          $user->roles()->attach(2);
          $user->sendEmailVerificationNotification();
+         $user->phoneCode = $request->mobile_number_phoneCode ;
+         $user->save();
 
          DB::commit();
          Auth::login($user);
@@ -90,6 +94,36 @@ class CompanyController extends Controller
          return redirect()->back()->with('error', $e->getMessage());
       }
    }
+
+   public function sendNotification($company, $user){
+      if($company->request_type=="amendment request")
+      {
+        $reason = 'requested for Amendment';
+      }else {
+        $reason = 'registered';
+      }
+
+      $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
+
+      $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
+      $title = 'New Company <b>' . $company->name_en . '</b> '.$reason;
+      $buttonText = "View Application";
+      $content = 'New Company <b>' . $company->name_en . '</b> is '.$reason.'.  Please click the link below.';
+
+      $users = User::whereHas('roles', function($q){
+      $q->where('roles.role_id', 1);
+      })->get();
+
+      foreach ($users as $user) {
+          $user->notify(new AllNotification([
+              'subject' => $subject,
+              'title' => $title,
+              'content' => $content,
+              'button' => $buttonText,
+              'url' => $url
+          ]));
+      }
+  }
 
    public function edit(Request $request, Company $company)
    {
@@ -112,7 +146,8 @@ class CompanyController extends Controller
             'NameAr' => $request->acccount_name_ar,
             'NameEn' => $request->acccount_name_en,
             'email' => $request->account_email,
-            'mobile_number' => $request->account_mobile
+            'mobile_number' =>$request->account_mobile,
+            'phoneCode' =>  $request->account_mobile_phoneCode
         ]);
 
         DB::commit();
@@ -122,7 +157,7 @@ class CompanyController extends Controller
         $result = ['danger', $e->getMessage(), 'Error'];
       }
 
-      return redirect(URL::signedRoute('company.edit', $company->company_id).'#user-profile')->with(['message'=> $result]);
+      return redirect(URL::signedRoute('company.account', $company->company_id))->with(['message'=> $result]);
    }
 
    public function changePassword(Request $request, Company $company) {
@@ -170,7 +205,7 @@ class CompanyController extends Controller
       return redirect()->back();
     }
     if ($this->hasRequirement($company) && $request->submit != 'draft') {
-      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error']);
+      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error'])->withInput();
     }
        $validate = Validator::make($request->all(), [
                'name_en'=> 'required|max:255',
@@ -218,26 +253,15 @@ class CompanyController extends Controller
                   //ammendment request
                   if ($company->status == 'back') {
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
-                    // $company->request()->create(['type'=>'bounced back request', 'user_id'=>$request->user()->user_id]);
                   }
 
                   if ($company->status == 'blocked') {
                     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
                   }
 
-
-
-                // //renew
-                // if ($company->request_type == 'new registration' && $company->status == 'back'){
-                //     $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'renew trade license request']));
-                //     $company->request()->create(['type'=>'renew trade license request', 'user_id'=>$request->user()->user_id]);
-                // }
-
-
-
-
-
-//                  dd($company);
+                  if($company->status == 'active'){
+                    $company->update($request->all());
+                  }
 
                   $result = ['success', 'Successfully submitted!', 'Success'];
                   break;
@@ -246,7 +270,6 @@ class CompanyController extends Controller
                  $result = ['success', 'Draft saved!', 'Success'];
                   break;
           }
-
 
 
          if($company->contact()->exists()){
@@ -267,7 +290,7 @@ class CompanyController extends Controller
              $company->contact()->create($request->all());
          }
 
-
+         $this->sendNotification($company ,User::find(Auth::user()->user_id));
          DB::commit();
          return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
       } catch (Exception $e) {
@@ -391,10 +414,10 @@ class CompanyController extends Controller
         }
         return $name;
       })->editColumn('issued_date', function($data){
-        return;
+        return !is_null($data->issued_date) ? Carbon::parse($data->issued_date)->format('d-m-Y') : '';
       })->editColumn('expired_date', function($data){
       //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
-      return ;
+      return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
           $name = $data->requirement->requirement_name;
@@ -430,7 +453,8 @@ class CompanyController extends Controller
       }
 
       if($request->mobile_number){
-         $result =  User::where('mobile_number', $request->mobile_number)->exists() ?  false : true;
+        $phoneCode = $request->phoneCode;
+         $result =  User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->exists() ?  false : true;
       }
 
       if($request->name_en){
@@ -501,7 +525,7 @@ class CompanyController extends Controller
 
    private function getReferenceNumber($company)
    {
-    if (Company::exists()) {
+    if ( Company::exists() && ( !is_null(Company::first()->reference_number) ) ) {
          $last_reference = Company::where('company_id', '!=', $company->company_id)
          ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
 

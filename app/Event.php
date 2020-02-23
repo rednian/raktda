@@ -24,8 +24,10 @@ class Event extends Model
         'exempt_by', 'approved_by', 'approved_date'];
 
 
-    const GOVERNMENT=1;
-    const CORPORATE=2;
+    public function smsNotification()
+    {
+        return $this->hasMany(SMSNotfication::class, 'event_id', 'module_id')->whereType('event');
+    }
 
     public function subType()
     {
@@ -87,7 +89,8 @@ class Event extends Model
 
     public function additionalRequirements()
     {
-        return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
+        return $this->hasMany(EventAdditionalRequiremment::class, 'event_id');
+        // return $this->belongsToMany(Requirement::class, 'event_additional_requirement', 'event_id', 'requirement_id')->where('requirement_type', 'event');
     }
 
     public function check()
@@ -107,10 +110,11 @@ class Event extends Model
 
     public function requirements()
     {
-        return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
-            ->where('requirement_type', 'event')
-            ->withPivot(['path', 'issued_date', 'expired_date', 'type'])
-            ->withTimestamps();
+        return  $this->hasMany(EventRequirement::class, 'event_id');
+        // return $this->belongsToMany(Requirement::class, 'event_requirement', 'event_id', 'requirement_id')
+        //     ->where('requirement_type', 'event')
+        //     ->withPivot(['path', 'issued_date', 'expired_date', 'type'])
+        //     ->withTimestamps();
     }
 
     public function company()

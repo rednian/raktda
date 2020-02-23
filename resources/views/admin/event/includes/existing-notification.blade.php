@@ -11,7 +11,7 @@
          @endif
          @if ($event->is_truck)
             <li>This event added a food truck.</li>
-         @endif 
+         @endif
          @if ($event->is_liquor)
             <li>This event added a liquor.</li>
          @endif

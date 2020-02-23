@@ -12,7 +12,7 @@
 	</div>
 	<div class="col-8">
 		<form class="form-row">
-			<div class="col-4">
+			{{-- <div class="col-4">
 				  <div class="input-group input-group-sm">
 				  		<div class="kt-input-icon kt-input-icon--right">
 				  			<input autocomplete="off" type="text" class="form-control form-control-sm" placeholder="{{ __('APPLIED DATE') }}" id="active-applied-date" >
@@ -21,19 +21,19 @@
 				  			</span>
 				  		</div>
 				</div>
-			</div>
-			<div class="col-3">
+			</div> --}}
+			{{-- <div class="col-3">
 				<select name="" id="active-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="activePermit.draw()" >
 					<option selected disabled >{{ __('REQUEST TYPE') }}</option>
 					<option value="new">{{ __('New Application') }}</option>
 					<option value="amend">{{ __('Amend Application') }}</option>
 					<option value="renew">{{ __('Renew Application') }}</option>
 				</select>
-			</div>
+			</div> --}}
 			<div class="col-3">
 				<select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="activePermit.draw()">
 					<option disabled selected>{{ __('PERMIT STATUS') }}</option>
-					<option value="new">{{ __('New') }}</option>	
+					<option value="new">{{ __('New') }}</option>
 					<option value="modified">{{ __('Amend') }}</option>
 				</select>
 			</div>

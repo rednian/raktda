@@ -8,7 +8,7 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('New') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('NEW') }}</a>
                   <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
                 <span id="new-count" class="kt-widget24__stats kt-font-default">{{ $new_company }}</span>
@@ -21,7 +21,7 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Pending') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('PENDING') }}</a>
                   <small class="kt-widget24__desc">{{ __('All Request') }}</small>
                 </div>
                 <span id="pending-count" class="kt-widget24__stats kt-font-default">{{ $pending }}</span>
@@ -34,7 +34,7 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Blacklisted') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('BLACKLISTED') }}</a>
                   <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span id="cancelled-count" class="kt-widget24__stats kt-font-default">{{ $blocked }}</span>
@@ -47,7 +47,7 @@
             <div class="kt-widget24 kt-widget24--solid">
               <div class="kt-widget24__details">
                 <div class="kt-widget24__info">
-                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('Completed') }}</a>
+                  <a href="#" class="kt-widget24__title" title="Click to edit">{{ __('COMPLETED') }}</a>
                   <small class="kt-widget24__desc">{{ __('Last 30 Days') }}</small>
                 </div>
                 <span class="kt-widget24__stats kt-font-default">{{ $approved }}</span>

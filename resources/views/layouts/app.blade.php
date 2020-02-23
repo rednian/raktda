@@ -181,6 +181,18 @@
 </body>
 @yield('script')
 <script type="text/javascript">
+    function blockPage(){
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        type: 'v2',
+        state: 'success',
+        message: 'Please wait...'
+    });
+}
+
+function unblockPage(){
+    KTApp.unblockPage();
+}
     $(document).ready(function(){
 
         //only arabic, numbers and space allowed in arabic with dir=rtl
@@ -193,7 +205,7 @@
 
         //english, numbers and special character allowed
         $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){
-            var alphanumeric = /[\w\d]|[\s]/g;
+            var alphanumeric = /[\w\d\-\.\?\!\&\%\#\*\()]|[\s]/g;
              var key = String.fromCharCode(e.which);
              return alphanumeric.test(key) ? true : false;
         });

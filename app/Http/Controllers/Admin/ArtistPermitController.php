@@ -118,7 +118,8 @@ class ArtistPermitController extends Controller
                     'title' => $title,
                     'content' => $content,
                     'button' => $buttonText,
-                    'url' => $url
+                    'url' => $url,
+                    'mail'=>true
                 ]));
             }
             //END SEND NOTIFICATION COMPANY
@@ -142,7 +143,7 @@ class ArtistPermitController extends Controller
             ->where('permit_id', '<', $permit->permit_id)
             ->count();
 
-        return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no, 'rivision'=>$revision]);
+        return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>'Artist Permit Details', 'rivision'=>$revision]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)
@@ -360,15 +361,21 @@ class ArtistPermitController extends Controller
             $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Approved';
             $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Approved';
             $content = 'Your Artist Permit application with the reference number <b>' . $permit->reference_number . '</b> has been approved. To view the details, please click the button below.';
-            $url = URL::signedRoute('company.make_payment', $permit->permit_id);
+            $url = URL::signedRoute('company.get_permit_details', $permit->permit_id);
             $buttonText = 'Make Payment';
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'approved', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('company.get_permit_details', $permit->permit_id), 'payment'=>true];
         }
 
         if($type == 'amend'){
             $subject = 'Artist Permit # ' . $permit->reference_number . ' - Application Requires Amendment';
             $title = 'Artist Permit <b># ' . $permit->reference_number . '</b> - Application Requires Amendment';
             $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been bounced back for amendment. To view the details, please click the button below.';
-            $url = URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'amend']);
+            $url = URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend']);
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'bounced back for amendment', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'status' => 'amend'])];
         }
 
         if($type == 'reject'){
@@ -377,6 +384,9 @@ class ArtistPermitController extends Controller
             $content = 'Your application with the reference number <b>' . $permit->reference_number . '</b> has been rejected. To view the details, please click the button below.';
             //$url = URL::signedRoute('event.show', ['event' => $event->event_id, 'tab' => 'applied']);
             $url = '#';
+
+            $sms_content = ['name'=>'artist permit', 'status'=> 'rejected', 'reference_number'=>$permit->reference_number,
+            'url'=> URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id])];
         }
 
         $users = $permit->owner->company->users;
@@ -387,8 +397,10 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => $buttonText,
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
+            sms($user->number, $sms_content);
         }
     }
 
@@ -406,7 +418,8 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => 'View Permit',
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
         }
     }
@@ -428,7 +441,8 @@ class ArtistPermitController extends Controller
                 'title' => $title,
                 'content' => $content,
                 'button' => 'View Permit',
-                'url' => $url
+                'url' => $url,
+                'mail'=>true
             ]));
         }
     }
@@ -759,6 +773,7 @@ class ArtistPermitController extends Controller
         $comments = $artistpermit->comments()->orderBy('created_at', 'desc')->get();
         return DataTables::of($comments)
             ->addColumn('comment', function ($comments){
+                // if(is_null($comments->comment)){ return '-'; }
                 return ucfirst($comments->comment);
             })
             ->addColumn('commented_on', function ($comments){
@@ -804,7 +819,7 @@ class ArtistPermitController extends Controller
                     });
                 })->get();
 
-            $table = Datatables::of($permit)
+            return Datatables::of($permit)
                 ->addColumn('artist_number', function($permit){
                     $total = $permit->artistpermit()->whereNull('type')->count();
                     $check = $permit->artistpermit()->whereNull('type')->whereNotIn('artist_permit_status', ['unchecked'])->count();
@@ -927,13 +942,16 @@ class ArtistPermitController extends Controller
                     ['request_type', 'last_action_taken','request_type', 'reference_number', 'company_type', 'permit_status',
                         'action' , 'applied_date', 'approved_by', 'updated_at', 'event'
                     ])
+                ->with('new_count', function(){
+                    return Permit::has('artist')->where('permit_status', 'new')->count();
+                })
+                ->with('pending_count', function(){
+                    return Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
+                })
+                ->with('cancelled_count', function(){
+                    return Permit::has('artist')->where('permit_status', 'cancelled')->count();
+                })
                 ->make(true);
-            $table = $table->getData(true);
-            $table['new_count'] = Permit::has('artist')->where('permit_status', 'new')->count();
-            $table['pending_count'] = Permit::has('artist')->whereIn('permit_status', ['modified', 'checked'])->count();
-            $table['cancelled_count'] = Permit::has('artist')->where('permit_status', 'cancelled')->count();
-
-            return response()->json($table);
         }
     }
 

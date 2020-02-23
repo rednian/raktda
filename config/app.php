@@ -179,6 +179,7 @@ return [
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
         Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+
     ],
     /*
     |--------------------------------------------------------------------------
@@ -235,9 +236,6 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
-
-
-
     ],
 
 ];

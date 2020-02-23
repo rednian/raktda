@@ -20,6 +20,11 @@ class Company extends Model
         'request_type'
     ];
 
+    public function smsNotification()
+    {
+        return $this->hasMany(SMSNotfication::class, 'company_id', 'module_id')->whereType('company');
+    }
+
     public function routeNotificationForMail($notification)
     {
         return $this->company_email;

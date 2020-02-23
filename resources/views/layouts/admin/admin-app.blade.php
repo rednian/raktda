@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ Auth::user()->LanguageId != 1 ?  'rtl': null }}">
 <head>
   <meta charset="utf-8" />
-  <title>RAK TDA | {{ ucwords($page_title) }}</title>
+  <title>RAK TDA | {{ ucfirst($page_title)  }}</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
@@ -99,19 +99,48 @@
 <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script>
 {{-- <script src="{{ asset('/assets/vendors/custom/datatables/dataTables.colVis.js') }}"></script> --}}
 <script type="text/javascript">
+function blockPage(){
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        type: 'v2',
+        state: 'success',
+        message: 'Please wait...'
+    });
+}
+
+function unblockPage(){
+    KTApp.unblockPage();
+}
   $(document).ready(function(){
+
+          //only arabic, numbers and space allowed in arabic with dir=rtl
+          $('input[dir=rtl], textarea[dir=rtl]').keypress(function(e){
+            var arabicAlphabet = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[0-9\s]/g;
+             var key = String.fromCharCode(e.which);
+             return arabicAlphabet.test(key) ? true : false;
+        });
+
+
+        //english, numbers and special character allowed
+        $('input[dir=ltr], textarea[dir=ltr]').keypress(function(e){
+            var alphanumeric = /[\w\d\-\.\?\!\&\%\#\*\()]|[\s]/g;
+             var key = String.fromCharCode(e.which);
+             return alphanumeric.test(key) ? true : false;
+        });
 
         //REFRESH NOTIFICATIONS EVERY MINUTE
     var notif = setInterval(refreshNotification, 60000);
     //REAL TIME NOTIFICATIONS APPEND TO NOTIFICATION PANE
-    // window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
-    //         .notification((notification) => {
-    //             addNotification(notification);
-    //         });
+    window.Echo.private(`App.User.{{ Auth::user()->user_id }}`)
+            .notification((notification) => {
+                console.log(notification);
+                addNotification(notification);
+            });
 
-    window.Echo.private(`App.User.{{ Auth::user()->user_id }}`).notification(function(notification){
-        addNotification(notification);
-    });
+    // window.Echo.private(`App.User.{{ Auth::user()->user_id }}`).notification(function(notification){
+    //     console.log(notification);
+    //     addNotification(notification);
+    // });
     //FUNCTION TO PUT THE NOTIFICATION TO PANE
     function addNotification(data){
         var html = '<a href="' + data.url + '" class="kt-notification__item">\

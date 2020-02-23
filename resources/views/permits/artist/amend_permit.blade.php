@@ -186,12 +186,14 @@
                     </tbody>
                 </table>
             </div>
+            @if(count($artist_details) > 0)
             <div class="d-flex justify-content-end">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                     <i class="la la-check"></i>
                     {{__('Submit')}}
                 </div>
             </div>
+            @endif
         </div>
 
         @include('permits.artist.modals.remove_artist', ['from' => 'amend'])
@@ -257,7 +259,6 @@
 
     $('#back_btn , #back_btn_sm').click(function(){
         $total_artists = $('#total_artist_details').val();
-
         if($total_artists > 0) {
             $('#back_btn_modal').modal('show');
         } else {

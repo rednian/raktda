@@ -56,7 +56,7 @@
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->company_email}}</span>
               </div>
             </div>
-            
+
             <div class="form-group form-group-xs row">
               <label class="col-4 col-form-label">{{__('Trade License Number')}} :</label>
               <div class="col-8">
@@ -93,7 +93,7 @@
                 <span class="form-control-plaintext kt-font-bolder">{{ $user == 1 ? ucfirst($company->company_description_en) : $company->company_description_ar }}</span>
               </div>
             </div>
-            
+
           </section>
         </div>
         <div class="col-md-5">
@@ -117,7 +117,7 @@
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->contact->mobile_number}}</span>
               </div>
             </div>
-            
+
             <div class="form-group form-group-xs row">
               <label class="col-5 col-form-label">{{__('Emirates ID')}}:</label>
               <div class="col-7">
@@ -140,9 +140,9 @@
           </section>
         </div>
       </section>
-  
+
       <div class="kt-widget kt-widget--user-profile-3">
-        
+
         <div class="kt-widget__bottom">
           <div class="kt-widget__item col-3">
             <div class="kt-widget__icon">
@@ -162,10 +162,10 @@
               <span class="kt-widget__value">{{$company->permit()->where('permit_status', 'active')->count()}}</span>
             </div>
           </div>
-          
-          
-          
-          
+
+
+
+
         </div>
       </div>
 
@@ -201,8 +201,8 @@
                       {{__('UPLOADED DOCUMENTS')}}
                   </a>
               </li>
-              
-          </ul> 
+
+          </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="action-history" role="tabpanel">
               <section class="row kt-margin-t-10">
@@ -210,7 +210,7 @@
                   @if ($company->status == 'blocked')
                     <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
                       <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                      <div class="alert-text">This company is currently blocked. 
+                      <div class="alert-text">This company is currently blocked.
                         <span title="{{$company->comment()->latest()->first()->created_at->format('l h:i A | d-F-Y')}}" class="text-underline">{{ humanDate($company->comment()->latest()->first()->created_at) }}</span><br>
                         <span>{{__('Please see the ACTION HISTORY...')}}</span>
                       </div>
@@ -240,11 +240,11 @@
                               <div class="form-group row form-group-sm">
                                 <div class="col-md-6">
                                   <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                                  <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                                  <textarea required name="comment_en" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                                 </div>
                                 <div class="col-md-6">
                                   <label for="">{{ __('Remarks (AR)') }}<span class="text-danger">*</span></label>
-                                  <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                                  <textarea required name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                                 </div>
                               </div>
                               <div class="form-group row">
@@ -254,7 +254,7 @@
                                     @else
                                     <button class="btn btn-sm btn-maroon kt-transform-u" name="status" value="active">{{__('SUBMIT')}}</button>
                                   @endif
-                                
+
                                 </div>
                               </div>
                             </form>
@@ -344,18 +344,18 @@
                       <tr>
                           {{-- <th>#</th> --}}
                           <th>{{__('REQUIREMENT NAME')}}</th>
-                          <th>{{__('ISSUED DATE')}}</th>
-                          <th>{{__('EXPIRY DATE')}}</th>
+                          {{-- <th>{{__('ISSUED DATE')}}</th>
+                          <th>{{__('EXPIRY DATE')}}</th> --}}
                       </tr>
                     </thead>
                 </table>
                 </div>
-              
+
           </div>
           </div>
       </section>
-        
-                                                      
+
+
   </div>
 </div>
 @stop
@@ -370,8 +370,8 @@
       artist();
       documentRequirement();
       actionTable();
-    
-    
+
+
       $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var current_tab = $(e.target).attr('href');
 
@@ -391,8 +391,8 @@
         columns: [
         // {data: 'count'},
         {data: 'name'},
-        {data: 'issued_date'},
-        {data: 'expired_date'}
+        // {data: 'issued_date'},
+        // {data: 'expired_date'}
         ]
     });
   }

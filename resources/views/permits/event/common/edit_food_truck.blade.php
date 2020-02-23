@@ -6,7 +6,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
                         class="fa fa-truck"></i>
                 </h5>
-                <div class="d-flex" style="position: absolute;right: 5rem;">
+                <div class="d-flex" style="position: absolute;{{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
                         {{__('Add New')}}</button>
                     <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
@@ -16,6 +16,15 @@
                 </button>
             </div>
             <div class="modal-body">
+                @if(isset($from) && $from == 'amend')
+                <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
+                    <div class="alert-icon">
+                        <i class="flaticon-questions-circular-button"></i>
+                    </div>
+                    <div class="alert-text">{{__('If you Add or Update Food Truck Details, Permit will get Amended')}}
+                    </div>
+                </div>
+                @endif
                 @include('permits.event.common.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
@@ -58,13 +67,13 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" autocomplete="off">
+                                id="company_name_en" dir="ltr" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" dir="rtl" autocomplete="off">
+                                id="company_name_ar" dir="rtl" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
@@ -76,7 +85,7 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                autocomplete="off">
+                                autocomplete="off" dir="ltr" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}

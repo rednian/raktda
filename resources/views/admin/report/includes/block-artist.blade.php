@@ -3,6 +3,10 @@
         color: #6d6d6d;
     }
 
+    /* body {
+        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 13px;
+    } */
 
     .activeButton {
         border-bottom: 2px solid #000000;
@@ -5252,7 +5256,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     //get the bar chart canvas
 
                     var cData = JSON.parse(response);
-                /*    console.log(response)*/
+                    console.log(response)
                     $('#totalAmountInMonth').html(cData.total)
 
                     var ctx = $("#bar-chart");
@@ -5383,4 +5387,3 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 @endsection
 {{--@include('admin.artist_permit.includes.artist-block-modal')--}}
-

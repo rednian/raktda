@@ -90,12 +90,12 @@
                                 <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ ucwords($first_letter) }}</span></div>
                             </div>
                             <div class="kt-user-card-v2__details">
-                                <span class="kt-user-card-v2__name">{{ Auth::user()->LanguageId == 1 ? $name : $nameAr }}</span>
+                                <span class="kt-user-card-v2__name">{{ Auth::user()->name }}</span>
                                 <a href="#" class="kt-user-card-v2__email kt-link">{{ ucwords(Auth::user()->designation) }}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md ">1
+                    <div class="kt-user-card__badge"> <span class="btn btn-label-success btn-sm btn-bold btn-font-md kt-hide">1
                             {{ __('Notifications') }}</span> </div>
                 </div>
                 <!--end: Head -->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\CompanyArtist;
 use DB;
+use App\Notifications\AllNotification;
 use Carbon\Carbon;
 use DataTables;
 use App\Company;
@@ -33,7 +34,65 @@ class CompanyController extends Controller
         ]);
     }
 
+    private function sendNotificationCompany($company, $type){
 
+        $buttonText = 'View Application';
+
+        if($type == 'active'){
+            $subject = $company->name. ' - Application Approved';
+            $title = 'Application has been Approved';
+            $content = 'Your application has been approved. To view the details, please click the button below.';
+            $url = URL::signedRoute('company.show', ['company' => $company->company_id]);
+            $button = 'Profile';
+            $sms_content = ['name'=>'company', 'status'=> 'approved', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.show', $company->company_id)];
+
+        }
+
+        if($type == 'back'){
+            $subject = $company->name . ' - Application Requires Amendment';
+            $title = 'Applications Requires Amendment';
+            $content = 'Your application has been bounced back for amendment. To view the details, please click the button below.';
+            $url = URL::signedRoute('company.edit', ['company' => $company->company_id]);
+            $button ='Update Information';
+            $sms_content = ['name'=>'company', 'status'=> 'bounced back for amendment', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.edit', $company->company_id)];
+        }
+
+        if($type == 'rejected'){
+            $subject = $company->name . ' - Application Rejected';
+            $title = 'Application has been Rejected';
+            $content = 'Your application has been rejected. To view the details, please click the button below.';
+            $button ='Profile';
+            $url = URL::signedRoute('company.show', ['company' => $company->company_id]);
+            $sms_content = ['name'=>'company', 'status'=> 'rejected', 'reference_number'=>$company->reference_number,
+            'url'=> URL::signedRoute('company.show', $company->company_id)];
+        }
+        $buttonText = null;
+
+
+        $users = $company->users;
+        $company->notify(new AllNotification([
+            'subject' => $subject,
+            'title' => $title,
+            'content' => $content,
+            'button' => $button,
+            'url' => $url,
+            'mail'=>true
+        ]));
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => $button,
+                'url' => $url,
+                'mail'=>true
+            ]));
+            sms($user->number, $sms_content);
+        }
+    }
 
     public function submit(Request $request, Company $company)
     {
@@ -41,30 +100,27 @@ class CompanyController extends Controller
         DB::beginTransaction();
         try {
             $request['user_id'] = $request->user()->user_id;
-            // dd($request->all());
             switch ($request->status) {
                 case 'active':
-
                     $company->update(['status'=>$request->status, 'registered_date'=>Carbon::now(), 'registered_by'=>$request->user()->user_id]);
-
                     $request['action'] = 'approved';
                     $company->comment()->create($request->all());
-
                     $result = ['success', '', 'Success'];
-                    break;
+                break;
                 case 'back':
                     $company->update(['status'=>$request->status]);
 
                     $company->comment()->create($request->all());
                     $result = ['success',' ', 'Success'];
-                    break;
+                break;
                 case 'rejected':
                     $company->update(['status'=>$request->status]);
                     $company->comment()->create($request->all());
                     $result = ['success','', 'Success'];
-                    break;
-
+                break;
             }
+
+            $this->sendNotificationCompany($company, $company->status);
             DB::commit();
 
         } catch (Exception $e) {

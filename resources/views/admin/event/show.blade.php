@@ -2,7 +2,7 @@
 @section('style')
 <style>
   .table-display td{
-    padding: 0 0.3rem; 
+    padding: 0 0.3rem;
   }
 </style>
 @endsection
@@ -18,6 +18,11 @@
                  {{ __('BACK') }}
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
+            @if (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by))
+                {{-- <div class="dropdown-divider"></div> --}}
+                <a target="_blank" class="btn btn-warning kt-font-transform-u btn-sm kt-margin-l-5"
+                href="{{ URL::signedRoute('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download Permit') }}</a>
+            @endif
             <div class="dropdown dropdown-inline">
                  <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="flaticon-more"></i>
@@ -27,17 +32,14 @@
                   <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
                     {{ __('Establishment Detail') }}
                   </a>
-                    @if (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by))
-                        {{-- <div class="dropdown-divider"></div> --}}
-                        <a target="_blank" class="dropdown-item kt-font-trasnform-u" href="{{ route('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download Permit') }}</a>
-                    @endif
+
                  </div>
             </div>
             @endif
          </div>
     </div>
     <div class="kt-portlet__body kt-padding-t-5">
-      
+
       @if ($event->status == 'active')
         <section class="row kt-margin-t-10">
           <div class="col-md-12">
@@ -55,11 +57,11 @@
                         <div class="form-group row form-group-sm">
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                         </div>
                         <div class="form-group row">
@@ -75,13 +77,13 @@
           </div>
         </section>
       @endif
-      
+
       {{-- EVENT APPROVAL BY INSPECTOR, MANAGER AND GOVERNMENT --}}
       @if(Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
       @if($event->comment()->where('action', '!=', 'pending')->when(Auth::user()->roles()->first()->role_id == 6, function($q){
             $q->where('government_id', Auth::user()->government_id);
         })->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first())
-      @php 
+      @php
         $action = $event->comment()->where('action', '!=', 'pending')->when(Auth::user()->roles()->first()->role_id == 6, function($q){
             $q->where('government_id', Auth::user()->government_id);
         })->where('role_id', Auth::user()->roles()->first()->role_id)->latest()->first();
@@ -143,11 +145,11 @@
                         <div class="form-group row form-group-sm">
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="comment" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                           <div class="col-md-6">
                             <label for="">{{ __('Remarks (AR)') }} <span class="text-danger">*</span></label>
-                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea> 
+                            <textarea required="" name="comment_ar" dir="rtl" maxlength="255" class="form-control form-control-sm" rows="3" autocomplete="off"></textarea>
                           </div>
                         </div>
                         @if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())
@@ -179,11 +181,11 @@
         <div class="col-md-7">
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Owner')}} </span>: {{Auth::user()->LanguageId == 1 ?  ucfirst($event->owner_name) : $event->owner_name_ar }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>: 
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-15">{{__('Event Type')}} </span>:
             {{Auth::user()->LanguageId == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-20">{{__('Event Subcategory')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-20">{{__('Event Subcategory')}}</span>:
             {{ $event->subType()->exists() ? Auth::user()->LanguageId == 1 ? ucfirst($event->subType->name_en) : ucfirst($event->subType->name_ar) : '-'}}
           </p>
 
@@ -192,19 +194,18 @@
             {{ date('d-F-Y', strtotime($event->issued_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('End Date')}}</span>:
             {{ date('d-F-Y', strtotime($event->expired_date)) }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark">
-            <span class="kt-font-bold kt-margin-r-25">{{__('Event Duration')}}</span>: 
+            <span class="kt-font-bold kt-margin-r-25">{{__('Event Duration')}}</span>:
             @php
               $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
               $day = $date > 1 ? ' Days' :' Day';
             @endphp
             {{ $date.$day }}
           </p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-50">{{__('Time')}}</span>:  {{ $event->time_start }} -- {{ $event->time_end }}</p>
-          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>: 
+          <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-40">{{__('Venue')}}</span>:
             {{  Auth::user()->LanguageId == 1 ? ucfirst($event->venue_en) :  $event->venue_ar }}
           </p>
           <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-30">{{__('Address')}}</span>: {{ $event->full_address }}</p>
@@ -226,7 +227,7 @@
                 </div>
                 <div class="kt-widget__details">
                   <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
-                  <a href="#" class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</a>
+                  <span class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</span>
                 </div>
               </div>
               <div class="kt-widget__item kt-padding-t-5">
@@ -339,12 +340,12 @@
                               <td class="kt-font-dark"><span title="{{$event->approved_date->format('h:i A | d-F-Y')}}" class="text-underline">{{humanDate($event->approved_date)}}</span></td>
                          </tr>
                          @endif
-                         
-                         
+
+
                          <tr>
                              <td>{{ __('Printed Note') }} :</td>
                               <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
-                         </tr>      
+                         </tr>
                      </table>
                      <hr>
                      <h6 class="kt-font-dark kt-font-transform-u">{{__('Liquor Details')}}</h6>
@@ -381,12 +382,12 @@
                        @else
                       <small> {{__('No Liquor on this event.')}}</small>
                      @endif
-                     
+
                      {{-- <div class="d-flex justify-content-center">
                       @if ($event->transaction()->exists())
                        <button type="button" class="btn btn-secondary btn-sm kt-margin-r-5">Download</button>
                       @endif
-                      
+
                      </div> --}}
                      <hr>
                       <h6 class="kt-font-dark kt-font-transform-u">{{ __('Establishment Details') }}</h6>
@@ -428,7 +429,7 @@
                                 <td><span style="font-size: large;" class="la la-mobile-phone"></span> </td>
                                 <td>{{ $event->owner->company->contact->mobile_number }}</td>
                             </tr>
-                            
+
                         </table>
                         @else
                         @empty
@@ -477,7 +478,7 @@
         </div>
         @endif
       </section>
-      
+
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist" id="tabDetails">
           <li class="nav-item">
             <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
@@ -489,15 +490,15 @@
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('TRUCK INFORMATION') }}
-               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span> 
+               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span>
             </a>
           </li>
           @endif
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
-          <li class="nav-item kt-hide">
+          <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }} 
-             
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }}
+
             </a>
           </li>
           @endif
@@ -505,20 +506,20 @@
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ARTIST PERMIT DETAILS') }}
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{!is_null($event->permit) ? $event->permit->artistPermit()->count() : 0}}</span> 
-            </a>  
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{!is_null($event->permit) ? $event->permit->artistPermit()->count() : 0}}</span>
+            </a>
           </li>
           @endif
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }} 
-              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span> 
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }}
+              <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
             </a>
           </li>
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }} 
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
             </a>
           </li>
@@ -546,9 +547,9 @@
                    <th>{{ __('ESTABLISHMENT NAME') }}</th>
                    <th>{{ __('SERVICE TYPE') }}</th>
                    <th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
-                   <th>{{ __('ISSUED DATE') }}</th> 
-                   <th>{{ __('REGISTRATION EXPIRY DATE') }}</th> 
-                   <th>{{ __('ACTION') }}</th> 
+                   <th>{{ __('ISSUED DATE') }}</th>
+                   <th>{{ __('REGISTRATION EXPIRY DATE') }}</th>
+                   <th>{{ __('ACTION') }}</th>
                 </tr>
               </thead>
              </table>
@@ -634,12 +635,12 @@
 @endsection
 @section('script')
 <script>
-  var document_table = {}; 
-  var comment_table = {}; 
+  var document_table = {};
+  var comment_table = {};
   $(document).ready(function(){
 
     $('input[name=is_display_web]').change(function(){
-       
+
        var val = $(this).is(':checked') ? 1 : null;
 
        bootbox.confirm('Are you sure you want to show the event to the public website calendar?', function(result){
@@ -709,7 +710,7 @@
           }
         });
      });
-     
+
   });
 
   function artist(){
@@ -837,10 +838,10 @@
            {render: function(data){ return null}},
            {render: function(data){ return null}},
            {render: function(data){ return null}},
-         ],       
+         ],
        });
 
-   
+
      }
 
   function eventComment(){

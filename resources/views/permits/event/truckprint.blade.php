@@ -169,50 +169,25 @@
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
                 <td class="subhead">المالك<br />License owner</td>
             </tr>
+            <tr>
+                <td colspan="2">{{$event_details->name_en}}</td>
+                <td>{{$event_details->name_ar}}</td>
+                <td class="subhead">اسم الفعالية <br />Event Name</td>
+            </tr>
+            <tr>
+                <td colspan="2">{{$event_details->type['name_en']}}
+                    {{$event_details->subType->sub_name_en ?  ' - ' . $event_details->subType['sub_name_en'] : ''}}
+                </td>
+                <td>{{$event_details->subType->sub_name_ar ? $event_details->subType['sub_name_ar'] . ' - ' : ''}}
+                    {{$event_details->type['name_ar']}}</td>
+                <td class="subhead">نوع التصريح <br />Permit Type</td>
+            </tr>
+            <tr>
+                <td colspan="3">{{$event_details->permit_number}}</td>
+                <td class="subhead">رقم التصريح <br />Permit No</td>
+            </tr>
         </tbody>
     </table>
-
-
-    {{-- @php
-    $i = 1 ;
-    @endphp
-    @foreach($truck as $truc)
-    <table border="1" id="permit_data">
-        <thead>
-            <tr>
-                <th colspan="2" scope="col">Food Truck {{$i}}</th>
-    <th colspan="2" scope="col"> </th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td colspan="2">{{$truc->company_name_en}}</td>
-            <td>{{$truc->company_name_ar}}</td>
-            <td class="subhead"><br />Company Name</td>
-        </tr>
-        <tr>
-            <td colspan="3">{{$truc->plate_number}}</td>
-            <td class="subhead">رقم التصريح<br />Plate No</td>
-        </tr>
-        <tr>
-            <td colspan="3">{{$truc->food_type}}</td>
-            <td class="subhead">تاريخ التصريح<br /> Food Services</td>
-        </tr>
-        <tr>
-            <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_issued_date))}}</td>
-            <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Issued Date</td>
-        </tr>
-        <tr>
-            <td colspan="3">{{date('d-M-Y',strtotime($truc->registration_expired_date))}}</td>
-            <td class="subhead">تاريخ انتهاء الصلاحية <br /> Registration Expiry Date</td>
-        </tr>
-    </tbody>
-    @php
-    $i++;
-    @endphp
-    </table>
-    @endforeach --}}
-
 
     <table border="1" id="permit_data">
         <thead>
@@ -229,6 +204,7 @@
             $i = 1 ;
             @endphp
             @foreach($truck as $truc)
+            @if($truc->paid == 1)
             <tr>
                 <td>{{$i}}</td>
                 <td>{{$truc->company_name_ar}} <br /> {{$truc->company_name_en}}</td>
@@ -239,6 +215,7 @@
             @php
             $i++;
             @endphp
+            @endif
             @endforeach
         </tbody>
 

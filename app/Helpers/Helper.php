@@ -1,5 +1,35 @@
 <?php
 
+use App\Library\Smpp;
+use App\User;
+use App\Notifications\AllNotification;
+
+function sms($number, $message = [])
+{
+    $is_payment =array_key_exists('payment', $message) ? 'payment': 'details';
+    $content = "Dear Customer,\nYour {$message['name']} application with reference number: {$message['reference_number']} has been {$message['status']}. Please click the link below for the {$is_payment}.\n{$message['url']}";
+    sendSms($number, $content);
+}
+
+
+function sendSms($user_mobile_number = null, $message)
+{
+    $sender = 'RAKTOURISM';
+    $smpp = new Smpp();
+    $username = 'raktda';
+    $password = 'Hpwfso0!';
+    $destination_ip = '86.96.241.55';
+    $port = '2775';
+
+    $smpp->open($destination_ip, $port, $username, $password);
+
+    $utf = true;
+    $message = iconv('Windows-1256','UTF-16BE',$message);
+    $smpp->send_long($sender, $user_mobile_number, $message, $utf);
+    $smpp->close();
+}
+
+
 function requestType($type)
 {
     if (in_array($type, ['amend request'])) {
@@ -397,7 +427,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  250);
+        $payment_no = sprintf("%07d",  387);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -426,5 +456,44 @@ function getPaymentOrderId($from, $id)
 
     return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
 }
+
+function paymentNotification($event, $artist, $files, $amount) {
+    $subject = $title = $content = $artist_permit_number = $event_permit_number = '';
+
+    $event_permit_number = isset($event->permit_number) ? $event->permit_number : '';
+    $artist_permit_number = isset($artist->permit_number) ? $artist->permit_number : '';
+
+    if($event && $artist)
+    {
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #'. $artist_permit_number;
+        $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index').'#valid'; 
+    }else if($event){
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number ;
+        $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index').'#valid'; 
+    }else { 
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
+        $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
+        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('artist.index').'#valid';
+    }
+    $buttonText = "Download Permit";
+    $user = User::where('user_id', \Auth::user()->user_id)->first();
+    $user->notify(new AllNotification([
+        'subject' => $subject,
+        'title' => $title,
+        'content' => $content,
+        'button' => $buttonText,
+        'url' => $url,
+        'mail' => true,
+        'attach' => true,
+        'file' => $files
+    ]));
+
+}
+
 
 

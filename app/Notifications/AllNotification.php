@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+// use App\Channels\SmsNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -32,7 +33,8 @@ class AllNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'mail', 'broadcast'];
+        return array_key_exists('mail', $this->data) ? ['database', 'mail'] : ['database'];
+        // return ['database', 'mail', 'broadcast', SmsNotification::class];
     }
 
     /**
@@ -47,9 +49,17 @@ class AllNotification extends Notification
         //             ->line('The introduction to the notification.')
         //             ->action('Notification Action', url('/'))
         //             ->line('Thank you for using our application!');
-        return (new MailMessage)
+        $send =  (new MailMessage)
             ->subject($this->data['subject'])
             ->markdown('mail.notification', ['data' => $this->data]);
+
+        // if(array_key_exists('attach', $this->data)) {
+        //     foreach($this->data['file'] as $file) {
+        //          $send->attach($file) ;
+        //     }
+        // }  
+        
+        return $send ;
     }
 
     /**
@@ -64,6 +74,13 @@ class AllNotification extends Notification
             'title' => $this->data['title'],
             'content' => $this->data['content'],
             'url' => $this->data['url'],
+        ];
+    }
+
+    public function toSms($notifiable)
+    {
+        return [
+            'sms' => $this->data['sms'],
         ];
     }
 

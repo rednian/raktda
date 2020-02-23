@@ -178,7 +178,7 @@ $language_id = Auth::user()->LanguageId;
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="dob"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry')}}
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}
                                                                     <span class="text-danger hd-uae">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
@@ -770,6 +770,7 @@ $language_id = Auth::user()->LanguageId;
         PicUploadFunction();
         getAreas(5);
         $('.sh-uae').hide();
+        $('.hd-eu').hide();
         $.ajax({
             type: "GET",
             url:"{{route('clear_the_temp')}}"
@@ -1381,6 +1382,7 @@ $language_id = Auth::user()->LanguageId;
                         {
                             $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">This is an Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
                             $('#not_artist_personcode').html(code);
+                            return ;
                         }else if(data.artist_d.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');

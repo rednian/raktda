@@ -1,5 +1,5 @@
 <?php
-//if comapany is not yet active 
+//if comapany is not yet active
 Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function(){
 
   Route::get('/{company}/details', 'Company\CompanyController@edit')->name('company.edit')->middleware('signed');
@@ -10,9 +10,9 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
   Route::post('/{company}/updateUser', 'Company\CompanyController@updateUser')->name('company.updateUser');
   Route::post('/{company}/changePassword', 'Company\CompanyController@changePassword')->name('company.changePassword');
   Route::post('/{company}/upload', 'Company\CompanyController@upload')->name('company.upload');
-  Route::get('/requirement', 'Company\CompanyController@requirements')->name('company.requirement');  
-  Route::get('/details/{company}/requirement-datatable', 'Company\CompanyController@uploadedDatatable')->name('company.requirement.datatable');  
-  Route::post('/details/{company}/requirement/delete', 'Company\CompanyController@deleteFile')->name('company.requirement.delete');  
+  Route::get('/requirement', 'Company\CompanyController@requirements')->name('company.requirement');
+  Route::get('/details/{company}/requirement-datatable', 'Company\CompanyController@uploadedDatatable')->name('company.requirement.datatable');
+  Route::post('/details/{company}/requirement/delete', 'Company\CompanyController@deleteFile')->name('company.requirement.delete');
 
   Route::post('/company/account_exists', function(Illuminate\Http\Request $request) {
         if($request->username){
@@ -22,7 +22,8 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
             $result =  \App\User::where('email', $request->email)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
         }
         if($request->mobile_number){
-            $result =  \App\User::where('mobile_number', $request->mobile_number)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
+            $phoneCode = $request->phoneCode;
+            $result =  \App\User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->where('user_id','!=' ,Auth::user()->user_id)->exists() ?  false : true;
         }
         if($request->old_password){
             $password = \App\User::where('user_id', Auth::user()->user_id)->first()->value('password');
@@ -43,7 +44,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     //     return redirect(URL::signedRoute('artist.index'));
     // })->name('company.dashboard');
 
-    Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');   
+    Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');
 
     Route::post('dashboard','Company\ReportController@filterdashboard')->name('dashboard.filter');
 
@@ -151,7 +152,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/add_liquor', 'Company\EventController@add_liquor')->name('event.add_liquor');
     Route::post('event/fetch_liquor_details', 'Company\EventController@fetch_liquor_details')->name('event.fetch_liquor_details');
     Route::get('event/fetch_liquor_details_by_event_id/{id}', 'Company\EventController@fetch_liquor_details_by_event_id')->name('event.fetch_liquor_details_by_event_id');
-    
+
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
 
@@ -165,10 +166,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::get('event/fetch_this_truck_details/{id}', 'Company\EventController@fetch_this_truck_details')->name('event.fetch_this_truck_details');
     Route::post('event/fetch_this_truck_docs', 'Company\EventController@fetch_this_truck_docs')->name('event.fetch_this_truck_docs');
-    Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs'); 
+    Route::post('event/fetch_this_liquor_docs', 'Company\EventController@fetch_this_liquor_docs')->name('event.fetch_this_liquor_docs');
 
-    Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');   
-    
+    Route::get('event/get_uploaded_eventImages/{id}', 'Company\EventController@get_uploaded_eventImages')->name('event.get_uploaded_eventImages');
+
     Route::post('event/uploadEventPics', 'Company\EventController@uploadEventPics')->name('event.uploadEventPics');
     Route::post('event/draft/delete', 'Company\EventController@delete_draft')->name('event.delete_draft');
     // Route::get('event/eventpics/{id}', 'Company\EventController@eventpics')->name('event.eventpics');
@@ -178,12 +179,10 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/forgotEventPicsSession', 'Company\EventController@forgotEventPicsSession')->name('event.forgotEventPicsSession');
 
     Route::post('event/removeUploadedDocumentInSession', 'Company\EventController@removeUploadedDocumentInSession')->name('event.removeUploadedDocumentInSession');
-    
+
     Route::get('resetUploadsSession/{id}', 'Company\CommonController@resetUploadsSession')->name('company.resetUploadsSession');
 
     Route::get('event/getpaymentdetails/{orderid}', 'Company\EventController@get_payment_details')->name('company.getpaymentdetails');
-
-    Route::post('sendsms', [ 'uses' => 'smsController@sendSms' , 'as' => 'sendSms' ]);
 
     //REPORTS
     Route::get('reports', 'Company\ReportController@index')->name('company.reports');
@@ -198,5 +197,5 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
      Route::get('notifications/update_read', 'Company\CommonController@updateAsReadNotification')->name('company.notifications.update_read');
 
     //  Route::get('/getnotifications', 'Admin\UserController@getNotifications')->name('getnotifications');
-    
+
 });

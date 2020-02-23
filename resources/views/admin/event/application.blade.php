@@ -88,7 +88,7 @@
 													</div>
 													<div id="collapse-detail" class="collapse show" aria-labelledby="heading-detail" data-parent="#accordion-detail">
 													<div class="card-body">
-														
+
 														<div class="row form-group form-group-sm">
 															<div class="col-sm-6">
 																<section class="row">
@@ -278,9 +278,27 @@
 															</div>
 														</div>
 														<div id="collapse-date" class="collapse show" aria-labelledby="heading-date" data-parent="#accordion-date">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
+                                                                <div class="row form-group form-group-sm">
+                                                                    <div class="col-6"></div>
+                                                                    <div class="col-6">
+																		<section class="kt-form kt-form--label-right ">
+																		    <div class="form-group form-group-sm  row">
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
+																		        <div class="col-1">
+																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
+																		                <label>
+																		                    <input type="checkbox" id="checked-all-date" name="">
+																		                    <span></span>
+																		                </label>
+																		            </span>
+																		        </div>
+																		    </div>
+																		</section>
+																	</div>
+																	</div>
 																	<div class="row form-group form-group-sm">
-																	<div class="col-6">
+                                                                        <div class="col-4">
 																			<label class="kt-font-dark">{{ __('Event Duration') }} <span class="text-danger">*</span></label>
 																			<div class="input-group input-group-sm">
 																			@php
@@ -299,24 +317,7 @@
 																				</div>
 																			</div>
 																	</div>
-																	<div class="col-6">
-																		<section class="kt-form kt-form--label-right ">
-																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
-																		        <div class="col-1">
-																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
-																		                <label>
-																		                    <input type="checkbox" id="checked-all-date" name="">
-																		                    <span></span>
-																		                </label>
-																		            </span>
-																		        </div>
-																		    </div>
-																		</section>
-																	</div>
-																	</div>
-																	<div class="row form-group form-group-sm">
-																		<div class="col-3">
+																		<div class="col-4">
 																				<label class="kt-font-dark">{{ __('Start Date') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ date('d-F-Y', strtotime($event->issued_date)) }}" name="issued_date" readonly="readonly" type="text"
@@ -331,7 +332,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-4">
 																				<label class="kt-font-dark">{{ __('End Date') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ date('d-F-Y', strtotime($event->expired_date)) }}" name="expired_date" readonly="readonly" type="text"
@@ -346,7 +347,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-3 kt-hide">
 																				<label class="kt-font-dark">{{ __('Time Start') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ $event->time_start }}" name="time_start" readonly="readonly" type="text" class="form-control">
@@ -360,7 +361,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-3 kt-hide">
 																				<label class="kt-font-dark">{{ __('Time End') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ $event->time_end }}" name="time_end" readonly="readonly" type="text" class="form-control">
@@ -390,7 +391,7 @@
 															</div>
 														</div>
 														<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
 																<section class="row form-group form-group-sm">
 																	<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Number of Food Truck') }} <span class="text-danger">*</span></label>
@@ -542,18 +543,18 @@
 															</div>
 														</div>
 														<div id="collapse-liquor" class="collapse show" aria-labelledby="heading-liquor" data-parent="#accordion-liquor">
-															<div class="card-body">
-																	
+															<div class="card-body kt-font-dark">
+
                                                                 <section class="row">
                                                                     <div class="col-6">
                                                                         @if ($event->liquor->provided)
                                                                             <p class=" kt-font-bold">
-                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                <span class="kt-font-danger">{{ __('Note:') }}</span>
                                                                                 {{__('Liquor will be provided by the venue.')}}
                                                                             </p>
                                                                         @else
                                                                             <p class=" kt-font-bold">
-                                                                                <span class="kt-font-danger">Note: </span>
+                                                                                <span class="kt-font-danger">{{ __('Note:') }}</span>
                                                                                 {{__('Liquor was purchased from a licensed store.')}}
                                                                             </p>
                                                                         @endif
@@ -574,7 +575,7 @@
 																		</section>
 																	</div>
                                                                 </section>
-																
+
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Establishment Name') }} <span class="text-danger">*</span></label>
@@ -625,7 +626,7 @@
 																				</div>
 																	</div>
 																	</div>
-																		
+
 																	@else
 																	<div class="row form-group form-group-sm">
 																		<div class="col-6">
@@ -679,14 +680,14 @@
 																		</div>
 																	</div>
 																	@endif
-																	
-																	
+
+
 															</div>
 														</div>
 												</div>
 											</section>
 											@endif
-											
+
 											<section class="accordion accordion-solid accordion-toggle-plus border" id="accordion-address">
 												<div class="card">
 														<div class="card-header" id="heading-address">
@@ -696,7 +697,7 @@
 															</div>
 														</div>
 														<div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
-															<div class="card-body">
+															<div class="card-body kt-font-dark">
 																<div class="row form-group form-group-sm">
 																	<div class="col-6"></div>
 																	<div class="col-6">
@@ -748,7 +749,7 @@
 																		</div>
 																	</div>
 																	<div class="row form-group form-group-sm">
-																		<div class="col-3">
+																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Street') }} <span class="text-danger">*</span></label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ ucfirst($event->street) }}" name="address" readonly="readonly" type="text"
@@ -763,7 +764,7 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-3">
+																		<div class="col-6">
 																				<label class="kt-font-dark">{{ __('Area') }}</label>
 																				<div class="input-group input-group-sm">
 																					<input value="{{ ucfirst($event->area->area_en) }}" name="area_en" readonly="readonly" type="text"
@@ -778,38 +779,8 @@
 																					</div>
 																				</div>
 																		</div>
-																		<div class="col-sm-3">
-																			<label class="kt-font-dark">{{ __('Latitude') }} <span class="text-danger">*</span></label>
-																			<div class="input-group input-group-sm">
-																				<input value="{{$event->latitude}}" name="" readonly="readonly" type="text" class="form-control" > 
-																				<div class="input-group-append">
-																					<span class="input-group-text">
-																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox"> 
-																							<span></span>
-																						</label>
-																					</span>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-sm-3">
-																			<label class="kt-font-dark">{{ __('Longitude') }} <span class="text-danger">*</span></label>
-																			<div class="input-group input-group-sm">
-																				<input value="{{$event->longitude}}" name="" readonly="readonly" type="text" class="form-control" > 
-																				<div class="input-group-append">
-																					<span class="input-group-text">
-																						<label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-																							<input data-step="step-1" type="checkbox"> 
-																							<span></span>
-																						</label>
-																					</span>
-																				</div>
-																			</div>
-																		</div>
-																		
-																		
 																	</div>
-																	
+
 																	<div class="row form-group form-group-sm">
 																		<div class="col-md-6">
 																			<label for="">{{__('Address')}} <span>*</span></label>
@@ -831,7 +802,7 @@
 														</div>
 												</div>
 											</section>
-											
+
 									</div>
 									</section>
 							</div>
@@ -866,7 +837,7 @@
 													</a>
 												</li>
 											@endif
-											
+
 											{{-- @if ($event->otherUpload()->count() > 0) --}}
 											<li class="nav-item">
 												<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
@@ -902,7 +873,7 @@
 													</thead>
 													</table>
 											</div>
-											
+
 											<div class="tab-pane" id="kt_portlet_base_demo_2_3_tab_content" role="tabpanel">
 												<table class="table border borderless table-hover table-sm" id="liquor-table">
 													<thead>
@@ -925,7 +896,7 @@
 													</thead>
 													</table>
 											</div>
-										</div>												 
+										</div>
 										</div>
 									</section>
 							</div>
@@ -1047,7 +1018,7 @@
 																<div class="col">
 																	<p style="display: inline;" class="kt-font-dark">
 																		Do you want to add additional Requirement before sending back to client?
-																		
+
 																	</p>
 																	<label class="kt-checkbox kt-checkbox--single kt-checkbox--default kt-margin-b-0 ">
 																		<input type="checkbox"  class="step-2"><span></span>
@@ -1058,17 +1029,17 @@
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note') }}</label>
-																		<textarea disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
+																		<textarea dir="ltr" disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
 																	</div>
 																</div>
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note (AR)') }}</label>
-																		<textarea disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
+																		<textarea dir="rtl" disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 																	</div>
 																</div>
 															</section>
-															
+
 														</div>
 														@endif
 
@@ -1103,20 +1074,54 @@
 													<div class="card-header" id="heading-requirements">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
 															<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL REQUIREMENTS') }}</span>
-																<small class="text-muted">{{ __('Select Additional Requirements from the list or add new requirement') }}</small>
+																<small class="text-muted">{{ __('Add additional requirement to display in the client uploads.') }}</small>
 															</h6>
 														</div>
 														</div>
 														<div id="collapse-requirements" class="collapse show" aria-labelledby="heading-requirements" data-parent="#accordion-requirements">
 														<div class="card-body">
-															<table class="table table-borderless table-hover table-striped  border" id="additional-requirement">
-																<thead>
-																	<tr>
-																		<th></th>
-																		<th>{{ __('REQUIREMENT NAME') }}</th>
-																	</tr>
-																</thead>
-															</table>
+                                                            <div v-if="show" class="alert alert-outline-danger kt-margin-b-5 kt-padding-b-5 kt-padding-t-5 fade show" role="alert">
+                                                                <div class="alert-icon"><i class="flaticon-warning"></i></div>
+                                                                <div class="alert-text">Maximum additional requirements limit reach!</div>
+
+                                                            </div>
+                                                            <div class="form-group form-group-xs">
+                                                                <button @click="add" class="btn btn-sm btn-warning kt-font-transform-u kt-font-dark" type="button">
+                                                                    <span class="la la-plus"></span>
+                                                                    Add new requirement
+                                                                </button>
+                                                            </div>
+                                                            <table class="table table-borderless table-hover border table-sm">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="no-wrap">#</th>
+                                                                        <th>Requirement Name</th>
+                                                                        <th>Description</th>
+                                                                        <th class="no-wrap"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="(requirement, index) in requirements" :key="index">
+                                                                        <td class="text-center">@{{ index+1 }}</td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                                <input v-model="requirement.name_en" :name="`requirements[${index}][requirement_name]`" type="text" class="form-control" autocomplete="off">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                                <input :name="`requirements[${index}][requirement_description]`"  v-model="requirement.description_en" type="text" class="form-control" autocomplete="off">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="form-group form-group-xs">
+                                                                               <button tabindex="-1" type="button" @click="remove(index)" class="btn btn-sm btn-clean btn-secondary"><span class="la la-times text-danger"></span></button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
 														</div>
 													</div>
 												</div>
@@ -1176,13 +1181,34 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.common.dev.js"></script>
 	<script>
 	var add_requirements_table = {};
-	new Vue({ el: '#app-wizard', data: { comment: null } });
+	new Vue({
+        el: '#app-wizard',
+        data: {
+            show: false,
+            comment: null,
+            requirements: [
+                {name_en: null, description_en: null, name_ar: null, description_ar: null }
+            ]
+        },
+        methods: {
+            add: function(){
+                if(this.requirements.length < 10){
+                    this.show = false;
+                    this.requirements.push({name_en: null, description_en: null, name_ar: null, description_ar: null });
+                }
+                else{
+                    this.show = true;
+                }
+            },
+            remove: function(index){
+                this.show = false;
+                this.$delete(this.requirements, index);
+            }
+        },
+        });
 
 	$(document).ready(function () {
-
 		checkAll();
-
-
 
 	$("#event-table tbody").on("mousedown", "tr", function() {
 		$(".selected").not(this).removeClass("selected");
@@ -1292,63 +1318,6 @@
 		columns:[
 		{data: 'path'}
 		]
-	});
-	}
-
-	function additionalRequirementTable(){
-	add_requirements_table = $('table#additional-requirement').DataTable({
-			dom: '<"toolbar-add pull-left"><"toolbar-active-1 pull-left"><"toolbar-active-2 pull-left">frt<"pull-left"i>p',
-			'pageLength': 20,
-		ajax:{ url: '{{ route('admin.event.additionalrequirementdatatable', $event->event_id) }}'},
-		serverSide: false,	
-		columnDefs:[
-		{targets: 0, checkboxes: { selectRow: true }, sortable: false, className: 'no-wrap'}
-		],
-		language:{
-			'sEmptyTable': 'Requirement list is empty. <span class="kt-font-bold kt-font-transform-u kt-font-dark">Please add new requirements</span>'
-		},
-		select:{ style: 'multi' },
-		columns: [
-			{ data: 'requirement_id'},
-			{ data: 'name'},
-		]
-	});
-
-	var counter = 0;
-
-		$('div.toolbar-add').html('<button type="button" id="btn-add" class="btn btn-sm btn-warning kt-font-dark kt-font-bold kt-font-transform-u">{{ __('ADD NEW REQUIREMENT') }}</button>');
-		$('#btn-add').on( 'click', function () {
-		var html = '<section class="row">';
-			html += '	<div class="col-sm-4">'
-			html += '		<div class="form-group form-group-xs">';
-			html += '			<input type="text" autofocus autocomplete="off" class="form-control form-control-sm" name="requirements['+counter+'][name]" placeholder="{{ __('Requirement Name') }}">';
-			html += '		</div>';
-			html += '	</div>';
-			html += ' <div class="col-sm-4">';
-			html += ' 	<div  class="form-group form-group-xs">';
-			html += '		<input placeholder="{{ __('Description') }}" type="text" name="requirements['+counter+'][description]" class="form-control form-control-sm" >';
-			html += ' 	</div>';
-			html += ' </div>';
-			html += '	<div class="col-sm-4">';
-			html + '		<div class="form-group form-group-xs">';
-			html += '			<div class="kt-checkbox--inline kt-forn-dark">';
-			html += '				<label class="kt-checkbox"><input type="checkbox"  name="requirements['+counter+'][date]"> {{ __('Requires Date Validation') }}<span></span></label>';
-			html += '			</div>';
-			html += '		</div>';
-			html += '	</div>';
-			html += '</section>';
-		var data = {requirement_id: '', name: html };
-		counter++;
-		add_requirements_table.row.add(data).draw();
-		});
-		
-		
-	$('form#kt_form').submit(function(e){
-		var form = this;
-			var rows_selected = add_requirements_table.column(0).checkboxes.selected();
-			rows_selected.each(function(v){
-				$(form).append( $('<input>').attr('type', 'hidden').attr('name', 'requirements_id[]').val(v) );
-			});
 	});
 	}
 
@@ -1471,7 +1440,7 @@
 				],
 		});
 	}
-	
+
 	function requirementTable(){
 
 	var dt = $('table#requirement-table').DataTable({
@@ -1509,7 +1478,7 @@
 			return html;
 			}
 		}
-				],				
+				],
 			});
 
 
@@ -1520,7 +1489,10 @@
 
 	function eventDetails() {
 
-	$('form#kt_form').validate({
+	var form = $('form#kt_form').validate({
+        invalidHandler: function (event, validator) {
+		KTUtil.scrollTop();
+		},
 		rules: {
 		status: {required: true},
 		},
@@ -1528,11 +1500,19 @@
 		status: 'Please select an action.'
 		},
 
-		invalidHandler: function (event, validator) {
-		console.log(validator);
-		KTUtil.scrollTop();
-		}
 	});
+
+    $('form#kt_form').submit(function(e){
+        var note = $(this).find('textarea[name=comment]').val().trim().length;
+            if(form.valid() && (note != 0)){
+                KTApp.block('.kt-portlet', {
+                    overlayColor: '#000000',
+                    type: 'v2',
+                    state: 'success',
+                    message: 'Please wait...'
+                });
+            }
+        });
 
 	var approver = $('select#select-approver');
 	var departmentsSelect2 = $('select#select-department');
@@ -1541,9 +1521,9 @@
 		var val = $(this).val();
 		if(val.indexOf('4') > -1){
 			$('input#site-inspection').parents('.form-group').removeClass('kt-hide');
-		}	
+		}
 		else{
-			$('input#site-inspection').parents('.form-group').addClass('kt-hide');	
+			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
 			$('input#site-inspection').removeAttr('checked', true);
 			$('input#site-inspection').prop('checked', false);
 		}
@@ -1552,7 +1532,7 @@
 			$('select#select-department').val('').trigger('change');
 			$('select#select-department').parents('.form-group').removeClass('kt-hide');
 			$('select#select-department').removeAttr('disabled', true);
-		}	
+		}
 		else{
 			$('select#select-department').parents('.form-group').addClass('kt-hide');
 			$('select#select-department').attr('disabled', true);
@@ -1580,11 +1560,11 @@
 	$('input[name=status][type=radio]').change(function(){
 		if($(this).val() == 'need modification'){
 			$('#accordion-requirements').removeClass('kt-hide');
-			additionalRequirementTable();
+			// additionalRequirementTable();
 		}
 		else{
 				$('#accordion-requirements').addClass('kt-hide');
-		} 
+		}
 
 		if($(this).val() == 'approved-unpaid'){
 			$('#printed-note').removeClass('d-none').find('textarea').removeAttr('disabled', true);
@@ -1593,13 +1573,13 @@
 			$('#printed-note').addClass('d-none').find('textarea').attr('disabled', true);
 		}
 
-	
+
 
 		if($(this).val() == 'need approval'){
-				approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true); 
+				approver.parents('.form-group').removeClass('kt-hide').find('select').removeAttr('disabled', true);
 		}
 		else{
-			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true); 
+			approver.parents('.form-group').addClass('kt-hide').find('select').attr('disabled', true);
 			$('input#site-inspection').parents('.form-group').addClass('kt-hide');
 			$('select#select-department').val('').trigger('change');
 			$('select#select-approver').val('').trigger('change');
@@ -1614,6 +1594,8 @@
 		if(status != 'approved-unpaid' && $(this).find('textarea[name=comment]').val() == '' ){
 		$(this).find('textarea[name=comment]').addClass('is-invalid');
 			e.preventDefault();
+            KTUtil.scrollTop();
+            $(this).find('textarea[name=comment]').focus();
 		}
 	});
 
@@ -1650,6 +1632,7 @@ function updateLock() {
 				$(this).parents('.input-group').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
 				$(this).parents('.input-group').find('textarea').removeClass('is-valid').addClass('is-invalid');
 				wizardObj.stop();
+                KTUtil.scrollTop();
 			}
 		});
 	}
@@ -1680,13 +1663,14 @@ function checkedAttr(obj) {
 		$(obj).parents('.card-body').find('input[type=checkbox]').attr('checked', true);
 		$(obj).parents('.card-body').find('input[type=text]').addClass('is-valid').removeClass('is-invalid');
 		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--default').addClass('kt-checkbox--success');
+
 	}
 	else{
 		$(obj).parents('.card-body').find('input[type=checkbox]').removeAttr('checked', true);
 		$(obj).parents('.card-body').find('input[type=text]').removeClass('is-valid').addClass('is-invalid');
 		$(obj).parents('.card-body').find('label').removeClass('kt-checkbox--success').addClass('kt-checkbox--default');
 	}
-	
+
 }
 </script>
 @stop

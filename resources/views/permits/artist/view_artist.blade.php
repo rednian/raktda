@@ -21,16 +21,16 @@
         // $backUrl = url('company/event').'/'.$artist_details->permit->event_id .'?tab=applied';
         // }
 
-        if($from == 'details'){
-        $backUrl = URL::signedRoute('company.get_permit_details',[ 'id' => $artist_details->permit_id , 'tab' =>
-        'applied' ]);
-        } else if($from == 'payment') {
+        if($from == 'payment') {
         $backUrl = URL::signedRoute('company.make_payment', [ 'id' => $artist_details->permit_id ]);
         } else if($from == 'event') {
         $backUrl = URL::signedRoute('event.show',[ 'id' => $artist_details->permit->event_id , 'tab' => 'applied']);
         } else if($from == 'transaction') {
-        $backUrl = URL::signedRoute('report.view',[ 'id' => $artist_details->artistPermitTransaction[0]->transaction_id
+        $backUrl = URL::signedRoute('report.view',[ 'id' => $artist_details->transaction[0]->transaction_id
         ]);
+        }else {
+        $backUrl = URL::signedRoute('company.get_permit_details',[ 'id' => $artist_details->permit_id , 'tab' =>
+        $from ]);
         }
 
         @endphp

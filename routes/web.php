@@ -1,10 +1,13 @@
 <?php
+
+use App\Library\Smpp;
+
 Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
 Route::get('/test', function(){
-    $permit = App\Approval::find(2)->permit;
-    dd($permit);
+sendSms('+971568835006', "Your ATM \n was access 2 minutes ago. Please change your ATM Password.");
+
 });
 
 Route::get('/link', function () {
