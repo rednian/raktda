@@ -187,11 +187,7 @@ class ArtistController extends Controller
                             }
                         }
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a>' . $pay_btn;
-                    } else if ($permit->permit_status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
-                    } else if ($permit->permit_status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
-                    }
+                    } 
                 }
                else if($status == 'valid'){
                     $issued_date = strtotime($permit->issued_date);
@@ -217,6 +213,10 @@ class ArtistController extends Controller
                     $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
                     $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
                     return  '<span class="d-flex flex-column">'  . $renewBtn . '</span>';
+                }else if ($permit->permit_status == 'rejected') {
+                    return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
+                } else if ($permit->permit_status == 'cancelled') {
+                    return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                 }
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->permit_status;

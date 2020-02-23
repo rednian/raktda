@@ -124,7 +124,6 @@
                             <th>{{__('Work Location')}}</th>
                             <th class="text-center">{{__('Artists')}}</th>
                             <th>{{__('STATUS')}}</th>
-                            <th>{{__('Comments')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -509,8 +508,7 @@
                     { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                     { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
                     { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
-                    { data: 'permit_status', name: 'permit_status', className:'text-center' },
-                    { data: 'action', name: 'action', className:'text-center no-wrap' },
+                    { data: 'action', name: 'action', className:'text-center' },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
                 columnDefs: [
