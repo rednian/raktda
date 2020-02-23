@@ -133,8 +133,6 @@
                     </div>
                 @endif
 
-                {{-- {{dd($transaction->eventTransaction)}} --}}
-
                 @if($transaction->eventTransaction()->exists())
                     {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
                     </h5> --}}
@@ -142,7 +140,7 @@
                         <table class="table table-hover table-borderless border table-striped">
                             <thead>
                             <tr class="kt-font-transform-u">
-                                <th class="text-left ">{{__('Reference No.')}}</th>
+                                <th class="text-left ">{{__('#')}}</th>
                                 <th class="text-left">{{__('Event Name')}}</th>
                                 <th class="text-left">{{__('Event Type')}}</th>
                                 <th class="text-right">{{__('Fee')}} (AED)</th>
@@ -152,10 +150,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($transaction->eventTransaction as $et)
-                                @if($transaction->transaction_type == 'event')
+
+                            @foreach($transaction->eventTransaction as $key => $et)
+                                @if($et->type == 'event')
                                     <tr>
-                                        <td>{{$et->event->reference_number}}</td>
+                                        <td>{{$key+1}}</td>
                                         <td>{{Auth()->user()->LanguageId==1?$et->event->name_en:$et->event->name_ar}}</td>
 
                                         <td>{{$et->event->type->name_en}}</td>
@@ -165,13 +164,14 @@
                                             $total = $et->amount + $et->vat;
                                             $feetotal += $et->amount;
                                             $vattotal += $et->vat;
-                                            $grandtotal = $total;
+                                            $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
 
                                     </tr>
-                                @elseif($transaction->transaction_type == 'truck')
+                                    @elseif($et->type == 'truck')
                                     <tr>
+                                        <td>{{$key+1}}</td>
                                         <td colspan="2">{{__('Truck Fee')}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
                                         <td class="text-right">{{number_format($et->vat,2)}}</td>
@@ -179,20 +179,21 @@
                                             $total = $et->amount + $et->vat;
                                             $feetotal += $et->amount;
                                             $vattotal += $et->vat;
-                                            $grandtotal = $total;
+                                            $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
                                     </tr>
-                                @elseif($transaction->transaction_type == 'liqour')
+                                    @elseif($et->type == 'liquor')
                                     <tr>
-                                        <td colspan="2">{{__('Liqour Fee')}}</td>
+                                        <td>{{$key+1}}</td>
+                                        <td colspan="2">{{__('Liquor Fee')}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
                                         <td class="text-right">{{number_format($et->vat,2)}}</td>
                                         @php
                                             $total = $et->amount + $et->vat;
                                             $feetotal += $et->amount;
                                             $vattotal += $et->vat;
-                                            $grandtotal = $total;
+                                            $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
                                     </tr>
@@ -257,6 +258,4 @@
             });
         });
     </script>
-
-
 @endsection
