@@ -459,7 +459,8 @@
            {data: 'action'},
         ],
         createdRow: function (row, data, index) {
-          $(row).click(function(){ if (!data.is_checked){ location.href = data.show_link;}});
+        //   $(row).click(function(){ if (!data.is_checked){ location.href = data.show_link;}});
+          $(row).click(function(){  location.href = data.show_link; });
 
           $('.btn-document', row).click(function(e){
               e.stopPropagation();

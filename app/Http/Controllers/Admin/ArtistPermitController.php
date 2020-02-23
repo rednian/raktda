@@ -143,7 +143,7 @@ class ArtistPermitController extends Controller
             ->where('permit_id', '<', $permit->permit_id)
             ->count();
 
-        return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>$permit->reference_no, 'rivision'=>$revision]);
+        return view('admin.artist_permit.show', ['permit'=>$permit, 'page_title'=>'Artist Permit Details', 'rivision'=>$revision]);
     }
 
     public function applicationDetails(Request $request, Permit $permit)

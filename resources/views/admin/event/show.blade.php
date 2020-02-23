@@ -227,7 +227,7 @@
                 </div>
                 <div class="kt-widget__details">
                   <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
-                  <a href="#" class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</a>
+                  <span class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</span>
                 </div>
               </div>
               <div class="kt-widget__item kt-padding-t-5">
@@ -495,7 +495,7 @@
           </li>
           @endif
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
-          <li class="nav-item kt-hide">
+          <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('LIQUOR DETAILS') }}
 

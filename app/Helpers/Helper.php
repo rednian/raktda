@@ -478,7 +478,7 @@ function paymentNotification($event, $artist, $files, $amount) {
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
         $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
         $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('artist.index').'#valid'; 
+        $url = \URL::signedRoute('artist.index').'#valid';
     }
     $buttonText = "Download Permit";
     $user = User::where('user_id', \Auth::user()->user_id)->first();
@@ -489,7 +489,7 @@ function paymentNotification($event, $artist, $files, $amount) {
         'button' => $buttonText,
         'url' => $url,
         'mail' => true,
-        'attach' => true, 
+        'attach' => true,
         'file' => $files
     ]));
 

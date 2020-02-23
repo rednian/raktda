@@ -25,7 +25,7 @@ class companyStatusMiddleware
                 return redirect(URL::signedRoute('company.show', ['company' => $request->user()->company->company_id]));
             }
 
-            if  ( in_array($request->user()->company->status, ['draft', 'new', 'pending','back']) && !empty($request->user()->company->registered_by) ) {
+            if  ( in_array($request->user()->company->status, ['draft', 'new', 'pending','back']) && empty($request->user()->company->registered_by) ) {
 
               return redirect(URL::signedRoute('company.show', ['company' => $request->user()->company->company_id]));
             }
