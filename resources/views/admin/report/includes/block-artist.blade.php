@@ -5256,7 +5256,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     //get the bar chart canvas
 
                     var cData = JSON.parse(response);
-                    console.log(response)
+                /*    console.log(response)*/
                     $('#totalAmountInMonth').html(cData.total)
 
                     var ctx = $("#bar-chart");

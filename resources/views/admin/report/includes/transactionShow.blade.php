@@ -92,7 +92,7 @@
                                 <th class="text-right">{{__('Amount')}} (AED)</th>
                                 <th class="text-right">{{__('Vat')}} (5%)</th>
                                 <th class="text-right">{{__('Total')}} (AED)</th>
-                                {{--   <th class="text-center">{{__('View')}}</th>--}}
+                                {{--  <th class="text-center">{{__('View')}}</th>--}}
                             </tr>
                             </thead>
                             <tbody>

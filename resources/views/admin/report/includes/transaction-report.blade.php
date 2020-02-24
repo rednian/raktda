@@ -79,8 +79,8 @@
         <li class="nav-item" style="width: 23%;">
             <a class="nav-link input-group sm-2">
                 <div class="input-group-prepend">
-                    <input style="height: 19px" type="text" class="form-control"  id="startDate" placeholder="{{__('From')}}">
-                    <input style="height: 19px" type="text" class="form-control" id="endDate" placeholder="{{__('To')}}">
+                    <input style="height: 19px;width: 50%" type="text" class="form-control"  id="startDate" placeholder="{{__('From')}}">
+                    <input style="height: 19px;width:50%" type="text" class="form-control" id="endDate" placeholder="{{__('To')}}">
                 </div>
 
             </a>
