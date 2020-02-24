@@ -1455,10 +1455,10 @@
 				rowGroup: {
 				startRender: function ( rows, group ) {
 					var row_data = rows.data()[0];
-					return $('<tr/>').append( '<td >'+group+'</td>' )
-										.append( '<td>'+rows.count()+'</td>' )
-										.append( '<td>'+row_data.issued_date+'</td>' )
-									.append( '<td>'+row_data.expired_date+'</td>' )
+					return $('<tr/>').append( '<td class="no-wrap">'+group+'</td>' )
+									.append( '<td class="no-wrap">'+rows.count()+'</td>' )
+									.append( '<td class="no-wrap">'+row_data.issued_date+'</td>' )
+									.append( '<td class="no-wrap">'+row_data.expired_date+'</td>' )
 									.append( '<td></td>' )
 									.append( '<tr/>' );
 					},

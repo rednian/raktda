@@ -234,10 +234,14 @@ button, input, optgroup, select, textarea {
   cursor: pointer;
 }
 
+.dataTable > thead > tr th, .dataTable > tbody > tr > td{
+    width: 100% !important;
+}
+
 /*table*/
 /*---------------table-----------------------*/
 /*.dataTables_wrapper .dataTable {
-     margin: 1px 0!important; 
+     margin: 1px 0!important;
 }*/
 
 .table .thead-dark th {
@@ -517,12 +521,12 @@ div[class*="toolbar"] {
 .tags {
   list-style: none;
   margin: 0;
-  overflow: hidden; 
+  overflow: hidden;
   padding: 0;
 }
 
 .tags li {
-  float: left; 
+  float: left;
 }
 
 .tag {
@@ -568,7 +572,7 @@ div[class*="toolbar"] {
 }
 
 .tag:hover::after {
-   border-left-color: crimson; 
+   border-left-color: crimson;
 }
 
 

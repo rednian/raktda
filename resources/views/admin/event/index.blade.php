@@ -128,7 +128,7 @@
               <a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a>
             </li>
           <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a>
+              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('Events Calendar') }}</a>
             </li>
         </ul>
       </div>
