@@ -402,7 +402,7 @@ class ArtistPermitController extends Controller
                 'url' => $url,
                 'mail'=>true
             ]));
-            sms($user->number, $sms_content);
+            // sms($user->number, $sms_content);
         }
     }
 

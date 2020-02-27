@@ -52,7 +52,7 @@
 <!-- begin::Page loader -->
 <div class="kt-page-loader kt-page-loader--base">
   <div class="blockui">
-    <span>Please wait...</span>
+    <span>{{ __('Please wait...') }}</span>
     <span><div class="kt-spinner kt-spinner--danger"></div></span>
   </div>
 </div>

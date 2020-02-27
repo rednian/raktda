@@ -7,9 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$event_details->permit_number}} - Event Permit</title>
     <style>
+        .arabic{
+            font-size: x-large;
+            font-family: 'droid' !important;
+        }
         * {
             box-sizing: border-box;
             overflow: hidden;
+            /* font-family: 'Droid Arabic Kufi', serif; */
         }
 
         .logo--header,
@@ -125,7 +130,9 @@
             text-align: center;
             font-size: 10px;
         }
+
     </style>
+
 </head>
 
 <body>
@@ -137,7 +144,7 @@
             </tr>
         </table>
         <div id="heading">
-            <div>
+            <div class="arabic">
                 تصريح مؤقت
             </div>
 
@@ -152,7 +159,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">تاريخ الرخصة</th>
+                <th colspan="2" scope="col" class="arabic">تاريخ الرخصة</th>
             </tr>
         </thead>
         <tbody>
