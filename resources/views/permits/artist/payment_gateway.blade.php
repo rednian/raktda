@@ -76,7 +76,7 @@
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                        {{getLangId() == 1 ? ucwords($permit_details->event->name_en) : $permit_details->event->name_ar}}
+                                        {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
                                     </span>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="kt-widget__text kt-margin-t-10">
                             <strong>{{__('Work Location')}} :</strong>
-                            {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                            {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                         </div>
                     </div>
 
@@ -332,10 +332,10 @@
 
 
                     <div class="d-flex justify-content-end">
-                        {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
-                        <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button>
+                        {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
 
                         <a
                             href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
