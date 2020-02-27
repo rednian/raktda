@@ -48,8 +48,8 @@
 										<th>{{ __('ALLOW MULTIPLE PERMIT') }}</th>
 										<th>{{ __('PROFESSION FEE') }}</th>
 										<th>{{ __('ADDED BY') }}</th>
-										<th>{{ __('ADDED ON') }}</th>
-										<th>{{ __('ACTIONS') }}</th>
+										<th>{{ __('ADDED DATE') }}</th>
+										<th>{{ __('ACTION') }}</th>
 								 </tr>
 								 </thead>
 							</table>
@@ -59,16 +59,16 @@
 								 <div class="col-12">
 										{{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
 										<a href="{{ URL::signedRoute('requirements.create', ['t' => 'artist']) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW REQUIREMENT') }}</a>
-										
+
 								 </div>
 							</section>
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblRequirement">
 								 <thead>
 								 <tr>
-										<th>{{ __('REQUIREMENT') }}</th>
+										<th>{{ __('DOCUMENT NAME') }}</th>
 										<th>{{ __('DESCRIPTION') }}</th>
 										<th>{{ __('VALIDITY (months)') }}</th>
-										<th>{{ __('PERMIT TERM') }}</th>
+										{{-- <th>{{ __('PERMIT TERM') }}</th> --}}
 										<th>{{ __('DATE REQUIRED') }}</th>
 										<th>{{ __('STATUS') }}</th>
 										<th>{{ __('ACTIONS') }}</th>
@@ -86,10 +86,10 @@
 							<table class="table table-borderless table-striped table-hover border table-sm" id="tblEventRequirement">
 								 <thead>
 								 <tr>
-										<th>{{ __('REQUIREMENT') }}</th>
+										<th>{{ __('DOCUMENT NAME') }}</th>
 										<th>{{ __('DESCRIPTION') }}</th>
 										<th>{{ __('VALIDITY (months)') }}</th>
-										<th>{{ __('PERMIT TERM') }}</th>
+										{{-- <th>{{ __('PERMIT TERM') }}</th> --}}
 										<th>{{ __('DATE REQUIRED') }}</th>
 										<th>{{ __('STATUS') }}</th>
 										<th>{{ __('ACTIONS') }}</th>
@@ -137,7 +137,7 @@
 									 </div>
 									 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
 										<div class="card-body">
-											
+
 											<section class="row kt-margin-t-10">
 								                <div class="col-sm-6">
 								                    <div class="form-group form-group-sm">
@@ -164,7 +164,7 @@
 									 </div>
 									 <div id="event-settings-details" class="collapse show" aria-labelledby="event-settings-heading" data-parent="#event-settings">
 										<div class="card-body">
-											
+
 											<section class="row kt-margin-t-10">
 								                <div class="col-sm-6">
 								                    <div class="form-group form-group-sm">
@@ -191,7 +191,7 @@
 									 </div>
 									 <div id="artist-settings-details" class="collapse show" aria-labelledby="artist-settings-heading" data-parent="#artist-settings">
 										<div class="card-body">
-											
+
 											<section class="row kt-margin-t-10">
 								                <div class="col-sm-6">
 								                    <div class="form-group form-group-sm">
@@ -240,7 +240,7 @@
 								 <div class="col-12">
 										{{-- <a href="{{ route('requirements.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('New Requirement') }}</a> --}}
 										<a href="{{ URL::signedRoute('schedule_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW SCHEDULE TYPE') }}</a>
-										
+
 								 </div>
 							</section>
 
@@ -250,7 +250,7 @@
 								<div class="card">
 									<div class="card-header" id="schedule-type-{{ $type->schedule_type_id }}-heading">
 										<div class="card-title kt-padding-t-10 kt-padding-b-5 {{ $type->is_active ? '' : 'collapsed' }}" data-toggle="collapse" data-target="#schedule-type-{{ $type->schedule_type_id }}-details" aria-expanded="true" aria-controls="schedule-type-{{ $type->schedule_type_id }}-details">
-											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> 
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
 												{{ Auth::user()->LanguageId == 1 ? $type->schedule_type_name : $type->schedule_type_name_ar }}
 												@if($type->is_active)
 												&nbsp;&nbsp;&nbsp;&nbsp;<span class="kt-badge kt-badge--success kt-badge--inline">{{ __('Active') }}</span>
@@ -270,7 +270,7 @@
 														</label>
 													</span>
 
-													<a href="{{ URL::signedRoute('schedule_type.edit', $type->schedule_type_id) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a> 
+													<a href="{{ URL::signedRoute('schedule_type.edit', $type->schedule_type_id) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a>
 
 													@if(!$type->is_active)
 													<button data-url="{{ route('schedule_type.destroy', $type->schedule_type_id) }}" class="btn btn-sm btn-danger btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10 kt-margin-r-10 btn-delete-schedule">{{ __('Delete Schedule') }}</button>
@@ -286,7 +286,7 @@
 															</tr>
 														</thead>
 														<tbody>
-															
+
 															@foreach($type->getSchedule as $day)
 															<tr>
 																<td>{{ __($day->day) }}</td>
@@ -295,7 +295,7 @@
 																<td>{{ $day->is_dayoff == 1 ? '--:-- --' : date('h:i A', strtotime($day->time_end)) }}</td>
 															</tr>
 															@endforeach
-															
+
 														</tbody>
 													</table>
 													@else
@@ -310,7 +310,7 @@
 
 							@endforeach
 							@else
-							
+
 							No schedule type available
 							@endif
 
@@ -322,7 +322,7 @@
 							<form method="POST" id="formSetActiveScheduleType">
 								@csrf
 							</form>
-							
+
 						</div>
 				 </div>
 			</div>
@@ -330,7 +330,6 @@
 @stop
 @section('script')
 	<script>
-
 	var tblProfession;
 	var tblRequirement;
 	var tblEventTypes;
@@ -364,7 +363,7 @@
 	        window.location.hash = this.hash;
 	        $('html,body').scrollTop(scrollmem);
        	});
-         
+
         //ON SHOWING THE TAB
 	    $('#main-tab.nav.nav-tabs a').on('shown.bs.tab', function (event) {
 
@@ -385,7 +384,7 @@
 
 	    //ON CLOSING THE TAB
 	    $('#main-tab.nav.nav-tabs a[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
-			
+
 			var prevTab = $(e.target).attr('href');
 			if(prevTab == '#profession'){
 				tblProfession.destroy();
@@ -445,12 +444,13 @@
     	tblProfession = $('table#tblProfession').DataTable({
            processing: true,
            serverSide: true,
+           responsive: true,
            ajax: {
                url: '{{ route('settings.profession.datatable') }}',
                global: false,
            },
            columnDefs: [
-                {targets:  5, className: 'no-wrap', sortable: false},
+                {targets:  '_all', className: 'no-wrap', sortable: false},
            ],
            columns: [
                { data: 'profession_name', name: 'profession_name'},
@@ -496,19 +496,20 @@
     	tblRequirement = $('table#tblRequirement').DataTable({
            processing: true,
            serverSide: true,
+           responsive: true,
            ajax: {
                url: '{{ route('requirements.datatable') }}',
                data: { type: 'artist' },
                global: false,
            },
            columnDefs: [
-                {targets:  [1,6], className: 'no-wrap', sortable: false},
+                {targets: '_all', className: 'no-wrap', sortable: false},
            ],
            columns: [
                { data: 'requirement_name', name: 'requirement_name'},
                { data: 'requirement_description', name: 'requirement_description'},
                { data: 'validity', name: 'validity'},
-               { data: 'term', name: 'term'},
+            //    { data: 'term', name: 'term'},
                { data: 'dates_required', name: 'dates_required'},
                { data: 'status', name: 'status'},
                { data: 'actions', name: 'actions' }
@@ -550,19 +551,20 @@
     	tblEventRequirement = $('table#tblEventRequirement').DataTable({
            processing: true,
            serverSide: true,
+           responsive: true,
            ajax: {
                url: '{{ route('requirements.datatable') }}',
                data: { type: 'event' },
                global: false,
            },
            columnDefs: [
-                {targets:  [1,6], className: 'no-wrap', sortable: false},
+                {targets:  '_all', className: 'no-wrap', sortable: false},
            ],
            columns: [
                { data: 'requirement_name', name: 'requirement_name'},
                { data: 'requirement_description', name: 'requirement_description'},
                { data: 'validity', name: 'validity'},
-               { data: 'term', name: 'term'},
+            //    { data: 'term', name: 'term'},
                { data: 'dates_required', name: 'dates_required'},
                { data: 'status', name: 'status'},
                { data: 'actions', name: 'actions' }

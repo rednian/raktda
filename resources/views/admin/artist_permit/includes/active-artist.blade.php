@@ -35,9 +35,9 @@
 			</div>
 			<div class="col-3">
 				<select  name="" id="artist-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="active_artist_table.draw()">
-					<option disabled selected>{{ __('STATUS') }}</option>
-					<option value="active">{{ __('Active Artists') }}</option>
-					<option value="blocked">{{ __('Blocked Artists') }}</option>
+					<option disabled selected>{{ __('ARTIST STATUS') }}</option>
+					<option value="active">{{ __('Active') }}</option>
+					<option value="blocked">{{ __('Blocked') }}</option>
 				</select>
 			</div>
 			<div class="col-2">
@@ -66,7 +66,7 @@
 			<th>{{ __('PROFESSION') }}</th>
 			<th>{{ __('NATIONALITY') }}</th>
 			<th>{{ __('MOBILE NUMBER') }}</th>
-			<th>{{ __('STATUS') }}</th>
+			<th>{{ __('ARTIST STATUS') }}</th>
 			<th>{{ __('AGE') }}</th>
 			<th>{{ __('BIRTHDATE') }}</th>
 	 </tr>

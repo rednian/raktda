@@ -110,7 +110,7 @@
             </a>
         </li>
           <li class="nav-item">
-              <a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }}
+              <a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Requests') }}
                 <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span>
             </a>
         </li>
@@ -128,7 +128,7 @@
               <a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a>
             </li>
           <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a>
+              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('Events Calendar') }}</a>
             </li>
         </ul>
       </div>
@@ -306,7 +306,7 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('APPLICATION STATUS') }}</th>
               <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
@@ -404,7 +404,7 @@
               <th>{{ __('EVENT TYPE') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
-              <th>{{ __('LAST CHECKED STATUS') }}</th>
+              <th>{{ __('APPLICATION STATUS') }}</th>
               <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
@@ -511,8 +511,8 @@
               <th>{{ __('HAS LIQUOR') }}</th>
               <th>{{ __('FOOD TRUCK') }}</th>
               <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-              <th>{{ __('SHOWN ON THE REGISTERED USERS\' CALENDARS') }}</th>
-              <th>{{ __('SHOWN ON PUBLIC WEBSITE CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO ALL REGISTERED COMPANY CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO PUBLIC WEBSITE CALENDAR') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -599,7 +599,7 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('PERMIT STATUS') }}</th>
               <th>{{ __('APPROVED DATE') }}</th>
               <th>{{ __('APPROVED BY') }}</th>
               <th>{{ __('PERMIT NUMBER') }}</th>
@@ -611,8 +611,8 @@
               <th>{{ __('HAS LIQUOR') }}</th>
               <th>{{ __('FOOD TRUCK') }}</th>
               <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-              <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
-              <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+              <th>{{ __('SHOW EVENT TO ALL REGISTERED COMPANY CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO PUBLIC WEBSITE CALENDAR') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>

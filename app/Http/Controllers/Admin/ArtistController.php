@@ -164,7 +164,7 @@
                     })
                     ->addColumn('active_permit', function($artist){
                         $permit = $artist->permit()->where('permit_status', 'active')->whereDate('expired_date', '>=', Carbon::now())->count();
-                        return '<button type="button" class=" btn btn-show-permit btn-sm btn-secondary">'.__('View').' <span class="kt-badge kt-badge--outline kt-badge--info"> '.$permit.' </span></button>';
+                        return '<button type="button" class=" btn btn-show-permit btn-sm btn-secondary">'.__('VIEW PERMITS').' <span class="kt-badge kt-badge--outline kt-badge--info"> '.$permit.' </span></button>';
                     })
                     ->addColumn('artist_status', function($artist){
                         return artistStatus($artist->artist_status);

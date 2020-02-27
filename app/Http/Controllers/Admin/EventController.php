@@ -456,7 +456,9 @@ class EventController extends Controller
 
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
-			    'default_font_size' => 10
+                'default_font_size' => 10,
+                'show_watermark'=> in_array($event->status , ['cancelled', 'expired']) ? true : false,
+                'watermark'      => ucfirst($event->status),
 			]);
 
 			if($event->truck()->exists()){
