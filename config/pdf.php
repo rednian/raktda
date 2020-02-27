@@ -30,13 +30,24 @@ return [
     'useKashida' => 75,
 
 
-    'arabic-font' => [
-        'R'  => 'arabic-font.ttf',    // regular font
-        'B'  => 'arabic-font.ttf',          // optional: bold font
-        'I'  => 'arabic-font-Light.ttf',    // optional: italic font
-        'BI' => 'arabic-font.ttf',           // optional: bold-italic font
-        'useOTL' => 0xFF,
-        'useKashida' => 75,
-    ]
+    // 'droidkufi' => [
+    //     'R'  => asset('fonts/DroidKufi-Regular.ttf'),    // regular font
+    //     'B'  => asset('fonts/DroidKufi-Bold.ttf'),          // optional: bold font
+    //     // 'I'  => 'arabic-font-Light.ttf',    // optional: italic font
+    //     // 'BI' => 'arabic-font.ttf',           // optional: bold-italic font
+    //     'useOTL' => 0xFF,
+    //     'useKashida' => 75,
+    // ]
+
+    'custom_font_dir' => base_path('fonts/'), // don't forget the trailing slash!
+	'custom_font_data' => [
+		'examplefont' => [
+            'R'  => asset('fonts/DroidKufi-Regular.ttf'),    // regular font
+            'B'  => asset('fonts/DroidKufi-Bold.ttf'),          
+			'I'  => 'ExampleFont-Italic.ttf',     // optional: italic font
+			'BI' => 'ExampleFont-Bold-Italic.ttf' // optional: bold-italic font
+		]
+		// ...add as many as you want.
+	]
 
 ];

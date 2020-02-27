@@ -14,6 +14,7 @@
             active: function() { sessionStorage.fonts = true; }
         });
     </script>
+
     <!--begin::Page Vendors Styles(used by this page) -->
     @if (Auth::check())
     @if (Auth::user()->LanguageId == 1)
