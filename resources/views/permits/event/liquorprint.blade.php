@@ -138,7 +138,7 @@
         </table>
         <div id="heading">
             <div>
-                تصريح كحوليات
+                تصريح خدمة تقديم الكحول
             </div>
             <div>
                 Liquor Permit
@@ -150,7 +150,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">تاريخ الرخصة</th>
+                <th colspan="2" scope="col">بيانات النرخبص</th>
             </tr>
         </thead>
         <tbody>
@@ -163,11 +163,11 @@
             <tr>
                 <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
-                <td class="subhead"> تاريخ الانتهاء <br /> Expiry Date</td>
+                <td class="subhead">انتهاء الترخيص <br /> Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
-                <td class="subhead">المالك<br />License owner</td>
+                <td class="subhead">مالك الرخصة<br />License owner</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->name_en}}</td>
@@ -201,7 +201,7 @@
             <tr>
                 <td colspan="2">{{$liquor->company_name_en}}</td>
                 <td>{{$liquor->company_name_ar}}</td>
-                <td class="subhead">رقم المنشأة <br />Establishment Name</td>
+                <td class="subhead">اسم المنشأة<br />Establishment Name</td>
             </tr>
             <tr>
                 <td colspan="3">{{$liquor->purchase_receipt}}</td>
@@ -209,21 +209,21 @@
             </tr>
             <tr>
                 <td colspan="3">{{$liquor->liquor_service}}</td>
-                <td class="subhead">خدمة الكحوليات<br />Liquor Service</td>
+                <td class="subhead">خدمة تقديم الكحول<br />Liquor Service</td>
             </tr>
             @if($liquor->liquor_service == 'limited')
             <tr>
                 <td colspan="3">{{$liquor->liquor_types}}</td>
-                <td class="subhead">نوع الكحوليات<br />Types of Liquor Service</td>
+                <td class="subhead">نوع الكحول المقدم<br />Types of Liquor Service</td>
             </tr>
             @endif
             <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
-                <td class="subhead">تاريخ بداية التصريح<br /> Permit Date</td>
+                <td class="subhead">تاريخ بدء التصريح<br /> Permit Date</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->expired_date}}</td>
-                <td class="subhead"> تالايخ انتهاء التصريح <br /> Permit Expiry Date</td>
+                <td class="subhead"> تاريخ انتهاء التصريح <br /> Permit Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->venue_en}}</td>

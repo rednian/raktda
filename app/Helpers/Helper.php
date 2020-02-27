@@ -429,7 +429,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  341);
+        $payment_no = sprintf("%07d",  408);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -539,6 +539,7 @@ function storeEventPermitPrint($id)
         'title' => 'Event Permit '. $event_permit_no,
         'default_font_size' => 10
     ])->save(storage_path('app/'.$directory).'/EventPermit#'. $event_permit_no.'.pdf');
+
 
     if($event_details->truck()->where('paid',1)->exists()){
 
