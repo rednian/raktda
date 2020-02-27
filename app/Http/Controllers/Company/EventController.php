@@ -1240,6 +1240,7 @@ class EventController extends Controller
 
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
+            
             'default_font_size' => 10
         ]);
 

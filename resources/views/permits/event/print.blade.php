@@ -14,9 +14,7 @@
         * {
             box-sizing: border-box;
             overflow: hidden;
-            /* font-family: 'Droid Arabic Kufi', serif; */
         }
-
         .logo--header,
         .logo--logo-header {
             width: 100%;
@@ -159,7 +157,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col" class="arabic">تاريخ الرخصة</th>
+                <th colspan="2" scope="col">بيانات الرخصة</th>
             </tr>
         </thead>
         <tbody>
@@ -167,16 +165,16 @@
                 <td>{{$event_details->owner->company->trade_license}}</td>
                 <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
-                <td class="subhead">رقم المنشأة<br />Name of Establishment</td>
+                <td class="subhead">اسم المنشأة<br />Name of Establishment</td>
             </tr>
             <tr>
                 <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
-                <td class="subhead"> تاريخ الانتهاء <br /> Expiry Date</td>
+                <td class="subhead">انتهاء الترخيص <br /> Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
-                <td class="subhead">المالك<br />License owner</td>
+                <td class="subhead">مالك الرخصة<br />License owner</td>
             </tr>
         </tbody>
     </table>
@@ -209,15 +207,15 @@
             {{-- <tr>
                 <td colspan="2">{{ucwords($days)}} {{$diff > 1 ? 'days' : 'day'}} </td>
             <td>انقضاء</td>
-            <td class="subhead">فترة التصريح <br />Permit Period</td>
+            <td class="subhead">مدة التصريح <br />Permit Period</td>
             </tr> --}}
             <tr>
                 <td colspan="3">{{$event_details->issued_date}}</td>
-                <td class="subhead">تاريخ بداية التصريح<br /> Permit Date</td>
+                <td class="subhead">تاريخ بدء التصريح<br /> Permit Date</td>
             </tr>
             <tr>
                 <td colspan="3">{{$event_details->expired_date}}</td>
-                <td class="subhead"> تالايخ انتهاء التصريح <br /> Permit Expiry Date</td>
+                <td class="subhead"> تاريخ انتهاء التصريح <br /> Permit Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->venue_en}}</td>
@@ -228,7 +226,7 @@
             @if($liquor->provided == 1)
             <tr>
                 <td colspan="3">{{$liquor->liquor_permit_no}}</td>
-                <td class="subhead">رقم تصريح الكحوليات<br />Liquor Permit No</td>
+                <td class="subhead">رقم تصريح تقديم الكحول<br />Liquor Permit No</td>
             </tr>
             @endif
             @endif
@@ -242,7 +240,7 @@
         <thead>
             <tr>
                 <th>Notes</th>
-                <th>الملاحظات</th>
+                <th>ملاحظات</th>
             </tr>
         </thead>
         <tbody>
