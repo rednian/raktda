@@ -104,24 +104,25 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc"
-                                            class="col-form-label col-form-label-sm">{{__('Work Location')}}<span
+                                            class="col-form-label col-form-label-sm">{{__('Work Location (EN)')}}<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
-                                            id="work_loc" onkeyup="checkFilled()"
+                                            id="work_loc" onkeyup="checkFilled()" dir="ltr"
                                             value="{{count($artist_details) > 0 ? getLangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location - Ar')}} <span class="text-danger">*</span></label>
+                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     {{-- {{dd($artist_details[0])}} --}}
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
-                                            ?</label>
+                                        <label for=""
+                                            class="col-form-label col-form-label-sm">{{__('Connected Event ?')}}
+                                        </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(1)" value="1"
@@ -169,9 +170,9 @@
         <input type="hidden" id="temp_permit_id" value="{{$permit_id}}">
         <div class="col-md-12 kt-margin-t-10">
             <div class="table-responsive">
-                <table class="table table-striped table-hover border table-borderless">
+                <table class="table table-striped table-borderless table-hover border">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th>{{__('First Name')}}</th>
                             <th>{{__('Last Name')}}</th>
                             <th>{{__('Profession')}}</th>
@@ -205,7 +206,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en.' '.$ad->lastname_en}}','{{$ad->lastname_ar.' '.$ad->firstname_ar}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
                                     <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Remove')}}</button>
                                 </a>
@@ -230,7 +231,7 @@
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="draft_btn">
                 <i class="la la-check"></i>
-                {{__('Update to Drafts')}}
+                {{__('update to drafts')}}
             </button>
 
             <button
@@ -411,11 +412,11 @@
             });
         }
 
-        function delArtist(temp_id, permit_id, fname, lname) {
+        function delArtist(temp_id, permit_id, nameEn, nameAr) {
             $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
-            $('#del_fname').val(fname);
-            $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+            let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+            $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
             $('#warning_text').css('color', '#580000');
         }
 

@@ -130,7 +130,7 @@
     </div>
     <div class="col-md-12">
         <div class="element-wrapper">
-            <h6 class="element-header">{{__('Artist Permit')}}</h6>
+            <h6 class="element-header">{{__('Artist Permits')}}</h6>
             <div class="element-content">
                 <div class="row">
                     <div class="col-md-2">
@@ -169,7 +169,7 @@
     </div>
     <div class="col-md-12">
         <div class="element-wrapper">
-            <h6 class="element-header">{{__('Event Permit')}}</h6>
+            <h6 class="element-header">{{__('Event Permits')}}</h6>
             <div class="element-content">
                 <div class="row">
                     <div class="col-md-2">

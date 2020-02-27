@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Storage;
 use App\Country;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use App\Artist;
 use App\ArtistPermitDocument;
 use App\ArtistPermit;
@@ -130,14 +131,7 @@ class ArtistController extends Controller
                 return 'None';
             }
         })->editColumn('term', function ($permits) {
-            $term = '';
-            if($permits->term == 'long')
-            {
-                return __('Long Term');
-            }else {
-                return __('Short Term');
-            }
-            // return ucwords($permits->term);
+            return calculateDateDiff($permits->issued_date, $permits->expired_date);
         })->editColumn('work_location', function ($permits) {
             return getLangId() == 1 ? $permits->work_location : $permits->work_location_ar ;
         })->editColumn('permit_id', function ($permits) use ($status) {
@@ -187,11 +181,7 @@ class ArtistController extends Controller
                             }
                         }
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'edit']) . '"><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a>' . $pay_btn;
-                    } else if ($permit->permit_status == 'rejected') {
-                        return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
-                    } else if ($permit->permit_status == 'cancelled') {
-                        return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
-                    }
+                    } 
                 }
                else if($status == 'valid'){
                     $issued_date = strtotime($permit->issued_date);
@@ -217,6 +207,10 @@ class ArtistController extends Controller
                     $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
                     $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
                     return  '<span class="d-flex flex-column">'  . $renewBtn . '</span>';
+                }else if ($permit->permit_status == 'rejected') {
+                    return '<span onClick="rejected_permit(' . $permit->permit_id . ')" data-toggle="modal" data-target="#rejected_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Rejected').'</span>';
+                } else if ($permit->permit_status == 'cancelled') {
+                    return '<span onClick="show_cancelled(' . $permit->permit_id . ')" data-toggle="modal" data-target="#cancelled_permit" class="kt-badge kt-badge--info kt-badge--inline">'.__('Cancelled').'</span>';
                 }
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->permit_status;
@@ -2316,6 +2310,7 @@ class ArtistController extends Controller
                 break;
             case('amend'):
                 $reason = 'submitted for amendment';
+                $contenttext = 'submitted for amendment';
                 break;
             default: 
                 $reason = '';
@@ -2560,20 +2555,65 @@ class ArtistController extends Controller
             'is_paid' => 1
         ]);
 
-        if($paidEventFee)
+
+
+        DB::commit();
+
+            /* code for payment notification */
+
+        if ($transArr)
         {
-            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." and ".$$eventpermitnumber." are successfully completed. You can download the permit from the app.";
-        }else {
-            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." is successfully completed. You can download the permit from the app.";
+            $files = array();
+            storeArtistPermitPrint($permit_id);
+            $directory='permit_downloads/artist/'.$permit_id;
+            $artistPrint = storage_path('app/'.$directory).'/ArtistPermit#'. $permit_number.'.pdf';
+            $transaction = Transaction::where('created_by', Auth::user()->user_id)->latest()->first();
+            $data['transaction'] = $transaction;
+            $payment_voucher =  storage_path('app/'.$directory).'/payment_voucher.pdf';
+            PDF::loadView('permits.reports.voucher_print', $data, [], [
+                'title' => 'Event Permit '. $permit_number,
+                'default_font_size' => 10
+            ])->save($payment_voucher);
+
+            array_push($files, $artistPrint, $payment_voucher); //  adding the main print and the payment voucher file path to the files array
+
+            if($paidEventFee)
+            {
+                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." and ".$eventpermitnumber." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid";
+                storeEventPermitPrint($event_id);
+                $adirectory = 'permit_downloads/event/'.$event_id;
+                $eventPrint = storage_path('app/'.$adirectory).'/EventPermit#'. $eventpermitnumber.'.pdf';
+                $truck_file_path = storage_path('app/'.$adirectory).'/TruckPermit#'. $eventpermitnumber.'.pdf' ;
+                if(Storage::exists($truck_file_path))
+                {
+                    array_push($files,$truck_file_path);//  adding the file path to the files array
+                }
+                // file path of the liquor permit print
+                $liquor_file_path = storage_path('app/'.$adirectory).'/LiquorPermit#'. $eventpermitnumber.'.pdf' ;
+                if(Storage::exists($liquor_file_path))
+                {
+                    array_push($files,$liquor_file_path); //  adding the file path to the files array
+                }   
+                array_push($files, $eventPrint);
+            }else {
+                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$permit_number." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid";
+            }
+
+      
+            paymentNotification($paidEventFee ? $eventArray : '', $permit, $files, $amount);
+            sendSms(Auth::user()->number, $message); //  send sms to the number
+            
+            if($paidEventFee)
+            {
+                Storage::deleteDirectory('permit_downloads/event/'.$event_id);
+            }else {
+                Storage::deleteDirectory('permit_downloads/artist/'.$permit_id);
+            }
         }
-        
-        $files = [
-        ];
 
-        paymentNotification($paidEventFee ? $eventArray : '', $permit, $files, $amount);
-        sendSms(Auth::user()->number, $message);
+        /*end code for code for payment notification */
 
-            DB::commit();
+
             $result = ['success', __('Payment Done Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();

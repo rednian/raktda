@@ -118,20 +118,75 @@
                             <div class="kt-wizard-v3__form">
                                 @if($event->firm == 'corporate')
                                 <form id="make_payment">
-                                    <div class="kt-widget5__info pb-4">
-                                        <div class="pb-2">
-                                            <span>{{__('From Date')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->issued_date}}
-                                            </span>&emsp;&emsp;
-                                            <span>{{__('To Date')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->expired_date}}
-                                            </span>&emsp;&emsp;
-                                            <span>{{__('Venue')}}:</span>&emsp;
-                                            <span
-                                                class="kt-font-info">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
-                                            </span>&emsp;&emsp;
-                                            <span>{{__('Ref NO.')}}:</span>&emsp;
-                                            <span class="kt-font-info">{{$event->reference_number}}</span>&emsp;&emsp;
+                                    <div class="kt-widget kt-widget--project-1">
+                                        <div class="kt-widget__body  kt-padding-l-10">
+                                            <div class="kt-widget__stats d-">
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('From Date')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span class="btn btn-label-success btn-sm btn-bold btn-upper">
+                                                            {{date('d M,y',strtotime($event->issued_date))}}&nbsp;
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('To Date')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
+                                                            {{date('d M,y',strtotime($event->expired_date))}} &nbsp;
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @php
+                                                $issued_date = strtotime($event->issued_date);
+                                                $expired_date = strtotime($event->expired_date);
+                                                $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                                @endphp
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('No.of.days')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span class="btn btn-label-info btn-sm btn-bold">
+                                                            {{$noofdays.' '.($noofdays > 1 ? __('days') :
+                                                            __('day'))}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('Reference No')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span
+                                                            class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                            {{$event->reference_number}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @if($event->request_type == 'amend')
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('Event Type')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span
+                                                            class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                            {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-widget__item">
+                                                    <span class="kt-widget__date">{{__('Event Name')}}</span>
+                                                    <div class="kt-widget__label">
+                                                        <span
+                                                            class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                            {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="kt-widget__text kt-margin-t-10">
+                                                <strong>{{__('Venue')}} :</strong>
+                                                {{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
+                                            </div>
                                         </div>
                                     </div>
                                     {{-- <h4 class="text-center kt-block-center kt-margin-20">Amount to be Paid: AED 2500</h4> --}}
@@ -577,6 +632,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     returnType: "json",
                     autoSubmit: false,
                     showFileCounter: false,
@@ -662,19 +719,19 @@
                 fileName: "pic_file",
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,   
+                downloadStr:  `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                showDownload: true,
                 showDelete: false,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -683,11 +740,30 @@
                         success: function (data) {
                             // console.log(data);
                             if (data.trim() != '') {
-                                obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
+                                let ex = data.split('/').pop();
+                                obj.createProgress(ex, "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
                 },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath){
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                    }else {
+                        let event_id = $('#event_id').val();
+                        let user_id = $('#user_id').val();
+                        let path = user_id+'/event/'+event_id+'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                }
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -946,6 +1022,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1172,6 +1250,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1345,13 +1425,15 @@
                 deleteStr: `<i class="la la-trash"></i>`,
                 downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 showProgress: false,
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 showDownload: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',

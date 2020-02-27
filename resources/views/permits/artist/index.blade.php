@@ -61,9 +61,9 @@
                     <thead>
 
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
-                            <th>{{__('From Date')}}</th>
+                            <th>{{__('Reference No')}}</th>
+                            <th>{{__('Permit Duration')}}</th>
+                            <th>{{__('from date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Work Location')}}</th>
                             <th>{{__('Artists')}}</th>
@@ -79,8 +79,8 @@
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
+                            <th>{{__('Reference No')}}</th>
+                            <th>{{__('Permit Duration')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
@@ -99,8 +99,8 @@
                 <table class="table table-striped table-borderless table-hover border" id="expired-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
+                            <th>{{__('Reference No')}}</th>
+                            <th>{{__('Permit Duration')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
@@ -117,14 +117,13 @@
                 <table class="table table-striped table-borderless table-hover border" id="cancelled-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('Reference No')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('From Date')}}</th>
                             <th>{{__('To Date')}}</th>
                             <th>{{__('Work Location')}}</th>
                             <th class="text-center">{{__('Artists')}}</th>
                             <th>{{__('STATUS')}}</th>
-                            <th>{{__('Comments')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -338,7 +337,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Applied Artist Permits",
+                    emptyTable: "{{__('No Applied Artist Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -397,7 +396,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Valid Artist Permits",
+                    emptyTable: "{{__('No Valid Artist Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -482,7 +481,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Expired Permits",
+                    emptyTable: "{{__('No Expired Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -509,8 +508,7 @@
                     { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                     { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
                     { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
-                    { data: 'permit_status', name: 'permit_status', className:'text-center' },
-                    { data: 'action', name: 'action', className:'text-center no-wrap' },
+                    { data: 'action', name: 'action', className:'text-center' },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
                 columnDefs: [
@@ -524,7 +522,7 @@
                     },
                 ],
                 language: {
-                    emptyTable: "No Cancelled or Rejected Permits",
+                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });

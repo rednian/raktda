@@ -5,6 +5,9 @@ use App\Library\Smpp;
 Route::get('/', function () {return redirect()->route('login');
 })->name('default');
 
+Route::get('login-ar', function () { return view('layouts.login-ar');
+})->name('login-ar');
+
 Route::get('/test', function(){
 sendSms('+971568835006', "Your ATM \n was access 2 minutes ago. Please change your ATM Password.");
 

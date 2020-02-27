@@ -68,18 +68,17 @@
                     </div>
                     <input type="hidden" id="expired_date" value="{{$artist_details[0]->expiry_date}}">
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                         <div class="kt-widget__label">
-                            <span
-                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{$permit_details->term}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{calculateDateDiff($artist_details[0]->issue_date, $artist_details[0]->expiry_date)}}
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="kt-widget__text kt-margin-t-10">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
             </div>
             <input type="hidden" id="work_location" value="{{$permit_details->work_location}}">
@@ -107,31 +106,34 @@
                     <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                     @foreach ($artist_details as $artist_detail)
                     <tr>
-                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar}}
+                        <td>{{ getLangId() == 1 ? ucfirst($artist_detail->firstname_en) : $artist_detail->firstname_ar}}
                         </td>
-                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar}}
+                        <td>{{ getLangId() == 1 ? ucfirst($artist_detail->lastname_en) : $artist_detail->lastname_ar}}
                         </td>
-                        <td>{{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
+                        <td>{{ getLangId() == 1 ? ucfirst($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
                         </td>
                         <td>{{$artist_detail->mobile_number}}</td>
                         {{-- <td>{{$artist_detail->email}}</td> --}}
                         <td>
-                            {{__(ucwords($artist_detail->artist_permit_status))}}
+                            {{__(ucfirst($artist_detail->artist_permit_status))}}
                         </td>
                         <td class="d-flex justify-content-center">
                             <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="{{__('Edit')}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate ">{{__('Edit')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('Edit')}}</button>
                             </a>
                             <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $artist_detail->id , 'from' => 'renew'])}}"
                                 title="{{__('View')}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('View')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                             </a>
                             @if(count($artist_details) > 1)
                             <a href="#"
-                                onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en.' '.$artist_detail->lastname_en}}','{{$artist_detail->lastname_ar.' '.$artist_detail->firstname_ar}}')"
                                 data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
-                                <button class="btn btn-sm btn-secondary btn-elevate">{{__('Remove')}}</button>
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
                             </a>
                             @endif
                         </td>
@@ -172,17 +174,14 @@
         }
     });
 
-    $(document).ready(function(){
-        $('#kt_aside_menu ul li a').on('mouseenter', stopNavigate)
-            .on('mouseout', function () {
-            $(window).on('beforeunload', windowBeforeUnload);
-        });
-    })
+    function stopNavigate(event) {
+        $(window).off('beforeunload');
+    }
 
-    // function stopNavigate(event) {
-    //     $(window).off('beforeunload');
-    // }
-
+    $('#kt_aside_menu ul li a').on('mouseenter', stopNavigate)
+        .on('mouseout', function () {
+        $(window).on('beforeunload', windowBeforeUnload);
+    });
 
 
     function windowBeforeUnload() {
@@ -282,11 +281,11 @@
         });
     });
 
-    function delArtist(temp_id, permit_id, fname, lname) {
+    function delArtist(temp_id, permit_id, nameEn, nameAr) {
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
-        $('#del_fname').val(fname);
-        $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+        let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
         $('#warning_text').css('color', '#580000')
     }
 

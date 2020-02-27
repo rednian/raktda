@@ -53,7 +53,7 @@
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{ getLangId() == 1 ? $draft_details[0]->event->name_en : $draft_details[0]->event->name_ar }}
+                                {{ getLangId() == 1 ? ucfirst($draft_details[0]->event->name_en) : $draft_details[0]->event->name_ar }}
                             </span>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="kt-widget__text kt-margin-t-10">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}
                 </div>
             </div>
 
@@ -82,12 +82,13 @@
                     <tbody>
                         @foreach ($draft_details as $atd)
                         <tr>
-                            <td>{{ucwords($atd->firstname_en)}}</td>
-                            <td>{{ucwords($atd->lastname_en)}}</td>
-                            <td>{{ucwords($atd->profession['name_en'])}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->firstname_en) : $atd->firstname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->lastname_en) : $atd->lastname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->profession->name_en) : $atd->profession->name_ar}}
+                            </td>
                             <td>{{$atd->mobile_number}}</td>
                             <td>
-                                {{ucwords($atd->artist_permit_status)}}
+                                {{__(ucfirst($atd->artist_permit_status))}}
                             </td>
                             <td class="text-center">
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"

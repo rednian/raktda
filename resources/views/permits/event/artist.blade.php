@@ -85,9 +85,9 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                            {{__('Work Location (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
-                                            placeholder="Location" name="work_loc" id="work_loc"
+                                            placeholder="Location" name="work_loc" id="work_loc" dir="ltr"
                                             value="{{$event->venue_en}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
@@ -175,7 +175,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en.' '.$ad->lastname_en}}','{{$ad->firstname_en.' '.$ad->lastname_ar}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
@@ -265,8 +265,8 @@
         function delArtist(temp_id, permit_id, fname, lname) {
             $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
-            $('#del_fname').val(fname);
-            $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+            let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+            $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
             $('#warning_text').css('color', '#580000');
         }
 

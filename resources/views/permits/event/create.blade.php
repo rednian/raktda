@@ -79,9 +79,6 @@
 
         @include('permits.event.common.common-event-details')
 
-
-        <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
-
         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
             <div class="kt-form__section kt-form__section--first ">
                 <div class="">
@@ -96,7 +93,7 @@
                                 <p class="reqName">{{__('Add multiple images')}}</p>
                             </div>
                             <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
-                                <div id="image_uploader">{{__('Upload')}}</div>
+                                <div id="image_uploader"></div>
                             </div>
 
                         </div>
@@ -199,6 +196,7 @@
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
     async defer></script>
+{{-- {{getlangId() == 2 ? '&language=ar' : ''}} --}}
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -226,10 +224,9 @@
 
     $(document).ready(function(){
 
-        $('input[dir=rtl]').keyup(function(e){
+        $('input[dir=rtl],textarea[dir=rtl]').keyup(function(e){
             return false;
             var regex = RegExp('^[\u0621-\u064A\u0660-\u0669\s0-9]+$');
-            console.log(regex.test($(this).val()) ? true : false);
             return regex.test($(this).val()) ? true : false;
         });
 
@@ -244,7 +241,7 @@
             success: function(){}
         })
         // getRequirementsList(5);
-        // wizard.goTo(3);
+        // wizard.goTo(2);
 
         $('#event_id').val(0);
 
@@ -257,6 +254,7 @@
         $('#liquorEditBtn').hide();
 
         $('#liquor_provided_form').hide();
+        $('#liquor_provided_upload_form').hide();
         $('#limited_types').hide();
     });
 
@@ -280,6 +278,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     returnType: "json",
                     showProgress: false,
                     showFileCounter: false,
@@ -348,6 +348,8 @@
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 maxFileSize: 5242880,
@@ -634,9 +636,10 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
-            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
+            // var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
+            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'day');
             $('#expired_date').datepicker('setStartDate', minDate);
-            $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
+            // $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
         });
         $('#expired_date').on('changeDate', function (ev) {
@@ -844,7 +847,7 @@
                      $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">{!!__('Upload')!!}</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -1250,6 +1253,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1343,10 +1348,12 @@
                 $('#liquor_provided_form').show();
                 $('#liquor_details_form').hide();
                 $('#liquor_upload_form').hide();
+                $('#liquor_provided_upload_form').show();
             }else if(id == 0) {
                 $('#liquor_provided_form').hide();
                 $('#liquor_details_form').show();
                 $('#liquor_upload_form').show();
+                $('#liquor_provided_upload_form').hide();
             }
         }
 
@@ -1395,7 +1402,7 @@
             }
         })
 
-        function liqourDocValidation(){
+        function liqourDocValidation(type){
             var hasFile = true;
             var hasFileArray = [];
             var reqCount = parseInt($('#liquor_document_count').val());
@@ -1414,6 +1421,10 @@
                         {
                             hasFileArray[d] = false;
                             $('#liquor-upload_'+d).css('border', '2px dotted red');
+                            if($('#liqour_req_type_'+d).val() == 'provided' && type == 0) {
+                                hasFileArray[d] = true;
+                                $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
+                            }
                         } else {
                             hasFileArray[d] = true;
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
@@ -1457,6 +1468,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     maxFileSize: 5242880,
                     showProgress: false,
@@ -1547,8 +1560,8 @@
 
 
         $('#update_lq').click(function(){
-            var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            var hasFile = liqourDocValidation(type);
             if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
@@ -1681,6 +1694,8 @@
                 fileName: "image_file",
                 multiple: true,
                 deleteStr: `<i class="la la-trash"></i>`,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileSize: false,
                 showFileCounter: false,
                 maxFileSize: 5242880,

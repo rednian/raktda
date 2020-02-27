@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -58,6 +58,17 @@
             top: 150px;
 
         }
+
+        .login.login-with-news-feed .news-feed,
+        .register.register-with-news-feed .news-feed {
+            right: 0 !important;
+            left: 500px !important;
+        }
+
+        .left-content {
+            float: left;
+            width: 500px;
+        }
     </style>
 </head>
 
@@ -82,11 +93,11 @@
             </div>
             <!-- end news-feed -->
             <!-- begin right-content -->
-            <div class="right-content">
+            <div class="left-content">
                 <!-- begin login-header -->
-                <div class="text-right">
-                    <a href="{{route('login-ar')}}">
-                        <h5 style="padding-right: 20px;">عَرَبيّ</h5>
+                <div class="text-left">
+                    <a href="{{route('login')}}">
+                        <h5 style="padding-left: 20px;">English</h5>
                     </a>
                 </div>
                 <div class="login-header" style="width:auto;">

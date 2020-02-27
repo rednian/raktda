@@ -80,9 +80,8 @@ $language_id = \Auth::user()->LanguageId;
                                     <div class="col-lg-2">
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control form-control-sm" name="code"
-                                                id="code">
+                                                id="code" placeholder="e.g. 2015">
                                         </div>
-                                        <span class="form-text text-muted">e.g. 2015</span>
                                     </div>
                                     <div class="col-lg-3">
                                         <span id="changeArtistLabel" class="btn btn--maroon btn-sm d-none"
@@ -98,7 +97,7 @@ $language_id = \Auth::user()->LanguageId;
                                             <div class="card-title collapsed" data-toggle="collapse"
                                                 data-target="#collapseOne6" aria-expanded="true"
                                                 aria-controls="collapseOne6">
-                                                <h6 class="kt-font-transform-u kt-font-bolder">
+                                                <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
                                                     {{__('Artist Details')}}</h6>
                                             </div>
                                         </div>
@@ -121,8 +120,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
                                                                             class="form-control form-control-sm "
-                                                                            name="fname_en" id="fname_en"
-                                                                            placeholder="{{__('First Name')}}"
+                                                                            name="fname_en" id="fname_en" dir="ltr"
                                                                             onchange="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
@@ -135,8 +133,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
                                                                             class="form-control form-control-sm "
-                                                                            name="lname_en" id="lname_en"
-                                                                            placeholder="{{__('Last Name')}}"
+                                                                            name="lname_en" id="lname_en" dir="ltr"
                                                                             onchange="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
@@ -447,7 +444,7 @@ $language_id = \Auth::user()->LanguageId;
                                 <div class="card-header" id="headingTwo6">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                                         aria-expanded="false" aria-controls="collapseTwo6">
-                                        <h6 class="kt-font-transform-u kt-font-bolder">
+                                        <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
                                             {{__('Contact Information')}}
                                         </h6>
                                     </div>
@@ -525,7 +522,7 @@ $language_id = \Auth::user()->LanguageId;
                                 <div class="card-header" id="headingTwo7">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                                         aria-expanded="false" aria-controls="collapseTwo7">
-                                        <h6 class="kt-font-transform-u kt-font-bolder">
+                                        <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
                                             {{__('Address Information')}}
                                         </h6>
                                     </div>
@@ -563,7 +560,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     @foreach ($emirates as $em)
                                                                     <option value={{$em->id}}
                                                                         {{$em->id == '5' ? 'selected' : ''}}>
-                                                                        {{$language_id == 1 ? $em->name_en : $em->name_ar}}
+                                                                        {{$language_id == 1 ? ucfirst($em->name_en) : $em->name_ar}}
                                                                     </option>
                                                                     @endforeach
                                                                 </select>
@@ -598,7 +595,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     </option>
                                                                     @foreach ($areas as $ar)
                                                                     <option value={{$ar->id}}>
-                                                                        {{$language_id == 1 ? $ar->area_en : $ar->area_ar}}
+                                                                        {{$language_id == 1 ? ucfirst($ar->area_en) : $ar->area_ar}}
                                                                     </option>
                                                                     @endforeach
                                                                 </select>
@@ -650,11 +647,11 @@ $language_id = \Auth::user()->LanguageId;
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-12">
                                         <label
-                                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                             <span id="cnd_{{$i}}"></span>
                                         </label>
                                         <p for="" class="reqName    ">
-                                            {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                            {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                                         </p>
                                     </div>
                                     <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
@@ -751,6 +748,7 @@ $language_id = \Auth::user()->LanguageId;
 </div>
 
 @include('permits.artist.modals.artist_in_permit');
+@include('permits.artist.modals.single_permit_artist_warning_modal')
 
 @endsection
 @section('script')
@@ -820,6 +818,8 @@ $language_id = \Auth::user()->LanguageId;
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
@@ -919,15 +919,15 @@ $language_id = \Auth::user()->LanguageId;
                 fileName: "pic_file",
                 multiple: false,
                 maxFileCount:1,
-                // showPreview:true,
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
-                // previewHeight: '100px',
-                // previewWidth: "auto",
                 abortStr: '',
                 showDelete: true,
+                showDownload: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                 formData: {id: 0, reqName: 'Artist Photo' , artistNo: $('#artist_number_doc').val()},
                 // onSuccess: function (files, response, xhr, pd) {
@@ -1357,10 +1357,14 @@ function checkVisaRequired(){
                     success: function(result){
                         // console.log(result)
                         $('#area').empty();
-                        $('#area').append('<option value=" ">Select</option>');
+                        $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                         for(let i = 0; i< result.length;i++)
-                        {
-                            $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                        {   
+                            let area = $('#getLangid').val() == 1 ? result[i].area_en : result[i].area_ar ;
+                            if(area)
+                            {
+                                $('#area').append('<option value="'+result[i].id+'">'+area+'</option>');
+                            }
                         }
                     }
                 });
@@ -1456,7 +1460,7 @@ function checkVisaRequired(){
                                 $('#ex_artist_personcode').html(data.person_code);
                                 var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                                 $('#ex_artist_dob').html(dob);
-                                $('#ex_artist_nationality').html(apd.nationality.nationality_en);
+                                $('#ex_artist_nationality').html(getLangId == 1 ? apd.nationality.nationality_en : apd.nationality.nationality_ar);
                                 var gender = apd.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                                 $('#ex_artist_gender').html(gender);
                                 $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');

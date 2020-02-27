@@ -14,7 +14,7 @@
                     <div class="card-header" id="headingOne6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne6"
                             aria-expanded="true" aria-controls="collapseOne6">
-                            <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
+                            <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Artist Details')}}</h6>
                         </div>
                     </div>
                     <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -37,7 +37,8 @@
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <input type="text" class="form-control form-control-sm "
-                                                        name="fname_en" id="fname_en" placeholder="{{__('First Name')}}"
+                                                        name="fname_en" id="fname_en" dir="ltr"
+                                                        placeholder="{{__('First Name (EN)')}}"
                                                         value="{{$artist_details->firstname_en}}">
                                                 </div>
                                             </div>
@@ -51,8 +52,9 @@
                                                     class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="lname_en" id="lname_en" placeholder="{{__('Last Name')}}"
+                                                    <input type="text" class="form-control form-control-sm " dir="ltr"
+                                                        name="lname_en" id="lname_en"
+                                                        placeholder="{{__('Last Name (EN)')}}"
                                                         value="{{$artist_details->lastname_en}}">
                                                 </div>
                                             </div>
@@ -193,7 +195,7 @@
                                                 <div class="input-group input-group-sm">
                                                     <input type="text"
                                                         class="form-control form-control-sm text-left text-lg-right "
-                                                        name="fname_ar" id="fname_ar"
+                                                        name="fname_ar" id="fname_ar" dir="rtl"
                                                         value="{{$artist_details->firstname_ar}}">
                                                 </div>
                                             </div>
@@ -375,7 +377,7 @@
             <div class="card-header" id="headingTwo6">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                     aria-expanded="false" aria-controls="collapseTwo6">
-                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Contact Information')}}
                     </h6>
                 </div>
             </div>
@@ -459,7 +461,7 @@
             <div class="card-header" id="headingTwo7">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                     aria-expanded="false" aria-controls="collapseTwo7">
-                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Address Information')}}
                     </h6>
                 </div>
             </div>

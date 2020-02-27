@@ -69,7 +69,7 @@
                   $user = Auth::user();
                   @endphp
                   <div class="form-group  row">
-                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Name')}}</label>
+                    <label class="col-xl-3 col-lg-3 col-form-label">{{__('Name (EN)')}}</label>
                     <div class="row col-lg-9 col-xl-6 m-auto">
                       <input type="text" class="col-xl-5 col-lg-5 form-control form-control-sm" name="acccount_name_en"
                         id="acccount_name_en" value="{{$user->NameEn}}" />
