@@ -77,254 +77,166 @@
                 <div class="col-md-5 border">
                     <div class="kt-widget kt-widget--user-profile-4">
                         <div class="kt-widget__head kt-margin-t-5">
-                            <div class="kt-widget__media kt-margin-b-5">
+                            {{-- <div class="kt-widget__media kt-margin-b-5">
                                 @if ($event->logo_thumbnail)
                                 <img src="{{ asset('/storage/'.$event->logo_thumbnail) }}"
-                                    class="kt-widget__img img-circle" alt="image">
-                                @else
-                                <div
-                                    class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
-                                    @php
-                                    $name = explode(' ', $event->name_en);
-                                    $name = strtoupper(substr($name[0], 0, 1));
-                                    @endphp
-                                    {{$name}}
-                                </div>
-                                @endif
+                            class="kt-widget__img img-circle" alt="image">
+                            @else
+                            <div
+                                class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
+                                @php
+                                $name = explode(' ', $event->name_en);
+                                $name = strtoupper(substr($name[0], 0, 1));
+                                @endphp
+                                {{$name}}
                             </div>
-                            <div class="kt-widget__content">
-                                <div class="kt-widget__section">
-                                    <div class="kt-widget__button">
-                                        {!! permitStatus($event->status)!!}
-                                    </div>
+                            @endif
+                        </div> --}}
+                        <div class="kt-widget__content">
+                            <div class="kt-widget__section">
+                                <div class="kt-widget__button">
+                                    {!! permitStatus($event->status)!!}
                                 </div>
-                                @if ($event->status == 'cancelled')
-                                <div class="kt-widget__section">
-                                    <h6 class="kt-font-dark">{{ __('Cancel Reason') }} <small
-                                            title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
-                                            class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small>
-                                    </h6>
+                            </div>
+                            @if ($event->status == 'cancelled')
+                            <div class="kt-widget__section">
+                                <h6 class="kt-font-dark">{{ __('Cancel Reason') }} <small
+                                        title="{{$event->cancel_date->format('l h:i A | d-F-Y')}}"
+                                        class="pull-right text-underline">{{humanDate($event->cancel_date)}}</small>
+                                </h6>
 
-                                    <hr class="kt-margin-b-0 kt-margin-t-0">
-                                    <p>
-                                        {{ucfirst($event->cancel_reason)}}
-                                    </p>
-                                </div>
-                                @endif
+                                <hr class="kt-margin-b-0 kt-margin-t-0">
+                                <p>
+                                    {{ucfirst($event->cancel_reason)}}
+                                </p>
                             </div>
+                            @endif
                         </div>
+                    </div>
 
-                        <input type="hidden" id="event_id" value="{{$event->event_id}}">
+                    <input type="hidden" id="event_id" value="{{$event->event_id}}">
 
-                        <div class="kt-widget__body kt-margin-t-5">
-                            <hr>
-                            <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
-                            <table class="table table-sm table-hover table-borderless table-display">
-                                {{-- <tr>
+                    <div class="kt-widget__body kt-margin-t-5">
+                        <hr>
+                        <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
+                        <table class="table table-sm table-hover table-borderless table-display">
+                            {{-- <tr>
                                     <td>{{ __('Event Name (EN)') }} : </td>
-                                <td class="kt-font-dark">{{ ucfirst($event->name_en) }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Event Name (AR)') }} : </td>
-                                    <td class="kt-font-dark">{{ $event->name_ar }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Event Owner (EN)') }} : </td>
-                                    <td class="kt-font-dark">{{ $event->owner_name }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Event Owner (AR)') }} : </td>
-                                    <td class="kt-font-dark">{{ $event->owner_name_ar }}</td>
-                                </tr> --}}
-                                {{-- <tr>
+                            <td class="kt-font-dark">{{ ucfirst($event->name_en) }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Event Name (AR)') }} : </td>
+                                <td class="kt-font-dark">{{ $event->name_ar }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Event Owner (EN)') }} : </td>
+                                <td class="kt-font-dark">{{ $event->owner_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Event Owner (AR)') }} : </td>
+                                <td class="kt-font-dark">{{ $event->owner_name_ar }}</td>
+                            </tr> --}}
+                            {{-- <tr>
                                     <td>{{ __('Event Type') }} : </td>
-                                <td class="kt-font-dark">
-                                    {{getLangId() == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
+                            <td class="kt-font-dark">
+                                {{getLangId() == 1 ?  ucfirst($event->type->name_en) : $event->type->name_ar }}
+                            </td>
+                            </tr> --}}
+                            <tr>
+                                <td style="width: 50%;">{{ __('Start Date') }} : </td>
+                                <td style="width: 50%;" class="kt-font-dark col-md-6">
+                                    {{ date('d-F-Y', strtotime($event->issued_date)) }}
                                 </td>
-                                </tr> --}}
-                                <tr>
-                                    <td style="width: 50%;">{{ __('Start Date') }} : </td>
-                                    <td style="width: 50%;" class="kt-font-dark col-md-6">
-                                        {{ date('d-F-Y', strtotime($event->issued_date)) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('End Date') }} : </td>
-                                    <td class="kt-font-dark">
-                                        {{ date('d-F-Y', strtotime($event->expired_date)) }}
-                                    </td>
-                                </tr>
-                                {{-- <tr>
+                            </tr>
+                            <tr>
+                                <td>{{ __('End Date') }} : </td>
+                                <td class="kt-font-dark">
+                                    {{ date('d-F-Y', strtotime($event->expired_date)) }}
+                                </td>
+                            </tr>
+                            {{-- <tr>
                                     <td>{{ __('Venue (EN)') }} : </td>
+                            <td class="kt-font-dark">
+                                {{ $event->venue_en }}
+                            </td>
+                            </tr>
+
+                            <tr>
+                                <td>{{ __('Venue (AR)') }} : </td>
                                 <td class="kt-font-dark">
                                     {{ $event->venue_en }}
                                 </td>
-                                </tr>
-
-                                <tr>
-                                    <td>{{ __('Venue (AR)') }} : </td>
-                                    <td class="kt-font-dark">
-                                        {{ $event->venue_en }}
-                                    </td>
-                                </tr> --}}
-                                {{-- {{dd($event->time_start)}} --}}
-                                <tr>
-                                    <td>{{ __('Start Time') }} : </td>
-                                    <td class="kt-font-dark">
-                                        {{ date('h:i a', strtotime($event->time_start)) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('End Time') }} : </td>
-                                    <td class="kt-font-dark">
-                                        {{ date('h:i a', strtotime($event->time_end)) }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Applied Date') }} : </td>
-                                    <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Reference No.') }} :</td>
-                                    <td class="kt-font-dark"><code
-                                            style="font-size:;">{{ $event->reference_number }}</code></td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Permit Number') }} :</td>
-                                    <td class="kt-font-dark">
-                                        <code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
-                                </tr>
-                                <tr>
-                                    <td>{{ __('Expected Audience') }} :</td>
-                                    <td class="kt-font-dark">{{$event->audience_number}}</td>
-                                </tr>
-                            </table>
-                            <hr>
-                            <h6 class="kt-font-dark">{{ __('Event Details') }}</h6>
-                            <label>{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</label>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div>
-                @if($event->is_truck && count($event->truck) > 0)
-                <div class="d-flex kt-margin-b-10 justify-content-between">
-                    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}
-                    </h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-borderless border table-striped">
-                        <thead class="kt-font-transform-u">
-                            <th>{{__('Establishment Name')}}</th>
-                            <th>{{__('Establishment Name (AR)')}}</th>
-                            <th>{{__('Food Services')}}</th>
-                            <th>{{__('Traffic Plate No')}}</th>
-                            <th></th>
-                        </thead>
-                        <tbody id="food_truck_list">
-                            @foreach($event->truck as $truck)
+                            </tr> --}}
+                            {{-- {{dd($event->time_start)}} --}}
                             <tr>
-                                <td>{{ucwords($truck->company_name_en)}}</td>
-                                <td>{{$truck->company_name_ar}}</td>
-                                <td>{{ucwords($truck->food_type)}}</td>
-                                <td>{{$truck->plate_number}}</td>
-                                {{-- <td>{{date('d-M-Y', strtotime($truck->registration_issued_date))}}
-                                </td> --}}
-                                {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
-                                </td> --}}
-                                <td class="text-center">
-                                    <a class="btn btn-secondary btn-hover-warning"
-                                        onclick="viewThisTruck({{$truck->event_truck_id}})">{{__('View')}}</a>
+                                <td>{{ __('Start Time') }} : </td>
+                                <td class="kt-font-dark">
+                                    {{ date('h:i a', strtotime($event->time_start)) }}
                                 </td>
                             </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                @endif
-
-                @if($event->is_liquor)
-                @php
-                $liquor = $event->liquor;
-                @endphp
-                <input type="hidden" id="liquor_id" value="{{$liquor->event_liquor_id}}">
-                <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Liquor Details')}}</h5>
-                <div class="col-md-12 row">
-                    <span> {{__('Provided by Venue')}}: </span>&emsp;
-                    <span class="kt-font-bold">{{$liquor->provided == 1 ? 'YES' : 'NO'}}</span>
-                </div>
-
-                @if($liquor->provided == 0)
-                <div class="table-responsive">
-                    <table class="table table-borderless border table-striped">
-                        <thead class="kt-font-transform-u">
-                            <th>{{__('Establishment Name')}}</th>
-                            <th>{{__('Establishment Name (AR)')}}</th>
-                            <th>{{__('Purchase Receipt')}}</th>
-                            <th>{{__('Liquor Service')}}</th>
-                            <th></th>
-                        </thead>
-                        <tbody id="food_truck_list">
                             <tr>
-                                <td>{{$liquor->company_name_en}}</td>
-                                <td>{{$liquor->company_name_ar}}</td>
-                                <td>{{$liquor->purchase_receipt}}</td>
-                                <td>{{$liquor->liquor_service}}
-                                </td>
-                                <td class="text-center">
-                                    <a class="btn btn-secondary btn-hover-warning"
-                                        onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
+                                <td>{{ __('End Time') }} : </td>
+                                <td class="kt-font-dark">
+                                    {{ date('h:i a', strtotime($event->time_end)) }}
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                @else
-                <div class="table-responsive">
-                    <div class="col-md-4 pb-2 row">
-                        <label
-                            class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Liquor Permit No')}}
-                        </label>
-                        <span class="col-md-6">{{$event->liquor_permit_no}}</span>
+                            <tr>
+                                <td>{{ __('Applied Date') }} : </td>
+                                <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Reference No.') }} :</td>
+                                <td class="kt-font-dark"><code style="font-size:;">{{ $event->reference_number }}</code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Permit Number') }} :</td>
+                                <td class="kt-font-dark">
+                                    <code>{{ $event->permit_number ? $event->permit_number : 'N/A' }}</code></td>
+                            </tr>
+                            <tr>
+                                <td>{{ __('Expected Audience') }} :</td>
+                                <td class="kt-font-dark">{{$event->audience_number}}</td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <h6 class="kt-font-dark">{{ __('Event Details') }}</h6>
+                        <label>{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</label>
                     </div>
                 </div>
-                @endif
-                @endif
+        </div>
+        </section>
+
+        <div>
+            @if($event->is_truck && count($event->truck) > 0)
+            <div class="d-flex kt-margin-b-10 justify-content-between">
+                <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}
+                </h5>
             </div>
-            @if($artist)
-            {{-- {{dd($artist)}} --}}
-            <div class="pt-2 img-responsive">
-                <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Artist Details')}}</h5>
-                <table class="table table-striped table-hover border table-borderless">
-                    <thead>
-                        <tr class="kt-font-transform-u">
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th>{{__('Actions')}}</th>
-                        </tr>
+            <div class="table-responsive">
+                <table class="table table-borderless border table-striped">
+                    <thead class="kt-font-transform-u">
+                        <th>{{__('Establishment Name')}}</th>
+                        <th>{{__('Establishment Name (AR)')}}</th>
+                        <th>{{__('Food Services')}}</th>
+                        <th>{{__('Traffic Plate No')}}</th>
+                        <th></th>
                     </thead>
-                    <tbody>
-                        @foreach ($artist->artistPermit as $at)
+                    <tbody id="food_truck_list">
+                        @foreach($event->truck as $truck)
                         <tr>
-                            <td>{{ getLangId() == 1 ? ucwords($at->firstname_en) : $at->firstname_ar}}</td>
-                            <td>{{ getLangId() == 1 ? ucwords($at->lastname_en) : $at->lastname_ar}}</td>
-                            <td>{{ getLangId() == 1 ? ucwords($at->profession['name_en']) : $at->profession['name_ar']}}
+                            <td>{{ucwords($truck->company_name_en)}}</td>
+                            <td>{{$truck->company_name_ar}}</td>
+                            <td>{{ucwords($truck->food_type)}}</td>
+                            <td>{{$truck->plate_number}}</td>
+                            {{-- <td>{{date('d-M-Y', strtotime($truck->registration_issued_date))}}
+                            </td> --}}
+                            {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
+                            </td> --}}
+                            <td class="text-center">
+                                <a class="btn btn-secondary btn-hover-warning"
+                                    onclick="viewThisTruck({{$truck->event_truck_id}})">{{__('View')}}</a>
                             </td>
-                            <td>{{$at->mobile_number}}</td>
-                            <td>
-                                {{__(ucwords($at->artist_permit_status))}}
-                            </td>
-
-                            <td class="text-center"> <a
-                                    href="{{URL::signedRoute('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
-                                    title="View">
-                                    <button
-                                        class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
-                                </a></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -332,97 +244,185 @@
             </div>
             @endif
 
-            @if(count($eventReq) > 0)
-            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold kt-margin-t-10">
-                {{__('Uploaded Documents')}}</h5>
-            <div class="event--requirement-files">
-                <table class="table table-hover table-borderless border table-striped">
-                    <thead class="text-center">
-                        <tr class="kt-font-transform-u">
-                            <th class="text-left">{{__('Document Name')}}</th>
-                            <th>{{__('Issued Date')}}</th>
-                            <th>{{__('Expiry Date')}}</th>
-                            <th>{{__('View')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $pre_req = '';$j = 0;
-                        @endphp
-                        @foreach($eventReq as $reqd)
-                        @php
-                        if($pre_req == $reqd->requirement_id){
-                        $j++;
-                        }else {
-                        $j = 0;
-                        }
-                        $pre_req = $reqd->requirement_id;
-                        if($reqd->type == 'event')
-                        {
-                        $req = $reqd->requirement;
-                        }else if($reqd->type == 'additional') {
-                        $req = $reqd->additionalRequirement;
-                        }
-                        @endphp
-                        @if($j == 0)
-                        <tr>
-                            <td colspan="4">
-                                <strong>{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</strong>
-                            </td>
-                        </tr>
-                        @endif
-                        <tr>
-                            <td style="width:50%;">
-                                {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}&nbsp;{{'-'.strval($j + 1)}}
-                            </td>
-                            <td class="text-center">
-                                {{$reqd->issued_date->year > 1 ? date('d-m-Y', strtotime($reqd->issued_date)) : ''}}
-                            </td>
-                            <td class="text-center">
-                                {{$reqd->expired_date->year > 1 ? date('d-m-Y', strtotime($reqd->expired_date)) : ''}}
-                            </td>
-                            <td class="text-center">
-                                <a href="{{asset('storage')}}{{'/'.$reqd->pivot['path']}}" target="blank" ">
-                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
-                                    </button></a>
-                            </td>
-                        </tr>
+            @if($event->is_liquor)
+            @php
+            $liquor = $event->liquor;
+            @endphp
+            <input type="hidden" id="liquor_id" value="{{$liquor->event_liquor_id}}">
+            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Liquor Details')}}</h5>
+            <div class="col-md-12 row">
+                <span> {{__('Provided by Venue')}}: </span>&emsp;
+                <span class="kt-font-bold">{{$liquor->provided == 1 ? 'YES' : 'NO'}}</span>
+            </div>
 
-                        @endforeach
+            @if($liquor->provided == 0)
+            <div class="table-responsive">
+                <table class="table table-borderless border table-striped">
+                    <thead class="kt-font-transform-u">
+                        <th>{{__('Establishment Name')}}</th>
+                        <th>{{__('Establishment Name (AR)')}}</th>
+                        <th>{{__('Purchase Receipt')}}</th>
+                        <th>{{__('Liquor Service')}}</th>
+                        <th></th>
+                    </thead>
+                    <tbody id="food_truck_list">
+                        <tr>
+                            <td>{{$liquor->company_name_en}}</td>
+                            <td>{{$liquor->company_name_ar}}</td>
+                            <td>{{$liquor->purchase_receipt}}</td>
+                            <td>{{$liquor->liquor_service}}
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-secondary btn-hover-warning"
+                                    onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-
-            @endif
-
-            {{-- {{dd($eventImages)}} --}}
-            @if(count($eventImages) > 0)
-            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Images')}}</h5>
-
-            <div class="row col-md-12">
-                @foreach($eventImages->reverse() as $upload)
-                <div class="col-md-3 my-4">
-                    <div class="container">
-                        <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank">
-                            <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
-                                <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
-                                    style="width:100%; height:107px;object-fit:cover;">
-                            </div>
-                        </a>
-                        {{-- <div style="position: absolute;left:50%; top: 50%;transform: translate(-50%, -50%);">
-                            <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank"><i
-                            class="fa fa-eye text-info"></i></a>
-                        </span>&emsp;
-                        <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" download><i
-                                    class="fa fa-download text-success"></i></a> </span>
-                    </div> --}}
+            @else
+            <div class="table-responsive">
+                <div class="col-md-4 pb-2 row">
+                    <label
+                        class="col-md-6 text-left event--view-detail-item-title kt-font-transform-u">{{__('Liquor Permit No')}}
+                    </label>
+                    <span class="col-md-6">{{$event->liquor_permit_no}}</span>
                 </div>
             </div>
-            @endforeach
+            @endif
+            @endif
+        </div>
+        @if($artist)
+        {{-- {{dd($artist)}} --}}
+        <div class="pt-2 img-responsive">
+            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Artist Details')}}</h5>
+            <table class="table table-striped table-hover border table-borderless">
+                <thead>
+                    <tr class="kt-font-transform-u">
+                        <th>{{__('First Name')}}</th>
+                        <th>{{__('Last Name')}}</th>
+                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Mobile Number')}}</th>
+                        <th>{{__('Status')}}</th>
+                        <th>{{__('Actions')}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($artist->artistPermit as $at)
+                    <tr>
+                        <td>{{ getLangId() == 1 ? ucwords($at->firstname_en) : $at->firstname_ar}}</td>
+                        <td>{{ getLangId() == 1 ? ucwords($at->lastname_en) : $at->lastname_ar}}</td>
+                        <td>{{ getLangId() == 1 ? ucwords($at->profession['name_en']) : $at->profession['name_ar']}}
+                        </td>
+                        <td>{{$at->mobile_number}}</td>
+                        <td>
+                            {{__(ucwords($at->artist_permit_status))}}
+                        </td>
+
+                        <td class="text-center"> <a
+                                href="{{URL::signedRoute('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
+                                title="View">
+                                <button
+                                    class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
+                            </a></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
         @endif
 
+        @if(count($eventReq) > 0)
+        <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold kt-margin-t-10">
+            {{__('Uploaded Documents')}}</h5>
+        <div class="event--requirement-files">
+            <table class="table table-hover table-borderless border table-striped">
+                <thead class="text-center">
+                    <tr class="kt-font-transform-u">
+                        <th class="text-left">{{__('Document Name')}}</th>
+                        <th>{{__('Issued Date')}}</th>
+                        <th>{{__('Expiry Date')}}</th>
+                        <th>{{__('View')}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    $pre_req = '';$j = 0;
+                    @endphp
+                    @foreach($eventReq as $reqd)
+                    @php
+                    if($pre_req == $reqd->requirement_id){
+                    $j++;
+                    }else {
+                    $j = 0;
+                    }
+                    $pre_req = $reqd->requirement_id;
+                    if($reqd->type == 'event')
+                    {
+                    $req = $reqd->requirement;
+                    }else if($reqd->type == 'additional') {
+                    $req = $reqd->additionalRequirement;
+                    }
+                    @endphp
+                    @if($j == 0)
+                    <tr>
+                        <td colspan="4">
+                            <strong>{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}</strong>
+                        </td>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td style="width:50%;">
+                            {{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}&nbsp;{{'-'.strval($j + 1)}}
+                        </td>
+                        <td class="text-center">
+                            {{$reqd->issued_date->year > 1 ? date('d-m-Y', strtotime($reqd->issued_date)) : ''}}
+                        </td>
+                        <td class="text-center">
+                            {{$reqd->expired_date->year > 1 ? date('d-m-Y', strtotime($reqd->expired_date)) : ''}}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{asset('storage')}}{{'/'.$reqd->pivot['path']}}" target="blank" ">
+                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                </button></a>
+                        </td>
+                    </tr>
+
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        @endif
+
+        {{-- {{dd($eventImages)}} --}}
+        @if(count($eventImages) > 0)
+        <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Images')}}</h5>
+
+        <div class="row col-md-12">
+            @foreach($eventImages->reverse() as $upload)
+            <div class="col-md-3 my-4">
+                <div class="container">
+                    <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank">
+                        <div class="img-box" style="border:1px solid #ccc;padding:5px;border-radius:5px;">
+                            <img src="{{url('storage').'/'.$upload->thumbnail}}" alt="Image"
+                                style="width:100%; height:107px;object-fit:cover;">
+                        </div>
+                    </a>
+                    {{-- <div style="position: absolute;left:50%; top: 50%;transform: translate(-50%, -50%);">
+                            <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" target="_blank"><i
+                        class="fa fa-eye text-info"></i></a>
+                    </span>&emsp;
+                    <span> <a href="{{url('storage').'/'.$upload->thumbnail}}" download><i
+                                class="fa fa-download text-success"></i></a> </span>
+                </div> --}}
+            </div>
+        </div>
+        @endforeach
     </div>
+    @endif
+
+</div>
 </div>
 </div>
 

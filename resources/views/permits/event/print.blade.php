@@ -10,7 +10,7 @@
         * {
             box-sizing: border-box;
             overflow: hidden;
-            /* font-family: 'examplefont', sans-serif; */
+            font-family: 'examplefont', sans-serif;
         }
 
         .logo--header,

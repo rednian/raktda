@@ -5,7 +5,7 @@ return [
     'mode' => '',
     'format' => 'A4',
     'default_font_size' => '12',
-    'default_font' => 'sans-serif',
+    // 'default_font' => 'sans-serif',
     // 'margin_left' => 10,
     // 'margin_right' => 10,
     // 'margin_top' => 10,
@@ -20,14 +20,13 @@ return [
     // 'watermark_font' => 'sans-serif',
     'display_mode' => 'fullpage',
     'watermark_text_alpha' => 0.1,
-    'custom_font_dir' => '',
     'custom_font_data' => [],
     'auto_language_detection' => false,
     'temp_dir' => '',
 
 
-    'useOTL' => 0xFF,
-    'useKashida' => 75,
+    // 'useOTL' => 0xFF,
+    // 'useKashida' => 75,
 
 
     // 'droidkufi' => [
@@ -39,13 +38,11 @@ return [
     //     'useKashida' => 75,
     // ]
 
-    'custom_font_dir' => base_path('fonts/'), // don't forget the trailing slash!
+    'custom_font_dir' => base_path('public/fonts/'), // don't forget the trailing slash!
 	'custom_font_data' => [
 		'examplefont' => [
-            'R'  => asset('fonts/DroidKufi-Regular.ttf'),    // regular font
-            'B'  => asset('fonts/DroidKufi-Bold.ttf'),          
-			'I'  => 'ExampleFont-Italic.ttf',     // optional: italic font
-			'BI' => 'ExampleFont-Bold-Italic.ttf' // optional: bold-italic font
+            'R'  => 'DroidKufi-Regular.ttf',    // regular font
+            'B'  => 'DroidKufi-Bold.ttf',          
 		]
 		// ...add as many as you want.
 	]
