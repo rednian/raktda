@@ -70,16 +70,15 @@
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                         <div class="kt-widget__label">
-                            <span
-                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{$permit_details->term}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                        <span class="kt-widget__date">{{__('Reference No')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
@@ -125,12 +124,12 @@
                         @foreach ($artist_details as $artist_detail)
                         @if($artist_detail->type != 'removed')
                         <tr>
-                            <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
+                            <td>{{  getLangId() == 1 ? ucfirst($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
                             </td>
-                            <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
+                            <td>{{ getLangId() == 1 ? ucfirst($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
                             </td>
                             <td style="width:20%;">
-                                {{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : ucwords($artist_detail->profession['name_ar'])}}
+                                {{ getLangId() == 1 ? ucfirst($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
                             </td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             {{-- <td>{{$artist_detail->email}}</td> --}}
@@ -161,7 +160,7 @@
                                 @if($artist_detail->artist_permit_status != 'approved' && $artist_detail->old_artist_id
                                 != '')
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en.' '.$artist_detail->lastname_en}}','{{$artist_detail->lastname_ar.' '.$artist_detail->firstname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
@@ -287,11 +286,11 @@
         return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
     }
 
-    function delArtist(temp_id, permit_id, fname, lname) {
+    function delArtist(temp_id, permit_id, nameEn, nameAr) {
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
-        $('#del_fname').val(fname);
-        $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+        let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
         $('#warning_text').css('color', '#580000');
     }
 

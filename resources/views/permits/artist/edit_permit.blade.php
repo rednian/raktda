@@ -74,16 +74,15 @@
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                         <div class="kt-widget__label">
-                            <span
-                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{$permit_details->term}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                        <span class="kt-widget__date">{{__('Reference No')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
@@ -162,7 +161,8 @@
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
-                                            id="work_loc" value="{{ucfirst($permit_details->work_location)}}" />
+                                            dir="ltr" id="work_loc"
+                                            value="{{ucfirst($permit_details->work_location)}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
@@ -230,7 +230,7 @@
                                 @if(count($artist_details) > 1)
                                 @if($artist_detail->artist_permit_status != 'approved')
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en.' '.$artist_detail->lastname_en}}','{{$artist_detail->lastname_ar.' '.$artist_detail->firstname_ar}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-warning-hover">{{__('Remove')}}</button>
@@ -312,9 +312,9 @@
             if($('#permit_from').length)
             {
                var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
-               var maxDate = moment(minDate).add(3, 'M').toDate(); 
+            //    var maxDate = moment(minDate).add(3, 'M').toDate(); 
                $('#permit_to').datepicker('setStartDate', minDate );
-               $('#permit_to').datepicker('setEndDate', maxDate );
+            //    $('#permit_to').datepicker('setEndDate', maxDate );
             }
           
         })
@@ -387,8 +387,8 @@
     $('#permit_from').on('changeDate', function (selected) {
         $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
         var minDate = new Date(selected.date.valueOf());
-        var maxDate = moment(minDate).add(3, 'M').toDate();
-        $('#permit_to').datepicker('setEndDate', maxDate);
+        // var maxDate = moment(minDate).add(3, 'M').toDate();
+        // $('#permit_to').datepicker('setEndDate', maxDate);
         $('#permit_to').datepicker('setStartDate', minDate);
     });
 
@@ -461,11 +461,11 @@
        }
     });
 
-    function delArtist(temp_id, permit_id, fname, lname) {
+    function delArtist(temp_id, permit_id, nameEn, nameAr) {
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
-        $('#del_fname').val(fname);
-        $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+        let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
         $('#warning_text').css('color', '#580000')
     }
 

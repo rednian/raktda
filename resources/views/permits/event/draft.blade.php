@@ -240,6 +240,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     returnType: "json",
                     showFileCounter: false,
@@ -347,22 +349,25 @@
                 fileName: "pic_file",
                 multiple: false,    
                 deleteStr: `<i class="la la-trash"></i>`,   
-                // downloadStr: `<i class="la la-download"></i>`,
+                downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 maxFileSize: 5242880,
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                showDownload: true,
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 // showDownload: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
+                // onSuccess: function (files, response, xhr, pd) {
+                //     pd.filename.html('');
+                // },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
 				{
 					$.ajax({
@@ -380,20 +385,33 @@
                     $.ajax({
                         url: url,
                         success: function (data) {
+                            console.log(data)
                             if (data.trim() != '') {
-
-                                obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
+                                let ex = data.split('/').pop();
+                                obj.createProgress(ex, "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
                 },
                 downloadCallback: function (files, pd) {
+
+                    if(files.filepath){
                         let file_path = files.filepath;
                         let path = file_path.replace('public/','');
                         window.open(
                     "{{url('storage')}}"+'/' + path,
                     '_blank'
                     );
+                    }else {
+                        let event_id = $('#event_id').val();
+                        let user_id = $('#user_id').val();
+                        let path = user_id+'/event/'+event_id+'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                       
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -653,10 +671,11 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
-            var expDate = moment(minDate, 'DD-MM-YYYY').add('month', 1).subtract(1, 'day');
+            // var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
+            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'day');
             $('#expired_date').datepicker('setStartDate', minDate);
-            $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
-            $('#expired_date').val(expDate.format("DD-MM-YYYY"));
+            // $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
+            $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
         });
         $('#expired_date').on('changeDate', function (ev) {
             $('#expired_date').valid() || $('#expired_date').removeClass('invalid').addClass('success');
@@ -1195,6 +1214,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1350,7 +1371,7 @@
             }
         })
 
-        function liqourDocValidation(){
+        function liqourDocValidation(type){
             var hasFile = true;
             var hasFileArray = [];
             var reqCount = parseInt($('#liquor_document_count').val());
@@ -1369,6 +1390,10 @@
                         {
                             hasFileArray[d] = false;
                             $('#liquor-upload_'+d).css('border', '2px dotted red');
+                            if($('#liqour_req_type_'+d).val() == 'provided' && type == 0) {
+                                hasFileArray[d] = true;
+                                $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
+                            }
                         } else {
                             hasFileArray[d] = true;
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
@@ -1412,6 +1437,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1501,8 +1528,8 @@
 
         
         $('#update_lq').click(function(){
-            var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            var hasFile = liqourDocValidation(type);
             if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
@@ -1658,6 +1685,8 @@
                 multiple: true,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 maxFileSize: 5242880,
                 abortStr: '',

@@ -28,12 +28,12 @@
                 @include('permits.event.common.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
-                        <thead class="kt-font-transform-u no-wrap">
+                        <thead class="no-wrap">
                             <th>#</th>
-                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (EN)')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Traffic Plate No')}}</th>
-                            <th>{{__('Food Services')}}</th>
+                            <th>{{__('Types of provided F & B')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -64,19 +64,19 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
                                 id="company_name_en" dir="ltr" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="company_name_ar"
                                 id="company_name_ar" dir="rtl" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}} <span
                                     class="text-danger">*</span></label>
                             <textarea class="form-control form-control-sm" name="food_type" id="food_type"
                                 autocomplete="off" rows="2"></textarea>
@@ -118,11 +118,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <label
-                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                 <span id="cnd_{{$i}}"></span>
                             </label>
                             <p for="" class="reqName">
-                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                             </p>
                         </div>
                         <input type="hidden" value="{{$req->requirement_id}}" id="truck_req_id_{{$i}}">

@@ -139,13 +139,14 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('No.of.days')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-info btn-sm btn-bold btn-upper">
-                                                        {{$noofdays.' '.($noofdays > 1 ? 'days' : 'day')}}
+                                                    <span class="btn btn-label-info btn-sm btn-bold">
+                                                        {{$noofdays.' '.($noofdays > 1 ? __('days') :
+                                                        __('day'))}}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                                                <span class="kt-widget__date">{{__('Reference No')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -159,7 +160,7 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{getLangId() == 1 ? ucwords($event->type['name_en']) : $event->type['name_ar']}}
+                                                        {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -168,7 +169,7 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                                        {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -318,7 +319,7 @@
                                                 <th>{{__('Artist Name')}}</th>
                                                 <th>{{__('Profession')}}</th>
                                                 <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                                <th class="text-center">{{__('Term')}}</th>
+                                                <th class="text-center">{{__('Duration')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
                                             </tr>
@@ -447,6 +448,7 @@
                             <i class="fa fa-check"></i>
                             {{__('Pay')}}
                         </div>
+
 
                         {{-- <button onclick="paymentDoneUpdation('xyz', '10245');">payment</button> --}}
 
@@ -586,8 +588,11 @@ $output = json_decode($output);
         },
         interaction: {
             merchant: {
-                name: 'RAKTDA NRS Infoways',
+                    name: "{{__('Ras Al Khaimah TDA')}}",
             },
+            @if(getLangId() == 2)
+            locale : 'ar-AE',
+            @endif
             displayControl: {
                 billingAddress  : 'HIDE',
             }
@@ -776,6 +781,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -917,6 +924,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showDelete: false,
                     returnType: "json",
                     showFileCounter: false,
@@ -996,19 +1005,20 @@ $output = json_decode($output);
                 fileName: "pic_file",
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,
+                showDownload: true,
+                downloadStr:  `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -1017,11 +1027,30 @@ $output = json_decode($output);
                         success: function (data) {
                             // console.log(data);
                             if (data.trim() != '') {
-                               obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
+                                let ex = data.split('/').pop();
+                               obj.createProgress(ex, "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
                 },
+                downloadCallback: function(files, pd) {
+                    if(files.filepath){
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                    }else {
+                        let event_id = $('#event_id').val();
+                        let user_id = $('#user_id').val();
+                        let path = user_id+'/event/'+event_id+'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                }
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -1312,6 +1341,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1453,13 +1484,15 @@ $output = json_decode($output);
                 deleteStr: `<i class="la la-trash"></i>`,
                 downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 showProgress: false,
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 showDownload: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',

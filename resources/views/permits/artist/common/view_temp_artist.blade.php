@@ -73,12 +73,12 @@
                         <i class="fa fa-user-alt la-2x text-muted"></i>
                         {{getLangId() == 1 ? ucwords($artist_details->firstname_en).' '.ucwords($artist_details->lastname_en) : ucwords($artist_details->firstname_ar).' '.ucwords($artist_details->lastname_ar)}}
                     </span>
-                    @if($artist_details->person_code)
+                    {{-- @if($artist_details->person_code)
                     <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
                         <i class="fa fa-id-card-alt fa-2x text-muted"></i>
                         {{$artist_details->person_code}}
                     </span>
-                    @endif
+                    @endif --}}
                     <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0"><i
                             class="fa fa-envelope fa-2x text-muted"></i>{{$artist_details->email}}</span>
                     <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
@@ -96,7 +96,7 @@
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Birth Date')}}</label>
+                        <label class="col col-md-6 col-form-label">{{__('Birthdate')}}</label>
                         <p class="col col-md-6 form-control-plaintext kt-font-bolder">
                             {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
                     </div>

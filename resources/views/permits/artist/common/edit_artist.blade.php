@@ -52,6 +52,7 @@
                             $staff_comments])
                             @endcomponent
                             @endif
+                            @include('permits.components.requirements')
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required" method="post" autocomplete="off">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -84,11 +85,12 @@
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label
-                                                    class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
+                                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
                                                     <span id="cnd_{{$i}}"></span>
                                                 </label>
                                                 <p for="" class="reqName">
-                                                    {{$req->requirement_description}}</p>
+                                                    {{getLangId() == 1 ?  ucfirst($req->requirement_description) : $req->requirement_description_ar }}
+                                                </p>
                                             </div>
                                             <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
                                             <input type="hidden" value="{{$req->requirement_name}}"
@@ -152,8 +154,8 @@
                     case 'amend':
                     $status = 'amend';
                     break;
-                    case 'amend':
-                    $status = 'amend';
+                    case 'edit':
+                    $status = 'edit';
                     break;
                     case 'renew':
                     $status = 'renew';
@@ -923,7 +925,7 @@
                 success: function(result){
                     // console.log(result)
                     $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                     for(let i = 0; i< result.length;i++)
                     {
                         if(language_id == "1"){

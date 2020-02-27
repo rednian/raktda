@@ -93,8 +93,8 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('Event Type')}}</th>
-                            <th style="width:11%;" class="text-center">{{__('From')}} </th>
-                            <th style="width:11%;" class="text-center">{{__('To')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Name')}}</th>
                             <th class="text-center">{{__('STATUS')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
@@ -110,8 +110,8 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('Event Type')}}</th>
-                            <th style="width:11%;" class="text-center">{{__('From')}} </th>
-                            <th style="width:11%;" class="text-center">{{__('To')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
+                            <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Event Name')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
                             <th></th>
@@ -129,8 +129,8 @@
                             <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('Event Type')}}</th>
-                            <th class="text-center">{{__('From')}} </th>
-                            <th class="text-center">{{__('To')}} </th>
+                            <th class="text-center">{{__('From Date')}} </th>
+                            <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Event Name')}}</th>
                             <th></th>
                         </tr>
@@ -146,8 +146,8 @@
                             <th>{{__('REFERENCE NO.')}}</th>
                             <th>{{__('Permit Number')}}</th>
                             <th>{{__('Event Type')}}</th>
-                            <th class="text-center">{{__('From')}} </th>
-                            <th class="text-center">{{__('To')}} </th>
+                            <th class="text-center">{{__('From Date')}} </th>
+                            <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Event Name')}}</th>
                             <th>{{__('Status')}}</th>
                             <th class="text-center">{{__('Action')}}</th>
@@ -238,8 +238,8 @@
             <div class="modal-body">
                 <form action="{{route('event.delete_draft')}}" method="POST" novalidate>
                     @csrf
-                    <label>{{__('Are you sure to delete this draft')}}
-                        ? {{__('Data will be lost')}}</label>
+                    <label>{{__('Are you sure to delete this draft ?')}}
+                        {{__('Data will be lost !')}}</label>
                     <input type="hidden" id="del_draft_id" name="del_draft_id">
                     <div>
                         <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
@@ -373,7 +373,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Applied Event Permits",
+                    emptyTable: "{{__('No Applied Event Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
                 
@@ -405,7 +405,7 @@
                 columnDefs: [
                 ],
                 language: {
-                    emptyTable: "No Valid Event Permits",
+                    emptyTable: "{{__('No Valid Event Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -491,7 +491,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Expired Event Permits",
+                    emptyTable: "{{__('No Expired Event Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
                 
@@ -531,7 +531,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Cancelled or Rejected Permits",
+                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
                 
@@ -635,7 +635,7 @@
             //   height: 'auto',
               allDaySlot: true,
               height: 800,
-            contentHeight: 750,
+              contentHeight: 750,
               aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
               nowIndicator: true,
               // now: TODAY + 'T09:25:00', // just for demo

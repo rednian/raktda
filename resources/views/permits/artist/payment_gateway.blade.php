@@ -12,7 +12,7 @@
         <div class="kt-portlet kt-portlet--mobile">
             <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
                 <div class="kt-portlet__head-label">
-                    <h3 class="kt-portlet__head-title"> {{__('Payment Gateway')}}</h3>
+                    <h3 class="kt-portlet__head-title kt-font-transform-u"> {{__('Payment Gateway')}}</h3>
                 </div>
 
                 <div class="kt-portlet__head-toolbar">
@@ -53,30 +53,16 @@
                                     </span>
                                 </div>
                             </div>
-                            @php
-                            $issued_date = strtotime($permit_details->issued_date);
-                            $expired_date = strtotime($permit_details->expired_date);
-                            $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
-                            @endphp
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('No.of.days')}}</span>
+                                <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
-                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                        {{$noofdays.' '. ( $noofdays > 1 ? __('days') : __('day') )}}
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                        {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                                     </span>
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Permit Term')}}</span>
-                                <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                        {{$permit_details->term }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                                <span class="kt-widget__date">{{__('Reference No')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -109,6 +95,7 @@
                     $artist_total_fee = 0;
                     $artist_vat_total = 0;
                     $artist_g_total = 0;
+                    $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date);
                     @endphp
 
                     <input type="hidden" id="noofdays" value="{{$noofdays}}">
@@ -119,7 +106,7 @@
                                     <th>{{__('Artist Name')}}</th>
                                     <th>{{__('Profession')}}</th>
                                     <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                    <th class="text-center">{{__('Term')}}</th>
+                                    <th class="text-center">{{__('Duration')}}</th>
                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                 </tr>
                             </thead>
@@ -147,7 +134,7 @@
                                         {{number_format($ap->profession['amount'], 2)}}
                                     </td>
                                     <td class="text-center">
-                                        {{ucfirst($permit_details->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
+                                        {{$noofdays ? $noofdays .' '. ($noofdays > 1 ?  __('days') : __('day') ) : '' }}
                                     </td>
                                     {{-- <td class="text-right">
                                         {{number_format($artist_vat,2)}}
@@ -223,7 +210,7 @@
                                 <tr class="text-center">
                                     <th class="text-left">{{__('Event Name')}}</th>
                                     <th class="text-left">{{__('Event Type')}}</th>
-                                    <th class="text-right">{{__('Fee')}} (AED)</th>
+                                    <th class="text-right">{{__('Fee')}}/{{__('Day')}} (AED)</th>
                                     {{-- <th class="text-right">{{__('Vat')}}(5%)</th> --}}
                                     <th class="text-center">{{__('No.of.days')}} </th>
                                     <th class="text-center">{{__('Qty')}} </th>
@@ -233,10 +220,10 @@
                             <tbody>
                                 <tr>
                                     <td class="text-left">
-                                        {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                                        {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                                     </td>
                                     <td class="text-left">
-                                        {{getLangId() == 1 ? $event->type['name_en'] : $event->type['name_ar']}}
+                                        {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
                                     </td>
                                     @php
                                     $event_fee = $event->type['amount'] * $noofdays;
@@ -246,6 +233,9 @@
                                     $event_vat_total += $event_vat;
                                     $event_grand_total += $event_total;
                                     @endphp
+                                    <td class="text-right">
+                                        {{number_format($event->type['amount'] ,2)}}
+                                    </td>
                                     <td class="text-center">
                                         {{$noofdays}}
                                     </td>
@@ -342,10 +332,10 @@
 
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
+                        {{-- <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button> --}}
 
-                        {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
+                        <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button>
 
                         <a
                             href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
@@ -459,8 +449,11 @@
             },
             interaction: {
                 merchant: {
-                    name: 'RAKTDA NRS Infoways',
+                    name: "{{__('Ras Al Khaimah TDA')}}",
                 },
+                @if(getLangId() == 2)
+                locale : 'ar-AE',
+                @endif
                 displayControl: {
                     billingAddress  : 'HIDE',
                 }

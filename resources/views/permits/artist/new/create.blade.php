@@ -78,8 +78,7 @@
                                                     class="form-control form-control-sm {{ count($artist_details) > 0 ? 'mk-disabled': ''}}"
                                                     name="permit_to" id="permit_to" placeholder="DD-MM-YYYY"
                                                     onchange="checkFilled()"
-                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}"
-                                                    disabled />
+                                                    value="{{count($artist_details) > 0 ? date('d-m-Y',strtotime($artist_details[0]->expiry_date)) :( session($user_id.'_apn_to_date') ? session($user_id.'_apn_to_date') : '') }}" />
 
                                                 <span class="kt-input-icon__icon kt-input-icon__icon--right">
                                                     <span>
@@ -94,9 +93,9 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                            {{__('Work Location (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
-                                            id="work_loc" onkeyup="checkFilled()"
+                                            id="work_loc" onkeyup="checkFilled()" dir="ltr"
                                             value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
@@ -162,9 +161,9 @@
 
         <div class="col-md-12 kt-margin-t-10">
             <div class="table-responsive-sm">
-                <table class="table table-striped border table-hover table-borderless">
+                <table class="table table-striped table-borderless table-hover border">
                     <thead>
-                        <tr>
+                        <tr class="kt-font-transform-u">
                             <th> {{__('First Name')}}</th>
                             <th> {{__('Last Name')}}</th>
                             <th> {{__('Profession')}}</th>
@@ -179,9 +178,10 @@
                         @foreach($artist_details as $ad)
                         {{-- {{dd($ad)}} --}}
                         <tr>
-                            <td>{{  getLangId() == 1 ? $ad->firstname_en : $ad->firstname_ar }}</td>
-                            <td>{{  getLangId() == 1 ? $ad->lastname_en : $ad->lastname_ar}}</td>
-                            <td>{{  getLangId() == 1 ? $ad->profession['name_en'] : $ad->profession['name_ar']}}</td>
+                            <td>{{  getLangId() == 1 ? ucfirst($ad->firstname_en) : $ad->firstname_ar }}</td>
+                            <td>{{  getLangId() == 1 ? ucfirst($ad->lastname_en) : $ad->lastname_ar}}</td>
+                            <td>{{  getLangId() == 1 ? ucfirst($ad->profession['name_en']) : $ad->profession['name_ar']}}
+                            </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
                             <td>{!! __($ad->artist_permit_status) !!}</td>
@@ -198,7 +198,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en.' '.$ad->lastname_en}}','{{$ad->lastname_ar.' '.$ad->firstname_ar}}')"
                                     data-toggle="modal" data-target="#delartistmodal" title="{{__('Remove')}}">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
@@ -272,8 +272,8 @@
             var startDate = moment(today).add(artiststartafter, 'days').toDate();
             // $('#permit_from').datepicker('setStartDate', startDate);
             var minDate = $('#permit_from').val() ? moment($('#permit_from').val(), 'DD-MM-YYYY').toDate() : startDate;
-            var maxDate = moment(minDate).add(3, 'M').toDate(); 
-            $('#permit_to').datepicker('setEndDate', maxDate );
+            // var maxDate = moment(minDate).add(3, 'M').toDate(); 
+            // $('#permit_to').datepicker('setEndDate', maxDate );
             $('#permit_to').datepicker('setStartDate', minDate);
             // $('#events_div').css('display', 'none');
         });
@@ -298,8 +298,8 @@
         $('#permit_from').on('changeDate', function (selected) {
             $('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
-            var maxDate = moment(minDate).add(3, 'M').toDate();
-            $('#permit_to').datepicker('setEndDate', maxDate);
+            // var maxDate = moment(minDate).add(3, 'M').toDate();
+            // $('#permit_to').datepicker('setEndDate', maxDate);
             $('#permit_to').datepicker('setStartDate', minDate);
         });
         $('#permit_to').on('changeDate', function (ev) {
@@ -331,7 +331,6 @@
             if(from && to && loc && loc_ar) {
                 if(isEvent == 0 || (isEvent == 1 && eventId != ' '))
                 {
-                    console.log('two')
                     $('#add_artist').attr('disabled', false);
                     $('#add_artist_sm').attr('disabled', false);
                     if(artistcount > 0)
@@ -448,11 +447,11 @@
             });
         }
 
-        function delArtist(temp_id, permit_id, fname, lname) {
+        function delArtist(temp_id, permit_id, nameEn, nameAr) {
             $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
-            $('#del_fname').val(fname);
-            $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+            let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+            $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
             $('#warning_text').css('color', '#580000');
         }
 

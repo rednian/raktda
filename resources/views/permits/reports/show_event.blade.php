@@ -49,7 +49,7 @@
                     </tr>
                     </table> --}}
                     <p class="kt-margin-b-0 kt-font-dark"><span
-                            class="kt-font-bold kt-margin-r-5">{{__('Establishment Type')}}
+                            class="kt-font-bold kt-margin-r-5">{{__('Applicant Type')}}
                         </span>: {{__(ucwords($event->firm))}}</p>
                     <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}}
                         </span>: {{getLangId() == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>

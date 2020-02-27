@@ -2,6 +2,8 @@
 
 use App\Library\Smpp;
 use App\User;
+use Illuminate\Support\Facades\Storage;
+use Meneses\LaravelMpdf\Facades\LaravelMpdf as PDF;
 use App\Notifications\AllNotification;
 
 function sms($number, $message = [])
@@ -427,7 +429,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  387);
+        $payment_no = sprintf("%07d",  341);
     } else {
         $last_trn = explode('-',$last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -467,17 +469,17 @@ function paymentNotification($event, $artist, $files, $amount) {
     {
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #'. $artist_permit_number;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('event.index').'#valid'; 
     }else if($event){
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number ;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('event.index').'#valid'; 
     }else { 
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
         $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.$amount.' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
         $url = \URL::signedRoute('artist.index').'#valid';
     }
     $buttonText = "Download Permit";
@@ -495,5 +497,88 @@ function paymentNotification($event, $artist, $files, $amount) {
 
 }
 
+function calculateDateDiff($x, $y) {
+    $from = \Carbon\Carbon::parse($x);
+    $to = \Carbon\Carbon::parse($y);
+    $diffr = $from->diff($to) ;
+    $term = '';
+    $year = $diffr->y;
+    $term .= $year ? $year > 1 ? $year .' '.__('years').' ' : $year .' '.__('year').' ' : '';
+    $month = $diffr->m;
+    $term .= $month ? $month > 1 ? $month .' '.__('months').' ' : $month .' '.__('month').' ' : '';
+    $day = $diffr->d;
+    $term .= $day ? $day > 1  ? $day.' '.__('days') : $day.' '.__('day') : '';
+    return $term;
+}
 
+function diffInDays($x, $y) {
+    $from = \Carbon\Carbon::parse($x);
+    $to = \Carbon\Carbon::parse($y);
+    return $from->diffInDays($to);
+}
+
+
+function storeEventPermitPrint($id)
+{
+    $event_details = \App\Event::with('type', 'country')->where('event_id', $id)->first();
+    $data['event_details'] = $event_details;
+    $event_permit_no = $event_details->permit_number;
+    if($event_details->truck()->exists()){
+        $data['truck'] = \App\EventTruck::where('event_id', $id)->get();
+    }
+    if($event_details->liquor()->exists()){
+        $data['liquor'] = \App\EventLiquor::where('event_id', $id)->first();
+    }
+
+    $directory='permit_downloads/event/'.$id;
+    if (!Storage::has($directory)) {
+        $resp= Storage::makeDirectory($directory);
+    } 
+
+    PDF::loadView('permits.event.print', $data, [], [
+        'title' => 'Event Permit '. $event_permit_no,
+        'default_font_size' => 10
+    ])->save(storage_path('app/'.$directory).'/EventPermit#'. $event_permit_no.'.pdf');
+
+    if($event_details->truck()->where('paid',1)->exists()){
+
+        PDF::loadView('permits.event.truckprint', $data, [], [
+            'title' => 'Truck Permit '. $event_permit_no,
+            'default_font_size' => 10
+        ])->save(storage_path('app/'.$directory).'/TruckPermit#'. $event_permit_no.'.pdf');
+    }
+    if($event_details->liquor()->exists() && $event_details->liquor()->value('paid') == 1){
+        if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
+        {
+
+            PDF::loadView('permits.event.liquorprint', $data, [], [
+                'title' => 'Liquor Permit '. $event_permit_no,
+                'default_font_size' => 10
+            ])->save(storage_path('app/'.$directory).'/LiquorPermit#'. $event_permit_no.'.pdf');
+        }
+    }
+
+    return;
+}
+
+function storeArtistPermitPrint($id)
+{
+    $permit_details = \App\Permit::where('permit_id', $id)->first();
+    $data['permit_details'] = $permit_details;
+    $data['artist_details'] = \App\ArtistPermit::where('permit_id', $id)->get();
+    $data['company_details'] = Auth::user()->company;
+    $artist_permit_no = $permit_details->permit_number;
+
+    $directory='permit_downloads/artist/'.$id;
+    if (!Storage::has($directory)) {
+        $resp= Storage::makeDirectory($directory);
+    } 
+
+    PDF::loadView('permits.artist.permit_print', $data, [], [
+        'title' => 'Artist Permit '. $artist_permit_no,
+        'default_font_size' => 10
+    ])->save(storage_path('app/'.$directory).'/ArtistPermit#'. $artist_permit_no.'.pdf');
+
+    return;
+}
 

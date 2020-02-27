@@ -53,11 +53,10 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                                <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                        {{$permit_details->term}}
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                        {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                                     </span>
                                 </div>
                             </div>

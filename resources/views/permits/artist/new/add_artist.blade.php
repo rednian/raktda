@@ -78,9 +78,8 @@
                                     <div class="col-lg-2">
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control form-control-sm" name="code"
-                                                id="code">
+                                                id="code" placeholder="e.g. 2015" />
                                         </div>
-                                        <span class="form-text text-muted">e.g. 2015</span>
                                     </div>
                                     <div class="col-lg-3">
                                         <span id="changeArtistLabel" class="btn btn--maroon btn-sm d-none"
@@ -95,7 +94,8 @@
                                             <div class="card-title collapsed" data-toggle="collapse"
                                                 data-target="#collapseOne6" aria-expanded="true"
                                                 aria-controls="collapseOne6">
-                                                <h6 class="kt-font-transform-u">{{__('Artist Details')}}
+                                                <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
+                                                    {{__('Artist Details')}}
                                                 </h6>
                                             </div>
                                         </div>
@@ -110,29 +110,27 @@
 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name')}}
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('First Name (EN)')}}
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
                                                                             class="form-control form-control-sm "
-                                                                            name="fname_en" id="fname_en"
-                                                                            placeholder="{{__('First Name')}}"
+                                                                            name="fname_en" id="fname_en" dir="ltr"
                                                                             onkeyup="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Last Name')}}
+                                                                    class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Last Name (EN)')}}
                                                                     <span class="text-danger">*</span></label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
-                                                                        <input type="text"
+                                                                        <input type="text" dir="ltr"
                                                                             class="form-control form-control-sm "
                                                                             name="lname_en" id="lname_en"
-                                                                            placeholder="{{__('Last Name')}}"
                                                                             onkeyup="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
@@ -467,7 +465,8 @@
                                 <div class="card-header" id="headingTwo6">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                                         aria-expanded="false" aria-controls="collapseTwo6">
-                                        <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                                        <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
+                                            {{__('Contact Information')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -551,7 +550,8 @@
                                 <div class="card-header" id="headingTwo7">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                                         aria-expanded="false" aria-controls="collapseTwo7">
-                                        <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                                        <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
+                                            {{__('Address Information')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -693,11 +693,11 @@
                                 <div class="row">
                                     <div class="col-lg-4 col-sm-12">
                                         <label
-                                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                             <span id="cnd_{{$i}}"></span>
                                         </label>
                                         <p for="" class="reqName">
-                                            {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                            {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                                         </p>
                                     </div>
                                     <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
@@ -933,6 +933,8 @@
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 returnType: "json",
                 showFileCounter: false,
                 abortStr: '',
@@ -1031,6 +1033,8 @@
             downloadStr: `<i class="la la-download"></i>`,
             deleteStr: `<i class="la la-trash"></i>`,
             showFileSize: false,
+            uploadStr: `{{__('Upload')}}`,
+            dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
             maxFileSize: 5242880,
             showFileCounter: false,
             abortStr: '',
@@ -1522,9 +1526,13 @@
                 success: function (result) {
                     // console.log(result)
                     $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                     for (let i = 0; i < result.length; i++) {
-                        $('#area').append('<option value="' + result[i].id + '">' + result[i].area_en + '</option>');
+                        let area = $('#getLangid').val() == 1 ? result[i].area_en : result[i].area_ar ;
+                        if(area)
+                        {
+                            $('#area').append('<option value="'+result[i].id+'">'+area+'</option>');
+                        }
                     }
 
                 }
@@ -1576,7 +1584,7 @@
                             backdrop: 'static',
                             keyboard: false,
                             show: true
-                        });
+                        }); 
                         if(data.artist.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="text-danger kt-font-bolder">{{__("Sorry This Artist is blocked ! Please Select a New Artist")}}</div>');
@@ -1685,7 +1693,7 @@
                                 $('#ex_artist_personcode').html(data.person_code);
                                 var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                                 $('#ex_artist_dob').html(dob);
-                                $('#ex_artist_nationality').html(apd.nationality.nationality_en);
+                                $('#ex_artist_nationality').html(getLangId == 1 ? apd.nationality.nationality_en : apd.nationality.nationality_ar);
                                 var gender = apd.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                                 $('#ex_artist_gender').html(gender);
                                 $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');

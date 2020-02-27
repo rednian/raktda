@@ -43,26 +43,26 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Reference No.')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Reference No')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->reference_number}}
                         </p>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Est. Type')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Applicant Type')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{__(ucfirst($event->firm))}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name (EN)')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->owner_name}}
                         </p>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name - Ar')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name (AR)')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->owner_name_ar}}
                     </div>
@@ -71,13 +71,13 @@
                     <div class="col-md-6 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Name')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
-                            {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
+                            {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                         </p>
                     </div>
                     <div class="col-md-6 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Type')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
-                            {{getLangId() == 1 ? $event->type->name_en : $event->type->name_ar}}
+                            {{getLangId() == 1 ? ucfirst($event->type->name_en) : $event->type->name_ar}}
 
                     </div>
                 </div>
@@ -85,11 +85,11 @@
                     <div class="col-md-6 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event SubType')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->subType->sub_name_en !== null ?  getLangId() == 1 ? $event->subType->sub_name_en : $event->subType->sub_name_ar : ''}}
+                            {{!is_null($event->subType->sub_name_en)?  getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar : ''}}
                         </p>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Exp. Audience')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Expected Audience')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->audience_number}}
                     </div>
@@ -110,7 +110,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck ?')}}</label>
                         <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext">
                                 {{$event->truck()->exists() ? 'Yes' : 'No'}}</span>
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor Serving ?')}}</label>
                         <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext ">
                                 {{$event->liquor()->exists() ? 'Yes' : 'No'}}</span>
@@ -207,7 +207,7 @@
                 <td class="kt-font-bolder">{{__('Event Details')}}
                 </td>
                 <td>:</td>
-                <td class="">{{getLangId() == 1 ? $event->description_en : $event->description_ar}}</td>
+                <td class="">{{getLangId() == 1 ? ucfirst($event->description_en) : $event->description_ar}}</td>
             </tr>
             <tr>
                 <td class="kt-font-bolder">{{__('Address')}}
@@ -219,7 +219,7 @@
                 <td class="kt-font-bolder">{{__('Venue')}}
                 </td>
                 <td>:</td>
-                <td class="">{{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</td>
+                <td class="">{{getLangId() == 1 ? ucfirst($event->venue_en) : $event->venue_ar}}</td>
             </tr>
         </tbody>
     </table>
@@ -235,10 +235,10 @@
         <table class="table table-borderless border table-striped">
             <thead class="text-center">
                 <th>#</th>
-                <th>{{__('Establishment Name')}}</th>
-                <th>{{__('Establishment Name (AR)')}}</th>
+                <th>{{__('EST. Name in English')}}</th>
+                <th>{{__('EST. Name in Arabic')}}</th>
                 <th>{{__('Traffic Plate No')}}</th>
-                <th>{{__('Food Services')}}</th>
+                <th>{{__('Types of Provided f & b')}}</th>
                 <th></th>
             </thead>
             <tbody id="food_truck_list">
@@ -278,7 +278,7 @@
     <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
         <div class="row">
             <div class="col-md-4 form-group form-group-xs">
-                <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
+                <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}} <span
                         class="text-danger">*</span></label>
                 <input type="text" class="form-control form-control-sm" name="l_company_name_en" id="l_company_name_en"
                     value="{{$event->liquor->company_name_en}}" autocomplete="off">
@@ -308,10 +308,10 @@
                 </select>
             </div>
             <div class="col-md-4 form-group form-group-xs" id="limited_types">
-                <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
+                <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor Service')}} <span
                         class="text-danger">*</span></label>
                 <textarea type="text" dir="ltr" class="form-control form-control-sm" name="liquor_types"
-                    id="liquor_types" autocomplete="off" value="{{$event->liquor->liquor_types}}"></textarea>
+                    id="liquor_types" autocomplete="off">{{$event->liquor->liquor_types}}</textarea>
             </div>
             <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
         </div>
@@ -330,10 +330,12 @@
     </h5>
     <form id="liquor_upload_form" class="col-md-12">
         <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
+        @include('permits.components.requirements')
         @php
         $i = 1;
         @endphp
         @foreach($liquor_req as $req)
+        @if(is_null($req->type))
         <div class="row">
             <div class="col-lg-4 col-sm-12">
                 <label
@@ -368,6 +370,39 @@
         @php
         $i++;
         @endphp
+        @endif
+        @endforeach
+    </form>
+    <form id="liquor_provided_upload_form" class="col-md-12">
+        @include('permits.components.requirements')
+        @php
+        $j = $i;
+        @endphp
+        @foreach($liquor_req as $req)
+        @if(!is_null($req->type))
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <label
+                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                    <span id="cnd_{{$j}}"></span>
+                </label>
+                <p for="" class="reqName">
+                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                </p>
+            </div>
+            <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$j}}">
+            <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$j}}">
+            <input type="hidden" value="{{$req->type}}" id="liqour_req_type_{{$j}}">
+            <div class="col-lg-4 col-sm-12">
+                <label style="visibility:hidden">hidden</label>
+                <div id="liquoruploader_{{$j}}">{{__('Upload')}}
+                </div>
+            </div>
+        </div>
+        @php
+        $j++;
+        @endphp
+        @endif
         @endforeach
     </form>
 </div>
@@ -377,7 +412,7 @@
 
 <div class="d-flex kt-margin-t-20 justify-content-md-end justify-content-sm-center">
     <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn"
-        value="{{__('submit')}}">
+        value="{{__('Submit')}}">
 </div>
 </div>
 </div>
@@ -568,12 +603,12 @@
         
 
         $('#submit_btn').click(function(){
-            var hasFile = liqourDocValidation();
             var isLiquor = $('#isLiquor').val();
             var type ;
             if(isLiquor) {
                 type =  $("input:radio[name='isLiquorVenue']:checked").val();
             }
+            var hasFile = liqourDocValidation(type);
             if(isLiquor == 1 ? type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form() : 1)
             {
                 if(isLiquor) {
@@ -773,8 +808,8 @@
         }
 
         $('#update_lq').click(function(){
-            var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            var hasFile = liqourDocValidation(type);
             if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
@@ -1001,6 +1036,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1125,10 +1162,13 @@
             }
         })
 
-        function liqourDocValidation(){
+        function liqourDocValidation(type){
             var hasFile = true;
             var hasFileArray = [];
             var reqCount = parseInt($('#liquor_document_count').val());
+            if(type == undefined) {
+                type = 0;
+            }
             // var total = parseInt($('#liquor_additional_doc > div').length);
             if(reqCount > 0)
             {
@@ -1144,6 +1184,10 @@
                         {
                             hasFileArray[d] = false;
                             $('#liquor-upload_'+d).css('border', '2px dotted red');
+                            if($('#liqour_req_type_'+d).val() == 'provided' && type == 0) {
+                                hasFileArray[d] = true;
+                                $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
+                            }
                         } else {
                             hasFileArray[d] = true;
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
@@ -1188,6 +1232,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1279,14 +1325,16 @@
             if(id == 1)
             {
                 $('#liquor_provided_form').show();
+                $('#liquor_provided_upload_form').show();
                 $('#liquor_details_form').hide();
                 $('#liquor_upload_form').hide();
-                $('#liquor_upload_form-div').hide();
+                // $('#liquor_upload_form-div').hide();
             }else if(id == 0) {
                 $('#liquor_provided_form').hide();
+                $('#liquor_provided_upload_form').hide();
                 $('#liquor_details_form').show();
                 $('#liquor_upload_form').show();
-                $('#liquor_upload_form-div').show();
+                // $('#liquor_upload_form-div').show();
             }
         }
 

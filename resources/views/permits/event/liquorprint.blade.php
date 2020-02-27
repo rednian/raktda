@@ -214,7 +214,7 @@
             @if($liquor->liquor_service == 'limited')
             <tr>
                 <td colspan="3">{{$liquor->liquor_types}}</td>
-                <td class="subhead">نوع الكحوليات<br />Liquor Types</td>
+                <td class="subhead">نوع الكحوليات<br />Types of Liquor Service</td>
             </tr>
             @endif
             <tr>

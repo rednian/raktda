@@ -45,7 +45,6 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
-        // $this->storePermitPrint(20);
         if(!$request->hasValidSignature()){
             return abort(401);
         }
@@ -419,6 +418,7 @@ class EventController extends Controller
                 }
 
             }
+            
         // }
             if(isset($request->from) && $request->from == "amend")
             {
@@ -1199,55 +1199,7 @@ class EventController extends Controller
         return view('permits.event.upload', ['event' => $event]);
     }
 
-    public function storePermitPrint($id)
-    {
-        $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
-        $data['event_details'] = $event_details;
-        $event_permit_no = $event_details->permit_number;
-        if($event_details->truck()->exists()){
-            $data['truck'] = EventTruck::where('event_id', $id)->get();
-        }
-        if($event_details->liquor()->exists()){
-            $data['liquor'] = EventLiquor::where('event_id', $id)->first();
-        }
-    
-        $directory='permit_downloads/'.$id;
-        if (!Storage::has($directory)) {
-            $resp= Storage::makeDirectory($directory);
-        } 
 
-        //  $directory='permit_downloads/'.$id;
-        // if (\File::isDirectory($directory)) {
-        //    echo "already exist";
-        // } else{
-        //     $result = \File::makeDirectory($directory, 0775, true);
-        // }
-
-        PDF::loadView('permits.event.print', $data, [], [
-            'title' => 'Event Permit '. $event_permit_no,
-            'default_font_size' => 10
-        ])->save(storage_path('app/'.$directory).'/EventPermit#'. $event_permit_no.'.pdf');
-
-        if($event_details->truck()->where('paid',1)->exists()){
-
-            PDF::loadView('permits.event.truckprint', $data, [], [
-                'title' => 'Truck Permit '. $event_permit_no,
-                'default_font_size' => 10
-            ])->save(storage_path('app/'.$directory).'/TruckPermit#'. $event_permit_no.'.pdf');
-        }
-        if($event_details->liquor()->exists() && $event_details->liquor()->value('paid') == 1){
-            if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
-            {
-
-                PDF::loadView('permits.event.liquorprint', $data, [], [
-                    'title' => 'Liquor Permit '. $event_permit_no,
-                    'default_font_size' => 10
-                ])->save(storage_path('app/'.$directory).'/LiquorPermit#'. $event_permit_no.'.pdf');
-            }
-        }
-
-        return;
-    }
 
     public function download(Request $request , $id)
     {
@@ -2095,7 +2047,7 @@ class EventController extends Controller
         }
 
         if (session($userid . '_event_pic_file')) {
-            $ext = $userid . '_event_ext';
+            $ext = session($userid . '_event_ext');
             $check_path =   $userid . '/event/' .  $event_id . '/photos';
             $file_count = count(Storage::files('public/' .$check_path));
             if ($file_count == 0) {
@@ -2326,12 +2278,6 @@ class EventController extends Controller
             }
         }
 
-        if($paidArtistFee)
-        {
-            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." and ".$artistpermitnumber." AED ". $amount ." is successfully completed. You can download the permit from the app.";
-        } else {
-            $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." AED ". $amount ." is successfully completed. You can download the permit from the app.";
-        }
 
         DB::commit();
 
@@ -2339,10 +2285,11 @@ class EventController extends Controller
 
         if ($trnx_id)
         {
+        
             $event = Event::where('event_id', $event_id)->first();
             $files = array();
-            $this->storePermitPrint($event_id);
-            $directory='permit_downloads/'.$event_id;
+            storeEventPermitPrint($event_id);
+            $directory='permit_downloads/event/'.$event_id;
             $eventPrint = storage_path('app/'.$directory).'/EventPermit#'. $event_permit_number.'.pdf';
             $transaction = Transaction::where('created_by', Auth::user()->user_id)->latest()->first();
             $data['transaction'] = $transaction;
@@ -2365,10 +2312,28 @@ class EventController extends Controller
             {
                 array_push($files,$liquor_file_path); //  adding the file path to the files array
             }     
+
+            if($paidArtistFee)
+            {
+                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." and ".$artistpermitnumber." AED ". number_format($amount,2) ." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid";
+                storeArtistPermitPrint($permit_id);
+                $adirectory='permit_downloads/artist/'.$permit_id;
+                $artistPrint = storage_path('app/'.$adirectory).'/ArtistPermit#'. $artistpermitnumber.'.pdf';
+            } else {
+                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." AED ". number_format($amount,2) ." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid";
+            }
+
+
             paymentNotification($event, $paidArtistFee ? $permitArray : '', $files, $amount);
             sendSms(Auth::user()->number, $message); //  send sms to the number
 
-            Storage::deleteDirectory('permit_downloads/'.$event_id);
+            if($paidArtistFee)
+            {
+                Storage::deleteDirectory('permit_downloads/artist/'.$permit_id);
+            }else {
+                Storage::deleteDirectory('permit_downloads/event/'.$event_id);
+            }
+
         }
 
         /*end code for code for payment notification */
@@ -2684,7 +2649,7 @@ class EventController extends Controller
 
     public function get_uploaded_logo($id)
     {
-        return Event::where('event_id', $id)->value('logo_thumbnail');
+        return Event::where('event_id', $id)->value('logo_original');
     }
 
     public function deleteUploadFile(Request $request)

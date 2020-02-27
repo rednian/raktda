@@ -94,7 +94,7 @@
         </div>
     </div>
     <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
-    <div class="kt-portlet__body">
+    <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-container">
             <section class="row">
                 <div class="col-md-7">
@@ -112,7 +112,7 @@
                     </tr>
                     </table> --}}
                     <p class="kt-margin-b-0 kt-font-dark"><span
-                            class="kt-font-bold kt-margin-r-5">{{__('Establishment Type')}}
+                            class="kt-font-bold kt-margin-r-5">{{__('Applicant Type')}}
                         </span>: {{__(ucwords($event->firm))}}</p>
                     <p class="kt-margin-b-0 kt-font-dark"><span class="kt-font-bold kt-margin-r-5">{{__('Event Name')}}
                         </span>: {{getLangId() == 1 ?  ucfirst($event->name_en) : $event->name_ar }}</p>
@@ -248,7 +248,7 @@
                                     <td class="kt-font-dark">{{ $event->created_at->format('d-F-Y') }}</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ __('Reference No.') }} :</td>
+                                    <td>{{ __('Reference No') }} :</td>
                                     <td class="kt-font-dark"><code
                                             style="font-size:;">{{ $event->reference_number }}</code></td>
                                 </tr>
@@ -446,7 +446,7 @@
                                 {{$reqd->expired_date->year > 1 ? date('d-m-Y', strtotime($reqd->expired_date)) : ''}}
                             </td>
                             <td class="text-center">
-                                <a href="{{asset('storage')}}{{'/'.$reqd->pivot['path']}}" target="blank" ">
+                                <a href="{{asset('storage')}}{{'/'.$reqd->path}}" target="blank" ">
                                     <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
                                     </button></a>
                             </td>

@@ -18,6 +18,7 @@
     @if (Auth::check())
     @if (Auth::user()->LanguageId == 1)
     <link href="{{ asset('/css/custom-vendor.css') }}" rel="stylesheet" type="text/css" />
+
     @else
     <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.rtl.min.css') }}" rel="stylesheet"
         type="text/css" />
@@ -56,6 +57,11 @@
     <style type="text/css">
         #kt_aside {
             box-shadow: 4px 0 5px 4px #888 !important;
+        }
+
+        * :not(button) {
+            font-weight: 500;
+            font-size: 18px !important;
         }
     </style>
     @endif

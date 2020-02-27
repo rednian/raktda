@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 {{__('Changes you made may not be saved')}}
-                <input type="submit" value="Dont Save" onclick="go_back_confirm_function()"
+                <input type="submit" value="{{__('Dont Save')}}" onclick="go_back_confirm_function()"
                     class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
             </div>
         </div>

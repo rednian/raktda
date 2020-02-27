@@ -14,10 +14,13 @@
     --gray-light: #edeef4;
 }
 
-button, input, optgroup, select, textarea {
+button,
+input,
+optgroup,
+select,
+textarea {
     font-family: sans-serif;
 }
-
 
 /*sidebar*/
 .kt-aside,
@@ -828,4 +831,8 @@ img.ajax-file-upload-preview {
 
 .ht-20 {
     height: 20px !important;
+}
+
+.kt-wizard-v3__nav-label {
+    text-align: center !important;
 }

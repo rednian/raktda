@@ -128,7 +128,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                         <div class="form-group form-group-sm row">
                                             <label for="description_en"
                                                 class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Event Details')}} <span class="text-danger">*</span></label>
+                                                {{__('Event Details (EN)')}} <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <textarea type="text" class="form-control form-control-sm"
@@ -165,8 +165,8 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                         {{__('No')}}
                                                         <span></span>
                                                     </label>
-                                                    <i class="fa fa-edit fa-2x pull-right" id="truckEditBtn"
-                                                        onclick="editTruck()"></i>
+                                                    <i class="fa fa-edit fa-2x {{getLangId() == 1 ? 'pull-right' : 'pull-left'}}"
+                                                        id="truckEditBtn" onclick="editTruck()"></i>
                                                 </div>
                                                 <input type="hidden" id="prev_val_isTruck"
                                                     value="{{isset($event) ? $event->is_truck == '1' ? '1': '0' : '0'}}">
@@ -180,7 +180,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label for="owner_name"
-                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Owner Name')}}
+                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
                                                 <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -209,7 +209,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label for="name_en"
-                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Event Name')}}
+                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Event Name (EN)')}}
                                                 <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -251,7 +251,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Liquor')}} ?</label>
+                                                {{__('Liquor Serving ?')}}</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio">
@@ -270,8 +270,8 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                         {{__('No')}}
                                                         <span></span>
                                                     </label>
-                                                    <i class="fa fa-edit fa-2x pull-right" id="liquorEditBtn"
-                                                        onclick="editLiquor()"></i>
+                                                    <i class="fa fa-edit fa-2x {{getLangId() == 1 ? 'pull-right' : 'pull-left'}}"
+                                                        id="liquorEditBtn" onclick="editLiquor()"></i>
                                                 </div>
                                                 <input type="hidden" id="prev_val_isLiquor"
                                                     value="{{isset($event) ? $event->is_liquor : 0}}">
@@ -415,7 +415,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                     <div class="col-md-5 form-group form-group-xs ">
                         <label for="venue_en" class=" col-form-label kt-font-bold text-right">
-                            {{__('Venue')}} <span class="text-danger">*</span></label>
+                            {{__('Venue (EN)')}} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control form-control-sm" name="venue_en" dir="ltr" id="venue_en"
                             maxlength="255" value="{{isset($event) ? $event->venue_en : ''}}" {{$isReadOnly}}>
 
@@ -452,8 +452,8 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                             <span class="text-danger">*</span>
                         </label>
                         <input type="text" class="form-control form-control-sm map-input" name="address"
-                            id="address-input" dir="ltr" maxlength="255"
-                            value="{{isset($event) ? $event->address : ''}}" {{$isReadOnly}}>
+                            id="address-input" maxlength="255" value="{{isset($event) ? $event->address : ''}}"
+                            {{$isReadOnly}}>
                     </div>
 
                     <div class="col-md-4 form-group form-group-xs ">
@@ -510,7 +510,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
             var diff = dayCount(iss, exp) + 1;
             var exp_date = moment(iss, 'DD-MM-YYYY').format();
             $('#expired_date').datepicker('setStartDate', exp_date);
-            $('#date_duration').val(diff + (diff > 1 ? ' days' : ' day'));
+            $('#date_duration').val(diff + (diff > 1 ? " {!! __('days')!!}" : " {!! __('days')!!}"));
         }
     }
 </script>

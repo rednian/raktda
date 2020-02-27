@@ -32,8 +32,8 @@
                             <select name="made_from" id="made_from"
                                 class="form-control-sm form-control custom-select custom-select-sm" onchange="t.draw()">
                                 <option value=' '>{{__('From')}}</option>
-                                <option value='artist'>{{__('Artist')}}</option>
-                                <option value='event'>{{__('Event')}}</option>
+                                <option value='artist'>{{__('Artist Permit')}}</option>
+                                <option value='event'>{{__('Event Permit')}}</option>
                             </select>
                         </div>
                     </div>
@@ -95,7 +95,6 @@
                 <th>{{__('Total')}}(AED)</th>
                 <th>{{__('From')}}</th>
                 <th>{{__('Date')}}</th>
-
                 <th>{{__('View')}}</th>
                 {{-- <th class="text-center">{{__('Action')}}</th> --}}
             </tr>
@@ -163,7 +162,7 @@
             ],
             language: {
                 emptyTable: "{{__('No Transactions')}}",
-                searchPlaceholder: "{{__('Search')}}"
+                searchPlaceholder: "{{__('Search')}}",
             },
             buttons: [
                 {
