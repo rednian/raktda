@@ -11,7 +11,7 @@
 <div class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
   <div class="kt-portlet__head kt-portlet__head--sm">
       <div class="kt-portlet__head-label">
-          <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('ESTABLISHMENT DETAILS') }} </h3>
+          <h3 class="kt-portlet__head-title kt-font-dark">{{ucfirst(Auth::user()->LanguageId == 1 ? $company->name_en : $company->name_ar )}} - {{ __('PROFILE') }} </h3>
       </div>
       <div class="kt-portlet__head-toolbar">
           <a href="{{ URL::signedRoute('admin.company.index') }}#active-company" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
@@ -51,14 +51,14 @@
               </div>
             </div>
             <div class="form-group form-group-xs row">
-              <label class="col-4 col-form-label">{{__('Establishment Email')}} :</label>
+              <label class="col-4 col-form-label">{{__('Email Address')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->company_email}}</span>
               </div>
             </div>
 
             <div class="form-group form-group-xs row">
-              <label class="col-4 col-form-label">{{__('Trade License Number')}} :</label>
+              <label class="col-4 col-form-label">{{__('Business License Number')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license}}</span>
               </div>
@@ -70,7 +70,7 @@
 {{--              </div>--}}
 {{--            </div>--}}
             <div class="form-group form-group-xs row">
-              <label class="col-4 col-form-label">{{__('Trade License Expiry Date')}} :</label>
+              <label class="col-4 col-form-label">{{__('Business License Expiry Date')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $company->trade_license_expired_date->format('d-F-Y')}}</span>
               </div>
@@ -149,7 +149,7 @@
               <i class="flaticon-event-calendar-symbol"></i>
             </div>
             <div class="kt-widget__details">
-              <span class="kt-widget__title">{{__('ACTIVE EVENT PERMIT')}}</span>
+              <span class="kt-widget__title">{{__('ACTIVE EVENT PERMITS')}}</span>
               <span class="kt-widget__value">{{$company->event()->where('status', 'active')->count() }}</span>
             </div>
           </div>
@@ -158,7 +158,7 @@
               <i class="flaticon-file-2"></i>
             </div>
             <div class="kt-widget__details">
-              <span class="kt-widget__title">{{__('ACTIVE ARTIST PERMIT')}}</span>
+              <span class="kt-widget__title">{{__('ACTIVE ARTIST PERMITS')}}</span>
               <span class="kt-widget__value">{{$company->permit()->where('permit_status', 'active')->count()}}</span>
             </div>
           </div>
@@ -187,18 +187,18 @@
               </li>
               <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#artist-permit-tab" role="tab">
-                      {{__('ARTIST PERMIT')}}
+                      {{__('ARTIST PERMITS')}}
                     <span class="kt-badge kt-badge--outline kt-badge--info">{{$company->permit()->count()}}</span>
                   </a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#artist-tab" role="tab">
-                      {{__('ARTIST LIST')}}
+                      {{__('ARTISTS LIST')}}
                   </a>
               </li>
               <li class="nav-item">
                   <a class="nav-link" data-toggle="tab" href="#requirement-tab" role="tab">
-                      {{__('UPLOADED DOCUMENTS')}}
+                      {{__('ESTABLISHMENT ATTACHMENTS')}}
                   </a>
               </li>
 
@@ -286,7 +286,7 @@
                               <th>{{__('PERMIT NO.')}}</th>
                               <th>{{__('EVENT DURATION')}}</th>
                               <th>{{__('APPLICATION TYPE')}}</th>
-                              <th>{{__('STATUS')}}</th>
+                              <th>{{__('EVENT STATUS')}}</th>
                               <th>{{__('VENUE')}}</th>
                               <th>{{__('LOCATION')}}</th>
                               <th>{{__('START DATE')}}</th>
@@ -343,7 +343,7 @@
                     <thead>
                       <tr>
                           {{-- <th>#</th> --}}
-                          <th>{{__('REQUIREMENT NAME')}}</th>
+                          <th>{{__('DOCUMENT NAME')}}</th>
                           {{-- <th>{{__('ISSUED DATE')}}</th>
                           <th>{{__('EXPIRY DATE')}}</th> --}}
                       </tr>

@@ -421,7 +421,7 @@
 
             var status = $('select#archive-permit-status').val();
             d.request_type = $('select#archive-request-type').val();
-            d.status = status != null ? [status] : ['rejected', 'expired', 'unprocessed', 'cancelled'];
+            d.status = status != null ? [status] : ['rejected', 'expired', 'cancelled', 'cancelled'];
             d.date = $('#archive-applied-date').val()  ? selected_date : null;
            }
          },
@@ -433,10 +433,10 @@
          columns: [
            {data: 'reference_number'},
            {data: 'company_name'},
-           {data: 'applied_date'},
+           {data: 'location'},
            {data: 'duration'},
            {data: 'artist_number'},
-           {data: 'request_type'},
+        //    {data: 'request_type'},
            {data: 'permit_status'},
          ],
 
@@ -511,7 +511,7 @@
                {data: 'approved_date'},
                {data: 'duration'},
                {data: 'artist_number'},
-               {data: 'request_type'},
+            //    {data: 'request_type'},
                {data: 'location'}
             ],
 
@@ -533,7 +533,6 @@
         var search = $.fn.dataTable.util.throttle(function(v){ activePermit.search(v).draw(); }, 500);
         $('input#search-active-request').keyup(function(){ search($(this).val()); });
     }
-
 
     function processingTable() {
         var start = moment().subtract(29, 'days');
@@ -663,7 +662,7 @@
            {data: 'updated_at'},
            {data: 'duration'},
            {data: 'permit_status'},
-           {data: 'term'},
+        //    {data: 'term'},
            {data: 'request_type'},
            {data: 'location'},
            {data: 'has_event'},
@@ -742,7 +741,7 @@
            {data: 'company_name'},
            {data: 'artist_number'},
            {data: 'applied_date'},
-           {data: 'term'},
+        //    {data: 'term'},
            {data: 'duration'},
            {data: 'request_type'},
            {data: 'location'},

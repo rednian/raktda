@@ -18,7 +18,7 @@
                  {{ __('BACK') }}
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-            @if (in_array($event->status, ['active', 'expired']) && !is_null($event->approved_by))
+            @if (in_array($event->status, ['active', 'expired', 'cancelled']) && !is_null($event->approved_by))
                 {{-- <div class="dropdown-divider"></div> --}}
                 <a target="_blank" class="btn btn-warning kt-font-transform-u btn-sm kt-margin-l-5"
                 href="{{ URL::signedRoute('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download Permit') }}</a>
@@ -94,7 +94,7 @@
           <table class="table table-hover table-bordered table-striped">
             <thead>
               <tr>
-                <th>{{ __('Checked By') }}</th>
+                <th>{{ __('Name') }}</th>
                 <th>{{ __('Checked Date') }}</th>
                 <th>{{ __('Remarks') }}</th>
                 <th class="text-right">{{ __('Action') }}</th>
@@ -482,7 +482,7 @@
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x nav-tabs-line-right" role="tablist" id="tabDetails">
           <li class="nav-item">
             <a class="nav-link active kt-font-transform-u" data-toggle="tab" href="#event-tab" role="tab">
-              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT REQUIREMENTS') }}
+              <i class="fa fa-calendar-check-o" aria-hidden="true"></i>{{ __('EVENT ATTACHMENT') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
             </a>
           </li>
@@ -512,14 +512,14 @@
           @endif
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('IMAGES') }}
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('EVENT IMAGES') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
             </a>
           </li>
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
-              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('CHECKED HISTORY') }}
+              <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('ACTION HISTORY') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->comment()->where('action', '!=', 'pending')->count()}}</span>
             </a>
           </li>

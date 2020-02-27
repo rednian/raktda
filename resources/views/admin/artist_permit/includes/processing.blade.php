@@ -59,7 +59,7 @@
 	 <tr>
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
-			<th>{{ __('DURATION') }}</th>
+			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
 				 <span data-content="The number of artist that already checked"
 							 data-original-title="" data-container="body" data-toggle="kt-popover"
@@ -67,7 +67,7 @@
 							</span>
 			</th>
 			<th>{{ __('CHECKED DATE') }}</th>
-			<th>{{ __('LAST CHECKED STATUS') }}</th>
+			<th>{{ __('APPLICATION STATUS') }}</th>
 
 	 </tr>
 	 </thead>

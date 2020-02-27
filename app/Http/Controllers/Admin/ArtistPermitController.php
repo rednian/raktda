@@ -81,7 +81,9 @@ class ArtistPermitController extends Controller
 
         $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
             'title' => 'Artist Permit',
-            'default_font_size' => 10
+            'default_font_size' => 10,
+            'show_watermark'=> in_array($permit->permit_status , ['cancelled', 'expired']) ? true : false,
+            'watermark'      => ucfirst($permit->permit_status),
         ]);
         return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
@@ -686,14 +688,14 @@ class ArtistPermitController extends Controller
 
 
                     $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">';
-                    $html .=  __('Documents');
-                    $html .=  '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+                    $html .=  __('ATTACHMENTS');
+                    $html .=  ' <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
                     $html .=  ($artist_permit->artistPermitDocument()->count()+1);
                     $html .=  '</span>';
                     $html .= '</button>';
                     $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">';
-                    $html .= __('Comments');
-                    $html .= '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+                    $html .= __('REMARKS');
+                    $html .= ' <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
                     $html .= $artist_permit->comments()->count();
                     $html .= '</span>';
                     $html .= '</button>';

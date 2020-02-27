@@ -23,13 +23,13 @@
                         </div>
                 </div>
             </div>
-            <div class="col-3">
+            {{-- <div class="col-3">
                 <select name="" id="pending-permit-term" class="form-control-sm form-control custom-select custom-select-sm " onchange="pendingPermit.draw()" >
                     <option selected disabled>{{ __('PERMIT TERM') }}</option>
 					<option value="short">{{ __('Short Term') }} (Less than 30 Days Permit)</option>
 					<option value="long">{{ __('Long Term') }} (More than 30 Days Permit)</option>
                 </select>
-            </div>
+            </div> --}}
             {{-- <div class="col-3">
                 <select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="artistPermit.draw()">
                     <option disabled selected>PERMIT STATUS</option>
@@ -67,8 +67,8 @@
         </th>
         <th>{{ __('SUBMITTED DATE') }}</th>
         <th>{{ __('PERMIT DURATION') }}</th>
-        <th>{{ __('STATUS') }}</th>
-        <th>{{ __('PERMIT TERM') }}</th>
+        <th>{{ __('APPLICATION STATUS') }}</th>
+        {{-- <th>{{ __('PERMIT TERM') }}</th> --}}
         <th>{{ __('REQUEST TYPE') }}</th>
         <th>{{ __('WORK LOCATION') }}</th>
         <th>{{ __('CONNECTED TO AN EVENT') }}</th>

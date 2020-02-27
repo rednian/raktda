@@ -105,7 +105,7 @@
                      <div class="col-sm-6">
                       <section class="row">
                         <div class="col-md-6">
-                          <label class="kt-font-dark">{{ __('Trade License Number') }}</label>
+                          <label class="kt-font-dark">{{ __('Business License Number') }}</label>
                            <div class="input-group input-group-sm">
                             <input value="{{ ucfirst($company->trade_license) }}" name="event_type" readonly="readonly" type="text"
                                          class="form-control">
@@ -120,7 +120,7 @@
                            </div>
                         </div>
                         <div class="col-md-6">
-                           <label class="kt-font-dark">{{ __('Trade License Expiry Date') }}</label>
+                           <label class="kt-font-dark">{{ __('Business License Expiry Date') }}</label>
                            <div class="input-group input-group-sm">
                             <input value="{{ date('d-F-Y', strtotime($company->trade_license_expired_date)) }}" name="name_ar" readonly="readonly" type="text"
                                          class="form-control">
@@ -155,7 +155,7 @@
                               </div>
                         </div>
                         <div class="col-md-6">
-                           <label class="kt-font-dark">{{ __('Establishment Email') }} </label>
+                           <label class="kt-font-dark">{{ __('Email Address') }} </label>
                            <div class="input-group input-group-sm">
                                <input value="{{ $company->company_email }}" name="name_ar" readonly="readonly" type="text"
                                             class="form-control">
@@ -294,7 +294,7 @@
          <div class="card">
             <div class="card-header" id="heading-requirement">
                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('UPLOADED DOCUMENTS') }}</h6>
+                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('ESTALISHMENT ATTACHMENTS') }}</h6>
                </div>
              </div>
              <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
@@ -302,7 +302,7 @@
                   <table class="table table-borderless table-striped table-hover border" id="requirement-table">
                      <thead>
                         <tr>
-                           <th>{{__('REQUIREMENT NAME')}}</th>
+                           <th>{{__('DOCUMENT NAME')}}</th>
                            <th>{{__('NO. OF FILES')}}</th>
                            {{-- <th>{{__('ISSUED DATE')}}</th>
                            <th>{{__('EXPIRY DATE')}}</th> --}}
@@ -323,7 +323,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_2_tab_content" role="tab">
-                {{__('CHECKED HISTORY')}}
+                {{__('ACTION HISTORY')}}
                 <span class="kt-badge kt-badge--outline kt-badge--info">{{ $company->comment()->count() }}</span>
               </a>
             </li>
@@ -346,11 +346,11 @@
                  <div class="form-group">
                     <div class="kt-radio-inline">
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="active" type="radio" name="status"> {{ __('Approve Registration') }}
+                          <input value="active" type="radio" name="status"> {{ __('Approve Application') }}
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="back" type="radio" name="status"> {{ __('Bounce Back for Amendments') }}
+                          <input value="back" type="radio" name="status"> {{ __('Bounce Back Application for Amendments') }}
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
@@ -370,7 +370,7 @@
                   <tr>
                     <th>{{__('NAME')}}</th>
                     <th>{{__('REMARKS')}}</th>
-                    <th>{{__('ACTION')}}</th>
+                    <th>{{__('ACTION TAKEN')}}</th>
                     <th>{{__('CHECKED DATE')}}</th>
                   </tr>
                 </thead>

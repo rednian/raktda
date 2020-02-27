@@ -1,9 +1,13 @@
 @extends('layouts.admin.admin-app')
 @section('content')
+@php
+$artistpermit = $artist->artistpermit()->latest()->first();
+$language = Auth::user()->LanguageId;
+@endphp
 <section class="kt-portlet kt-portlet--head-sm">
   <div class="kt-portlet__head kt-portlet__head--sm kt-padding-l-15 kt-padding-r-15">
     <div class="kt-portlet__head-label">
-      <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark">{{ __('ARTIST DETAILS') }}</span>
+      <h3 class="kt-portlet__head-title kt-font-transform-u"><span class="text-dark"> {{ $artistpermit->name }} - {{ __('Profile') }}</span>
       </h3>
     </div>
     <div class="kt-portlet__head-toolbar">
@@ -15,10 +19,7 @@
   </div>
   <div class="kt-portlet__body kt-padding-15 kt-font-dark">
     <section class="row">
-      @php
-      $artistpermit = $artist->artistpermit()->latest()->first();
-      $language = Auth::user()->LanguageId;
-      @endphp
+
       <div class="col-md-4 kt-padding">
         <div class="kt-widget kt-widget--user-profile-4 border">
           <div class="kt-widget__head">
@@ -52,7 +53,7 @@
             </div>
           </div>
           <div class="kt-widget__body kt-padding-l-5 kt-padding-r-5">
-            <h6 class="kt-font-dark kt-font-bold ">{{__('Artist Details')}}</h6>
+            <h6 class="kt-font-dark kt-font-bold kt-font-transform-u ">{{__('ARTIST DETAILS')}}</h6>
             <hr class="kt-margin-b-5  kt-margin-t-0">
             <span>{{ __('Person Code') }} : {{$artist->person_code }}</span><br>
             <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
@@ -70,14 +71,14 @@
             <span>{{ __('Passport Expiry Date') }} :
               {{$artistpermit->passport_expire_date ? $artistpermit->passport_expire_date->format('d-F-Y') : '-' }}</span><br>
 
-            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Contact Information')}}</h6>
+            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('CONTACT INFORMATION')}}</h6>
             <hr class="kt-margin-b-5  kt-margin-t-0">
             <span>{{ __('Email') }} : {{$artistpermit->email }}</span><br>
             <span>{{ __('Mobile Number') }} : {{$artistpermit->mobile_number }}</span><br>
             <span>{{ __('Phone Number') }} : {{$artistpermit->phone_number }}</span><br>
             <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br>
 
-            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Address Details')}}</h6>
+            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('ADDRESS DETAILS')}}</h6>
             <hr class="kt-margin-b-5  kt-margin-t-0">
             @php
             $address = $language == 1 ? ucfirst($artistpermit->address_en) : $artistpermit->address_ar;
@@ -86,7 +87,7 @@
             $country = $language == 1 ? ucfirst($artistpermit->country->name_en) : $artistpermit->country->name_ar;
             @endphp
             <span>{{$address.' '.$area.' '.$emirate.' '.$country}}</span><br>
-            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('Sponsor Details')}}</h6>
+            <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('SPONSOR DETAIL')}}</h6>
             <hr class="kt-margin-b-5  kt-margin-t-0">
             <span>{{ __('Name') }} : {{ucwords($artistpermit->sponsor_name_en) }}</span><br>
           </div>
@@ -152,7 +153,7 @@
                   @csrf
                   <div class="form-group row form-group-sm">
                     <div class="col-md-6">
-                      <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
+                      <label for="">{{ __('Remarks (EN)') }} <span class="text-danger">*</span></label>
                       <textarea required="" name="remarks" maxlength="255" class="form-control form-control-sm" rows="3"
                         autocomplete="off"></textarea>
                     </div>
@@ -187,7 +188,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_tabs_6_3" role="tab"
-                  aria-selected="false">{{ __('STATUS HISTORY') }}</a>
+                  aria-selected="false">{{ __('ACTION HISTORY') }}</a>
               </li>
             </ul>
             <div class="tab-content">
@@ -201,8 +202,8 @@
                       <th>{{ __('ESTABLISHMENT NAME') }}</th>
                       <th>{{ __('PERMIT STATUS') }}</th>
                       <th>{{ __('PERMIT NO.') }}</th>
-                      <th>{{ __('ISSUED DATE') }}</th>
-                      <th>{{ __('EXPIRED DATE') }}</th>
+                      <th>{{ __('PERMIT START DATE') }}</th>
+                      <th>{{ __('PERMIT END DATE') }}</th>
                     </tr>
                   </thead>
                 </table>
@@ -214,7 +215,7 @@
                     <tr>
                       <th>{{ __('NAME') }}</th>
                       <th>{{ __('REMARKS') }}</th>
-                      <th>{{ __('DATE ADDED') }}</th>
+                      <th>{{ __('DATE') }}</th>
                       <th>{{ __('ACTION TAKEN') }}</th>
                     </tr>
                   </thead>
@@ -225,13 +226,6 @@
         </section>
       </div>
     </section>
-
-
-
-
-
-
-
   </div>
 </section>
 {{-- @include('admin.artist.include.artist-block-modal') --}}
@@ -243,7 +237,6 @@
 
   var is_checked = false;
     $(document).ready(function () {
-
 
         permitHistory();
         statusHistory();
@@ -312,7 +305,7 @@
           {render: function(){ return null; }},
           {
             render: function(type, row, full, meta){
-                return '<button class="btn btn-secondary btn-sm btn-document">{{ __('Documents') }}</button>';
+                return '<button class="btn btn-secondary btn-sm btn-document">{{ __('ATTACHMENTS') }}</button>';
             }
           },
             {data: 'reference_number'},

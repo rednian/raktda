@@ -17,7 +17,7 @@
 							 </button>
 							 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 									<a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
-                  {{ __('Establishment Details') }}
+                  {{ __('ESTABLISHMENT PROFILE') }}
                 </a>
 							 </div>
 						</div>
@@ -60,14 +60,14 @@
                       </span>
                     </div>
                   </div>
-                  <div class="kt-widget__item">
+                  {{-- <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Term')}}</span>
                     <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
                       <span class="kt-widget__stat kt-padding-l-0">
                      {{ __(ucfirst($permit->term).' Term') }}
                       </span>
                     </div>
-                  </div>
+                  </div> --}}
                 </div>
                       <section class="kt-section kt-margin-t-5">
                          <div class="kt-section__desc">
@@ -196,13 +196,13 @@
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#artist-list" role="tab">
-                  {{__('ARTIST LIST')}}
+                  {{__('ARTISTS LIST')}}
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->artistPermit()->count()}}</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#approver-tab" role="tab">
-                  {{__('CHECKED HISTORY')}}
+                  {{__('ACTION HISTORY')}}
                   {{-- <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->comment()->o}}</span> --}}
                 </a>
               </li>
@@ -239,7 +239,7 @@
                          <th>{{ __('AGE') }}</th>
                          <th>{{ __('PROFESSION') }}</th>
                          <th>{{ __('NATIONALITY') }}</th>
-                         <th>{{ __('STATUS') }}</th>
+                         <th>{{ __('CHECKED STATUS') }}</th>
                          <th>{{ __('ACTION') }}</th>
                       </tr>
                       </thead>
@@ -250,10 +250,10 @@
                 <table class=" border table-striped table table-borderless table-hover table-sm" id="permit-comment-table">
                   <thead>
                     <tr>
-                      <th>{{ __('CHECKED BY') }}</th>
+                      <th>{{ __('NAME') }}</th>
                       <th>{{ __('REMARKS') }}</th>
-                      <th>{{ __('CHECKED DATE') }}</th>
                       <th>{{ __('ACTION TAKEN') }}</th>
+                      <th>{{ __('CHECKED DATE') }}</th>
                     </tr>
                   </thead>
                 </table>

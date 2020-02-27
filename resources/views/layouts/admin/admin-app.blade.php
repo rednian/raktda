@@ -36,6 +36,9 @@
     <link href="{{ asset('/css/mandatory-arabic.css') }}" rel="stylesheet" type="text/css" />
     <style type="text/css">
       #kt_aside{ box-shadow: 4px 0 5px 4px #888 !important; }
+      .dataTable th, .dataTable td{
+        width: 100% !important;
+    }
     </style>
   @endif
   <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />

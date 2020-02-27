@@ -196,7 +196,7 @@
 							<div class="dropdown" data-ktwizard-type="action-submit">
 								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									{{ __('Take Action ') }}
+									{{ __('Select Action ') }}
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
 									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">{{ __('Approve Artist') }}</button>

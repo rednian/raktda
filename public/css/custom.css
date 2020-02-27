@@ -130,7 +130,7 @@ button, input, optgroup, select, textarea {
 
 /*text*/
 .text-danger {
-  color: var(---danger) !important;
+  /* color: var(---danger) !important; */
 }
 .text-underline{
   text-decoration: underline;
@@ -234,9 +234,7 @@ button, input, optgroup, select, textarea {
   cursor: pointer;
 }
 
-.dataTable > thead > tr th, .dataTable > tbody > tr > td{
-    width: 100% !important;
-}
+
 
 /*table*/
 /*---------------table-----------------------*/

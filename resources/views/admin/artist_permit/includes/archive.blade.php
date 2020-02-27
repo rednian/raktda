@@ -22,20 +22,20 @@
 				  		</div>
 				</div>
 			</div> --}}
-			<div class="col-3">
+		{{-- 	<div class="col-3">
 				<select name="" id="archive-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="archivePermit.draw()" >
 					<option selected disabled >{{ __('REQUEST TYPE') }}</option>
 					<option value="new">{{ __('New Application') }}</option>
 					<option value="amend">{{ __('Amend Application') }}</option>
 					<option value="renew">{{ __('Renew Application') }}</option>
 				</select>
-			</div>
+			</div> --}}
 			<div class="col-3">
 				<select  name="" id="archive-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="archivePermit.draw()">
 					<option disabled selected>{{ __('PERMIT STATUS') }}</option>
 					<option value="expired">{{ __('Expired') }}</option>
 					<option value="rejected">{{ __('Rejected') }}</option>
-					<option value="unprocessed">{{ __('Unprocessed') }}</option>
+					<option value="cancelled">{{ __('Cancelled') }}</option>
 				</select>
 			</div>
 			<div class="col-2">
@@ -59,7 +59,7 @@
 	 <tr>
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
-			<th>{{ __('APPLIED DATE') }}</th>
+			<th>{{ __('WORK LOCATION') }}</th>
 			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
 				 <span data-content="The number of artist that already checked"
@@ -67,7 +67,7 @@
 							 data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
 							</span>
 			</th>
-			<th>{{ __('REQUEST TYPE') }}</th>
+			{{-- <th>{{ __('REQUEST TYPE') }}</th> --}}
 			<th>{{ __('PERMIT STATUS') }}</th>
 	 </tr>
 	 </thead>
