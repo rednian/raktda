@@ -10,8 +10,8 @@
 				<table class="table table-borderless table-striped  table-hover border" id="table-comment">
 					<thead>
 					<tr>
+						<th>{{ __('NAME') }}</th>
 						<th>{{ __('REMARKS') }}</th>
-						<th>{{ __('CHECKED BY') }}</th>
 						<th>{{ __('CHECKED DATE') }}</th>
 					</tr>
 					</thead>

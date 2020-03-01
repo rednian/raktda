@@ -6,7 +6,7 @@
             <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {{$permit->reference_number}}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
+            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate">
                 <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
@@ -498,8 +498,9 @@
              url: '{{ route('admin.artist_permit.applicationdetails.datatable', $permit->permit_id) }}'
           },
           columnDefs: [
-             {targets: [0, 2, 5, 6], className: 'no-wrap'}
+             {targets: '_all', className: 'no-wrap'}
           ],
+          responsive: true,
           columns: [
              {data: 'person_code'},
              {
@@ -516,11 +517,7 @@
              {data: 'profession'},
              {data: 'nationality'},
              {data: 'artist_status'},
-             {
-                render: function (type, data, full, meta) {
-                   return '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document</button><button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment</button>';
-                }
-             }
+             {data: 'action'},
           ],
           createdRow: function (row, data, index) {
              $('td input[type=checkbox]', row).click(function (e) {
@@ -552,6 +549,8 @@
                 ajax:{
                     url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
                 },
+            columnDefs: [ {targets: '_all', className: 'no-wrap'} ],
+            responsive: true,
                 columns:[
                 {data: 'document_name'},
                 {data: 'issued_date'},
@@ -570,11 +569,12 @@
                 url: '{{ url('/artist_permit') }}/'+{{$permit->permit_id}}+'/application/'+data.artist_permit_id + '/comment/datatable'
              },
              columnDefs: [
-                {targets: [1, 2], className: 'no-wrap'}
+                {targets: '_all', className: 'no-wrap'}
              ],
+             responsive: true,
              columns: [
+                 {data: 'commented_by'},
                 {data: 'comment'},
-                {data: 'commented_by'},
                 {data: 'commented_on'}
              ]
           });

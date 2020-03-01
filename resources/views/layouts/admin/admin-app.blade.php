@@ -27,12 +27,33 @@
   <link href="{{ asset('/assets/vendors/custom/vendors/flaticon2/flaticon.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('/assets/vendors/general/@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css" />
 
+
   @if (Auth::user()->LanguageId == 1)
   <style type="text/css">
     #kt_aside{ box-shadow: 4px 0 5px -2px #888; }
   </style>
     <link href="{{ asset('/css/mandatory.css') }}" rel="stylesheet" type="text/css" />
   @else
+  <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css"/>
+  <style>
+         body{
+        font-family: 'DroidArabicKufiRegular', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+        font-weight: normal;
+    }
+    section, div, p, span{
+        font-size: 1rem;
+        font-style: normal;
+    }
+    h1, h2, h3, h4, h5, h6, .kt-font-bold, strong, th, .widget24__title{
+        font-family: 'DroidArabicKufiBold', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    td{
+        font-weight: normal;
+        font-size: 1rem;
+    }
+  </style>
     <link href="{{ asset('/css/mandatory-arabic.css') }}" rel="stylesheet" type="text/css" />
     <style type="text/css">
       #kt_aside{ box-shadow: 4px 0 5px 4px #888 !important; }
@@ -42,6 +63,25 @@
     </style>
   @endif
   <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" type="text/css" />
+  @if(Auth::user()->LanguageId != 1)
+  <style>
+      .kt-wizard-v3
+    .kt-wizard-v3__wrapper
+    .kt-form
+    .kt-form__actions
+    [data-ktwizard-type="action-next"] {
+    margin: auto 0 auto !important;
+}
+
+.kt-wizard-v3
+    .kt-wizard-v3__wrapper
+    .kt-form
+    .kt-form__actions
+    [data-ktwizard-type="action-prev"] {
+    margin-right: 0 !important;
+}
+  </style>
+  @endif
   @yield('style')
   <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
   <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">

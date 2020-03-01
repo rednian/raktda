@@ -14,7 +14,7 @@ sendSms('+971568835006', "Your ATM \n was access 2 minutes ago. Please change yo
 });
 
 Route::get('/link', function () {
-return phpinfo();
+return phpinfo().'';
      //Artisan::call('storage:link');
      //return redirect()->back();
 });

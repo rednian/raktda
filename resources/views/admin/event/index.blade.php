@@ -718,7 +718,10 @@
      };
      $(document).ready(function () {
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
-      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });4
+      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){ $('.nav-tabs a[href="#processing-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(5) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
 
       newEvent();
       calendar();
@@ -1160,7 +1163,7 @@
               header: {
                   left: 'prev,next today',
                   center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+                  right: 'listWeek,dayGridMonth',
               },
               height: 'auto',
               allDaySlot: true,
@@ -1174,7 +1177,7 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'listWeek',
+              defaultView: 'dayGridMonth',
               defaultDate: TODAY,
               editable: false,
               eventLimit: true, // allow "more" link when too many events

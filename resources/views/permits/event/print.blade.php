@@ -7,9 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$event_details->permit_number}} - Event Permit</title>
     <style>
-        .arabic{
-            font-size: x-large;
-            font-family: 'droid' !important;
+        body{
+            font-family: 'arabic1' !important;
+            /* font-size: x-large; */
         }
         * {
             box-sizing: border-box;
@@ -142,7 +142,7 @@
             </tr>
         </table>
         <div id="heading">
-            <div class="arabic">
+            <div>
                 تصريح مؤقت
             </div>
 

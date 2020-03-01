@@ -31,21 +31,21 @@ return [
 
 
     // 'arabic-font' => [
-    //     'R'  => 'arabic-font.ttf',    // regular font
-    //     'B'  => 'arabic-font.ttf',          // optional: bold font
-    //     'I'  => 'arabic-font-Light.ttf',    // optional: italic font
-    //     'BI' => 'arabic-font.ttf',           // optional: bold-italic font
+    //     'R'  => 'DroidKufi-Regular.ttf',    // regular font
+    //     'B'  => 'DroidKufi-Bold.ttf',          // optional: bold font
     //     'useOTL' => 0xFF,
     //     'useKashida' => 75,
     // ],
 
-    'custom_font_dir' => asset('/fonts/droid/'), // don't forget the trailing slash!
+    'custom_font_dir' => base_path('/resources/fonts/'), // don't forget the trailing slash!
 	'custom_font_data' => [
-		'arabic' => [
-			'B'  => 'DroidKufi-Bold.ttf',
+		'arabic1' => [
 			'R'  => 'DroidKufi-Regular.ttf',
+            'B'  => 'DroidKufi-Bold.ttf',
+            'useOTL' => 0xFF,
+            'useKashida' => 75,
 		]
-		// ...add as many as you want.
+	// 	// ...add as many as you want.
 	]
 
 ];

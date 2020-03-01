@@ -435,6 +435,16 @@ div[class*="toolbar"] {
   margin-bottom: 0 !important;
 }
 
+/* .kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form .kt-form__actions [data-ktwizard-type="action-prev"] {
+    margin-right: 0;
+}
+
+.kt-wizard-v3 .kt-wizard-v3__wrapper .kt-form .kt-form__actions [data-ktwizard-type="action-next"] {
+    margin: auto 0 auto !important;
+} */
+
+
+
 /*alert*/
 .alert.alert-outline-danger {
   border: 1px solid #a63a3f !important;

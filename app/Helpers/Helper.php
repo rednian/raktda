@@ -5,6 +5,14 @@ use App\User;
 use Illuminate\Support\Facades\Storage;
 use Meneses\LaravelMpdf\Facades\LaravelMpdf as PDF;
 use App\Notifications\AllNotification;
+use Carbon\Carbon;
+
+function dateDuration($start, $end)
+{
+    $duration_in_days = Carbon::parse($end)->diffInDays($start);
+    return $duration_in_days;
+    // $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
+}
 
 function sms($number, $message = [])
 {
@@ -41,8 +49,16 @@ function requestType($type)
 }
 
 function duration($start = null, $end = null){
-    $days = Carbon\Carbon::parse($start)->diffInDays($end);
-    return $days  >= 31 ? Carbon\Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
+        // parts using either ',' or 'and' appropriately
+        // $age = ($d = $diff->d) ? ' and '.$d.' '.str_plural('day', $d) : '';
+        // $age = ($m = $diff->m) ? ($age ? ', ' : ' and ').$m.' '.str_plural('month', $m).$age : $age;
+        // $age = ($y = $diff->y) ? $y.' '.str_plural('year', $y).$age  : $age;
+
+        // // trim redundant ',' or 'and' parts
+        // return ($s = trim(trim($age, ', '), ' and ')) ? $s.' old' : 'newborn';
+    $days = Carbon::parse($start)->diff($end)->format('%m Month and %d days');
+    return $days;
+    return $days  >= 31 ? Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
 }
 
 function type($name = null, $type = null){
@@ -86,7 +102,7 @@ function profileName($name = null, $type = null){
 }
 
 function humanDate($date){
-    if ($date->diffInMonths(Carbon\Carbon::now()) > 1 ) {
+    if ($date->diffInMonths(Carbon::now()) > 1 ) {
         return $date->format('d-F-Y');
     }
     return $date->diffForHumans();
@@ -470,13 +486,13 @@ function paymentNotification($event, $artist, $files, $amount) {
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #'. $artist_permit_number;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
         $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid'; 
+        $url = \URL::signedRoute('event.index').'#valid';
     }else if($event){
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number ;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
         $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid'; 
-    }else { 
+        $url = \URL::signedRoute('event.index').'#valid';
+    }else {
         $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
         $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
         $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
@@ -533,7 +549,7 @@ function storeEventPermitPrint($id)
     $directory='permit_downloads/event/'.$id;
     if (!Storage::has($directory)) {
         $resp= Storage::makeDirectory($directory);
-    } 
+    }
 
     PDF::loadView('permits.event.print', $data, [], [
         'title' => 'Event Permit '. $event_permit_no,
@@ -573,7 +589,7 @@ function storeArtistPermitPrint($id)
     $directory='permit_downloads/artist/'.$id;
     if (!Storage::has($directory)) {
         $resp= Storage::makeDirectory($directory);
-    } 
+    }
 
     PDF::loadView('permits.artist.permit_print', $data, [], [
         'title' => 'Artist Permit '. $artist_permit_no,

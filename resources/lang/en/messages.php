@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'name' => '{1} NAME (EN)|{2} Name in English|',
-    'name_ar' => '{1} NAME (AR)|{2} Name in Arabic|',
+  'question_remove'=>'{1} Are you sure you want to remove :value from this permit?|{2} هل أنت متأكد من إزالة :value من التصريح الحالي؟'
 ];
 ?>
