@@ -48,6 +48,11 @@ function initialize() {
         marker.setVisible(isEdit);
 
         const autocomplete = new google.maps.places.Autocomplete(input);
+
+        autocomplete.setComponentRestrictions({
+            country: ["ae"]
+        });
+
         autocomplete.key = fieldKey;
         autocompletes.push({
             input: input,

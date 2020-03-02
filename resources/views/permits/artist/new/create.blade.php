@@ -96,7 +96,7 @@
                                             {{__('WORK LOCATION (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
-                                            value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
@@ -183,7 +183,7 @@
                             </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
-                            <td>{!! __($ad->artist_permit_status) !!}</td>
+                            <td>{!! __(ucwords($ad->artist_permit_status)) !!}</td>
                             <td class="d-flex justify-content-center">
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">

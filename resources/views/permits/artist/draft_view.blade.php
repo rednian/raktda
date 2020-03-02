@@ -108,7 +108,7 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
-                                            value="{{count($artist_details) > 0 ? getLangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location : (session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
@@ -116,7 +116,7 @@
                                             {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
-                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar : (session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     {{-- {{dd($artist_details[0])}} --}}
                                     <div class="form-group col-lg-2 kt-margin-b-0">
@@ -191,7 +191,7 @@
                             </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
-                            <td>{{__($ad->artist_permit_status)}}</td>
+                            <td>{{__(ucwords($ad->artist_permit_status))}}</td>
                             <td class="text-center">
                                 <a href="{{URL::signedRoute('company.edit_artist_draft',[ 'id' =>  $ad->id])}}">
                                     <button

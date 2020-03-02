@@ -196,9 +196,9 @@
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places{{getlangId() == 2 ? '&language=ar' : ''}}&callback=initialize"
     async defer></script>
-{{-- {{getlangId() == 2 ? '&language=ar' : ''}} --}}
+{{--  --}}
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}

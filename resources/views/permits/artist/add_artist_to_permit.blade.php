@@ -171,6 +171,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                             class="form-control form-control-sm "
                                                                             placeholder="DD-MM-YYYY"
                                                                             data-date-end-date="0d" name="dob" id="dob"
+                                                                            value="01-01-{{date('Y') - 18}}"
                                                                             onchange="checkforArtist()" />
                                                                     </div>
                                                                 </div>
@@ -222,7 +223,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group-sm row">
-                                                                <label for="dob"
+                                                                <label for="uid_expiry"
                                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}<span
                                                                         class="text-danger hd-uae">*</span>
                                                                 </label>
@@ -1344,7 +1345,7 @@ function checkVisaRequired(){
     });
 
     $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true});
-    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true,startView: 2, endDate: '-10Y'});
+    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true});
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
@@ -1644,30 +1645,19 @@ function checkVisaRequired(){
                                 return ;
                             }
                             $("#person_code_modal").append(
-                                '<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)"data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>'
+                                '<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__('Name')}}:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{{__('Gender')}}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{{__('Mobile Number')}}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{{__('Email')}}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{{__('Nationality')}}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)"data-dismiss="modal">{{__('Select this Artist')}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{{__('Not this Artist')}}</button> </div>'
                             );
                             $("#artistDetailswithcode").val(JSON.stringify(data));
-                            $("#ex_artist_en_name").html(
-                                (data.firstname_en != null ? data.firstname_en : "") +
-                                    " " +
-                                    (data.lastname_en != null ? data.lastname_en : "")
-                            );
-                            $("#ex_artist_ar_name").html(
-                                (data.firstname_ar != null ? data.firstname_ar : "") +
-                                    " " +
-                                    (data.lastname_ar != null ? data.lastname_ar : "")
-                            );
+                            var langid = $('#getLangid').val();
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+
                             $("#ex_artist_mobilenumber").html(data.mobile_number);
                             $("#ex_artist_email").html(data.email);
                             $("#ex_artist_personcode").html(data.person_code);
-                            var dob = moment(data.birthdate, "YYYY-MM-DD").format(
-                                "DD-MM-YYYY"
-                            );
+                            var dob = moment(data.birthdate, "YYYY-MM-DD").format("DD-MM-YYYY");
                             $("#ex_artist_dob").html(dob);
-                            $("#ex_artist_nationality").html(
-                                data.nationality.nationality_en
-                            );
-                            var gender = data.gender == 1 ? "Male" : "Female";
+                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
+                            var gender = data.gender == 1 ? __('Male') : __('Female');
                             $("#ex_artist_gender").html(gender);
                             $("#profImg").attr(
                                 "src",

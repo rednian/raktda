@@ -209,7 +209,7 @@
 
         <div class="kt-widget__body kt-margin-t-10">
 
-            <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6>
+            {{-- <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6> --}}
             <table class="table table-sm table-hover table-borderless table-display">
                 <tr>
                     <td>{{ __('Permit Status') }} </td>
@@ -306,6 +306,8 @@
             <p>{{ Auth::user()->LanguageId == 1 ? ucfirst($event->description_en) : $event->description_ar }}</p>
             <h6 class="kt-font-dark">{{__('Venue')}}</h6>
             <p>{{getLangId() == 1 ? ucfirst($event->venue_en) :  $event->venue_ar}}</p>
+            <h6 class="kt-font-dark">{{__('Address')}}</h6>
+            <p>{{$event->address}}</p>
         </div>
     </div>
 </div>

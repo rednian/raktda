@@ -237,7 +237,7 @@
             <div class="modal-body">
                 <form action="{{route('event.delete_draft')}}" method="POST" novalidate>
                     @csrf
-                    <label>{{__('Are you sure to delete this draft ?')}}
+                    <label>{{__('Are you sure to delete this draft ?')}}
                         {{__('Data will be lost !')}}</label>
                     <input type="hidden" id="del_draft_id" name="del_draft_id">
                     <div>
