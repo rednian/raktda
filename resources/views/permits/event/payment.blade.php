@@ -116,8 +116,9 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('From Date')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                                        {{date('d M,y',strtotime($event->issued_date))}}&nbsp;
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{date('d F Y',strtotime($event->issued_date))}}&nbsp;
 
                                                     </span>
                                                 </div>
@@ -125,8 +126,9 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('To Date')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                                        {{date('d M,y',strtotime($event->expired_date))}} &nbsp;
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{date('d F Y',strtotime($event->expired_date))}} &nbsp;
 
                                                     </span>
                                                 </div>
@@ -139,7 +141,8 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('No.of.days')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-info btn-sm btn-bold">
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
                                                         {{$noofdays.' '.($noofdays > 1 ? __('days') :
                                                         __('day'))}}
                                                     </span>

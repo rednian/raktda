@@ -179,7 +179,7 @@
         .each--person-tab {
             position: relative;
             margin: 5px 2px;
-            /* width: 50%; */
+            width: 50%;
             border: 1px solid black;
         }
 
@@ -368,19 +368,17 @@
         </header>
     </htmlpageheader>
 
-
-    <div class="main">
-        <table class="person--details">
-            @php
-            $i = 1 ;
-            @endphp
-            @foreach($artist_details as $artist_permit)
-            @if($artist_permit->artist_permit_status == 'approved')
-            @if($i%2 != 0)
+    @php
+    $counter = 0;
+    $artist_details = $artist_details->where('artist_permit_status', 'approved');
+    @endphp
+    <div style="padding-top:40%;">
+        @foreach($artist_details->chunk(2) as $row)
+        <table style="width:100%;border:1px solid black;">
             <tr>
-                @endif
-                <td>
-                    <table class="each--person-tab">
+                @foreach($row as $artist_permit)
+                <td class="each--person-tab">
+                    <table>
                         <tr>
                             <td class="img--box">
                                 <div class="img--box-div">
@@ -409,11 +407,11 @@
                                     <tr>
                                         <td>
                                             <p>{{$artist_permit->firstname_en.'
-                                                '.$artist_permit->lastname_en}}</p>
+                                                            '.$artist_permit->lastname_en}}</p>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->firstname_ar.'
-                                                '.$artist_permit->lastname_ar}}</p>
+                                                            '.$artist_permit->lastname_ar}}</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -479,16 +477,18 @@
                         </tr>
                     </table>
                 </td>
-                @if($i%2 == 0)
+                @endforeach
             </tr>
-            @endif
-            @php
-            $i++;
-            @endphp
-            @endif
-            @endforeach
         </table>
+        @php
+        $counter++;
+        @endphp
+        @if($artist_details->chunk(2)->count() > $counter && $counter % 3 == 0)
+        <pagebreak />
+        @endif
+        @endforeach
     </div>
+
 
     <htmlpagefooter name="page-footer">
         <footer>

@@ -4,8 +4,8 @@
 return [
     'mode' => '',
     'format' => 'A4',
-    'default_font_size' => '12',
-    // 'default_font' => 'sans-serif',
+    'default_font_size' => 10,
+    // 'default_font' => 'Poppins','sans-serif',
     // 'margin_left' => 10,
     // 'margin_right' => 10,
     // 'margin_top' => 10,
@@ -20,9 +20,16 @@ return [
     // 'watermark_font' => 'sans-serif',
     'display_mode' => 'fullpage',
     'watermark_text_alpha' => 0.1,
-    'custom_font_data' => [],
-    'auto_language_detection' => false,
-    'temp_dir' => '',
+    // 'auto_language_detection' => true,
+    // 'temp_dir' => '',
+    // 'custom_font_data' => [],
+    'custom_font_dir' => base_path('public/fonts/'), // don't forget the trailing slash!
+	'custom_font_data' => [
+		'DroidKufi' => [
+            'R'  => 'DroidKufi-Regular.ttf',    // regular font
+            'B'  => 'DroidKufi-Bold.ttf',          
+		]
+	]
 
 
     // 'useOTL' => 0xFF,
@@ -38,13 +45,6 @@ return [
     //     'useKashida' => 75,
     // ]
 
-    'custom_font_dir' => base_path('public/fonts/'), // don't forget the trailing slash!
-	'custom_font_data' => [
-		'examplefont' => [
-            'R'  => 'DroidKufi-Regular.ttf',    // regular font
-            'B'  => 'DroidKufi-Bold.ttf',          
-		]
-		// ...add as many as you want.
-	]
+
 
 ];

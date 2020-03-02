@@ -9,7 +9,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Event Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('AMEND EVENT PERMIT')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$event->permit_number}}
@@ -22,7 +22,7 @@
                 <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
 
             </div>
@@ -235,10 +235,10 @@
         <table class="table table-borderless border table-striped">
             <thead class="text-center">
                 <th>#</th>
-                <th>{{__('EST. Name in English')}}</th>
-                <th>{{__('EST. Name in Arabic')}}</th>
+                <th>{{__('Establishment Name (EN)')}}</th>
+                <th>{{__('Establishment Name (AR)')}}</th>
                 <th>{{__('Traffic Plate No')}}</th>
-                <th>{{__('Types of Provided f & b')}}</th>
+                <th>{{__('Types of Provided F & B')}}</th>
                 <th></th>
             </thead>
             <tbody id="food_truck_list">
@@ -339,11 +339,11 @@
         <div class="row">
             <div class="col-lg-4 col-sm-12">
                 <label
-                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                     <span id="cnd_{{$i}}"></span>
                 </label>
                 <p for="" class="reqName">
-                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                    {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                 </p>
             </div>
             <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$i}}">
@@ -383,11 +383,11 @@
         <div class="row">
             <div class="col-lg-4 col-sm-12">
                 <label
-                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                     <span id="cnd_{{$j}}"></span>
                 </label>
                 <p for="" class="reqName">
-                    {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                    {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                 </p>
             </div>
             <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$j}}">

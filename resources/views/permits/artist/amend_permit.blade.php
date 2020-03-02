@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('AMEND ARTIST PERMIT')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details['permit_number']}}</strong></span>
@@ -17,7 +17,7 @@
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
 
                 {{-- <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
@@ -29,7 +29,7 @@
                 <a href="{{URL::signedRoute('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </a>
 
 
@@ -56,16 +56,16 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->issued_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->issued_date))}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('To Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->expired_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->expired_date))}}
                             </span>
                         </div>
                     </div>
@@ -88,19 +88,19 @@
                     </div>
                     @if($permit_details->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
+                        <span class="kt-widget__date">{{__('Connected Event')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
+                                {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
                             </span>
                         </div>
                     </div>
                     @endif
                 </div>
-                <div class="kt-widget__text kt-margin-t-10">
+                <div class="kt-widget__text kt-margin-t-20">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
             </div>
 
@@ -108,12 +108,12 @@
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('FIRST NAME')}}</th>
+                            <th>{{__('LAST NAME')}}</th>
+                            <th>{{__('PROFESSION')}}</th>
+                            <th>{{__('MOBILE NUMBER')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,7 +189,7 @@
             <div class="d-flex justify-content-end">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                     <i class="la la-check"></i>
-                    {{__('Submit')}}
+                    {{__('SUBMIT')}}
                 </div>
             </div>
             @endif
@@ -290,7 +290,10 @@
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
         let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
-        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+        let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+        warnText  = warnText.replace(':artistname', name);
+        $('#warning_text').html(warnText);
+        // $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
         $('#warning_text').css('color', '#580000');
     }
 

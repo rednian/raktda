@@ -117,7 +117,7 @@
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">{{__('Expired Date')}}</label>
+                                                    title="Expiry Date">{{__('Expiry Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -143,7 +143,7 @@
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        {{__('Previous')}}
+                        {{__('PREVIOUS')}}
                     </div>
                     <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
                     @php
@@ -180,17 +180,17 @@
 
                     <a href="{{$route_back}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        {{__('Submit')}}
+                        {{__('SUBMIT')}}
                     </div>
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
+                        {{__('NEXT')}}
                     </div>
 
                 </div>
@@ -289,6 +289,11 @@
                 showFileSize: false,
                 maxFileSize: 5242880,
                 showFileCounter: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileCountErrorStr:"<span><b>{{__('Maximum allowed files are:')}}</b></span>",
+                sizeErrorStr: "<span><b>{{__('Allowed Max size: ')}}</b></span>",
+                uploadErrorStr: "<span><b>{{__('Upload is not allowed')}}</b></span>",
                 abortStr: '',
                 multiple: false,
                 maxFileCount:1,

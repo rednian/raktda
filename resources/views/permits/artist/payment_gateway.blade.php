@@ -21,7 +21,7 @@
                             class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
@@ -40,16 +40,18 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('From Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                        {{date('d M, y',strtotime($permit_details->issued_date))}}
+                                    <span
+                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                        {{date('d F Y',strtotime($permit_details->issued_date))}}
                                     </span>
                                 </div>
                             </div>
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('To Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                        {{date('d M, y',strtotime($permit_details->expired_date))}}
+                                    <span
+                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                        {{date('d F Y',strtotime($permit_details->expired_date))}}
                                     </span>
                                 </div>
                             </div>
@@ -106,7 +108,7 @@
                                     <th>{{__('Artist Name')}}</th>
                                     <th>{{__('Profession')}}</th>
                                     <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                    <th class="text-center">{{__('Duration')}}</th>
+                                    <th class="text-center">{{__('Permit Duration')}}</th>
                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                 </tr>
                             </thead>
@@ -301,7 +303,7 @@
                     <input type="hidden" id="event_grand_total" value="{{$event_grand_total}}">
 
                     <div class="table-responsive">
-                        <div class="pull-right">
+                        <div class="{{getLangId() == 1 ? 'pull-right' : 'pull-left'}}">
                             <table class=" table table-borderless">
                                 <tbody>
                                     <tr>
@@ -333,14 +335,14 @@
 
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
+                            onclick="Checkout.showLightbox()">{{__('Pay')}}</button>
 
                         {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
 
                         <a
                             href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
                                 class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide"
-                                id="next_btn">{{__('Next')}}</button></a>
+                                id="next_btn">{{__('NEXT')}}</button></a>
                     </div>
 
                 </div>

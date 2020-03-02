@@ -60,9 +60,25 @@
             box-shadow: 4px 0 5px 4px #888 !important;
         }
 
-        * :not(button) {
-            font-weight: 500;
-            font-size: 18px !important;
+        @font-face {
+            font-family: DroidKufi-reg;
+            /* src: url('../../fonts/DroidKufi-Regular.ttf'); */
+            src: url("{{asset('fonts/DroidKufi-Regular.ttf')}}");
+        }
+
+        @font-face {
+            font-family: DroidKufi-bold;
+            src: url("{{asset('fonts/DroidKufi-Bold.ttf')}}");
+        }
+
+        * {
+            font-family: "DroidKufi-reg", sans-serif;
+        }
+
+        .kt-font-bold,
+        .dataTable tr th,
+        table thead th {
+            font-family: "DroidKufi-bold", sans-serif;
         }
     </style>
     @endif

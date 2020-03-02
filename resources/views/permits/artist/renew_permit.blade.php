@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Renew Artist Permit')}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('RENEW ARTIST PERMIT')}}</h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details->permit_number}}
                 </strong>
@@ -16,7 +16,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
                 {{-- <a href="{{url('company/artist/add_artist_to_permit/renew/'.$permit_details->permit_id)}}"
                 class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
@@ -26,7 +26,7 @@
                 <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'renew', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </a>
 
             </div>
@@ -52,8 +52,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($artist_details[0]->issue_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($artist_details[0]->issue_date))}}
                             </span>
                         </div>
                     </div>
@@ -61,8 +61,8 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('To Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($artist_details[0]->expiry_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($artist_details[0]->expiry_date))}}
                             </span>
                         </div>
                     </div>
@@ -90,13 +90,13 @@
             <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                 <thead>
                     <tr class="kt-font-transform-u">
-                        <th>{{__('First Name')}}</th>
-                        <th>{{__('Last Name')}}</th>
-                        <th>{{__('Profession')}}</th>
-                        <th>{{__('Mobile Number')}}</th>
+                        <th>{{__('FIRST NAME')}}</th>
+                        <th>{{__('LAST NAME')}}</th>
+                        <th>{{__('PROFESSION')}}</th>
+                        <th>{{__('MOBILE NUMBER')}}</th>
                         {{-- <th>Email</th> --}}
-                        <th>{{__('Status')}}</th>
-                        <th class="text-center">{{__('Action')}}</th>
+                        <th>{{__('STATUS')}}</th>
+                        <th class="text-center">{{__('ACTION')}}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -150,7 +150,7 @@
         <div class="d-flex justify-content-end">
             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                 <i class="la la-check"></i>
-                {{__('Submit')}}
+                {{__('SUBMIT')}}
             </div>
         </div>
     </div>
@@ -285,7 +285,10 @@
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
         let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
-        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+        // $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+        let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+        warnText  = warnText.replace(':artistname', name);
+        $('#warning_text').html(warnText);
         $('#warning_text').css('color', '#580000')
     }
 

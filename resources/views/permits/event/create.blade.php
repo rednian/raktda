@@ -10,6 +10,8 @@
 </style>
 @endsection
 
+{{-- {{dd(session(Auth::user()->user_id . '_image_file'))}} --}}
+
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
@@ -107,20 +109,20 @@
         <div class="kt-form__actions">
             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                 data-ktwizard-type="action-prev" id="prev_btn">
-                {{__('Previous')}}
+                {{__('PREVIOUS')}}
             </div>
 
 
             <a href="{{URL::signedRoute('event.index')}}#applied">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </div>
             </a>
 
             <div class="btn-group" role="group" id="submit--btn-group">
                 <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{__('Submit')}}
+                    {{__('SUBMIT')}}
                 </button>
                 <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
@@ -135,7 +137,7 @@
 
             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                 data-ktwizard-type="action-next" id="next_btn">
-                {{__('Next')}}
+                {{__('NEXT')}}
             </div>
         </div>
     </div>
@@ -241,7 +243,7 @@
             success: function(){}
         })
         // getRequirementsList(5);
-        // wizard.goTo(2);
+      
 
         $('#event_id').val(0);
 
@@ -256,6 +258,9 @@
         $('#liquor_provided_form').hide();
         $('#liquor_provided_upload_form').hide();
         $('#limited_types').hide();
+
+
+
     });
 
     function check_duration() {
@@ -812,9 +817,11 @@
                             }
                             $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
                             $('#event_sub_type_req').html('*');
+                            $('#event_sub_type_id').removeClass('mk-disabled');
                         }else
                         {
                             $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_id').addClass('mk-disabled');
                             $('#event_sub_type_req').html('');
                         }
                     }
@@ -1702,10 +1709,10 @@
                 abortStr: '',
                 showProgress: false,
                 downloadStr: `<i class="la la-download"></i>`,
-                previewHeight: '100px',
-                previewWidth: "auto",
                 returnType: "json",
                 showDownload:true,
+                sequential:true,
+                maxFileCount:5,
                 // showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',

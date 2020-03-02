@@ -40,11 +40,11 @@ Route::group(['middleware'=> ['auth', 'set_lang_front', 'verified']], function()
 
 
 Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_status']], function () {
-    // Route::get('/dashboard', function () {
-    //     return redirect(URL::signedRoute('artist.index'));
-    // })->name('company.dashboard');
+    Route::get('/dashboard', function () {
+        return redirect(URL::signedRoute('artist.index'));
+    })->name('company.dashboard');
 
-    Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');
+    // Route::get('dashboard', 'Company\ReportController@dashboard')->name('company.dashboard');
 
     Route::post('dashboard','Company\ReportController@filterdashboard')->name('dashboard.filter');
 

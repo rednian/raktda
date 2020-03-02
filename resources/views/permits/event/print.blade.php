@@ -6,12 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{$event_details->permit_number}} - Event Permit</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             overflow: hidden;
-            font-family: 'examplefont', sans-serif;
+            font-family: 'DroidKufi' !important;
         }
+
+        body {}
 
         .logo--header,
         .logo--logo-header {
@@ -153,7 +156,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">بيانات الرخصة</th>
+                <th colspan="2" scope="col" style="font-family: DroidKufi !important;">بيانات الرخصة</th>
             </tr>
         </thead>
         <tbody>

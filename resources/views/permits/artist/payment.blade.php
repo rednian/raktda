@@ -20,7 +20,7 @@
                         <a href="{{URL::signedRoute('artist.index')}}#applied"
                             class="btn btn--maroon kt-font-bold kt-font-transform-u btn-sm">
                             <i class="la la-arrow-left"></i>
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
@@ -39,16 +39,18 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('From Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                        {{date('d M, y',strtotime($permit_details->issued_date))}}
+                                    <span
+                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                        {{date('d F Y',strtotime($permit_details->issued_date))}}
                                     </span>
                                 </div>
                             </div>
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('To Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                        {{date('d M, y',strtotime($permit_details->expired_date))}}
+                                    <span
+                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                        {{date('d F Y',strtotime($permit_details->expired_date))}}
                                     </span>
                                 </div>
                             </div>
@@ -61,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                                <span class="kt-widget__date">{{__('Reference No')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -71,7 +73,7 @@
                             </div>
                             @if($permit_details->event)
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
+                                <span class="kt-widget__date">{{__('Connected Event')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -94,13 +96,13 @@
                             id="applied-artists-table">
                             <thead>
                                 <tr class="kt-font-transform-u">
-                                    <th>{{__('First Name')}}</th>
-                                    <th>{{__('Last Name')}}</th>
-                                    <th>{{__('Profession')}}</th>
-                                    <th>{{__('Mobile Number')}}</th>
+                                    <th>{{__('FIRST NAME')}}</th>
+                                    <th>{{__('LAST NAME')}}</th>
+                                    <th>{{__('PROFESSION')}}</th>
+                                    <th>{{__('MOBILE NUMBER')}}</th>
                                     {{-- <th>Email</th> --}}
-                                    <th>{{__('Status')}}</th>
-                                    <th class="text-center">{{__('Action')}}</th>
+                                    <th>{{__('STATUS')}}</th>
+                                    <th class="text-center">{{__('ACTION')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,11 +111,11 @@
                                 @endphp
                                 @foreach ($permit_details->artistPermit as $artistPermit)
                                 <tr>
-                                    <td>{{ getLangId() == 1 ? ucwords($artistPermit->firstname_en) : $artistPermit->firstname_ar}}
+                                    <td>{{ getLangId() == 1 ? ucfirst($artistPermit->firstname_en) : $artistPermit->firstname_ar}}
                                     </td>
-                                    <td>{{ getLangId() == 1 ? ucwords($artistPermit->lastname_en) : $artistPermit->lastname_ar}}
+                                    <td>{{ getLangId() == 1 ? ucfirst($artistPermit->lastname_en) : $artistPermit->lastname_ar}}
                                     </td>
-                                    <td>{{ getLangId() == 1 ? ucwords($artistPermit->profession['name_en']) : $artistPermit->profession['name_ar']}}
+                                    <td>{{ getLangId() == 1 ? ucfirst($artistPermit->profession['name_en']) : $artistPermit->profession['name_ar']}}
                                     </td>
                                     <td>{{$artistPermit->mobile_number}}</td>
                                     {{-- <td>{{$artistPermit->email}}</td> --}}

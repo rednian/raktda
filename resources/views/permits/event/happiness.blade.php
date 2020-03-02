@@ -424,7 +424,7 @@
                                     <div
                                         class="form-group row form-group-marginless kt-margin-t-40 kt-margin-l-auto kt-margin-r-auto">
                                         <label for=""
-                                            class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your Comments')}}
+                                            class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your opinion matters')}}
                                             :</label>
                                         <div class="col-md-8">
                                             <textarea name="remarks" id="remarks" class="form-control form-control-sm "
@@ -440,27 +440,27 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
+                            {{__('PREVIOUS')}}
                         </div>
 
 
                         <a href="{{url('company/event')}}">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+                                {{__('BACK')}}
                             </div>
                         </a>
 
 
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-submit" id="submit_btn">
-                            {{__('Submit')}}
+                            {{__('SUBMIT')}}
                         </div>
 
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
+                            {{__('NEXT')}}
                         </div>
 
                     </div>

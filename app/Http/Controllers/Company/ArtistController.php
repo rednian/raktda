@@ -204,6 +204,7 @@ class ArtistController extends Controller
                     return  '<span class="d-flex flex-column">' . $amendBtn . $renewBtn . '</span>';
                 }else if($status == 'expired') {
                     $today = strtotime(date('Y-m-d 00:00:00'));
+                    $expired_date = strtotime($permit->expired_date);
                     $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
                     $renewBtn = ($expDiff <= $renew_grace) ? '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('artist.permit', ['id' => $permit->permit_id, 'status' => 'renew']) .  '"><span  class="kt-badge kt-badge--success kt-badge--inline">'.__('Renew').'</span></a>' : '';
                     return  '<span class="d-flex flex-column">'  . $renewBtn . '</span>';
@@ -243,7 +244,7 @@ class ArtistController extends Controller
             }
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_permit_details', [ 'id' =>$permit->permit_id , 'tab' => $from ]).'" title="'.__('View Details').'" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="'.__('Download Permit').'"><i class="fa fa-file-download fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="'.__('Download Permit').'" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
         })->rawColumns(['action', 'details', 'download', 'permit_id'])->make(true);
     }
 
@@ -2383,6 +2384,7 @@ class ArtistController extends Controller
             'title' => 'Artist Permit',
             'default_font_size' => 10
         ]);
+
         return $pdf->stream('Artist Permit-' . $permitNumber . '.pdf');
     }
 

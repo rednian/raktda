@@ -33,7 +33,7 @@
                             <th>{{__('Establishment Name (EN)')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>
                             <th>{{__('Traffic Plate No')}}</th>
-                            <th>{{__('Types of provided F & B')}}</th>
+                            <th>{{__('Types of provided F&B')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -120,6 +120,7 @@
                             <label
                                 class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                 <span id="cnd_{{$i}}"></span>
+                                <span class="text-danger">*</span>
                             </label>
                             <p for="" class="reqName">
                                 {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}

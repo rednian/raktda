@@ -3,7 +3,7 @@
         <div class="card-header" id="headingThree6">
             <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseThree6" aria-expanded="false"
                 aria-controls="collapseThree6">
-                <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark"> {{__('Permit Fee For 30 days')}}
+                <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark"> {{__('PERMIT FEE FOR 30 DAYS')}}
                 </h6>
             </div>
         </div>

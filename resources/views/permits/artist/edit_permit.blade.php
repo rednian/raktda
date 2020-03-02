@@ -9,7 +9,7 @@
 <div class="kt-portlet kt-portlet--mobile" style="z-index:1;">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Edit Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('EDIT ARTIST PERMIT')}}
             </h3>
             @if(!$permit_details->event)
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
@@ -23,7 +23,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
                 {{-- <a href="{{url('company/artist/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
                 class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
@@ -33,7 +33,7 @@
                 <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </a>
             </div>
 
@@ -60,16 +60,16 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->issued_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->issued_date))}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('To Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->expired_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->expired_date))}}
                             </span>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <input type="hidden" id="event_id" value="{{$permit_details->event->event_id}}">
 
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
+                        <span class="kt-widget__date">{{__('Connected Event')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
@@ -103,7 +103,7 @@
                     </div>
 
                 </div>
-                <div class="kt-widget__text kt-margin-t-10">
+                <div class="kt-widget__text kt-margin-t-20">
                     <strong>{{__('Work Location')}} :</strong>
                     {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
@@ -159,14 +159,14 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             dir="ltr" id="work_loc"
                                             value="{{ucfirst($permit_details->work_location)}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" dir="rtl" value="{{$permit_details->work_location_ar}}" />
                                     </div>
@@ -181,17 +181,18 @@
             </div>
 
 
+
             <div class="table-responsive">
                 <table class="table table-striped border table-hover table-borderless" id="applied-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
+                            <th>{{__('FIRST NAME')}}</th>
+                            <th>{{__('LAST NAME')}}</th>
+                            <th>{{__('PROFESSION')}}</th>
+                            <th>{{__('MOBILE NUMBER')}}</th>
                             {{-- <th>Email</th> --}}
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -201,10 +202,11 @@
                         <input type="hidden" id="total_artist_details" value="{{count($artist_details)}}">
                         @foreach ($artist_details as $artist_detail)
                         <tr>
-                            <td>{{ getLangId() == 1 ? $artist_detail->firstname_en :  $artist_detail->firstname_ar}}
+                            <td>{{ getLangId() == 1 ? ucfirst($artist_detail->firstname_en) :  $artist_detail->firstname_ar}}
                             </td>
-                            <td>{{ getLangId() == 1 ? $artist_detail->lastname_en :  $artist_detail->lastname_ar}}</td>
-                            <td>{{ getLangId() == 1 ? $artist_detail->profession['name_en'] : $artist_detail->profession['name_ar']}}
+                            <td>{{ getLangId() == 1 ? ucfirst($artist_detail->lastname_en) :  $artist_detail->lastname_ar}}
+                            </td>
+                            <td>{{ getLangId() == 1 ? ucfirst($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
                             </td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             {{-- <td>{{$artist_detail->email}}</td> --}}
@@ -261,7 +263,7 @@
             <div class="d-flex justify-content-end">
                 <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                     <i class="la la-check"></i>
-                    {{__('Submit')}}
+                    {{__('SUBMIT')}}
                 </div>
             </div>
         </div>
@@ -464,8 +466,10 @@
     function delArtist(temp_id, permit_id, nameEn, nameAr) {
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
-        let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
-        $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+        let name = $('#getLangid').val() == 1 ? nameEn : nameAr ;
+        let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+        warnText  = warnText.replace(':artistname', name);
+        $('#warning_text').html(warnText);
         $('#warning_text').css('color', '#580000')
     }
 

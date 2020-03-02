@@ -6,7 +6,7 @@
                     <i class="flaticon-warning"></i>
                 </div>
                 <div class="alert-text">
-                    {{__('Your Company is blocked! Please Contact TDA Administrator')}}
+                    {{__('Your Establishment is blocked! Please Contact TDA Administrator')}}
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body text-danger kt-font-bolder">
-                {{__('You cannot add this artist with this profession ! Please contact RakTDA')}}
+                {{__('You cannot add this artist with this profession ! Please contact RakTDA')}}
                 <div class="text-center">
                     <button class="btn btn-sm btn--yellow btn-wide kt-margin-t-10"
                         data-dismiss="modal">{{__('OK')}}</button>

@@ -102,10 +102,10 @@
                 </div>
                 <div class="login-header" style="width:auto;">
                     <div class="brand">
-                        <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br /> Smart
-                            Government Project</h3>
+                        <h3 class="caption-title text-center" style="color: #a63a3f">راس الخيمة<br /> مشروع الحكومة
+                            الذكية</h3>
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
-                        <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
+                        <h4 style="margin-top: 10%;" class="text-center">تسجيل الدخول لحسابك</h4>
                     </div>
                     @if (Session::has('error'))
                     <section class="row">
@@ -130,7 +130,7 @@
                         <div class="form-group m-b-15">
                             <input autocomplete="off" autofocus type="text" @error('username') is-invalid @enderror"
                                 name="login" value="{{ old('login') }}" class="form-control input-lg"
-                                placeholder="Email or username" required />
+                                placeholder="البريد الالكتروني أو اسم الحساب" required />
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong class="text-danger">{{ $message }}</strong>
@@ -140,7 +140,7 @@
                         <div class="form-group m-b-15">
                             <input name="password" type="password"
                                 class="form-control input-lg  @error('password') is-invalid @enderror"
-                                placeholder="Password" required />
+                                placeholder="كلمة السر" required />
                             @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong class="text-danger">{{ $message }}</strong>
@@ -152,25 +152,27 @@
                                 <div class="checkbox m-b-30" style="margin-top: 0">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
-                                        Remember Me
+                                        تذكرني
                                     </label>
                                 </div>
                             </div>
                             <div class="col-sm-6 ">
                                 @if (Route::has('password.request'))
                                 <div class="text-right" style="color: #707478"><a
-                                        href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                                        href="{{ route('password.request') }}">نسيت كلمة المرور</a>
                                 </div>
                                 @endif
                             </div>
                         </section>
 
                         <div class="login-buttons">
-                            <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
+                            <button type="submit" class="btn btn-success btn-block btn-lg">تسجيل الدخول</button>
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                            Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}"
-                                class="text-success">here</a> to register.
+                            {{-- Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}"
+                            class="text-success">here</a> to register. --}}
+                            <a href="{{ URL::signedRoute('company.create') }}" class="text-success">ليس لديك حساب؟ إضغط
+                                هنا للتسجيل.</a>
                         </div>
                         {{--<hr />--}}
                         {{--<p <center></center>lass="text-center">--}}

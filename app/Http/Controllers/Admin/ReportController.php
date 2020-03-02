@@ -1648,7 +1648,7 @@ class ReportController extends Controller
                     return ucwords($permit->request_type) . ' Application';
                 })
                 ->addColumn('action', function ($permit) {
-                    return '</button><a href="' . route('admin.artist_permit.download', $permit->permit_id) . '" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-dark">' . __('Details') . '</a>';
+                    return '</button><a href="' . route('admin.artist_permit.download', $permit->permit_id) . '" target="_blank" class="btn btn-download btn-sm btn-elevate btn-outline-dark" rel="noopener">' . __('Details') . '</a>';
                 })
                 ->addColumn('inspection_url', function ($permit) {
                     return route('tasks.artist_permit.details', $permit->permit_id);
