@@ -8,10 +8,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                {{__('You are trying to apply for event permit which is less than')}}
+                {{-- {{__('You are trying to apply for event permit which is less than')}}
                 &nbsp;{{$day_count}}
                 &nbsp;{{$day_count > 1 ? 'days' : 'day'}}
-                &nbsp;{{__('from today your application will be subject to approval by RAKTDA')}}
+                &nbsp;{{__('from today your application will be subject to approval by RAKTDA')}} --}}
+
+                {{trans_choice('messages.event_attention', Auth::user()->LanguageId, [ "days" => $day_count])}}
             </div>
         </div>
     </div>

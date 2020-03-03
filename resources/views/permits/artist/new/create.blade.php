@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Add New Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('ADD NEW ARTIST PERMIT')}}
             </h3>
         </div>
 
@@ -15,12 +15,12 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
                 <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -49,7 +49,7 @@
                                 <div class="row">
                                     <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_from"
-                                            class="col-form-label col-form-label-sm ">{{__('From Date')}} <span
+                                            class="col-form-label col-form-label-sm ">{{__('FROM DATE')}} <span
                                                 class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
@@ -70,7 +70,7 @@
                                         value="{{getSettings()->artist_start_after}}" />
                                     <div class="form-group col-lg-2 kt-margin-b-0">
                                         <label for="permit_to"
-                                            class="col-form-label col-form-label-sm">{{__('To Date')}}<span
+                                            class="col-form-label col-form-label-sm">{{__('TO DATE')}}<span
                                                 class="text-danger">*</span></label>
                                         <div class="input-group input-group-sm">
                                             <div class="kt-input-icon kt-input-icon--right">
@@ -93,21 +93,20 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (EN)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
-                                            value="{{count($artist_details) > 0 ? getlangId() == 1 ? $artist_details[0]->work_location : $artist_details[0]->work_location_ar :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
+                                            value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for=""
-                                            class="col-form-label col-form-label-sm">{{__('Connected Event ?')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio  ">
@@ -115,7 +114,7 @@
                                                     {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') && session($user_id.'_apn_is_event') == 1 ? 'checked' : ''}}
                                                     value="1">
-                                                {{__('Yes')}}
+                                                {{__('YES')}}
                                                 <input type="hidden" name="isEvent" value="1">
                                                 <span></span>
                                             </label>
@@ -123,7 +122,7 @@
                                                 <input type="radio" name="isEvent" onClick="changeIsEvent(0)"
                                                     {{count($artist_details) > 0 ? 'disabled' : ''}}
                                                     {{session($user_id.'_apn_is_event') ? session($user_id.'_apn_is_event') == 0 ? 'checked' : '' : 'checked'}}
-                                                    value="0"> {{__('No')}}
+                                                    value="0"> {{__('NO')}}
                                                 <span></span>
                                             </label>
                                         </div>
@@ -132,7 +131,7 @@
                                     <div class="form-group col-lg-3 kt-margin-b-0" id="events_div"
                                         style="display:{{ session($user_id.'_apn_is_event') == 0 ? 'none': 'block'}}">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            {{__('Select Event')}} <span class="text-danger">*</span></label>
+                                            {{__('SELECT EVENT')}} <span class="text-danger">*</span></label>
                                         <select type="text"
                                             class="form-control form-control-sm {{count($artist_details) > 0 ? 'mk-disabled' : ''}}"
                                             name="event_id" id="event_id" onchange="check_Add_Event()">
@@ -164,13 +163,13 @@
                 <table class="table table-striped table-borderless table-hover border">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th> {{__('First Name')}}</th>
-                            <th> {{__('Last Name')}}</th>
-                            <th> {{__('Profession')}}</th>
-                            <th> {{__('Mobile Number')}}</th>
+                            <th> {{__('FIRST NAME')}}</th>
+                            <th> {{__('LAST NAME')}}</th>
+                            <th> {{__('PROFESSION')}}</th>
+                            <th> {{__('MOBILE NUMBER')}}</th>
                             {{-- <th>Email</th> --}}
-                            <th> {{__('Status')}}</th>
-                            <th class="text-center"> {{__('Action')}}</th>
+                            <th> {{__('STATUS')}}</th>
+                            <th class="text-center"> {{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,7 +183,7 @@
                             </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
-                            <td>{!! __($ad->artist_permit_status) !!}</td>
+                            <td>{!! __(ucwords($ad->artist_permit_status)) !!}</td>
                             <td class="d-flex justify-content-center">
                                 <a href="{{URL::signedRoute('artist.edit_artist',[ 'id' => $ad->id , 'from' => 'new'])}}"
                                     title="{{__('Edit')}}">
@@ -209,7 +208,7 @@
                         @endforeach
                         @else
                         <tr>
-                            <td colspan="7" class="text-center">{{__('Please Add Artists')}} ...!</td>
+                            <td colspan="7" class="text-center">{{__('No Artists Added')}}</td>
                         </tr>
                         @endif
                     </tbody>
@@ -222,16 +221,16 @@
         <div class="d-flex justify-content-between">
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
-                id="draft_btn" title="{{__('Save As Draft')}}">
+                id="draft_btn" title="{{__('SAVE AS DRAFT')}}">
                 <i class="la la-check"></i>
-                {{__('Save As Draft')}}
+                {{__('SAVE AS DRAFT')}}
             </button>
 
             <button
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) == 0 ? 'd-none' : ''}}"
                 id="submit_btn" {{ count($artist_details) == 0 ? 'disabled' : ''}}>
                 <i class="la la-check"></i>
-                {{__('Apply Permit')}}
+                {{__('APPLY PERMIT')}}
             </button>
         </div>
 
@@ -451,7 +450,10 @@
             $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
             let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
-            $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+            // $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+            let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+            warnText  = warnText.replace(':artistname', name);
+            $('#warning_text').html(warnText);
             $('#warning_text').css('color', '#580000');
         }
 

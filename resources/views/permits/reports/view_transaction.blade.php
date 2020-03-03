@@ -32,13 +32,13 @@
                 </button>
                 </a> --}}
                 <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
-                    target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('Print')}}
+                    target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('PRINT')}}
                     </button>
                 </a>
                 <a href="{{URL::signedRoute('company.reports')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
             </div>
 
@@ -117,7 +117,7 @@
                             <th>{{__('Artist Name')}}</th>
                             <th>{{__('Profession')}}</th>
                             <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                            <th class="text-center">{{__('Duration')}}</th>
+                            <th class="text-center">{{__('Permit Duration')}}</th>
                             <th class="text-right">{{__('Total')}} (AED)</th>
                             <th></th>
                         </tr>

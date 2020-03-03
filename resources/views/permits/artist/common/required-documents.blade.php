@@ -5,7 +5,7 @@
             <div class="card-title" data-toggle="collapse" data-target="#collapseTwo6" aria-expanded="false"
                 aria-controls="collapseTwo6">
                 <h6 class="kt-font-transform-u kt-font-bolder kt-font-dark">
-                    {{__('Required Documents')}}</h6>
+                    {{__('REQUIRED DOCUMENTS')}}</h6>
             </div>
         </div>
         <div id="collapseTwo6" class="collapse show" aria-labelledby="headingTwo6" data-parent="#accordionExample6">

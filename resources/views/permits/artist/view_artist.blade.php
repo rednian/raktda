@@ -2,9 +2,12 @@
 
 @section('title', 'View Artist Details - Smart Government Rak')
 
-@section('title', 'Artist Details')
-
 @section('content')
+
+@if(check_is_blocked()['status'] == 'blocked')
+@include('permits.artist.common.company_block')
+@endif
+
 
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
@@ -39,7 +42,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
             </div>
 
@@ -62,7 +65,9 @@
                         {{ucwords($artist_details->firstname_en[0])}}{{ucwords($artist_details->lastname_en[0])}}
                     </span>
                     @else
-                    <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image">
+                    {{-- <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image"> --}}
+                    <a id="artist_image" href="{{url('storage').'/'.$artist_details->original}}"><img
+                            src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="" /></a>
                     @endif
                 </div>
                 <div class="artist--view-head-details">
@@ -77,10 +82,10 @@
                             class="fa fa-envelope fa-2x text-muted"></i>{{$artist_details->email}}</span>
                     <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0">
                         <i class="fa fa-flag fa-2x text-muted"></i>
-                        {{getLangId() == 1 ? ucwords($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}
+                        {{getLangId() == 1 ? ucfirst($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}
                     </span>
                     <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0">
-                        <i class="fa fa-mobile fa-2x text-muted"></i>
+                        <i class="fa fa-mobile fa-2x text-muted kt-padding-l-20 kt-padding-r-20"></i>
                         {{$artist_details->mobile_number}}
                     </span>
                 </div>
@@ -90,7 +95,7 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Profession')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{getLangId() == 1 ? ucwords($artist_details->profession['name_en']) : $artist_details->profession['name_ar']}}
+                            {{getLangId() == 1 ? ucfirst($artist_details->profession['name_en']) : $artist_details->profession['name_ar']}}
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
@@ -127,7 +132,8 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Visa Type')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{$artist_details->visaType ? $artist_details->visaType->visa_type_en : ''}}</p>
+                            {{$artist_details->visaType ? getLangId() == 1 ? ucfirst($artist_details->visaType->visa_type_en) : $artist_details->visaType->visa_type_ar : ''}}
+                        </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Visa Number')}}</label>
@@ -209,5 +215,14 @@
 </div>
 
 </div>
+
+
+@endsection
+
+@section('script')
+
+<script>
+    $('#artist_image').fancybox();
+</script>
 
 @endsection

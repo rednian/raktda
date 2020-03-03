@@ -81,7 +81,7 @@
   <!-- begin #page-container -->
   <div id="page-container">
     <img class="center-block" style="width: 15%" src="{{ asset('img/small.png') }}">
-    <h4 class="text-center" style="margin-top: 2% 0">Create a company account</h4>
+    <h4 class="text-center" style="margin-top: 2% 0">Create an account</h4>
     <div class="m-t-10 m-b-20 p-b-40 text-center text-inverse">
       Already a member? Click <a class="text-success" href="{{ route('login') }}">here</a> to login.
     </div>

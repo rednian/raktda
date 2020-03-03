@@ -170,6 +170,7 @@
                                                                             class="form-control form-control-sm "
                                                                             placeholder="DD-MM-YYYY"
                                                                             data-date-end-date="0d" name="dob" id="dob"
+                                                                            value="01-01-{{date('Y') - 18}}"
                                                                             onchange="checkforArtist()" />
                                                                     </div>
                                                                 </div>
@@ -466,7 +467,7 @@
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                                         aria-expanded="false" aria-controls="collapseTwo6">
                                         <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
-                                            {{__('Contact Information')}}
+                                            {{__('CONTACT INFORMATION')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -551,7 +552,7 @@
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                                         aria-expanded="false" aria-controls="collapseTwo7">
                                         <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
-                                            {{__('Address Information')}}
+                                            {{__('ADDRESS INFORMATION')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -745,7 +746,7 @@
             <div class="kt-form__actions">
                 <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                     data-ktwizard-type="action-prev" id="prev_btn">
-                    {{__('Previous')}}
+                    {{__('PREVIOUS')}}
                 </div>
 
                 <input type="hidden" id="permit_id" value="{{$permit_id}}">
@@ -766,7 +767,7 @@
 
                 <a href="{{$routeBack}}">
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                        {{__('Back')}}
+                        {{__('BACK')}}
                     </div>
                 </a>
                 {{--
@@ -782,13 +783,13 @@
                 <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     data-ktwizard-type="action-submit">
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </button>
                 <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
-                        value="Save & Continue" id="submit_btn">{{__('Save & Continue')}}</button>
+                        value="Save and Continue" id="submit_btn">{{__('Save and Continue')}}</button>
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-elevate"
-                        value="Save & Add New Artist" id="submit_add_btn">{{__('Save & Add New Artist')}}</button>
+                        value="Save and Add New Artist" id="submit_add_btn">{{__('Save and Add New Artist')}}</button>
                 </div>
             </div>
 
@@ -796,7 +797,7 @@
 
             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                 data-ktwizard-type="action-next" id="next_btn">
-                {{__('Next')}}
+                {{__('NEXT')}}
             </div>
 
         </div>
@@ -933,10 +934,13 @@
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
-                uploadStr: `{{__('Upload')}}`,
-                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 returnType: "json",
                 showFileCounter: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileCountErrorStr:"<span><b>{{__('Maximum allowed files are:')}}</b></span>",
+                sizeErrorStr: "<span><b>{{__('Allowed Max size: ')}}</b></span>",
+                uploadErrorStr: "<span><b>{{__('Upload is not allowed')}}</b></span>",
                 abortStr: '',
                 multiple: false,
                 maxFileCount: 1,
@@ -1494,8 +1498,8 @@
 
         $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
-        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 3});
-        //endDate:'-10Y'
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        //endDate:'-10Y' //startView: 3
 
         $('#dob').on('changeDate', function (ev) {
             $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success');
@@ -1587,19 +1591,21 @@
                         }); 
                         if(data.artist.artist_status == 'blocked')
                         {
-                            $('#person_code_modal').append('<div class="text-danger kt-font-bolder">{{__("Sorry This Artist is blocked ! Please Select a New Artist")}}</div>');
+                            $('#person_code_modal').append('<div class="text-danger kt-font-bolder">{{__("Sorry, This Artist is blocked ! Please Select a New Artist")}}</div>');
                             return ;
                         }
-                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__("Name")}}:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>{{__("Name (Ar)")}}:</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">{{__("Select this Artist")}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__("Name")}}:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>{{__("Birthdate")}}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{{__("Gender")}}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{{__("Mobile Number")}}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{{__("Email")}}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{{__("Nationality")}}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">{{__("Select this Artist")}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{{__("Not this Artist")}}</button> </div>');
                             $('#artistDetailswithcode').val(JSON.stringify(data));
-                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
-                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                            var langid = $('#getLangid').val();
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_email').html(data.email);
                             $('#ex_artist_personcode').html(data.person_code);
                             var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
-                            $('#ex_artist_nationality').html(data.nationality.nationality_en);
+                            
+                            $('#ex_artist_nationality').html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
                             var gender = data.gender == 1 ? 'Male' : 'Female';
                             $('#ex_artist_gender').html(gender);
                             $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');

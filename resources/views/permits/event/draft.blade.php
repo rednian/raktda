@@ -70,19 +70,19 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
+                            {{__('PREVIOUS')}}
                         </div>
 
                         <a href="{{URL::signedRoute('event.index')}}#draft">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+                                {{__('BACK')}}
                             </div>
                         </a>
 
                         <div class="btn-group" role="group" id="submit--btn-group">
                             <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle "
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{__('Submit')}}
+                                {{__('SUBMIT')}}
                             </button>
                             <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
@@ -97,7 +97,7 @@
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
+                            {{__('NEXT')}}
                         </div>
 
                     </div>
@@ -1785,10 +1785,12 @@
                             }   
                             $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
                             $('#event_sub_type_req').html('*');
+                            $('#event_sub_type_id').removeClass('mk-disabled');
                         }else 
                         {
                             $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
                             $('#event_sub_type_req').html('');
+                            $('#event_sub_type_id').addClass('mk-disabled');
                         }
                     }
                 });

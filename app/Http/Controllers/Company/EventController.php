@@ -45,6 +45,7 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
+
         if(!$request->hasValidSignature()){
             return abort(401);
         }
@@ -485,9 +486,11 @@ class EventController extends Controller
     }
 
 
-    function insertEventImages($event_id, $desc){
+    function insertEventImages($event_id){
+    
         $userid = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
+        // dd(session($userid . '_image_file'));
         if(session($userid . '_image_file')){
             $total_docs = count(session($userid . '_image_file'));
             if ($total_docs > 0) {
@@ -521,7 +524,7 @@ class EventController extends Controller
                             'thumbnail' => $newThumbPathLink,
                             'event_id' => $event_id,
                             'size' => $size,
-                            'description' => $desc,
+                            // 'description' => $desc,
                             'created_by' =>$userid,
                         ]);
                     }
@@ -535,7 +538,7 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-
+        // dd(session(Auth::user()->user_id . '_image_file'));
         $evd = json_decode($request->eventD, true);
         $dod = json_decode($request->documentD, true);
         $lq = json_decode($request->lq, true);
@@ -807,8 +810,9 @@ class EventController extends Controller
             Storage::delete([session($userid . '_event_pic_file') , session($userid . '_event_thumb_file')]);
 
         }
+        
+            $this->insertEventImages($event_id);
 
-            $this->insertEventImages($event_id, $request->description);
             DB::commit();
             $event = Event::where('event_id', $event_id)->latest()->first();
             $this->sendNotification($event, 'new');
@@ -1035,7 +1039,7 @@ class EventController extends Controller
             }
         }
 
-        $this->insertEventImages($event_id, $request->description);
+        $this->insertEventImages($event_id);
 
         if ($dod) {
 
@@ -1240,7 +1244,6 @@ class EventController extends Controller
 
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
-            
             'default_font_size' => 10
         ]);
 
@@ -1345,7 +1348,7 @@ class EventController extends Controller
                     }else if ($permit->status == 'approved-unpaid') {
                         return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.payment', $permit->event_id) . '"  title="'.__('Payment').'"><span class="kt-badge kt-badge--success kt-badge--inline">'.__('Payment').'</span></a>';
                     }  else if ($permit->status == 'need modification') {
-                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="Add Artist" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
+                        return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.edit', $permit->event_id) . '" title="edit" ><span class="kt-badge kt-badge--warning kt-badge--inline kt-margin-r-5">'.__('Edit').'</span></a><a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.add_artist', $permit->event_id) . '" title="'.__('Add Artist').'" class="kt-font-dark kt-margin-l-10"><i class="fa fa-user-plus"></i></a>';
                     } else if ($permit->status == 'new') {
                         // return '<span onClick="cancel_permit(' . $permit->event_id . ',\'' . $permit->reference_number . '\','.''.')" data-toggle="modal" class="kt-badge kt-badge--danger kt-badge--inline">Cancel</span>';
                     }
@@ -1375,7 +1378,7 @@ class EventController extends Controller
                     break;
             }
         })->addColumn('type_name', function($permit) {
-            return getLangId() == 1 ? $permit->type->name_en : $permit->type->name_ar ;
+            return getLangId() == 1 ? ucfirst($permit->type->name_en) : $permit->type->name_ar ;
         })->addColumn('permit_status', function ($permit) {
             $status = $permit->status;
             $ret_status = '';
@@ -1413,7 +1416,7 @@ class EventController extends Controller
             if ($permit->status == 'expired') {
                 return;
             } else {
-                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="'.__('Download Permit').'"><i class="fa fa-file-download fs-16"></i></a>';
+                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="'.__('Download Permit').'" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
             }
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
@@ -1841,7 +1844,7 @@ class EventController extends Controller
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
         }
 
-        $this->insertEventImages($event_id, $request->description);
+        $this->insertEventImages($event_id);
 
         Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
@@ -2074,7 +2077,7 @@ class EventController extends Controller
             Event::where('event_id', $event_id)->update(['logo_original' => $newPathLink, 'logo_thumbnail' => $newThumbPathLink]);
         }
 
-        $this->insertEventImages($event_id, $request->description);
+        $this->insertEventImages($event_id);
 
         Storage::deleteDirectory('public/' . $userid . '/event/temp/');
 
@@ -2493,6 +2496,12 @@ class EventController extends Controller
     {
         $user_id = Auth::user()->user_id;
         $date = date('d_m_Y_H_i_s');
+        if (!$request->session()->exists($user_id . '_image_file')) {
+            session()->put($user_id . '_image_size', []);
+            session()->put($user_id . '_image_file', []);
+            session()->put($user_id . '_image_ext', []);
+            session()->put($user_id . '_image_thumb', []);
+        }
         $ext = $request->file('image_file')->getClientOriginalExtension();
         $fileName = $request->file('image_file')->getClientOriginalName();
         $size = $request->file('image_file')->getSize();
@@ -2502,27 +2511,26 @@ class EventController extends Controller
         $thumbImg->resize(300, 200,  function ($constraint) {
             $constraint->aspectRatio();
         });
-        Storage::makeDirectory($toUrl.'/thumb');
+        if(!Storage::exists($toUrl.'/thumb'))
+        {
+          Storage::makeDirectory($toUrl.'/thumb');
+        }
         $thumbPath = storage_path() . '/app/'.$toUrl.'/thumb/'. $fileName ;
         $thumbImg->save($thumbPath);
         $thumbSavedPath = $toUrl . '/thumb/' . $fileName;
 
         $savePath = $user_id . '/event/temp/pictures/'.$fileName;
         $saveThumbPath = $user_id . '/event/temp/pictures/thumb/'.$fileName;
-
-        if (!Session::exists($user_id . '_image_file')) {
-            session()->put($user_id . '_image_size', []);
-            session()->put($user_id . '_image_file', []);
-            session()->put($user_id . '_image_ext', []);
-            session()->put($user_id . '_image_thumb', []);
-        }
+       
         session()->push($user_id . '_image_file' , 'public/'.$savePath);
         session()->push($user_id . '_image_size' , $size);
         session()->push($user_id . '_image_ext' , $ext);
         session()->push($user_id . '_image_thumb' , 'public/'.$saveThumbPath);
-
+    
+    
         // return json_encode($file);
         return response()->json(['filepath' => $path, 'ext' => $ext]);
+       
     }
 
     function clearImageEventImageSession()
@@ -2624,16 +2632,16 @@ class EventController extends Controller
         $file = $request->file('pic_file');
         $ext = $file->getClientOriginalExtension();
         $fileName = $request->file('pic_file')->getClientOriginalName();
-        $original =  $user_id . '/event/temp';
+        $original =  $user_id . '/event/temp/logo';
         $path  = Storage::putFileAs('public/' . $original, $request->files->get('pic_file'), $fileName);
         $thumbImg = Image::make($request->file('pic_file')->getRealPath());
         $thumbImg->resize(300, 200,  function ($constraint) {
             $constraint->aspectRatio();
         });
-        Storage::makeDirectory('public/' . $user_id . '/event/temp/thumb');
-        $thumbPath = storage_path() . '/app/public/' . $user_id . '/event/temp/thumb/' . $fileName;
+        Storage::makeDirectory('public/' . $user_id . '/event/temp/logo/thumb');
+        $thumbPath = storage_path() . '/app/public/' . $original . '/thumb/' . $fileName;
         $thumbImg->save($thumbPath);
-        $thumbSavedPath = 'public/' . $user_id . '/event/temp/thumb/' . $fileName;
+        $thumbSavedPath = 'public/' . $original . '/thumb/' . $fileName;
         session([$user_id . '_event_pic_file' => $path, $user_id . '_event_ext' => $ext, $user_id . '_event_thumb_file' => $thumbSavedPath]);
 
         // return json_encode($file);

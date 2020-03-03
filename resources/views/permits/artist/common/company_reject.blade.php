@@ -6,7 +6,7 @@
                     <i class="flaticon-warning"></i>
                 </div>
                 <div class="alert-text">
-                    {{__('Your Company Registration is Rejected! Please Contact TDA Administrator')}}
+                    {{__('Your Establishment Registration is Rejected! Please Contact TDA Administrator')}}
                 </div>
             </div>
         </div>

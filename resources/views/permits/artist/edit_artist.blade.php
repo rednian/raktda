@@ -123,24 +123,24 @@
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        {{__('Previous')}}
+                        {{__('PREVIOUS')}}
                     </div>
 
                     <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
                     <a href="{{URL::signedRoute('company.view_draft_details',[ 'id' => $artist_details->permit_id])}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        {{__('Update')}}
+                        {{__('UPDATE')}}
                     </div>
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
+                        {{__('NEXT')}}
                     </div>
 
                 </div>

@@ -91,13 +91,13 @@
                 <table class="table table-striped table-borderless border display nowrap" id="applied-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Name')}}</th>
                             <th class="text-center">{{__('STATUS')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -108,12 +108,12 @@
                 <table class="table table-striped table-borderless border" id="existing-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
-                            <th>{{__('Event Name')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('EVENT NAME')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -126,8 +126,8 @@
                 <table class="table table-striped table-borderless border" id="expired-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th class="text-center">{{__('From Date')}} </th>
                             <th class="text-center">{{__('To Date')}} </th>
@@ -143,14 +143,14 @@
                 <table class="table table-striped table-borderless border" id="cancelled-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('Permit Number')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
                             <th>{{__('Event Type')}}</th>
                             <th class="text-center">{{__('From Date')}} </th>
                             <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('Event Name')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -174,7 +174,7 @@
                             <th>{{__('To')}} </th>
                             <th>{{__('Event Name')}}</th>
                             <th>{{__('ADDED ON')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -208,8 +208,7 @@
                 <form action="{{route('event.cancel')}}" id="cancel_permit_form" method="POST" novalidate>
                     @csrf
                     <label>{{__('Are you sure to Cancel this Permit of')}} <span class="text--maroon"
-                            id="cancel_permit_number"></span>
-                        ?</label>
+                            id="cancel_permit_number"></span> ?</label>
                     <textarea name="cancel_reason" rows="3" placeholder="{{__('Enter the reason here')}}"
                         style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                     <input type="hidden" id="cancel_permit_id" name="permit_id">
@@ -238,7 +237,7 @@
             <div class="modal-body">
                 <form action="{{route('event.delete_draft')}}" method="POST" novalidate>
                     @csrf
-                    <label>{{__('Are you sure to delete this draft ?')}}
+                    <label>{{__('Are you sure to delete this draft ?')}}
                         {{__('Data will be lost !')}}</label>
                     <input type="hidden" id="del_draft_id" name="del_draft_id">
                     <div>
@@ -531,7 +530,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
+                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
                 
@@ -576,10 +575,10 @@
     
     $('#cancel_permit_form').validate({
         rules: {
-            cancel_reason: 'required'
+            cancel_reason: "{{__('required')}}"
         },
         messages: {
-            cancel_reason: 'Please Enter the Reason !'
+            cancel_reason: "{{__('Please Enter the Reason')}}"
         }
     });
 

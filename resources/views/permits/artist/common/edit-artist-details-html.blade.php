@@ -32,7 +32,7 @@
                                         <div class="form-group form-group-sm row">
                                             <label for="fname_en"
                                                 class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
-                                                {{__('First Name')}} <span class="text-danger">*</span>
+                                                {{__('First Name (EN)')}} <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -48,8 +48,8 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="fname_en"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name')}}<span
-                                                    class="text-danger">*</span></label>
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (EN)')}}
+                                                <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <input type="text" class="form-control form-control-sm " dir="ltr"
@@ -85,7 +85,7 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="dob"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birth Date')}}
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birthdate')}}
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
@@ -101,7 +101,7 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="profession"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No.')}}
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No')}}
                                                 <span class="text-danger hd-uae">*</span>
                                             </label>
                                             <div class="col-lg-8">
@@ -115,8 +115,8 @@
                                         </div>
                                         <div class="form-group form-group-sm row">
                                             <label for="pp_expiry"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}<span
-                                                    class="text-danger hd-uae">*</span>
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}
+                                                <span class="text-danger hd-uae">*</span>
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -377,7 +377,7 @@
             <div class="card-header" id="headingTwo6">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                     aria-expanded="false" aria-controls="collapseTwo6">
-                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Contact Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('CONTACT INFORMATION')}}
                     </h6>
                 </div>
             </div>
@@ -461,7 +461,7 @@
             <div class="card-header" id="headingTwo7">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                     aria-expanded="false" aria-controls="collapseTwo7">
-                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Address Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('ADDRESS INFORMATION')}}
                     </h6>
                 </div>
             </div>
@@ -496,7 +496,7 @@
                                                 @foreach ($emirates as $em)
                                                 <option value="{{$em->id}}"
                                                     {{$em->id == $artist_details->city ? 'selected' : '' }}>
-                                                    {{getLangId() == 1 ? $em->name_en : $em->name_ar}}
+                                                    {{getLangId() == 1 ? ucfirst($em->name_en) : $em->name_ar}}
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -532,7 +532,7 @@
                                                 @foreach ($areas as $ar)
                                                 <option value="{{$ar->id}}"
                                                     {{$ar->id == $artist_details->area ? 'selected' : '' }}>
-                                                    {{getLangId() == 1 ? $ar->area_en : $ar->area_ar}}
+                                                    {{getLangId() == 1 ? ucfirst($ar->area_en) : $ar->area_ar}}
                                                 </option>
                                                 @endforeach
                                             </select>

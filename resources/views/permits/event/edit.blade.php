@@ -60,26 +60,26 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
+                            {{__('PREVIOUS')}}
                         </div>
 
 
                         <a href="{{URL::signedRoute('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+                                {{__('BACK')}}
                             </div>
                         </a>
 
 
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                            {{__('Submit')}}
+                            {{__('SUBMIT')}}
                         </div>
 
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
+                            {{__('NEXT')}}
                         </div>
 
                     </div>
@@ -1741,10 +1741,12 @@
                             }   
                             $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
                             $('#event_sub_type_req').html('*');
+                            $('#event_sub_type_id').removeClass('mk-disabled');
                         }else 
                         {
                             $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
                             $('#event_sub_type_req').html('');
+                            $('#event_sub_type_id').addClass('mk-disabled');
                         }
                     }
                 });

@@ -47,3 +47,7 @@ function dayCount(from, to) {
     var to = moment([y.format("YYYY"), y.month(), y.format("DD")]);
     return to.diff(from, "days");
 }
+
+function capitalizeThis(word) {
+    return word.charAt(0).toUpperCase() + word.substring(1);
+}
