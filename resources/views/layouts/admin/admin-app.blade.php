@@ -40,9 +40,10 @@
         font-family: 'DroidArabicKufiRegular', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
         font-weight: normal;
     }
-    section, div, p, span{
-        font-size: 1rem;
+    section, div, p, span, label, input, textarea{
+        font-size: 1.1rem !important;
         font-style: normal;
+        /* font-weight: 300; */
     }
     h1, h2, h3, h4, h5, h6, .kt-font-bold, strong, th, .widget24__title{
         font-family: 'DroidArabicKufiBold', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
