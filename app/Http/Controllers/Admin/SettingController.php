@@ -42,48 +42,11 @@ class SettingController extends Controller
 
 	public function excelTojson(Request $request){
 
-		// $url = 'https://rakbankpay.mtf.gateway.mastercard.com/api/rest/version/54/merchant/NRSINFOWAYSL/session';
-		$url= 'https://test-rakbankpay.mtf.gateway.mastercard.com/api/rest/version/52/merchant/NRSINFOWAYSL/session';
-		$postFields = array(
-		    'apiOperation' => 'CREATE_CHECKOUT_SESSION',
-		    'order' => array(
-		    	'id' => 'ORDER'.time(),
-		        'currency' => 'AED',
-		    ),
-		    'risk' => [
-		    	'bypassMerchantRiskRules' => 'ALL'
-		    ],
-		    'interaction' => array(
-		    	'action' => [
-		    		'3DSecure' => 'BYPASS'
-		    	],
-		        'operation' => 'PURCHASE',
-		    ),
-		);
-
-		$username = "merchant.NRSINFOWAYSL";
-		$password = "294ddd6f4c0ebe800b899ee346f8a1b8";
-
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-			'Content-Type: application/json'
-		));
-		curl_setopt($curl, CURLOPT_USERPWD, $username . ":" . $password);
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($postFields));
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		$output = curl_exec($curl);
-		curl_close($curl);
-
-		$output = json_decode($output);
 
 		// dd($output);
 
-		return view('admin.settings.checkout', ['sessionId' => $output->session->id, 'merchantId' => $output->merchant, 'updateStatus' => $output->session->updateStatus, 'version' => $output->session->version]);
 		// return view('admin.settings.checkout');
-		
+
 		// $event = Event::find(25);
 
 		// dd($event->owner->company->users);
@@ -103,27 +66,27 @@ class SettingController extends Controller
 		// 	]));
 		// }
 
-		// Excel::load(storage_path() . '/app/public/translations2.xlsx', function($reader){
-		//     // Getting all results
-		//     $arr = array();
-		//     $reader->each(function($sheet) use($arr){
+		Excel::load(storage_path() . '/app/public/translations.xlsx', function($reader){
+		    // Getting all results
+		    $arr = array();
+		    $reader->each(function($sheet) use($arr){
 
-		//     	$key = $sheet['english'];
-		//     	$value = $sheet['arabic'];
+		    	$key = $sheet['english'];
+		    	$value = $sheet['arabic'];
 
-		//     	if($value != ''){
-		//     		echo '"'.$key . '":"' . $value . '",<br>';
-		//     	}
-		    	
-		//     	// dd($sheet['english']);
-		// 	    // // // Loop through all rows
-		// 	    // // $sheet->each(function($row) {
+		    	if($value != ''){
+		    		echo '"'.$key . '":"' . $value . '",<br>';
+		    	}
 
-		// 	    // // 	dd($row->arabic);
-		// 	    // // });
-		// 	});
-		// });
-		
+		    	// dd($sheet['english']);
+			    // // // Loop through all rows
+			    // // $sheet->each(function($row) {
+
+			    // // 	dd($row->arabic);
+			    // // });
+			});
+		});
+
 	}
 
 	public function checkoutsession(){

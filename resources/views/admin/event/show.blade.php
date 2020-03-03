@@ -19,9 +19,8 @@
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
             @if (in_array($event->status, ['active', 'expired', 'cancelled']) && !is_null($event->approved_by))
-                {{-- <div class="dropdown-divider"></div> --}}
                 <a target="_blank" class="btn btn-warning kt-font-transform-u btn-sm kt-margin-l-5"
-                href="{{ URL::signedRoute('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('Download Permit') }}</a>
+                href="{{ URL::signedRoute('admin.event.download', $event->event_id) }}"><i class="la la-download"></i> {{ __('DOWNLOAD') }}</a>
             @endif
             <div class="dropdown dropdown-inline">
                  <button type="button" class="btn btn-elevate btn-icon btn-sm btn-icon-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,7 +29,7 @@
                  <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 
                   <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $event->owner->company) }}">
-                    {{ __('Establishment Detail') }}
+                    {{ __('ESTABLISHMENT PROFILE') }}
                   </a>
 
                  </div>
@@ -347,9 +346,9 @@
                               <td class="kt-font-dark">{{ Auth::user()->LanguageId == 1 ? ucfirst($event->note_en) : $event->note_ar }}</td>
                          </tr>
                      </table>
+                     @if ($event->liquor()->exists())
                      <hr>
                      <h6 class="kt-font-dark kt-font-transform-u">{{__('Liquor Details')}}</h6>
-                     @if ($event->liquor()->exists())
                        <table class="table table-sm table-hover table-borderless table-display">
                          <tr>
                           <tr>
@@ -379,8 +378,6 @@
                            @endif
                          </tr>
                        </table>
-                       @else
-                      <small> {{__('No Liquor on this event.')}}</small>
                      @endif
 
                      {{-- <div class="d-flex justify-content-center">
@@ -486,6 +483,8 @@
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
             </a>
           </li>
+
+          @if($event->truck()->exists())
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#truck-tab" role="tab">
@@ -494,6 +493,9 @@
             </a>
           </li>
           @endif
+          @endif
+
+          {{-- @if($event->liqour()->exists())
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#liquor-tab" role="tab">
@@ -502,6 +504,9 @@
             </a>
           </li>
           @endif
+          @endif --}}
+
+          @if($event->permit()->exists())
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#artist-tab" role="tab">
@@ -510,12 +515,18 @@
             </a>
           </li>
           @endif
+          @endif
+
+          @if($event->otherUpload()->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#images-tab" role="tab">
               <i class="fa fa-bar-chart" aria-hidden="true"></i>{{ __('EVENT IMAGES') }}
               <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
             </a>
           </li>
+
+          @endif
+
           @if(!Auth::user()->roles()->whereIn('roles.role_id', [6])->exists())
           <li class="nav-item">
             <a class="nav-link kt-font-transform-u" data-toggle="tab" href="#kt_portlet_base_demo_4_4_tab_content" role="tab">
@@ -524,6 +535,7 @@
             </a>
           </li>
           @endif
+
         </ul>
         <div class="tab-content">
           <div class="tab-pane active" id="event-tab" role="tabpanel">
@@ -638,6 +650,16 @@
   var document_table = {};
   var comment_table = {};
   $(document).ready(function(){
+
+    // hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+    //     $('.nav-tabs a').click(function (e) {
+    //       $(this).tab('show');
+    //       var scrollmem = $('body').scrollTop();
+    //       window.location.hash = this.hash;
+    //       $('html,body').scrollTop(scrollmem);
+    //     });
+
+    $("div.kt-portlet__body.kt-padding-t-5 > section.row.kt-margin-t-10 > div.col-md-7 > section > div > div:nth-child(3)").click(function(){ $('.nav-tabs a[href="#images-tab"]').tab('show');  });
 
     $('input[name=is_display_web]').change(function(){
 

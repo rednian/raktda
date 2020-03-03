@@ -20,31 +20,28 @@ return [
     // 'watermark_font' => 'sans-serif',
     'display_mode' => 'fullpage',
     'watermark_text_alpha' => 0.1,
-    // 'auto_language_detection' => true,
-    // 'temp_dir' => '',
-    // 'custom_font_data' => [],
-    'custom_font_dir' => base_path('public/fonts/'), // don't forget the trailing slash!
-	'custom_font_data' => [
-		'DroidKufi' => [
-            'R'  => 'DroidKufi-Regular.ttf',    // regular font
-            'B'  => 'DroidKufi-Bold.ttf',          
-		]
-	]
 
 
     // 'useOTL' => 0xFF,
     // 'useKashida' => 75,
 
 
-    // 'droidkufi' => [
-    //     'R'  => asset('fonts/DroidKufi-Regular.ttf'),    // regular font
-    //     'B'  => asset('fonts/DroidKufi-Bold.ttf'),          // optional: bold font
-    //     // 'I'  => 'arabic-font-Light.ttf',    // optional: italic font
-    //     // 'BI' => 'arabic-font.ttf',           // optional: bold-italic font
+    // 'arabic-font' => [
+    //     'R'  => 'DroidKufi-Regular.ttf',    // regular font
+    //     'B'  => 'DroidKufi-Bold.ttf',          // optional: bold font
     //     'useOTL' => 0xFF,
     //     'useKashida' => 75,
-    // ]
+    // ],
 
-
+    'custom_font_dir' => base_path('/resources/fonts/'), // don't forget the trailing slash!
+	'custom_font_data' => [
+		'arabic1' => [
+			'R'  => 'DroidKufi-Regular.ttf',
+            'B'  => 'DroidKufi-Bold.ttf',
+            'useOTL' => 0xFF,
+            'useKashida' => 75,
+		]
+	// 	// ...add as many as you want.
+	]
 
 ];

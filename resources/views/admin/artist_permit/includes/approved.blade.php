@@ -56,7 +56,7 @@
 <table class="table  table-hover  table-borderless table-striped table-sm border" id="artist-permit-approved">
 	 <thead>
 	 <tr>
-			<th></th>
+			{{-- <th></th> --}}
 			<th>{{ __('ACTION') }}</th>
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('PERMIT NO.') }}</th>
@@ -64,10 +64,6 @@
 			<th>{{ __('APPROVED DATE') }}</th>
 			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
-				 <span data-content="The number of artist that already checked"
-							 data-original-title="" data-container="body" data-toggle="kt-popover"
-							 data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-							</span>
 			</th>
 			{{-- <th>{{ __('REQUEST TYPE') }}</th> --}}
 			<th>{{ __('WORK LOCATION') }}</th>

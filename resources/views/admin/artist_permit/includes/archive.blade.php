@@ -62,10 +62,6 @@
 			<th>{{ __('WORK LOCATION') }}</th>
 			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
-				 <span data-content="The number of artist that already checked"
-							 data-original-title="" data-container="body" data-toggle="kt-popover"
-							 data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-							</span>
 			</th>
 			{{-- <th>{{ __('REQUEST TYPE') }}</th> --}}
 			<th>{{ __('PERMIT STATUS') }}</th>

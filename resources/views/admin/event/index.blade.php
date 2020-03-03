@@ -494,6 +494,7 @@
         <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
@@ -593,6 +594,7 @@
           id="new-event-archive">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
@@ -718,7 +720,10 @@
      };
      $(document).ready(function () {
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
-      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });4
+      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){ $('.nav-tabs a[href="#processing-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(5) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
 
       newEvent();
       calendar();
@@ -767,6 +772,7 @@
         order: [[11, 'desc']],
         responsive: true,
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -792,11 +798,10 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
-          $('button', row).click(function(e){
-            e.stopPropagation();
-          });
-          $('.btn-download', row).click(function(e) { e.stopPropagation(); });
-          $('td:not(:first-child)',row).click(function () { location.href = data.show_link; });
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
+            $('button', row).click(function(e){ e.stopPropagation(); });
+            $('.btn-download', row).click(function(e) { e.stopPropagation(); });
+            $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
         },
         initComplete: function(){
            $('[data-toggle="tooltip"]').tooltip();
@@ -833,9 +838,9 @@
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
-        // responsive:true,
         order: [[6, 'desc']],
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -860,6 +865,7 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
           $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
 
           $('#cancel-modal').on('shown.bs.modal', function () {
@@ -1160,7 +1166,7 @@
               header: {
                   left: 'prev,next today',
                   center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+                  right: 'listWeek,dayGridMonth',
               },
               height: 'auto',
               allDaySlot: true,
@@ -1174,7 +1180,7 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'listWeek',
+              defaultView: 'dayGridMonth',
               defaultDate: TODAY,
               editable: false,
               eventLimit: true, // allow "more" link when too many events

@@ -318,7 +318,7 @@
 					url: '{{ url('/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'
 				},
 				columnDefs: [
-					{targets: [3], className: 'no-wrap'},
+					{targets: '_all', className: 'no-wrap'},
 					{targets: [3], className: 'no-wrap', sortable: false},
 					@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 					{targets: [3], visible: false},
