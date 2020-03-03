@@ -494,6 +494,7 @@
         <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
@@ -593,6 +594,7 @@
           id="new-event-archive">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
@@ -770,6 +772,7 @@
         order: [[11, 'desc']],
         responsive: true,
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -795,11 +798,10 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
-          $('button', row).click(function(e){
-            e.stopPropagation();
-          });
-          $('.btn-download', row).click(function(e) { e.stopPropagation(); });
-          $('td:not(:first-child)',row).click(function () { location.href = data.show_link; });
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
+            $('button', row).click(function(e){ e.stopPropagation(); });
+            $('.btn-download', row).click(function(e) { e.stopPropagation(); });
+            $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
         },
         initComplete: function(){
            $('[data-toggle="tooltip"]').tooltip();
@@ -836,9 +838,9 @@
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
-        // responsive:true,
         order: [[6, 'desc']],
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -863,6 +865,7 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
           $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
 
           $('#cancel-modal').on('shown.bs.modal', function () {

@@ -36,19 +36,16 @@
   @else
   <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css"/>
   <style>
-         body{
+        *{
         font-family: 'DroidArabicKufiRegular', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
         font-weight: normal;
-    }
-    section, div, p, span, label, input, textarea{
-        font-size: 1.1rem !important;
         font-style: normal;
-        /* font-weight: 300; */
     }
+
     h1, h2, h3, h4, h5, h6, .kt-font-bold, strong, th, .widget24__title{
         font-family: 'DroidArabicKufiBold', -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-        font-weight: bold;
-        font-size: 1.2rem;
+        font-weight: bold !important;
+        /* font-size: 1rem !important; */
     }
     td{
         font-weight: normal;
