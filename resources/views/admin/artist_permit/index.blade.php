@@ -168,12 +168,11 @@
   var hash = window.location.hash;
 
   $(document).ready(function () {
-    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){
-       $('.nav-tabs a[href="#new-request"]').tab('show');
-    });
-    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){
-     $('.nav-tabs a[href="#pending-request"]').tab('show');
-    });
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#new-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){$('.nav-tabs a[href="#pending-request"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){$('.nav-tabs a[href="#archive-permit"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){$('.nav-tabs a[href="#archive-permit"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(5) > div").click(function(){$('.nav-tabs a[href="#processing-permit"]').tab('show');});
 
 
 
@@ -503,7 +502,7 @@
                {targets: 5, sortable: false},
             ],
             columns: [
-               {render:function(){ return null;}},
+            //    {render:function(){ return null;}},
                {data: 'action'},
                {data: 'reference_number'},
                {data: 'permit_number'},
@@ -516,8 +515,9 @@
             ],
 
             createdRow: function (row, data, index) {
+                $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
 
-              $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
+            //   $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
               $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
               $('.btn-download', row).click(function(e){ e.stopPropagation(); });
 

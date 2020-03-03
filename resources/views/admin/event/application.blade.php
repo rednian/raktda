@@ -1449,7 +1449,7 @@
 					data: function(d){},
 				},
 				columnDefs:[
-					// {targets: '_all', className: 'no-wrap'},
+					{targets: [1,2,3,4], className: 'no-wrap'},
 				],
 				"order": [[ 0, 'asc' ]],
 				rowGroup: {

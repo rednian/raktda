@@ -1,5 +1,6 @@
 @extends('layouts.admin.admin-app')
 @section('content')
+{{-- {{ dd(base_path('/resources/fonts/')) }} --}}
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
    <div class="kt-portlet__body">
       <section class="row">
@@ -266,6 +267,11 @@
    var new_company = {};
    var company_table = {};
    $(document).ready(function(){
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#new-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){$('.nav-tabs a[href="#processing-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
+
       hasUrl()
       newCompany();
 

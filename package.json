@@ -23,7 +23,9 @@
     "dependencies": {
         "gasparesganga-jquery-loading-overlay": "^2.1.6",
         "laravel-echo": "^1.6.1",
+        "prod": "^1.0.1",
         "pusher-js": "^5.0.3",
+        "run": "^1.4.0",
         "webpack": "^4.41.0"
     }
 }
