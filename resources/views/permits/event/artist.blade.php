@@ -8,7 +8,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Add Artist to Event Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('ADD ARTIST TO EVENT PERMIT')}}
             </h3>
         </div>
 
@@ -98,7 +98,7 @@
                                             id="work_loc_ar" dir="rtl" value="{{$event->venue_ar}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
@@ -115,7 +115,7 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            {{__('Select Event')}} <span class="text-danger">*</span></label>
+                                            {{__('SELECT EVENT')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm mk-disabled"
                                             name="event_id" id="event_id">
                                             <option value=" ">{{__('Select')}}</option>

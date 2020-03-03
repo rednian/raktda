@@ -202,7 +202,7 @@
                                             <tr>
                                                 <th>{{__('Event Name')}}</th>
                                                 <th>{{__('Event Type')}}</th>
-                                                <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                                                <th class="text-right">{{__('Fee / Day')}} (AED)</th>
                                                 <th class="text-center">{{__('No.of.days')}}</th>
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
@@ -264,7 +264,7 @@
                                                 $event_fee_total += $truck_fee;
                                                 $event_grand_total += $truck_fee + $truck_vat_amt;
                                                 @endphp
-                                                <td colspan="2">{{__('Truck Fee')}}</td>
+                                                <td colspan="2">{{__('Food Truck')}}</td>
                                                 <td class="text-right">{{number_format($per_truck_fee, 2)}} / truck</td>
                                                 <td class="text-center">
                                                     {{$noofdays}}
@@ -349,7 +349,7 @@
                                                     {{number_format($ap->profession['amount'],2)}}
                                                 </td>
                                                 <td class="text-right">
-                                                    {{ucfirst($ap->term).' Term ('. $noofdays.' days )' }}
+                                                    {{$noofdays.' '.__('days')}}
                                                 </td>
                                                 <td class="text-right">
                                                     {{number_format($artist_fee, 2)}}
@@ -425,13 +425,13 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
+                            {{__('PREVIOUS')}}
                         </div>
 
 
                         <a href="{{URL::signedRoute('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+                                {{__('BACK')}}
                             </div>
                         </a>
 
@@ -449,7 +449,7 @@
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
                             <i class="fa fa-check"></i>
-                            {{__('Pay')}}
+                            {{__('PAY')}}
                         </div>
 
 
@@ -457,14 +457,14 @@
 
                         <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
                             class="kt-hide "><span
-                                class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('Next')}}</span>
+                                class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('NEXT')}}</span>
                         </a>
 
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
+                            {{__('NEXT')}}
                         </div>
 
 

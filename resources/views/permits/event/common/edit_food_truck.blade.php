@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}}&emsp;<i
                         class="fa fa-truck"></i>
                 </h5>
                 <div class="d-flex" style="position: absolute;{{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">

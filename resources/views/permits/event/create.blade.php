@@ -128,7 +128,7 @@
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
                         id="submit_btn">{{__('Finish & Submit')}}</button>
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
-                        id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
+                        id="submit_btn_artist">{{__('Submit and Add Artist')}}</button>
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
                         id="draft_btn">{{__('Save as Draft')}}</button>
                 </div>
@@ -848,7 +848,7 @@
                 data: { firm: firm , id: id},
                 success: function (result) {
                     $('#documents_required').empty();
-                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Event Permit Required documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
                  if(result){
                      var res = result;
                      $('#requirements_count').val(res.length);
@@ -1743,6 +1743,11 @@
             dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            language: {
+                @if(Auth::check() && Auth::user()->LanguageId != 1)
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_'
+                @endif
+            },
         });
 
 </script>

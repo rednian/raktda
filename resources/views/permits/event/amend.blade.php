@@ -9,7 +9,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('AMEND EVENT PERMIT')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Event Permit')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$event->permit_number}}
@@ -110,7 +110,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck ?')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck')}} ?</label>
                         <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext">
                                 {{$event->truck()->exists() ? 'Yes' : 'No'}}</span>
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor Serving ?')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor Serving')}} ?</label>
                         <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext ">
                                 {{$event->liquor()->exists() ? 'Yes' : 'No'}}</span>

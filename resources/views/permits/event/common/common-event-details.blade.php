@@ -145,8 +145,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Food Truck')}}
-                                                ?</label>
+                                                {{__('Food Truck')}} ?</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio ">
@@ -180,7 +179,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label for="owner_name"
-                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Owner Name (EN)')}}
+                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Event Owner (EN)')}}
                                                 <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -194,7 +193,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label for="owner_name"
-                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Owner Name (AR)')}}
+                                                class="col-md-4 col-form-label kt-font-bold text-right">{{__('Event Owner (AR)')}}
                                                 <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -251,7 +250,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Liquor Serving ?')}}</label>
+                                                {{__('Liquor Serving')}} ?</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio">
@@ -404,7 +403,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
             <div class="card-title show" data-toggle="collapse" data-target="#collapseTwo4" aria-expanded="false"
                 aria-controls="collapseTwo6">
                 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                    {{__('Location & Map Details')}}
+                    {{__('Location and Map Details')}}
                 </h6>
             </div>
         </div>

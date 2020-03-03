@@ -5,7 +5,9 @@
             <i class="flaticon-warning"></i>
         </div>
         <div class="alert-text">
-            {{__('Food Truck Fee is AED ').number_format(getSettings()->food_truck_fee,2). __(' per day for each truck')}}{{__(' and should be registered in Ras Al Khaimah')}}
+            {{-- {{__('Food Truck Fee is AED ').number_format(getSettings()->food_truck_fee,2). __(' per day for each truck')}}{{__(' and should be registered in Ras Al Khaimah')}}
+            --}}
+            {{trans_choice('messages.truck_fee', getLangId(), ['amount' => number_format(getSettings()->food_truck_fee,2)])}}
         </div>
         <div class="alert-close">
             <button class="close" type="button" data-dismiss="alert" aria-label="Close"><i
