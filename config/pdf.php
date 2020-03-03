@@ -20,16 +20,6 @@ return [
     // 'watermark_font' => 'sans-serif',
     'display_mode' => 'fullpage',
     'watermark_text_alpha' => 0.1,
-    // 'auto_language_detection' => true,
-    // 'temp_dir' => '',
-    // 'custom_font_data' => [],
-    // 'custom_font_dir' => base_path('public/fonts/'), // don't forget the trailing slash!
-	// 'custom_font_data' => [
-	// 	'DroidKufi' => [
-    //         'R'  => 'DroidKufi-Regular.ttf',    // regular font
-    //         'B'  => 'DroidKufi-Bold.ttf',
-	// 	]
-	// ]
 
 
     // 'useOTL' => 0xFF,
