@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('View Food Truck')}} <i class="fa fa-truck"></i>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Food Truck List')}} <i class="fa fa-truck"></i>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -11,12 +11,12 @@
             <div class="modal-body">
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
-                        <thead class="kt-font-transform-u">
+                        <thead class="no-wrap">
                             <th>#</th>
-                            <th>{{__('Establishment Name')}}</th>
+                            <th>{{__('Establishment Name (EN)')}}</th>
                             <th>{{__('Establishment Name (AR)')}}</th>
-                            <th>{{__('Plate No')}}</th>
-                            <th>{{__('Food Services')}}</th>
+                            <th>{{__('Traffic Plate No')}}</th>
+                            <th>{{__('Types of provided F & B')}}</th>
                             <th></th>
                         </thead>
                         <tbody id="food_truck_list">
@@ -37,6 +37,9 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="edit_truck_title">{{__('View Food Truck')}}
                 </h5>
+                <div class="d-flex" style="position: absolute; {{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">
+                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
+                </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
@@ -44,7 +47,7 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
                                 id="company_name_en" disabled>
                         </div>
@@ -54,7 +57,7 @@
                                 id="company_name_ar" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}}</label>
                             <textarea class="form-control form-control-sm" name="food_type" id="food_type" disabled
                                 placeholder="food type" rows="2"></textarea>
                         </div>
@@ -92,11 +95,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <label
-                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                 <span id="cnd_{{$i}}"></span>
                             </label>
                             <p for="" class="reqName">
-                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                             </p>
                         </div>
                         <input type="hidden" value="{{$req->requirement_id}}" id="truck_req_id_{{$i}}">
@@ -129,9 +132,6 @@
                     @endphp
                     @endforeach
                 </form>
-                <div class="d-flex justify-content-between kt-margin-t-10">
-                    <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()">{{__('Back')}}</button>
-                </div>
             </div>
         </div>
     </div>

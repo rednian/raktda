@@ -14,10 +14,13 @@
     --gray-light: #edeef4;
 }
 
-button, input, optgroup, select, textarea {
-    font-family: sans-serif;
+button,
+input,
+optgroup,
+select,
+textarea {
+    /* font-family: sans-serif; */
 }
-
 
 /*sidebar*/
 .kt-aside,
@@ -707,14 +710,14 @@ select option:first-child {
 .artist--view-head-image {
     width: 200px;
     height: auto;
-    box-shadow: 0px 0px 15px #bbb5b5;
+    /* box-shadow: 0px 0px 15px #bbb5b5; */
     /* margin-right: 15px; */
 }
 
 .artist--view-head-image img,
 .artist--view-head-image span {
     width: 100%;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 0px;
     /* border: 1px solid #ccc; */
 }
@@ -755,7 +758,7 @@ select option:first-child {
 .fs-16 {
     font-size: 16px;
 }
-/* 
+/*
 .datepicker {
     z-index: 100 !important;
 } */
@@ -828,4 +831,8 @@ img.ajax-file-upload-preview {
 
 .ht-20 {
     height: 20px !important;
+}
+
+.kt-wizard-v3__nav-label {
+    text-align: center !important;
 }

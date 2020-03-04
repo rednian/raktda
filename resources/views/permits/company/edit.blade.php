@@ -139,7 +139,7 @@
                                             <div class="card-title kt-padding-t-10 kt-padding-b-5"
                                                 data-toggle="collapse" data-target="#collapseOne6" aria-expanded="true"
                                                 aria-controls="collapseOne6">
-                                                <h6 class="kt-font-dark ">ESTABLISHMENT DETAILS</h6>
+                                                <h6 class="kt-font-dark ">{{__('Establishment Details')}}</h6>
                                             </div>
                                         </div>
                                         <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -178,7 +178,7 @@
         @endphp
         <div class="col-md-6">
             <input type="hidden" name="empty_document" value="{{$invalid}}">
-            <label>Establishment Name <span class="text-danger">*</span></label>
+            <label>{{__('Establishment Name')}} <span class="text-danger">*</span></label>
             <input required {{$disabled}} name="name_en" autocomplete="off"
                 class=" @error('name_en') is-invalid @enderror form-control form-control-sm" type="text"
                 value="{{old( 'name_en',$company->name_en)}}">
@@ -188,7 +188,7 @@
 
         </div>
         <div class="col-md-6">
-            <label>Establishment Name (AR)<span class="text-danger">*</span></label>
+            <label>{{__('Establishment Name (AR)')}}<span class="text-danger">*</span></label>
             <input required {{$disabled}} dir="rtl" name="name_ar" autocomplete="off"
                 class="@error('name_ar') is-invalid @enderror form-control form-control-sm" type="text"
                 value="{{old('name_ar', $company->name_ar)}}">
@@ -202,7 +202,7 @@
         <div class="col-md-6">
             <div class="row form-group form-group-sm">
                 <div class="col-sm-6">
-                    <label>Trade License Number <span class="text-danger">*</span></label>
+                    <label>Business License Number <span class="text-danger">*</span></label>
                     <input required name="trade_license" autocomplete="off" class="form-control form-control-sm
                                                                        @error('trade_license') is-invalid @enderror"
                         type="text" value="{{$company->trade_license }}">
@@ -211,7 +211,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <label>Trade License Expiry Date<span class="text-danger">*</span></label>
+                    <label>Business License Expiry Date<span class="text-danger">*</span></label>
                     <input required name="trade_license_expired_date" autocomplete="off"
                         class="date-picker end form-control form-control-sm
                                                                       @error('trade_license_    _date') is-invalid @enderror" type="text"
@@ -250,7 +250,7 @@
         <div class="col-md-6">
             <div class="row form-group form-group-sm">
                 <div class="col-sm-12">
-                    <label>Area<span class="text-danger">*</span></label>
+                    <label>{{__('Area')}}<span class="text-danger">*</span></label>
                     <select required name="area_id" class="select2 form-control form-control-sm
                                                                       @error('area_id') is-invalid @enderror">
                         <option></option>
@@ -271,7 +271,7 @@
         <div class="col-md-6">
             <div class="row form-group form-group-sm">
                 <div class="col-sm-12">
-                    <label>Address in Ras Al Khaimah<span class="text-danger">*</span></label>
+                    <label>{{__('Address in Ras Al Khaimah')}}<span class="text-danger">*</span></label>
                     <textarea required dir="ltr" name="address" autocomplete="off" rows="2"
                         class="form-control @error('address') is-invalid @enderror">{{old('address', $company->address)}}</textarea>
                     @if ($errors->has('address'))
@@ -285,7 +285,7 @@
     </section>
     <section class="row form-group form-group-sm">
         <div class="col-md-6">
-            <label>Establishment Details<span class="text-danger">*</span></label>
+            <label>{{__('Establishment Details')}}<span class="text-danger">*</span></label>
             <textarea required rows="3" autocomplete="off" dir="ltr" class="form-control form-control-sm
                                                                @error('company_description_en') is-invalid @enderror"
                 name="company_description_en">{{old('company_description_en',$company->company_description_en)}}</textarea>
@@ -294,7 +294,7 @@
             @endif
         </div>
         <div class="col-md-6">
-            <label>Establishment Details (AR)<span class="text-danger">*</span></label>
+            <label>{{__('Establishment Details (AR)')}}<span class="text-danger">*</span></label>
             <textarea required dir="rtl" rows="3" autocomplete="off"
                 class="form-control form-control-sm @error('company_description_ar') is-invalid @enderror"
                 name="company_description_ar">{{old('company_description_ar', $company->company_description_ar)}}</textarea>
@@ -341,7 +341,7 @@
                 </section>
                 <section class="row form-group form-group-sm">
                     <div class="col-md-6">
-                        <label>{{__('Designation')}} <span class="text-danger">*</span></label>
+                        <label>{{__('Designation (EN)')}} <span class="text-danger">*</span></label>
                         <input required autocomplete="off" name="designation_en"
                             class="form-control form-control-sm @error('designation_en') is-invalid @enderror"
                             type="text" value="{{old('designation_en' ,$company->contact->designation_en)}}">
@@ -420,7 +420,7 @@
                     <div class="alert-icon"><i class="flaticon-questions-circular-button"></i>
                     </div>
                     <div class="alert-text kt-font-dark">
-                        <span class="kt-font-danger kt-font-bold">Note:</span>
+                        <span class="kt-font-danger kt-font-bold">{{__('Note')}}:</span>
                         <ul>
                             <li class="kt-font-danger">
                                 {{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
@@ -439,7 +439,7 @@
 
                 <section class="row form-group form-group-xs" id="upload-row">
                     <div class="col-md-3">
-                        <label>{{__('Requirement Name')}} <span class="text-danger">*</span></label>
+                        <label>{{__('Document Name')}} <span class="text-danger">*</span></label>
                         <select name="requirement_id" class=" form-control"></select>
                     </div>
                     <div class="col-md-4">
@@ -466,11 +466,11 @@
                 <table class="table table-borderless border" id="upload-requirement-table">
                     <thead>
                         <tr>
-                            <th>{{__('REQUIREMENT NAME')}}</th>
-                            <th>{{__('FILE')}}</th>
+                            <th>{{__('Requirement Name')}}</th>
+                            <th>{{__('File')}}</th>
                             {{-- <th>{{__('ISSUED DATE')}}</th>
                             <th>{{__('EXPIRED DATE')}}</th> --}}
-                            <th>{{__('ACTION')}}</th>
+                            <th>{{__('Action')}}</th>
                         </tr>
                     </thead>
                 </table>

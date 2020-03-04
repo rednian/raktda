@@ -14,10 +14,12 @@
             active: function() { sessionStorage.fonts = true; }
         });
     </script>
+
     <!--begin::Page Vendors Styles(used by this page) -->
     @if (Auth::check())
     @if (Auth::user()->LanguageId == 1)
     <link href="{{ asset('/css/custom-vendor.css') }}" rel="stylesheet" type="text/css" />
+
     @else
     <link href="{{ asset('/assets/vendors/custom/datatables/datatables.bundle.rtl.min.css') }}" rel="stylesheet"
         type="text/css" />
@@ -56,6 +58,27 @@
     <style type="text/css">
         #kt_aside {
             box-shadow: 4px 0 5px 4px #888 !important;
+        }
+
+        @font-face {
+            font-family: DroidKufi-reg;
+            /* src: url('../../fonts/DroidKufi-Regular.ttf'); */
+            src: url("{{asset('fonts/DroidKufi-Regular.ttf')}}");
+        }
+
+        @font-face {
+            font-family: DroidKufi-bold;
+            src: url("{{asset('fonts/DroidKufi-Bold.ttf')}}");
+        }
+
+        * {
+            font-family: "DroidKufi-reg", sans-serif;
+        }
+
+        .kt-font-bold,
+        .dataTable tr th,
+        table thead th {
+            font-family: "DroidKufi-bold", sans-serif;
         }
     </style>
     @endif
@@ -176,6 +199,7 @@
     </script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
     <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/bootstrap.datepicker.ar.js') }}" charset="UTF-8" type="text/javascript"></script>
     <!--end::Page Vendors -->
 
 </body>

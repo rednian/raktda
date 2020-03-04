@@ -7,7 +7,7 @@
         </div>
         <div id="collapse-addres1" class="collapse show" aria-labelledby="heading-addres1" data-parent="#accordion-addres1" style="">
             <section class="card-body">
-              <section class="kt-form kt-form--label-right ">
+                <section class="kt-form kt-form--label-right ">
                   <div class="form-group form-group-sm  row">
                       <label class="col-4 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist address details </label>
                       <div class="col-1">
@@ -21,86 +21,79 @@
                   </div>
               </section>
                 <div class="kt-form kt-form--label-right">
-                                                                <div class="form-group form-group-sm row">
-                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('Address') }} <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <div class="col-10">
-                                                                        <div class="input-group input-group-sm">
-                                                                            <input value="{{ ucwords($artist_permit->address_en) }}" type="text" readonly
-                                                                                         class="form-control form-control-sm">
-                                                                            <div class="input-group-append">
-                                          <span class="input-group-text">
-                                            <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                              <input data-step="step-1" value="{{ ucwords($artist_permit->address_en) }}"
-                                                                                                         type="checkbox" name="address">
-                                              <span></span>
-                                            </label>
-                                          </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group form-group-sm row">
-                                                                    <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('P.O. Box') }} </label>
-                                                                    <div class="col-10">
-                                                                        <div class="input-group input-group-sm">
-                                                                            <input value="{{ ucwords($artist_permit->po_box) }}" type="text" readonly
-                                                                                         class="form-control form-control-sm">
-                                                                            <div class="input-group-append">
-                                          <span class="input-group-text">
-                                            <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                              <input data-step="step-1" value="{{ ucwords($artist_permit->po_box) }}"
-                                                                                                         type="checkbox" name="po box">
-                                              <span></span>
-                                            </label>
-                                          </span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <section class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="form-group form-group-sm row">
-                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Area') }}</label>
-                                                                            <div class="col-8">
-                                                                                <div class="input-group input-group-sm">
-                                                                                    <input value="{{ ucwords($artist_permit->area->area_en) }}" type="text" readonly
-                                                                                                 class="form-control form-control-sm">
-                                                                                    <div class="input-group-append">
-                                              <span class="input-group-text">
+                    <div class="form-group form-group-sm row">
+                        <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('Address') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-10">
+                            <div class="input-group input-group-sm">
+                                <input value="{{ ucwords($artist_permit->address_en) }}" type="text" readonly class="form-control form-control-sm">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                            <input data-step="step-1" value="{{ ucwords($artist_permit->address_en) }}" type="checkbox" name="address">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm row">
+                        <label for="example-search-input" class="col-2 col-form-label kt-font-dark">{{ __('PO Box') }} </label>
+                        <div class="col-10">
+                            <div class="input-group input-group-sm">
+                                <input value="{{ ucwords($artist_permit->po_box) }}" type="text" readonly class="form-control form-control-sm">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                            <input data-step="step-1" value="{{ ucwords($artist_permit->po_box) }}" type="checkbox" name="po box">
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="row">
+                        <div class="col-6">
+                            <div class="form-group form-group-sm row">
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Area') }}</label>
+                                <div class="col-8">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{{ ucwords($artist_permit->area->area_en) }}" type="text" readonly class="form-control form-control-sm">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                  <input data-step="step-1" value="{{ ucwords($artist_permit->area->area_en) }}"
-                                                                                                                 type="checkbox" name="area">
+                                                    <input data-step="step-1" value="{{ ucwords($artist_permit->area->area_en) }}" type="checkbox" name="area">
                                                   <span></span>
                                                 </label>
-                                              </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <div class="form-group form-group-sm row">
-                                                                            <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Emirate') }}</label>
-                                                                            <div class="col-8">
-                                                                                <div class="input-group input-group-sm">
-                                                                                    <input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text" readonly
-                                                                                                 class="form-control form-control-sm">
-                                                                                    <div class="input-group-append">
-                                              <span class="input-group-text">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group form-group-sm row">
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Emirate') }}</label>
+                                <div class="col-8">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{{ ucwords($artist_permit->emirate->name_en) }}" type="text" readonly class="form-control form-control-sm">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                  <input data-step="step-1" value="{{ ucwords($artist_permit->emirate->name_en) }}"
-                                                                                                                 type="checkbox" name="area">
+                                                    <input data-step="step-1" value="{{ ucwords($artist_permit->emirate->name_en) }}" type="checkbox" name="area">
                                                   <span></span>
                                                 </label>
-                                              </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </section>
-                                                            </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </section>
         </div>
     </div>

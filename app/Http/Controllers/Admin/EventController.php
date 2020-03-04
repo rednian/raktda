@@ -456,7 +456,9 @@ class EventController extends Controller
 
 			$pdf = PDF::loadView('permits.event.print', $data, [], [
 			    'title' => 'Event Permit',
-			    'default_font_size' => 10
+                'default_font_size' => 10,
+                'show_watermark'=> in_array($event->status , ['cancelled', 'expired']) ? true : false,
+                'watermark'      => ucfirst($event->status),
 			]);
 
 			if($event->truck()->exists()){
@@ -932,10 +934,10 @@ class EventController extends Controller
                     ->addColumn('time', function($event){ return $event->time_start.' - '.$event->time_end; })
                     ->editColumn('status', function($event){ return permitStatus($event->status); })
                     ->addColumn('action', function($event){
-                        if ($event->status == 'active') {
-						return '<a class="dropdown-item" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>Download Permit</a>';
+                        if (in_array($event->status, ['active', 'cancelled', 'expired'])) {
+						return '<a class="btn btn-sm btn-secondary btn-download" target="_blank" href="'. URL::signedRoute('admin.event.download', $event->event_id).'"><i class="la la-download"></i>'.__('DOWNLOAD').'</a>';
                         }
-                        return null;
+                        return '-';
                     })
                     ->addColumn('application_link', function($event){
                         return URL::signedRoute('admin.event.application', $event->event_id);

@@ -17,7 +17,7 @@
 							 </button>
 							 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 									<a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
-                  {{ __('Establishment Details') }}
+                  {{ __('ESTABLISHMENT PROFILE') }}
                 </a>
 							 </div>
 						</div>
@@ -60,14 +60,14 @@
                       </span>
                     </div>
                   </div>
-                  <div class="kt-widget__item">
+                  {{-- <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Term')}}</span>
                     <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
                       <span class="kt-widget__stat kt-padding-l-0">
                      {{ __(ucfirst($permit->term).' Term') }}
                       </span>
                     </div>
-                  </div>
+                  </div> --}}
                 </div>
                       <section class="kt-section kt-margin-t-5">
                          <div class="kt-section__desc">
@@ -196,13 +196,13 @@
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#artist-list" role="tab">
-                  {{__('ARTIST LIST')}}
+                  {{__('ARTISTS LIST')}}
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->artistPermit()->count()}}</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#approver-tab" role="tab">
-                  {{__('CHECKED HISTORY')}}
+                  {{__('ACTION HISTORY')}}
                   {{-- <span class="kt-badge kt-badge--outline kt-badge--info">{{$permit->comment()->o}}</span> --}}
                 </a>
               </li>
@@ -218,7 +218,6 @@
             <div class="tab-content">
               <div class="tab-pane active" id="artist-list" role="tabpanel">
 
-
                 <?php  $is_artist_check = $permit->artistpermit()->where('artist_permit_status', 'unchecked')->exists(); ?>
                 <div id="action-alert" class="alert d-none alert-outline-danger fade show" role="alert">
                   <div class="alert-icon"><i class="flaticon-warning"></i></div>
@@ -231,7 +230,41 @@
                   <div class="alert-text">{{ __('Please check atleast one checkbox to take action.') }}</div>
                   <div class="alert-close"></div>
                 </div>
-                  <table class="table table-hover table-borderless table-striped border table-sm" id="artist-table">
+                <section class="form-row">
+                    <div class="col-1">
+                      <div>
+                        <select name="length_change" id="artist-permit-length-change"
+                          class="form-control-sm form-control custom-select custom-select-sm">
+                          <option value='10'>10</option>
+                          <option value='25'>25</option>
+                          <option value='50'>50</option>
+                          <option value='75'>75</option>
+                          <option value='100'>100</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-8">
+                     <section class="row">
+                         <div class="col-md-5">
+                            <button id="btn-action" class="btn btn-maroon btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">
+                                {{ __('Take Action For Application') }}
+                            </button>
+                         </div>
+                     </section>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-group-sm">
+                        <div class="kt-input-icon kt-input-icon--right">
+                          <input autocomplete="off" type="search" class="form-control form-control-sm"
+                            placeholder="{{ __('Search') }}..." id="search-artist-permit">
+                          <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            <span><i class="la la-search"></i></span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <table class="table table-hover table-borderless table-striped border" id="artist-table">
                     <thead>
                       <tr>
                          <th>{{ __('PERSON CODE') }}</th>
@@ -239,7 +272,7 @@
                          <th>{{ __('AGE') }}</th>
                          <th>{{ __('PROFESSION') }}</th>
                          <th>{{ __('NATIONALITY') }}</th>
-                         <th>{{ __('STATUS') }}</th>
+                         <th>{{ __('CHECKED STATUS') }}</th>
                          <th>{{ __('ACTION') }}</th>
                       </tr>
                       </thead>
@@ -250,10 +283,10 @@
                 <table class=" border table-striped table table-borderless table-hover table-sm" id="permit-comment-table">
                   <thead>
                     <tr>
-                      <th>{{ __('CHECKED BY') }}</th>
+                      <th>{{ __('NAME') }}</th>
                       <th>{{ __('REMARKS') }}</th>
-                      <th>{{ __('CHECKED DATE') }}</th>
                       <th>{{ __('ACTION TAKEN') }}</th>
+                      <th>{{ __('CHECKED DATE') }}</th>
                     </tr>
                   </thead>
                 </table>
@@ -292,9 +325,7 @@
 		@include('admin.artist_permit.includes.comment-modal', ['permit' => $permit])
     @include('admin.artist_permit.includes.document')
 		@include('admin.artist_permit.includes.check-existing-permit')
-	<div id="action-container">
-			<button id="btn-action" class="btn btn-maroon btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">{{ __('Take Action For Application') }}</button>
-	</div>
+
 @endsection
 @section('script')
 <script type="text/javascript">
@@ -436,14 +467,16 @@
 
   function artistTable() {
      artist = $('table#artist-table').DataTable({
-        dom: '<"toolbar pull-left">frt<"pull-left"i>p',
+        dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         ajax: {
            url: '{{ route('admin.artist_permit.applicationdetails.datatable', $permit->permit_id) }}'
         },
-        responsive: true,
         columnDefs: [
-           {targets: '_all', className: 'no-wrap'}
+            {targets: '_all', className: 'no-wrap'}
         ],
+        responsive: true,
         columns: [
            {data: 'person_code'},
            {
@@ -477,12 +510,17 @@
            $('#artist-total').html(json.recordsTotal);
         }
      });
+
+       //custom pagelength
+       artist.page.len($('#artist-permit-length-change').val());
+     $('#artist-permit-length-change').change(function(){ artist.page.len( $(this).val() ).draw(); });
+     //custom search
+     var search = $.fn.dataTable.util.throttle(function(v){ artist.search(v).draw(); });
+     $('input#search-artist-permit').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
   }
 
   function existingPermit(data) {
-
      $('form#frm-existing-permit').find('a[href]').attr('href', '{{ url('/artist_permit/') }}/'+data.permit_id+'/application/'+data.artist_permit_id);
-
      $('form#frm-existing-permit').validate({
         rules: {
            comment: {

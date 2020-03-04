@@ -81,7 +81,9 @@ class ArtistPermitController extends Controller
 
         $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
             'title' => 'Artist Permit',
-            'default_font_size' => 10
+            'default_font_size' => 10,
+            'show_watermark'=> in_array($permit->permit_status , ['cancelled', 'expired']) ? true : false,
+            'watermark'      => ucfirst($permit->permit_status),
         ]);
         return $pdf->stream('Permit-' . $permitNumber . '.pdf');
     }
@@ -629,8 +631,6 @@ class ArtistPermitController extends Controller
     {
         if($request->ajax()){
             $artist_permit = $permit->artistPermit()->whereNull('type')->orderBy('updated_at')->get();
-//            dd($artist_permit);
-
             return Datatables::of($artist_permit)
                 ->addColumn('nationality', function($artist_permit){
                     if($artist_permit->country()->exists()){ return ucwords($artist_permit->country->nationality_en); }
@@ -683,17 +683,15 @@ class ArtistPermitController extends Controller
 								<span class="kt-font-bolder  kt-font-transform-u">'.ucwords($profession).' </span>';
                 })
                 ->addColumn('action', function($artist_permit){
-
-
                     $html = '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">';
-                    $html .=  __('Documents');
-                    $html .=  '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+                    $html .=  __('ATTACHMENTS');
+                    $html .=  ' <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
                     $html .=  ($artist_permit->artistPermitDocument()->count()+1);
                     $html .=  '</span>';
                     $html .= '</button>';
                     $html .= '<button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">';
-                    $html .= __('Comments');
-                    $html .= '<span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
+                    $html .= __('REMARKS');
+                    $html .= ' <span class="kt-badge kt-badge--brand kt-badge--outline kt-badge--sm">';
                     $html .= $artist_permit->comments()->count();
                     $html .= '</span>';
                     $html .= '</button>';
@@ -852,6 +850,8 @@ class ArtistPermitController extends Controller
                     return $permits > 0 ? $permits : '-';
                 })
                 ->addColumn('duration', function($permit){
+                    // return duration($permit->expired_date, $permit->issued_date);
+                    // return $date = Carbon::parse($permit->expired_date)->diffInHumans($permit->issued_date);
                     $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
                     $date = $date !=  0 ? $date : 1;
                     $day = $date > 1 ? ' Days': ' Day';
@@ -912,8 +912,8 @@ class ArtistPermitController extends Controller
                 })
                 ->editColumn('request_type', function($permit){ return ucwords($permit->request_type); })
                 ->addColumn('action', function($permit){
-                    if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by)) {
-                        return '<a href="'.URL::signedRoute('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary">' . __('Download') . '</a>';
+                    if (in_array($permit->permit_status, ['active', 'expired', 'cancelled']) && !is_null($permit->approved_by)) {
+                        return '<a href="'.URL::signedRoute('admin.artist_permit.download', $permit->permit_id).'" target="_blank" class="btn btn-download btn-sm btn-elevate btn-secondary"><span class="la la-download"></span>' . __('DOWNLOAD') . '</a>';
                     }
                     return '-';
 

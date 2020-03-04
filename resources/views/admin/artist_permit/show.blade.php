@@ -6,11 +6,11 @@
             <h3 class="kt-portlet__head-title kt-font-transform-u kt-font-dark">{{ __('Artist Permit') }} - {{$permit->reference_number}}</h3>
         </div>
         <div class="kt-portlet__head-toolbar">
-            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate kt-font-transform-u">
+            <a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-outline-secondary btn-elevate">
                 <i class="la la-arrow-left"></i>{{ __('BACK') }}
             </a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
-            @if (in_array($permit->permit_status, ['active', 'expired']) && !is_null($permit->approved_by))
+            @if (in_array($permit->permit_status, ['active', 'expired', 'cancelled']) && !is_null($permit->approved_by))
                 <a target="_blank" class="kt-font-transform-u btn btn-warning btn-sm kt kt-margin-l-5"
                 href="{{ URL::signedRoute('admin.artist_permit.download', $permit->permit_id) }}"><i class="la la-download"></i> {{ __('Download') }}</a>
             @endif
@@ -20,8 +20,8 @@
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 
-                    <a class="dropdown-item kt-font-trasnform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
-                        {{ __('Establishment Details') }}
+                    <a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
+                        {{ __('Establishment Profile') }}
                     </a>
 
                 </div>
@@ -108,14 +108,14 @@
                       </span>
                     </div>
                   </div>
-                  <div class="kt-widget__item">
+                  {{-- <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Term')}}</span>
                     <div class="kt-widget__progress d-flex  align-items-center kt-margin-t-5">
                       <span class="kt-widget__stat kt-padding-l-0">
                      {{ __(ucfirst($permit->term).' Term Permit') }}
                       </span>
                     </div>
-                  </div>
+                  </div> --}}
                 </div>
               <section class="kt-section kt-margin-t-5">
                  <div class="kt-section__desc">
@@ -144,7 +144,7 @@
 
                        @if ($permit->approved_by || $permit->permit_status == 'approved-unpaid' )
                         <tr>
-                            <td>{{ __('Approved On') }} :</td>
+                            <td>{{ __('Approved Date') }} :</td>
                             <td><span title="{{$permit->approved_date->format('l h:i A | d-F-Y')}}" class="text-underline">{{humanDate($permit->approved_date)}}</span></td>
                         </tr>
                         <tr>
@@ -157,9 +157,9 @@
                         </tr>
                        @endif
 
-                       @if ($permit->cancel_by)
+                       {{-- @if ($permit->cancel_by)
                         <tr>
-                            <td>{{ __('Cancelled On') }} :</td>
+                            <td>{{ __('Cancelled Date') }} :</td>
                             <td><span title="{{$permit->cancel_date->format('l h:i A | d-F-Y')}}" class="text-underline">{{humanDate($permit->cancel_date)}}</span></td>
                         </tr>
                         <tr>
@@ -174,7 +174,7 @@
                            <td>{{ __('Cancel Reason') }} :</td>
                            <td>{{ ucfirst($permit->cancel_reason) }}</td>
                         </tr>
-                       @endif
+                       @endif --}}
 
                        <tr>
                           <td>{{ __('Work Location') }} :</td>
@@ -200,7 +200,7 @@
                     </span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artist')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artists')}}</span>
                     <div class="kt-badge kt-badge__pics">
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
@@ -324,11 +324,11 @@
             </div>
             <ul id="tabDetails" class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#artist-tab" role="tab" aria-selected="true">{{ __('ARTIST LIST') }}</a>
+                    <a class="nav-link active" data-toggle="tab" href="#artist-tab" role="tab" aria-selected="true">{{ __('ARTISTS LIST') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#comment-history" role="tab" aria-selected="false">
-                       {{ __('CHECKED HISTORY') }}
+                       {{ __('ACTION HISTORY') }}
                     </a>
                 </li>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
@@ -350,7 +350,7 @@
                                 <th>{{ __('AGE') }}</th>
                                 <th>{{ __('PROFESSION') }}</th>
                                 <th>{{ __('NATIONALITY') }}</th>
-                                <th>{{ __('STATUS') }}</th>
+                                <th>{{ __('CHECKED STATUS') }}</th>
                                 <th>{{ __('ACTION') }}</th>
                            </tr>
                            </thead>
@@ -359,56 +359,45 @@
                 <div class="tab-pane" id="comment-history" role="tabpanel">
 
                     @if ($permit->comment()->count() > 0)
-                     <div class="card">
-                        <div class="card-header" id="headingThree5">
-                             <div class="card-title kt-padding-t-10 kt-padding-b-10 kt-margin-b-5" data-toggle="collapse"
-                                        data-target="#collapseThree5" aria-expanded="true" aria-controls="collapseThree5">
-                                    <h6 class="kt-font-dark kt-font-transform-u">{{ __('CHECKED HISTORY') }}</h6>
-                             </div>
-                        </div>
-                        <div id="collapseThree5" class="collapse show" aria-labelledby="headingThree5" data-parent="#accordionExample5">
-                         <div class="card-body">
-                            <table class=" border table-striped table table-borderless table-hover table-sm">
-                                 <thead>
-                                     <tr>
-                                        <th>{{ __('CHECKED BY') }}</th>
-                                        <th>{{ __('REMARKS') }}</th>
-                                        <th>{{ __('CHECKED DATE') }}</th>
-                                        <th>{{ __('ACTION TAKEN') }}</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody>
-                                    @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
-                                        <tr>
-                                            <td>
-                                                <div class="kt-user-card-v2">
-                                                    <div class="kt-user-card-v2__pic">
-                                                        @php
-                                                        $name = explode(' ', $comment->user->NameEn);
-                                                        @endphp
-                                                        <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ strtoupper(substr($name[0], 0, 1)) }}</span></div>
-                                                    </div>
-                                                    <div class="kt-user-card-v2__details">
-                                                        <span class="kt-user-card-v2__name">{{ ucwords($comment->user->name) }}</span>
-                                                        <a href="#" class="kt-user-card-v2__email kt-link">{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{ ucfirst($comment->comment) }}
-                                                @if($comment->exempt_payment)
-                                                  <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $comment->created_at->format('d-M-Y') }}</td>
-                                            <td>{{ ucfirst($comment->action) }}</td>
-                                        </tr>
-                                    @endforeach
-                                 </tbody>
-                            </table>
-                         </div>
-                        </div>
-                     </div>
+                    <table class=" border table-striped table table-borderless table-hover table-sm">
+                        <thead>
+                            <tr>
+                               <th>{{ __('NAME') }}</th>
+                               <th>{{ __('REMARKS') }}</th>
+                               <th>{{ __('CHECKED DATE') }}</th>
+                               <th>{{ __('ACTION TAKEN') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @foreach($permit->comment()->doesntHave('artistPermitComment')->orderBy('created_at', 'desc')->get() as $comment)
+                               <tr>
+                                   <td>
+                                       <div class="kt-user-card-v2">
+                                           <div class="kt-user-card-v2__pic">
+                                               @php
+                                               $name = explode(' ', $comment->user->NameEn);
+                                               @endphp
+                                               <div class="kt-badge kt-badge--xl kt-badge--success"><span>{{ strtoupper(substr($name[0], 0, 1)) }}</span></div>
+                                           </div>
+                                           <div class="kt-user-card-v2__details">
+                                               <span class="kt-user-card-v2__name">{{ ucwords($comment->user->name) }}</span>
+                                               <a href="#" class="kt-user-card-v2__email kt-link">{{ $comment->role_id != 6 ? ucfirst($comment->role->NameEn) : (Auth::user()->LanguageId == 1 ? ucwords($comment->government->government_name_en) : $comment->government->government_name_ar) }}</a>
+                                           </div>
+                                       </div>
+                                   </td>
+                                   <td>
+                                       {{ ucfirst($comment->comment) }}
+                                       @if($comment->exempt_payment)
+                                         <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                                       @endif
+                                   </td>
+                                   <td>{{ $comment->created_at->format('d-M-Y') }}</td>
+                                   <td>{{ ucfirst($comment->action) }}</td>
+                               </tr>
+                           @endforeach
+                        </tbody>
+                   </table>
+
                     @endif
                 </div>
                 @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
@@ -509,8 +498,9 @@
              url: '{{ route('admin.artist_permit.applicationdetails.datatable', $permit->permit_id) }}'
           },
           columnDefs: [
-             {targets: [0, 2, 5, 6], className: 'no-wrap'}
+             {targets: '_all', className: 'no-wrap'}
           ],
+          responsive: true,
           columns: [
              {data: 'person_code'},
              {
@@ -527,11 +517,7 @@
              {data: 'profession'},
              {data: 'nationality'},
              {data: 'artist_status'},
-             {
-                render: function (type, data, full, meta) {
-                   return '<button class="btn btn-secondary btn-sm btn-elevate btn-document kt-margin-r-5">Document</button><button class="btn btn-secondary btn-sm btn-elevate btn-comment-modal">Comment</button>';
-                }
-             }
+             {data: 'action'},
           ],
           createdRow: function (row, data, index) {
              $('td input[type=checkbox]', row).click(function (e) {
@@ -563,6 +549,8 @@
                 ajax:{
                     url: '{{ url('/artist_permit') }}/'+'{{ $permit->permit_id }}'+'/application/'+data.artist_permit_id+'/documentDatatable',
                 },
+            columnDefs: [ {targets: '_all', className: 'no-wrap'} ],
+            responsive: true,
                 columns:[
                 {data: 'document_name'},
                 {data: 'issued_date'},
@@ -581,11 +569,12 @@
                 url: '{{ url('/artist_permit') }}/'+{{$permit->permit_id}}+'/application/'+data.artist_permit_id + '/comment/datatable'
              },
              columnDefs: [
-                {targets: [1, 2], className: 'no-wrap'}
+                {targets: '_all', className: 'no-wrap'}
              ],
+             responsive: true,
              columns: [
+                 {data: 'commented_by'},
                 {data: 'comment'},
-                {data: 'commented_by'},
                 {data: 'commented_on'}
              ]
           });

@@ -142,7 +142,7 @@ class RequirementController extends Controller
             return $args->status ? '<span class="kt-badge kt-badge--success kt-badge--inline">' . __('Active') . '</span>' : '<span class="kt-badge kt-badge--danger kt-badge--inline">' . __('Inactive') . '</span>';
         })
         ->addColumn('actions', function($args){
-            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . URL::signedRoute('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
+            return '<button data-url="' . route('requirements.destroy', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('DELETE') . '</button> <button data-url="' . URL::signedRoute('requirements.edit', $args->requirement_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('EDIT') . '</button>';
         })
         ->addColumn('isInEventType', function($args) use($request){
             if($request->has('event_type_id')){
@@ -171,7 +171,7 @@ class RequirementController extends Controller
                             <span></span>
                         </label>
                     </span>';
-        
+
         })
         ->rawColumns(['status', 'actions', 'is_required'])
         ->make(true);

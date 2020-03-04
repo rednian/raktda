@@ -39,15 +39,16 @@ class ProfessionController extends Controller
 		 	return number_format($args->amount, 2).' AED';
 		})
 		->editColumn('created_at', function($args){
-		 	return $args->created_at->format('d-M-Y');
+		 	return '<span class="text-underline" title="'.$args->created_at->format('l h:i A | d-F-Y').'">'.humanDate($args->created_at).'</span>';
 		})
 		->editColumn('created_by', function($args) use($user){
+            // return $args->createdBy->name;
 			return $user->LanguageId == 1 ? ucwords($args->createdBy->NameEn) : ucwords($args->createdBy->NameAr);
 		})
 		->addColumn('actions', function($args){
 			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('Delete').'</button> <button data-url="' . URL::signedRoute('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('Edit').'</button>';
 		})
-		->rawColumns(['actions'])
+		->rawColumns(['actions', 'created_at'])
 		->make(true);
 
 	}

@@ -61,12 +61,12 @@
                     <thead>
 
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
-                            <th>{{__('From Date')}}</th>
-                            <th>{{__('To Date')}}</th>
-                            <th>{{__('Work Location')}}</th>
-                            <th>{{__('Artists')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT DURATION')}}</th>
+                            <th>{{__('FROM DATE')}}</th>
+                            <th>{{__('TO DATE')}}</th>
+                            <th>{{__('WORK LOCATION')}}</th>
+                            <th>{{__('ARTISTS')}}</th>
                             <th>{{__('STATUS')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
@@ -79,14 +79,14 @@
                 <table class="table table-striped table-borderless table-hover border" id="existing-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
-                            <th>{{__('Permit Number')}}</th>
-                            <th>{{__('From Date')}}</th>
-                            <th>{{__('To Date')}}</th>
-                            <th>{{__('Work Location')}}</th>
-                            <th>{{__('Artists')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT DURATION')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
+                            <th>{{__('FROM DATE')}}</th>
+                            <th>{{__('TO DATE')}}</th>
+                            <th>{{__('WORK LOCATION')}}</th>
+                            <th>{{__('ARTISTS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -99,13 +99,13 @@
                 <table class="table table-striped table-borderless table-hover border" id="expired-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('PERMIT TERM')}}</th>
-                            <th>{{__('Permit Number')}}</th>
-                            <th>{{__('From Date')}}</th>
-                            <th>{{__('To Date')}}</th>
-                            <th>{{__('Work Location')}}</th>
-                            <th class="text-center">{{__('Artists')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT DURATION')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
+                            <th>{{__('FROM DATE')}}</th>
+                            <th>{{__('TO DATE')}}</th>
+                            <th>{{__('WORK LOCATION')}}</th>
+                            {{-- <th class="text-center">{{__('ARTISTS')}}</th> --}}
                             <th></th>
                         </tr>
                     </thead>
@@ -117,14 +117,13 @@
                 <table class="table table-striped table-borderless table-hover border" id="cancelled-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('REFERENCE NO.')}}</th>
-                            <th>{{__('Permit Number')}}</th>
-                            <th>{{__('From Date')}}</th>
-                            <th>{{__('To Date')}}</th>
-                            <th>{{__('Work Location')}}</th>
-                            <th class="text-center">{{__('Artists')}}</th>
+                            <th>{{__('REFERENCE NO')}}</th>
+                            <th>{{__('PERMIT NUMBER')}}</th>
+                            <th>{{__('FROM DATE')}}</th>
+                            <th>{{__('TO DATE')}}</th>
+                            <th>{{__('WORK LOCATION')}}</th>
+                            {{-- <th class="text-center">{{__('ARTISTS')}}</th> --}}
                             <th>{{__('STATUS')}}</th>
-                            <th>{{__('Comments')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -136,11 +135,11 @@
                 <table class="table table-striped table-borderless table-hover border" id="drafts-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('From Date')}}</th>
-                            <th>{{__('To Date')}}</th>
-                            <th>{{__('Work Location')}}</th>
+                            <th>{{__('FROM DATE')}}</th>
+                            <th>{{__('TO DATE')}}</th>
+                            <th>{{__('WORK LOCATION')}}</th>
                             <th>{{__('ADDED ON')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -170,9 +169,9 @@
                         <form action="{{route('company.cancel_permit')}}" id="cancel_permit_form" method="post"
                             novalidate>
                             @csrf
-                            <label>{{__('Are you sure to Cancel this Permit of Ref No. ')}} <span class="text--maroon"
-                                    id="cancel_permit_number"></span>
-                                ?</label>
+                            <label>{{__('Are you sure to Cancel this Permit of Reference No. ')}} <span
+                                    class="text--maroon" id="cancel_permit_number"></span>
+                                {{__('?')}}</label>
                             <textarea name="cancel_reason" rows="3" dir="ltr" placeholder="Enter the reason here..."
                                 style="resize:none;" class="form-control" id="cancel_reason"></textarea>
                             <input type="hidden" id="cancel_permit_id" name="permit_id">
@@ -220,8 +219,8 @@
                     <div class="modal-body">
                         <form action="{{route('artist.delete_draft')}}" method="POST" novalidate>
                             @csrf
-                            <label>{{__('Are you sure to delete this draft')}}
-                                ? {{__('Data will be lost')}}</label>
+                            <label>{{__('Are you sure to delete this draft ?')}}
+                                {{__('Data will be lost !')}}</label>
                             <input type="hidden" id="del_draft_id" name="del_draft_id">
                             <div>
                                 <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
@@ -338,7 +337,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Applied Artist Permits",
+                    emptyTable: "{{__('No Applied Artist Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -397,7 +396,7 @@
                     }
                 ],
                 language: {
-                    emptyTable: "No Valid Artist Permits",
+                    emptyTable: "{{__('No Valid Artist Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -442,7 +441,7 @@
                     },
                 ],
                 language: {
-                    emptyTable: "{{__('No Artist Drafts Added')}}",
+                    emptyTable: "{{__('No Artist Drafts Added')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -468,21 +467,21 @@
                     { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
                     { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                     { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
-                    { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
+                    // { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
-                columnDefs: [
-                    {
-                        targets:6,
-                        className:'text-center',
-                        render: function(data, type, full, meta) {
-                            var artistPermit = JSON.parse(data);  
-                            return artistPermit.length;
-                        }
-                    }
-                ],
+                // columnDefs: [
+                //     {
+                //         targets:6,
+                //         className:'text-center',
+                //         render: function(data, type, full, meta) {
+                //             var artistPermit = JSON.parse(data);  
+                //             return artistPermit.length;
+                //         }
+                //     }
+                // ],
                 language: {
-                    emptyTable: "No Expired Permits",
+                    emptyTable: "{{__('No Expired Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });
@@ -508,23 +507,22 @@
                     { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
                     { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                     { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
-                    { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
-                    { data: 'permit_status', name: 'permit_status', className:'text-center' },
-                    { data: 'action', name: 'action', className:'text-center no-wrap' },
+                    // { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
+                    { data: 'action', name: 'action', className:'text-center' },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
                 columnDefs: [
-                    {
-                        targets:5,
-                        className:'text-center',
-                        render: function(data, type, full, meta) {
-                            var artistPermit = JSON.parse(data);  
-                            return artistPermit.length;
-                        }
-                    },
+                    // {
+                    //     targets:5,
+                    //     className:'text-center',
+                    //     render: function(data, type, full, meta) {
+                    //         var artistPermit = JSON.parse(data);  
+                    //         return artistPermit.length;
+                    //     }
+                    // },
                 ],
                 language: {
-                    emptyTable: "No Cancelled or Rejected Permits",
+                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
             });

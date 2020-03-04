@@ -6,7 +6,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Artist Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('AMEND ARTIST PERMIT')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details['permit_number']}}</strong></span>
@@ -17,7 +17,7 @@
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
 
                 {{-- <a href="{{url('/company/artist/add_artist_to_permit/amend/'.$permit_details->permit_id)}}"
@@ -29,7 +29,7 @@
                 <a href="{{URL::signedRoute('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </a>
 
 
@@ -56,30 +56,29 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->issued_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->issued_date))}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('To Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($permit_details->expired_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($permit_details->expired_date))}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Permit Term')}}</span>
+                        <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                         <div class="kt-widget__label">
-                            <span
-                                class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{$permit_details->term}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                        <span class="kt-widget__date">{{__('Reference No')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
@@ -89,19 +88,19 @@
                     </div>
                     @if($permit_details->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
+                        <span class="kt-widget__date">{{__('Connected Event')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{getLangId() == 1 ? $permit_details->event->name_en : $permit_details->event->name_ar}}
+                                {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
                             </span>
                         </div>
                     </div>
                     @endif
                 </div>
-                <div class="kt-widget__text kt-margin-t-10">
+                <div class="kt-widget__text kt-margin-t-20">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
             </div>
 
@@ -109,12 +108,12 @@
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('FIRST NAME')}}</th>
+                            <th>{{__('LAST NAME')}}</th>
+                            <th>{{__('PROFESSION')}}</th>
+                            <th>{{__('MOBILE NUMBER')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,12 +124,12 @@
                         @foreach ($artist_details as $artist_detail)
                         @if($artist_detail->type != 'removed')
                         <tr>
-                            <td>{{  getLangId() == 1 ? ucwords($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
+                            <td>{{  getLangId() == 1 ? ucfirst($artist_detail->firstname_en) : $artist_detail->firstname_ar }}
                             </td>
-                            <td>{{ getLangId() == 1 ? ucwords($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
+                            <td>{{ getLangId() == 1 ? ucfirst($artist_detail->lastname_en) : $artist_detail->lastname_ar }}
                             </td>
                             <td style="width:20%;">
-                                {{ getLangId() == 1 ? ucwords($artist_detail->profession['name_en']) : ucwords($artist_detail->profession['name_ar'])}}
+                                {{ getLangId() == 1 ? ucfirst($artist_detail->profession['name_en']) : $artist_detail->profession['name_ar']}}
                             </td>
                             <td>{{$artist_detail->mobile_number}}</td>
                             {{-- <td>{{$artist_detail->email}}</td> --}}
@@ -161,7 +160,7 @@
                                 @if($artist_detail->artist_permit_status != 'approved' && $artist_detail->old_artist_id
                                 != '')
                                 <a href="#"
-                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en}}','{{$artist_detail->lastname_en}}')"
+                                    onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en.' '.$artist_detail->lastname_en}}','{{$artist_detail->lastname_ar.' '.$artist_detail->firstname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
@@ -190,7 +189,7 @@
             <div class="d-flex justify-content-end">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                     <i class="la la-check"></i>
-                    {{__('Submit')}}
+                    {{__('SUBMIT')}}
                 </div>
             </div>
             @endif
@@ -287,11 +286,14 @@
         return '<tr><td>'+doc.document_name+'</td><td>'+doc.issued_date+'</td><td>'+doc.expired_date+'</td><td><a href="'+base_url+'/storage/'+doc.path+'" target="_blank">View</a></td></tr>';
     }
 
-    function delArtist(temp_id, permit_id, fname, lname) {
+    function delArtist(temp_id, permit_id, nameEn, nameAr) {
         $('#del_temp_id').val(temp_id);
         $('#del_permit_id').val(permit_id);
-        $('#del_fname').val(fname);
-        $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+        let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+        let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+        warnText  = warnText.replace(':artistname', name);
+        $('#warning_text').html(warnText);
+        // $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
         $('#warning_text').css('color', '#580000');
     }
 

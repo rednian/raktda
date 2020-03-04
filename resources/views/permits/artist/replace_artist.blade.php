@@ -36,9 +36,9 @@ $language_id = Auth::user()->LanguageId;
                                     class="col-md-3 col-form-label kt-font-bold col-sm-12 kt-padding-0 text-left text-lg-right">{{__('Search by Person Code')}}</label>
                                 <div class="col-lg-2">
                                     <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control form-control-sm" name="code" id="code">
+                                        <input type="text" class="form-control form-control-sm" name="code" id="code"
+                                            placeholder="e.g. 2015">
                                     </div>
-                                    <span class="form-text text-muted">e.g. 2015</span>
                                 </div>
                                 <div class="col-lg-3">
                                     <span id="changeArtistLabel" class="btn btn--maroon btn-sm d-none"
@@ -54,7 +54,8 @@ $language_id = Auth::user()->LanguageId;
                                             <div class="card-title collapsed" data-toggle="collapse"
                                                 data-target="#collapseOne6" aria-expanded="true"
                                                 aria-controls="collapseOne6">
-                                                <h6 class="kt-font-transform-u">{{__('Artist Details')}}
+                                                <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
+                                                    {{__('Artist Details')}}
                                                 </h6>
                                             </div>
                                         </div>
@@ -70,29 +71,29 @@ $language_id = Auth::user()->LanguageId;
                                                             <input type="hidden" id="artist_number" value={{1}}>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name')}}<span
-                                                                        class="text-danger">*</span>
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('First Name (EN)')}}
+                                                                    <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
                                                                             class="form-control form-control-sm "
-                                                                            name="fname_en" id="fname_en"
-                                                                            placeholder="{{__('First Name')}}"
+                                                                            name="fname_en" id="fname_en" dir="ltr"
+                                                                            placeholder="{{__('First Name (EN)')}}"
                                                                             onchange="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="fname_en"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name')}}<span
-                                                                        class="text-danger">*</span></label>
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (EN)')}}
+                                                                    <span class="text-danger">*</span></label>
                                                                 <div class="col-lg-8">
                                                                     <div class="input-group input-group-sm">
                                                                         <input type="text"
                                                                             class="form-control form-control-sm "
-                                                                            name="lname_en" id="lname_en"
-                                                                            placeholder="{{__('Last Name')}}"
+                                                                            name="lname_en" id="lname_en" dir="ltr"
+                                                                            placeholder="{{__('Last Name (EN)')}}"
                                                                             onchange="checkforArtistKeyUp()">
                                                                     </div>
                                                                 </div>
@@ -112,7 +113,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             </option>
                                                                             @foreach ($countries as $ct)
                                                                             <option value="{{$ct->country_id}}">
-                                                                                {{$language_id == 1 ? $ct->nationality_en : $ct->nationality_ar}}
+                                                                                {{$language_id == 1 ? ucfirst($ct->nationality_en) : $ct->nationality_ar}}
                                                                             </option>
                                                                             @endforeach
                                                                         </select>
@@ -121,7 +122,7 @@ $language_id = Auth::user()->LanguageId;
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="dob"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birth Date')}}
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birthdate')}}
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
@@ -130,13 +131,14 @@ $language_id = Auth::user()->LanguageId;
                                                                             class="form-control form-control-sm "
                                                                             placeholder="DD-MM-YYYY"
                                                                             data-date-end-date="0d" name="dob" id="dob"
+                                                                            value="01-01-{{date('Y') - 18}}"
                                                                             onchange="checkforArtist()" />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="profession"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Number')}}
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No')}}
                                                                     <span class="text-danger hd-uae">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
@@ -177,7 +179,7 @@ $language_id = Auth::user()->LanguageId;
                                                                 </div>
                                                             </div>
                                                             <div class="form-group form-group-sm row">
-                                                                <label for="dob"
+                                                                <label for="uid_expiry"
                                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}
                                                                     <span class="text-danger hd-uae">*</span>
                                                                 </label>
@@ -257,7 +259,7 @@ $language_id = Auth::user()->LanguageId;
                                                                             @foreach ($profession as $pt)
                                                                             <option value="{{$pt->profession_id}}"
                                                                                 {{$pt->profession_id == $artist_details->profession_id ? 'selected' : '' }}>
-                                                                                {{$language_id == 1 ? ucwords($pt->name_en) : $pt->name_ar}}
+                                                                                {{$language_id == 1 ? ucfirst($pt->name_en) : $pt->name_ar}}
                                                                             </option>
                                                                             @endforeach
                                                                         </select>
@@ -370,7 +372,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                     <div class=" form-group form-group-sm row">
                                                         <label for="language"
-                                                            class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Languages')}}
+                                                            class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
                                                         </label>
                                                         <div class="col-lg-8">
                                                             <div class="input-group input-group-sm">
@@ -400,7 +402,8 @@ $language_id = Auth::user()->LanguageId;
                                 <div class="card-header" id="headingTwo6">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                                         aria-expanded="false" aria-controls="collapseTwo6">
-                                        <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                                        <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
+                                            {{__('CONTACT INFORMATION')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -476,7 +479,8 @@ $language_id = Auth::user()->LanguageId;
                                 <div class="card-header" id="headingTwo7">
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                                         aria-expanded="false" aria-controls="collapseTwo7">
-                                        <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                                        <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
+                                            {{__('ADDRESS INFORMATION')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -630,11 +634,12 @@ $language_id = Auth::user()->LanguageId;
                 <div class="row">
                     <div class="col-lg-4 col-sm-12">
                         <label
-                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                             <span id="cnd_{{$i}}"></span>
                         </label>
                         <p for="" class="reqName    ">
-                            {{$req->requirement_description}}</p>
+                            {{getLangId() == 1 ?  ucfirst($req->requirement_description) : $req->requirement_description_ar }}
+                        </p>
                     </div>
                     <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
                     <input type="hidden" value="{{$req->requirement_name}}" id="req_name_{{$i}}">
@@ -670,25 +675,23 @@ $language_id = Auth::user()->LanguageId;
 </div>
 </div>
 <div class="kt-form__actions">
-    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-prev"
-        id="prev_btn">
-        {{__('Previous')}}
+    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold " data-ktwizard-type="action-prev" id="prev_btn">
+        {{__('PREVIOUS')}}
     </div>
     <input type="hidden" id="artist_permit_id" value="">
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
     {{-- <a href="{{url('company/artist/permit/'.$permit_details->permit_id .'/amend')}}"> --}}
     <a href="{{URL::signedRoute('artist.permit',['id' => $permit_details->permit_id , 'status' => 'amend'])}}">
-        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-            {{__('Back')}}
+        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold " id="back_btn">
+            {{__('BACK')}}
         </div>
     </a>
-    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn" style="display:none;">
+    <div class="btn btn--yellow btn-sm btn-wide kt-font-bold " id="submit_btn" style="display:none;">
         <i class="la la-check"></i>
-        {{__('Submit')}}
+        {{__('SUBMIT')}}
     </div>
-    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u" data-ktwizard-type="action-next"
-        id="next_btn">
-        {{__('Next')}}
+    <div class="btn btn--maroon btn-sm btn-wide kt-font-bold " data-ktwizard-type="action-next" id="next_btn">
+        {{__('NEXT')}}
     </div>
 </div>
 </div>
@@ -831,6 +834,8 @@ $language_id = Auth::user()->LanguageId;
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 returnType: "json",
                 showFileCounter: false,
                 abortStr: '',
@@ -939,6 +944,8 @@ $language_id = Auth::user()->LanguageId;
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 returnType: "json",
@@ -1314,7 +1321,7 @@ $language_id = Auth::user()->LanguageId;
         }
         $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true});
 
-        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
         $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
         $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
@@ -1327,10 +1334,15 @@ $language_id = Auth::user()->LanguageId;
                 success: function(result){
                     // console.log(result)
                     $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                     for(let i = 0; i< result.length;i++)
                     {
-                        $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                        // $('#area').append('<option value="'+result[i].id+'">'+result[i].area_en+'</option>');
+                        let area = $('#getLangid').val() == 1 ? result[i].area_en : result[i].area_ar ;
+                        if(area)
+                        {
+                            $('#area').append('<option value="'+result[i].id+'">'+area+'</option>');
+                        }
                     }
                 }
                 });
@@ -1380,12 +1392,12 @@ $language_id = Auth::user()->LanguageId;
 
                         if(data.artist_d == null)
                         {
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">This is an Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">{{_('This is an Optional field')}}</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
                             $('#not_artist_personcode').html(code);
                             return ;
                         }else if(data.artist_d.artist_status == 'blocked')
                         {
-                            $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
+                            $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry, This Artist is blocked ! Please Select a New Artist")!!}</div>');
                             return ;
                         }
                         
@@ -1400,13 +1412,14 @@ $language_id = Auth::user()->LanguageId;
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 var getLangId = $('#getLangid').val();
                                 let apd = data.artist_permit[j];
-                                $('#ex_artist_en_name').html(getLangId == 1 ? apd.firstname_en+' '+apd.lastname_en  : apd.lastname_ar+' '+apd.firstname_ar);
+                                $('#ex_artist_en_name').html(getLangId == 1 ? capitalizeThis(apd.firstname_en)+' '+capitalizeThis(apd.lastname_en)  : apd.lastname_ar+' '+apd.firstname_ar);
                                 $('#ex_artist_mobilenumber').html(apd.mobile_number);
                                 $('#ex_artist_email').html(apd.email);
                                 $('#ex_artist_personcode').html(data.person_code);
                                 var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                                 $('#ex_artist_dob').html(dob);
-                                $('#ex_artist_nationality').html(apd.nationality.nationality_en);
+                                var langid = $('#getLangid').val();
+                                $('#ex_artist_nationality').html(langid == 1 ? capitalizeThis(apd.nationality.nationality_en) : apd.nationality.nationality_ar);
                                 var gender = apd.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                                 $('#ex_artist_gender').html(gender);
                                 $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');
@@ -1659,19 +1672,20 @@ $language_id = Auth::user()->LanguageId;
                         });
                         if(data.artist.artist_status == 'blocked')
                         {
-                            $('#person_code_modal').append('<div class="text--maroon">Sorry This Artist is blocked ! Please Select a New Artist</div>');
+                            $('#person_code_modal').append('<div class="text--maroon">{{__('Sorry, This Artist is blocked ! Please Select a New Artist')}}</div>');
                             return ;
                         }
-                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>Name:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>Name(Ar):</th> <td id="ex_artist_ar_name"></td> </tr> <tr> <th>DOB:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>Gender:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>Mobile:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>Email:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>Nationality:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">Select this Artist</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">Not this Artist</button> </div>');
+                        $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__('Name')}}:</th> <td id="ex_artist_en_name"></td> </tr>  <th>{{__('Birthdate')}}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{{__('Gender')}}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{{__('Mobile Number')}}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{{__('Email')}}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{{__('Nationality')}}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">{{__('Select this Artist')}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{{__('Not this Artist')}}</button> </div>');
                             $('#artistDetailswithcode').val(JSON.stringify(data));
-                            $('#ex_artist_en_name').html((data.firstname_en != null ?  data.firstname_en : '') + ' ' + (data.lastname_en != null ? data.lastname_en : ''));
-                            $('#ex_artist_ar_name').html((data.firstname_ar != null ?  data.firstname_ar : '') + ' '+ (data.lastname_ar != null ? data.lastname_ar : ''));
+                            var langid = $('#getLangid').val();
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+                           
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_email').html(data.email);
                             $('#ex_artist_personcode').html(data.person_code);
                             var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
-                            $('#ex_artist_nationality').html(data.nationality.nationality_en);
+                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
                             var gender = data.gender == 1 ? 'Male' : 'Female';
                             $('#ex_artist_gender').html(gender);
                             $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');

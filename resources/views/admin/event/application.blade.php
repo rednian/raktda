@@ -693,7 +693,7 @@
 														<div class="card-header" id="heading-address">
 															<div class="card-title kt-padding-b-5 kt-padding-t-10" data-toggle="collapse" data-target="#collapse-address"
 																		aria-expanded="true" aria-controls="collapse-address">
-																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('LOCATION & MAP DETAILS') }}</h6>
+																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('LOCATION AND MAP DETAILS') }}</h6>
 															</div>
 														</div>
 														<div id="collapse-address" class="collapse show" aria-labelledby="heading-address" data-parent="#accordion-address">
@@ -818,13 +818,13 @@
 											<ul class="nav nav-tabs nav-tabs-line nav-tabs-line-danger nav-tabs-line-3x " role="tablist">
 											<li class="nav-item">
 												<a class="nav-link active" data-toggle="tab" href="#kt_portlet_base_demo_1_3_tab_content" role="tab">
-													{{__('EVENT REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
+													{{__('EVENT ATTACHMENT')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->eventRequirement()->count()}}</span>
 												</a>
 											</li>
 											@if ($event->liquor()->count() > 0)
 												<li class="nav-item">
 													<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_2_3_tab_content" role="tab">
-														{{__('LIQUOR REQUIREMENTS')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->liquor()->count()}}</span>
+														{{__('LIQUOR ATTACHMENT')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->liquor()->count()}}</span>
 													</a>
 												</li>
 											@endif
@@ -832,7 +832,7 @@
 											@if ($event->truck()->count() > 0)
 												<li class="nav-item">
 													<a class="nav-link" data-toggle="tab" href="#food-truck-tab" role="tab">
-														{{__('FOOD TRUCK REQUIREMENTS')}}
+														{{__('FOOD TRUCK ATTACHMENT')}}
 														<span class="kt-badge kt-badge--outline kt-badge--info">{{$event->truck()->count()}}</span></span>
 													</a>
 												</li>
@@ -841,7 +841,7 @@
 											{{-- @if ($event->otherUpload()->count() > 0) --}}
 											<li class="nav-item">
 												<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
-													{{__('IMAGE UPLOADED')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
+													{{__('EVENT IMAGES ATTACHMENT')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
 												</a>
 											</li>
 											{{-- @endif --}}
@@ -851,8 +851,8 @@
 													<table class="table border borderless table-hover table-sm" id="requirement-table">
 													<thead>
 														<tr>
-																<th>{{ __('REQUIREMENT NAME') }}</th>
-																<th>{{ __('FILES') }}</th>
+																<th>{{ __('DOCUMENT NAME') }}</th>
+																<th>{{ __('NO. OF FILES') }}</th>
 																<th>{{ __('ISSUED DATE') }}</th>
 																<th>{{ __('EXPIRY DATE') }}</th>
 																<th>{{ __('ACTION') }}</th>
@@ -878,7 +878,7 @@
 												<table class="table border borderless table-hover table-sm" id="liquor-table">
 													<thead>
 														<tr>
-																<th>{{ __('REQUIREMENT NAME') }}</th>
+																<th>{{ __('DOCUMENT NAME') }}</th>
 																<th>{{ __('FILES') }}</th>
 																<th>{{ __('ISSUED DATE') }}</th>
 																<th>{{ __('EXPIRY DATE') }}</th>
@@ -916,7 +916,7 @@
 												<div class="card">
 													<div class="card-header" id="heading-check-history">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-check-history" aria-expanded="true" aria-controls="collapse-check-history">
-															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Checked History') }}</h6>
+															<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Action History') }}</h6>
 														</div>
 														</div>
 														<div id="collapse-check-history" class="collapse show" aria-labelledby="heading-check-history" data-parent="#accordion-check-history">
@@ -960,11 +960,11 @@
 																					<span></span>
 																				</label>
 																				<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-																					<input value="need modification" type="radio" name="status"> {{ __('Bounce Back for Ammendments') }}
+																					<input value="need modification" type="radio" name="status"> {{ __('Bounce Back Application for Ammendments') }}
 																					<span></span>
 																				</label>
 																				<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-																					<input value="need approval" type="radio" name="status"> {{ __('Need Approval') }}
+																					<input value="need approval" type="radio" name="status"> {{ __('Application Need Approval') }}
 																					<span></span>
 																				</label>
 																				<label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
@@ -1073,8 +1073,8 @@
 												<div class="card">
 													<div class="card-header" id="heading-requirements">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
-															<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL REQUIREMENTS') }}</span>
-																<small class="text-muted">{{ __('Add additional requirement to display in the client uploads.') }}</small>
+															<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL ATTACHMENT') }}</span>
+																<small class="text-muted">{{ __('Add additional attachment to display in the client uploads.') }}</small>
 															</h6>
 														</div>
 														</div>
@@ -1082,20 +1082,20 @@
 														<div class="card-body">
                                                             <div v-if="show" class="alert alert-outline-danger kt-margin-b-5 kt-padding-b-5 kt-padding-t-5 fade show" role="alert">
                                                                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                                                                <div class="alert-text">Maximum additional requirements limit reach!</div>
+                                                                <div class="alert-text">You can only add maximum of 10 additional attachment.</div>
 
                                                             </div>
                                                             <div class="form-group form-group-xs">
                                                                 <button @click="add" class="btn btn-sm btn-warning kt-font-transform-u kt-font-dark" type="button">
                                                                     <span class="la la-plus"></span>
-                                                                    Add new requirement
+                                                                    Add Attachment
                                                                 </button>
                                                             </div>
                                                             <table class="table table-borderless table-hover border table-sm">
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="no-wrap">#</th>
-                                                                        <th>Requirement Name</th>
+                                                                        <th>Document Name</th>
                                                                         <th>Description</th>
                                                                         <th class="no-wrap"></th>
                                                                     </tr>
@@ -1449,15 +1449,15 @@
 					data: function(d){},
 				},
 				columnDefs:[
-					{targets: [1,2, 3, 4], className: 'no-wrap'},
+					{targets: [1,2,3,4], className: 'no-wrap'},
 				],
 				"order": [[ 0, 'asc' ]],
 				rowGroup: {
 				startRender: function ( rows, group ) {
 					var row_data = rows.data()[0];
-					return $('<tr/>').append( '<td >'+group+'</td>' )
-										.append( '<td>'+rows.count()+'</td>' )
-										.append( '<td>'+row_data.issued_date+'</td>' )
+					return $('<tr/>').append( '<td>'+group+'</td>' )
+									.append( '<td>'+rows.count()+'</td>' )
+									.append( '<td>'+row_data.issued_date+'</td>' )
 									.append( '<td>'+row_data.expired_date+'</td>' )
 									.append( '<td></td>' )
 									.append( '<tr/>' );

@@ -168,12 +168,11 @@
   var hash = window.location.hash;
 
   $(document).ready(function () {
-    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){
-       $('.nav-tabs a[href="#new-request"]').tab('show');
-    });
-    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){
-     $('.nav-tabs a[href="#pending-request"]').tab('show');
-    });
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#new-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){$('.nav-tabs a[href="#pending-request"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){$('.nav-tabs a[href="#archive-permit"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){$('.nav-tabs a[href="#archive-permit"]').tab('show');});
+    $("#kt_page_portlet > div > section > div:nth-child(5) > div").click(function(){$('.nav-tabs a[href="#processing-permit"]').tab('show');});
 
 
 
@@ -421,7 +420,7 @@
 
             var status = $('select#archive-permit-status').val();
             d.request_type = $('select#archive-request-type').val();
-            d.status = status != null ? [status] : ['rejected', 'expired', 'unprocessed', 'cancelled'];
+            d.status = status != null ? [status] : ['rejected', 'expired', 'cancelled', 'cancelled'];
             d.date = $('#archive-applied-date').val()  ? selected_date : null;
            }
          },
@@ -433,10 +432,10 @@
          columns: [
            {data: 'reference_number'},
            {data: 'company_name'},
-           {data: 'applied_date'},
+           {data: 'location'},
            {data: 'duration'},
            {data: 'artist_number'},
-           {data: 'request_type'},
+        //    {data: 'request_type'},
            {data: 'permit_status'},
          ],
 
@@ -503,7 +502,7 @@
                {targets: 5, sortable: false},
             ],
             columns: [
-               {render:function(){ return null;}},
+            //    {render:function(){ return null;}},
                {data: 'action'},
                {data: 'reference_number'},
                {data: 'permit_number'},
@@ -511,13 +510,14 @@
                {data: 'approved_date'},
                {data: 'duration'},
                {data: 'artist_number'},
-               {data: 'request_type'},
+            //    {data: 'request_type'},
                {data: 'location'}
             ],
 
             createdRow: function (row, data, index) {
+                $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
 
-              $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
+            //   $('td:not(:first-child)',row).click(function(e){ location.href = data.application_link; });
               $('td:not(:first-child)', row).click(function () { location.href = data.show_link; });
               $('.btn-download', row).click(function(e){ e.stopPropagation(); });
 
@@ -533,7 +533,6 @@
         var search = $.fn.dataTable.util.throttle(function(v){ activePermit.search(v).draw(); }, 500);
         $('input#search-active-request').keyup(function(){ search($(this).val()); });
     }
-
 
     function processingTable() {
         var start = moment().subtract(29, 'days');
@@ -663,7 +662,7 @@
            {data: 'updated_at'},
            {data: 'duration'},
            {data: 'permit_status'},
-           {data: 'term'},
+        //    {data: 'term'},
            {data: 'request_type'},
            {data: 'location'},
            {data: 'has_event'},
@@ -742,7 +741,7 @@
            {data: 'company_name'},
            {data: 'artist_number'},
            {data: 'applied_date'},
-           {data: 'term'},
+        //    {data: 'term'},
            {data: 'duration'},
            {data: 'request_type'},
            {data: 'location'},

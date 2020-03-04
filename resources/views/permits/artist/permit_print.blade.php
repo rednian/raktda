@@ -179,7 +179,7 @@
         .each--person-tab {
             position: relative;
             margin: 5px 2px;
-            /* width: 50%; */
+            width: 50%;
             border: 1px solid black;
         }
 
@@ -266,7 +266,7 @@
                         <p>Artist Permit</p>
                     </th>
                     <th>
-                        <p>تصاريح الفنانين</p>
+                        <p>تصريح فني</p>
                     </th>
                 </tr>
             </table>
@@ -349,7 +349,7 @@
                                     <p>{{$company_details['name_ar']}}</p>
                                 </td>
                                 <td>
-                                    <h5>الاسم التجاري</h5>
+                                    <h5>الاسم الاقتصادي</h5>
                                 </td>
                             </tr>
                             <tr>
@@ -357,7 +357,7 @@
                                     <p>{{$permit_details['work_location_ar']}}</p>
                                 </td>
                                 <td>
-                                    <h5>موقع العمل باللغة العربية</h5>
+                                    <h5>موقع العمل </h5>
                                 </td>
                             </tr>
                         </table>
@@ -368,19 +368,17 @@
         </header>
     </htmlpageheader>
 
-
-    <div class="main">
-        <table class="person--details">
-            @php
-            $i = 1 ;
-            @endphp
-            @foreach($artist_details as $artist_permit)
-            @if($artist_permit->artist_permit_status == 'approved')
-            @if($i%2 != 0)
+    @php
+    $counter = 0;
+    $artist_details = $artist_details->where('artist_permit_status', 'approved');
+    @endphp
+    <div style="padding-top:40%;">
+        @foreach($artist_details->chunk(2) as $row)
+        <table style="width:100%;border:1px solid black;">
             <tr>
-                @endif
-                <td>
-                    <table class="each--person-tab">
+                @foreach($row as $artist_permit)
+                <td class="each--person-tab">
+                    <table>
                         <tr>
                             <td class="img--box">
                                 <div class="img--box-div">
@@ -392,7 +390,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <h5>Person Code / رقم الشخص </h5>
+                                            <h5>Person Code / رمز الشخص </h5>
                                         </td>
                                         <td>
                                             <h5>{{$artist_permit->artist['person_code']}}</h5>
@@ -409,11 +407,11 @@
                                     <tr>
                                         <td>
                                             <p>{{$artist_permit->firstname_en.'
-                                                '.$artist_permit->lastname_en}}</p>
+                                                            '.$artist_permit->lastname_en}}</p>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->firstname_ar.'
-                                                '.$artist_permit->lastname_ar}}</p>
+                                                            '.$artist_permit->lastname_ar}}</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -435,7 +433,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Passport No / رقم جواز السفر</h5>
+                                            <h5>Passport No / رقم الجواز </h5>
                                         </td>
                                         <td>
                                             <p>{{$artist_permit->passport_number}}</p>
@@ -452,7 +450,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5>Date of Birth / تاريخ الميلاد </h5>
+                                            <h5>Date of Birth / تاريخ الولادة </h5>
                                         </td>
                                         <td>
                                             <p>{{date('d-m-Y',strtotime($artist_permit->birthdate))}}</p>
@@ -479,16 +477,18 @@
                         </tr>
                     </table>
                 </td>
-                @if($i%2 == 0)
+                @endforeach
             </tr>
-            @endif
-            @php
-            $i++;
-            @endphp
-            @endif
-            @endforeach
         </table>
+        @php
+        $counter++;
+        @endphp
+        @if($artist_details->chunk(2)->count() > $counter && $counter % 3 == 0)
+        <pagebreak />
+        @endif
+        @endforeach
     </div>
+
 
     <htmlpagefooter name="page-footer">
         <footer>

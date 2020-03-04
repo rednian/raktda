@@ -16,7 +16,7 @@ class SetLanguage
     public function handle($request, Closure $next)
     {
         if ($request->user()->LanguageId != 1) {
-            \App::setLocale('ar');
+            \App::setLocale('ar2');
         }
         return $next($request);
     }

@@ -17,6 +17,7 @@
     <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css" />
     <style>
         .btn.btn-success {
             background: #80262b;
@@ -84,6 +85,11 @@
             <!-- begin right-content -->
             <div class="right-content">
                 <!-- begin login-header -->
+                <div class="text-right">
+                    <a href="{{route('login-ar')}}">
+                        <h5 style="padding-right: 20px;font-family: 'DroidArabicKufiRegular'">عَرَبيّ</h5>
+                    </a>
+                </div>
                 <div class="login-header" style="width:auto;">
                     <div class="brand">
                         <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br /> Smart
@@ -91,15 +97,16 @@
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
                         <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
                     </div>
-                     @if (Session::has('error'))
-                     <section class="row">
-                         <div class="col-sm-12">
-                             <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
-                               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                               <strong>Success!</strong> {{Session::get('message')[1]}}
-                             </div>
-                         </div>
-                     </section>
+                    @if (Session::has('error'))
+                    <section class="row">
+                        <div class="col-sm-12">
+                            <div style="margin-bottom: 0px;" class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                                <strong>Success!</strong> {{Session::get('message')[1]}}
+                            </div>
+                        </div>
+                    </section>
                     @endif
                     <div class="icon">
                         <i class="fa fa-sign-in"></i>
@@ -141,7 +148,9 @@
                             </div>
                             <div class="col-sm-6 ">
                                 @if (Route::has('password.request'))
-                                   <div class="text-right" style="color: #707478"><a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a></div>
+                                <div class="text-right" style="color: #707478"><a
+                                        href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                                </div>
                                 @endif
                             </div>
                         </section>
@@ -150,7 +159,8 @@
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                        Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}" class="text-success">here</a> to register.
+                            Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}"
+                                class="text-success">here</a> to register.
                         </div>
                         {{--<hr />--}}
                         {{--<p <center></center>lass="text-center">--}}

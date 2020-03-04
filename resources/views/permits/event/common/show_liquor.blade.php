@@ -33,14 +33,14 @@
                 <form class="col-md-12" id="liquor_details_form" novalidate>
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
                                 id="l_company_name_en" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
-                                    class="text-danger">*</span></label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}
+                                <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
                                 id="l_company_name_ar" dir="rtl" disabled>
                         </div>
@@ -61,7 +61,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 form-group form-group-xs" id="limited_types">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor service')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"
                                 id="liquor_types" disabled placeholder="{{__('Types of Liquor')}}"></textarea>
@@ -79,11 +79,13 @@
                     $i = 1;
                     @endphp
                     @foreach($liquor_req as $req)
+                    @if(is_null($req->type))
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <label
                                 class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
                                 <span id="cnd_{{$i}}"></span>
+                                <span class="text-danger">*</span>
                             </label>
                             <p for="" class="reqName">
                                 {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
@@ -117,6 +119,7 @@
             @php
             $i++;
             @endphp
+            @endif
             @endforeach
             </form>
             <form id="liquor_provided_form" disabled>
@@ -126,6 +129,42 @@
                     <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
                         id="liquor_permit_no" disabled>
                 </div>
+            </form>
+            <form id="liquor_provided_upload_form" class="col-md-12">
+                <div class="row col-md-12 justify-content-between kt-margin-b-5 kt-margin-t-5">
+                    <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
+                    </h5>
+                </div>
+                @include('permits.components.requirements')
+                @php
+                $j = $i;
+                @endphp
+                @foreach($liquor_req as $req)
+                @if(!is_null($req->type))
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12">
+                        <label
+                            class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
+                            <span id="cnd_{{$j}}"></span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <p for="" class="reqName">
+                            {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
+                        </p>
+                    </div>
+                    <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$j}}">
+                    <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$j}}">
+                    <div class="col-lg-4 col-sm-12">
+                        <label style="visibility:hidden">hidden</label>
+                        <div id="liquoruploader_{{$j}}">{{__('Upload')}}
+                        </div>
+                    </div>
+                </div>
+                @php
+                $j++;
+                @endphp
+                @endif
+                @endforeach
             </form>
         </div>
     </div>

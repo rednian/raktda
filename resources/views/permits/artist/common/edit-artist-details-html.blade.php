@@ -14,7 +14,7 @@
                     <div class="card-header" id="headingOne6">
                         <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseOne6"
                             aria-expanded="true" aria-controls="collapseOne6">
-                            <h6 class="kt-font-transform-u">{{__('Artist Details')}}</h6>
+                            <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('Artist Details')}}</h6>
                         </div>
                     </div>
                     <div id="collapseOne6" class="collapse show" aria-labelledby="headingOne6"
@@ -32,12 +32,13 @@
                                         <div class="form-group form-group-sm row">
                                             <label for="fname_en"
                                                 class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
-                                                {{__('First Name')}} <span class="text-danger">*</span>
+                                                {{__('First Name (EN)')}} <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
                                                     <input type="text" class="form-control form-control-sm "
-                                                        name="fname_en" id="fname_en" placeholder="{{__('First Name')}}"
+                                                        name="fname_en" id="fname_en" dir="ltr"
+                                                        placeholder="{{__('First Name (EN)')}}"
                                                         value="{{$artist_details->firstname_en}}">
                                                 </div>
                                             </div>
@@ -47,12 +48,13 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="fname_en"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name')}}<span
-                                                    class="text-danger">*</span></label>
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Last Name (EN)')}}
+                                                <span class="text-danger">*</span></label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
-                                                    <input type="text" class="form-control form-control-sm "
-                                                        name="lname_en" id="lname_en" placeholder="{{__('Last Name')}}"
+                                                    <input type="text" class="form-control form-control-sm " dir="ltr"
+                                                        name="lname_en" id="lname_en"
+                                                        placeholder="{{__('Last Name (EN)')}}"
                                                         value="{{$artist_details->lastname_en}}">
                                                 </div>
                                             </div>
@@ -83,7 +85,7 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="dob"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birth Date')}}
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birthdate')}}
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
@@ -99,7 +101,7 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="profession"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No.')}}
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport No')}}
                                                 <span class="text-danger hd-uae">*</span>
                                             </label>
                                             <div class="col-lg-8">
@@ -113,8 +115,8 @@
                                         </div>
                                         <div class="form-group form-group-sm row">
                                             <label for="pp_expiry"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}<span
-                                                    class="text-danger hd-uae">*</span>
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Passport Expiry')}}
+                                                <span class="text-danger hd-uae">*</span>
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="input-group input-group-sm">
@@ -193,7 +195,7 @@
                                                 <div class="input-group input-group-sm">
                                                     <input type="text"
                                                         class="form-control form-control-sm text-left text-lg-right "
-                                                        name="fname_ar" id="fname_ar"
+                                                        name="fname_ar" id="fname_ar" dir="rtl"
                                                         value="{{$artist_details->firstname_ar}}">
                                                 </div>
                                             </div>
@@ -375,7 +377,7 @@
             <div class="card-header" id="headingTwo6">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                     aria-expanded="false" aria-controls="collapseTwo6">
-                    <h6 class="kt-font-transform-u">{{__('Contact Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('CONTACT INFORMATION')}}
                     </h6>
                 </div>
             </div>
@@ -459,7 +461,7 @@
             <div class="card-header" id="headingTwo7">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo7"
                     aria-expanded="false" aria-controls="collapseTwo7">
-                    <h6 class="kt-font-transform-u">{{__('Address Information')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('ADDRESS INFORMATION')}}
                     </h6>
                 </div>
             </div>
@@ -494,7 +496,7 @@
                                                 @foreach ($emirates as $em)
                                                 <option value="{{$em->id}}"
                                                     {{$em->id == $artist_details->city ? 'selected' : '' }}>
-                                                    {{getLangId() == 1 ? $em->name_en : $em->name_ar}}
+                                                    {{getLangId() == 1 ? ucfirst($em->name_en) : $em->name_ar}}
                                                 </option>
                                                 @endforeach
                                             </select>
@@ -530,7 +532,7 @@
                                                 @foreach ($areas as $ar)
                                                 <option value="{{$ar->id}}"
                                                     {{$ar->id == $artist_details->area ? 'selected' : '' }}>
-                                                    {{getLangId() == 1 ? $ar->area_en : $ar->area_ar}}
+                                                    {{getLangId() == 1 ? ucfirst($ar->area_en) : $ar->area_ar}}
                                                 </option>
                                                 @endforeach
                                             </select>

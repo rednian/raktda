@@ -19,7 +19,7 @@
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
                     <h3 class="kt-portlet__head-title kt-font-transform-u">
-                        {{__('Happiness Meter')}}
+                        {{__('HAPPINESS METER')}}
                     </h3>
                 </div>
 
@@ -57,7 +57,7 @@
                                 <div
                                     class="form-group row form-group-marginless kt-margin-t-40 kt-margin-l-auto kt-margin-r-auto">
                                     <label for=""
-                                        class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your Comments')}}
+                                        class="kt-font-dark col-md-3 col-lg-3 col-form-label text-right">{{__('Your opinion matters')}}
                                         :</label>
                                     <div class="col-md-8">
                                         <textarea name="remarks" id="remarks" class="form-control form-control-sm "
@@ -75,7 +75,7 @@
                 <div class="d-flex justify-content-end">
                     <div class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        {{__('Submit')}}
+                        {{__('SUBMIT')}}
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.js('resources/sass/js/app.js', 'public/js');
+mix.js('resources/js/app.js', 'public/js');
 
 mix.styles([
     'public/assets/css/demo1/style.bundle.rtl.css',
@@ -101,9 +101,9 @@ mix.scripts([
     'public/assets/vendors/general/jquery.repeater/src/repeater.js',
     'public/assets/vendors/general/dompurify/dist/purify.js',
     'public/assets/vendors/custom/fullcalendar/ar.js',
-   
+
     // 'public/assets/vendors/custom/jquery.treetable1/jquery.treetable.js',
-   
+
 ], 'public/js/plugins.js');
 
 mix.scripts([

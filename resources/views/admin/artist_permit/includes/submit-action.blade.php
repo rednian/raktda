@@ -5,7 +5,7 @@
 			<form method="post" class="kt-form kt-form--fit kt-form--label-right" id="permit-action"
 						action="{{ route('admin.artist_permit.submit', $permit->permit_id) }}">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">{{ __('Permit Action') }}</h5>
+					<h5 class="modal-title" id="exampleModalLabel">{{ __('SELECT ACTION') }}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					</button>
 				</div>
@@ -27,7 +27,7 @@
                                             <option value="approved-unpaid">{{ __('Approve Application and notify client for payment') }}</option>
 										 @endif
 
-										<option value="send_back">{{ __('Bounce back to client for modification') }}</option>
+										<option value="send_back">{{ __('Bounce back for Amendments') }}</option>
 										<option value="need approval">{{ __('Need Approval') }}</option>
 										<option value="rejected">{{ __('Reject Application') }}</option>
 										@else

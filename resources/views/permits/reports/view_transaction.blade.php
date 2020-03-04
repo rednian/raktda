@@ -29,13 +29,13 @@
                 </button>
                 </a> --}}
                 <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
-                    target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('Print')}}
+                    target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('PRINT')}}
                     </button>
                 </a>
                 <a href="{{URL::signedRoute('company.reports')}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
             </div>
 
@@ -62,7 +62,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Transaction No')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('TRANSACTION ID')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->reference_number}}
                         </p>
@@ -75,12 +75,12 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Made From')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{ucwords($transaction->transaction_type)}}</p>
+                            {{__(ucwords($transaction->transaction_type))}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction ID')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction No')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->payment_transaction_id}}</p>
                     </div>
@@ -114,7 +114,7 @@
                             <th>{{__('Artist Name')}}</th>
                             <th>{{__('Profession')}}</th>
                             <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                            <th class="text-center">{{__('Term')}}</th>
+                            <th class="text-center">{{__('Permit Duration')}}</th>
                             <th class="text-right">{{__('Total')}} (AED)</th>
                             <th></th>
                         </tr>
@@ -143,7 +143,7 @@
                             $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
                             @endphp
                             <td class="text-center">
-                                {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
+                                {{ $noofdays.' '.($noofdays > 1 ?  __('days') : __('day')) }}
                             </td>
                             <td class="text-right">
                                 {{number_format($at->amount,2)}}
@@ -175,7 +175,7 @@
                         <tr class="kt-font-transform-u">
                             <th class="text-left">{{__('Event Name')}}</th>
                             <th class="text-left">{{__('Event Type')}}</th>
-                            <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                            <th class="text-right">{{__('Fee / Day')}} (AED) </th>
                             {{-- <th class="text-right">{{__('Vat')}}(5%)</th> --}}
                             <th class="text-center">{{__('No.of.days')}}</th>
                             <th class="text-center">{{__('Qty')}}</th>

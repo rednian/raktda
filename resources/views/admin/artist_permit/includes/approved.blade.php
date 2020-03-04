@@ -1,4 +1,4 @@
-<section class="form-row">
+<section class="form-row kt-hide">
 	<div class="col-1">
 		<div>
 			<select name="length_change" id="active-length-change" class="form-control-sm form-control custom-select custom-select-sm">
@@ -30,7 +30,7 @@
 					<option value="renew">{{ __('Renew Application') }}</option>
 				</select>
 			</div> --}}
-			<div class="col-3">
+			{{-- <div class="col-3">
 				<select  name="" id="active-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="activePermit.draw()">
 					<option disabled selected>{{ __('PERMIT STATUS') }}</option>
 					<option value="new">{{ __('New') }}</option>
@@ -39,7 +39,7 @@
 			</div>
 			<div class="col-2">
 				<button type="button" class="btn btn-sm btn-secondary" id="active-btn-reset">{{ __('RESET') }}</button>
-			</div>
+			</div> --}}
 		</form>
 	</div>
 	<div class="col-md-3">
@@ -56,20 +56,16 @@
 <table class="table  table-hover  table-borderless table-striped table-sm border" id="artist-permit-approved">
 	 <thead>
 	 <tr>
-			<th></th>
+			{{-- <th></th> --}}
 			<th>{{ __('ACTION') }}</th>
 			<th>{{ __('REFERENCE NO.') }}</th>
 			<th>{{ __('PERMIT NO.') }}</th>
 			<th>{{ __('ESTABLISHMENT NAME') }}</th>
 			<th>{{ __('APPROVED DATE') }}</th>
-			<th>{{ __('DURATION') }}</th>
+			<th>{{ __('PERMIT DURATION') }}</th>
 			<th>{{ __('NO. OF ARTIST') }}
-				 <span data-content="The number of artist that already checked"
-							 data-original-title="" data-container="body" data-toggle="kt-popover"
-							 data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-							</span>
 			</th>
-			<th>{{ __('REQUEST TYPE') }}</th>
+			{{-- <th>{{ __('REQUEST TYPE') }}</th> --}}
 			<th>{{ __('WORK LOCATION') }}</th>
 	 	</tr>
 	</thead>

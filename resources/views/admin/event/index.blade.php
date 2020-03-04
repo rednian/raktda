@@ -110,7 +110,7 @@
             </a>
         </li>
           <li class="nav-item">
-              <a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Request') }}
+              <a class="nav-link " data-toggle="tab" href="#pending-request" data-target="#pending-request">{{ __('Pending Requests') }}
                 <span class="kt-badge kt-badge--outline kt-badge--info">{{ $pending_request }}</span>
             </a>
         </li>
@@ -128,7 +128,7 @@
               <a class="nav-link" data-toggle="tab" href="#archive-permit">{{ __('History') }}</a>
             </li>
           <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('All Events Calendar') }}</a>
+              <a class="nav-link" data-toggle="tab" href="#calendar">{{ __('Events Calendar') }}</a>
             </li>
         </ul>
       </div>
@@ -306,7 +306,7 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('SUBMITTED DATE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('APPLICATION STATUS') }}</th>
               <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
@@ -404,7 +404,7 @@
               <th>{{ __('EVENT TYPE') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
-              <th>{{ __('LAST CHECKED STATUS') }}</th>
+              <th>{{ __('APPLICATION STATUS') }}</th>
               <th>{{ __('REQUEST TYPE') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
               <th>{{ __('START DATE') }}</th>
@@ -494,6 +494,7 @@
         <table class="table table-head-noborder table-sm table-borderless border table-striped" id="new-event-active">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
@@ -511,8 +512,8 @@
               <th>{{ __('HAS LIQUOR') }}</th>
               <th>{{ __('FOOD TRUCK') }}</th>
               <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-              <th>{{ __('SHOWN ON THE REGISTERED USERS\' CALENDARS') }}</th>
-              <th>{{ __('SHOWN ON PUBLIC WEBSITE CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO ALL REGISTERED COMPANY CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO PUBLIC WEBSITE CALENDAR') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -593,13 +594,14 @@
           id="new-event-archive">
           <thead>
             <tr>
+              <th>{{ __('ACTION') }}</th>
               <th>{{ __('REFERENCE NO.') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('EVENT TYPE') }}</th>
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT DURATION') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('STATUS') }}</th>
+              <th>{{ __('PERMIT STATUS') }}</th>
               <th>{{ __('APPROVED DATE') }}</th>
               <th>{{ __('APPROVED BY') }}</th>
               <th>{{ __('PERMIT NUMBER') }}</th>
@@ -611,8 +613,8 @@
               <th>{{ __('HAS LIQUOR') }}</th>
               <th>{{ __('FOOD TRUCK') }}</th>
               <th>{{ __('HAS ARTIST PERMIT?') }}</th>
-              <th>{{ __('SHOWN IN THE REGISTERED USER CALENDAR ? ') }}</th>
-              <th>{{ __('SHOWN IN THE PUBLIC WEBSITE CALENDAR ? ') }}</th>
+              <th>{{ __('SHOW EVENT TO ALL REGISTERED COMPANY CALENDAR') }}</th>
+              <th>{{ __('SHOW EVENT TO PUBLIC WEBSITE CALENDAR') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -718,7 +720,10 @@
      };
      $(document).ready(function () {
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
-      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });4
+      $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){ $('.nav-tabs a[href="#pending-request"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){ $('.nav-tabs a[href="#processing-permit"]').tab('show'); });
+      $("#kt_page_portlet > div > section > div:nth-child(5) > div").click(function(){ $('.nav-tabs a[href="#archive-permit"]').tab('show'); });
 
       newEvent();
       calendar();
@@ -767,6 +772,7 @@
         order: [[11, 'desc']],
         responsive: true,
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -792,11 +798,10 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
-          $('button', row).click(function(e){
-            e.stopPropagation();
-          });
-          $('.btn-download', row).click(function(e) { e.stopPropagation(); });
-          $('td:not(:first-child)',row).click(function () { location.href = data.show_link; });
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
+            $('button', row).click(function(e){ e.stopPropagation(); });
+            $('.btn-download', row).click(function(e) { e.stopPropagation(); });
+            $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
         },
         initComplete: function(){
            $('[data-toggle="tooltip"]').tooltip();
@@ -833,9 +838,9 @@
         columnDefs: [
           {targets: '_all', className: 'no-wrap'}
         ],
-        // responsive:true,
         order: [[6, 'desc']],
         columns: [
+          {data: 'action'},
           {data: 'reference_number'},
           {data: 'event_name'},
           {data: 'event_type'},
@@ -860,6 +865,7 @@
           {data: 'location'},
         ],
         createdRow: function (row, data, index) {
+            $('table.dataTable.dtr-inline.collapsed', row).click(function(e) { e.stopPropagation(); });
           $('td:not(:first-child)',row).click(function(e){ location.href = data.show_link; });
 
           $('#cancel-modal').on('shown.bs.modal', function () {
@@ -1160,7 +1166,7 @@
               header: {
                   left: 'prev,next today',
                   center: 'title',
-                  right: 'listWeek,listDay,dayGridMonth,timeGridWeek',
+                  right: 'listWeek,dayGridMonth',
               },
               height: 'auto',
               allDaySlot: true,
@@ -1174,7 +1180,7 @@
                   listDay: { buttonText: '{{ __('Day List') }}' },
                   listWeek: { buttonText: '{{ __('Week List') }}' }
               },
-              defaultView: 'listWeek',
+              defaultView: 'dayGridMonth',
               defaultDate: TODAY,
               editable: false,
               eventLimit: true, // allow "more" link when too many events

@@ -150,7 +150,7 @@
         <thead>
             <tr>
                 <th colspan="2" scope="col">License Data</th>
-                <th colspan="2" scope="col">تاريخ الرخصة</th>
+                <th colspan="2" scope="col">بيانات النرخبص</th>
             </tr>
         </thead>
         <tbody>
@@ -158,16 +158,16 @@
                 <td>{{$event_details->owner->company->trade_license}}</td>
                 <td class="subhead">رقم الرخصة<br />License Number</td>
                 <td>{{$event_details->owner->company->name_ar}}<br />{{$event_details->owner->company->name_en}}</td>
-                <td class="subhead">رقم المنشأة<br />Name of Establishment</td>
+                <td class="subhead">اسم المنشأة<br />Name of Establishment</td>
             </tr>
             <tr>
                 <td colspan="3">{{date('d-M-Y',strtotime($event_details->owner->company->trade_license_expired_date))}}
                 </td>
-                <td class="subhead"> تاريخ الانتهاء <br /> Expiry Date</td>
+                <td class="subhead">انتهاء الترخيص <br /> Expiry Date</td>
             </tr>
             <tr>
                 <td colspan="3"> {{$event_details->owner_name_ar}}<br /> {{$event_details->owner_name}}</td>
-                <td class="subhead">المالك<br />License owner</td>
+                <td class="subhead">مالك الرخصة<br />License owner</td>
             </tr>
             <tr>
                 <td colspan="2">{{$event_details->name_en}}</td>
@@ -193,10 +193,10 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>رقم المنشأة / Establishment Name</th>
+                <th>اسم المنشأة / Establishment Name</th>
                 <th>رقم اللوحة المرورية / Traffic Plate No.</th>
                 <th>تاريخ انتهاء تسجيل المركبة / Registration Expiry Date</th>
-                <th>خدمة الطعام / Food Services</th>
+                <th>خدمة الطعام / Types of provided F&B</th>
             </tr>
         </thead>
         <tbody>

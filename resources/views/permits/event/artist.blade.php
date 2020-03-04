@@ -8,7 +8,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Add Artist to Event Permit')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('ADD ARTIST TO EVENT PERMIT')}}
             </h3>
         </div>
 
@@ -16,21 +16,21 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </button>
                 <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="Add Artist">
                     <i class="la la-plus"></i>
-                    {{__('Add Artist')}}
+                    {{__('ADD ARTIST')}}
                 </button>
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u"
-                    title="Go Back">
+                    title="{{__('BACK')}}">
                     <i class="la la-arrow-left"></i>
                 </button>
                 <button id="add_artist_sm" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
-                    onclick="setCokkie()" title="Add Artist">
+                    onclick="setCokkie()" title="{{__('ADD ARTIST')}}">
                     <i class="la la-plus"></i>
                 </button>
             </div>
@@ -85,21 +85,20 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location')}} <span class="text-danger">*</span></label>
+                                            {{__('Work Location (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
-                                            placeholder="Location" name="work_loc" id="work_loc"
-                                            value="{{$event->venue_en}}" />
+                                            placeholder="Work Location in English" name="work_loc" id="work_loc"
+                                            dir="ltr" value="{{$event->venue_en}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
                                             {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
-                                            placeholder="{{__('Work Location (AR)')}}" name="work_loc_ar"
-                                            id="work_loc_ar" dir="rtl" value="{{$event->venue_ar}}" />
+                                            placeholder="موقع العمل باللغة العربية" name="work_loc_ar" id="work_loc_ar"
+                                            dir="rtl" value="{{$event->venue_ar}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for=""
-                                            class="col-form-label col-form-label-sm">{{__('Connected Event ?')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
@@ -116,12 +115,12 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            {{__('Select Event')}} <span class="text-danger">*</span></label>
+                                            {{__('SELECT EVENT')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm mk-disabled"
                                             name="event_id" id="event_id">
                                             <option value=" ">{{__('Select')}}</option>
                                             <option value="{{$event->event_id}}" selected>
-                                                {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                                {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                                             </option>
                                         </select>
                                     </div>
@@ -141,13 +140,13 @@
                 <table class="table table-striped border table-hover table-borderless">
                     <thead>
                         <tr>
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
+                            <th>{{__('FIRST NAME')}}</th>
+                            <th>{{__('LAST NAME')}}</th>
+                            <th>{{__('PROFESSION')}}</th>
+                            <th>{{__('MOBILE NUMBER')}}</th>
                             {{-- <th>Email</th> --}}
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,9 +154,9 @@
                         @foreach($artist_details as $ad)
                         {{-- {{dd($ad)}} --}}
                         <tr>
-                            <td>{{ getLangId() == 1 ? ucwords($ad->firstname_en) : $ad->firstname_ar}}</td>
-                            <td>{{ getLangId() == 1 ? ucwords($ad->lastname_en) : $ad->lastname_ar}}</td>
-                            <td>{{ getLangId() == 1 ? ucwords($ad->profession['name_en']) : $ad->profession['name_ar']}}
+                            <td>{{ getLangId() == 1 ? ucfirst($ad->firstname_en) : $ad->firstname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucfirst($ad->lastname_en) : $ad->lastname_ar}}</td>
+                            <td>{{ getLangId() == 1 ? ucfirst($ad->profession['name_en']) : $ad->profession['name_ar']}}
                             </td>
                             <td>{{$ad->mobile_number}}</td>
                             {{-- <td>{{$ad->email}}</td> --}}
@@ -175,7 +174,7 @@
                                 </a>
                                 @if(count($artist_details) > 1)
                                 <a href="#"
-                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en}}','{{$ad->lastname_en}}')"
+                                    onclick="delArtist({{$ad->id}},{{$ad->permit_id}},'{{$ad->firstname_en.' '.$ad->lastname_en}}','{{$ad->firstname_en.' '.$ad->lastname_ar}}')"
                                     data-toggle="modal" data-target="#delartistmodal">
                                     <button
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('Remove')}}</button>
@@ -188,7 +187,7 @@
                         @endforeach
                         @else
                         <tr>
-                            <td colspan="7" class="text-center">{{__('Please Add Artists')}}</td>
+                            <td colspan="7" class="text-center">{{__('No Artists Added')}}</td>
                         </tr>
                         @endif
                     </tbody>
@@ -201,7 +200,7 @@
             <button class=" btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u
             {{ count($artist_details) == 0 ? 'd-none' : ''}}" id="submit_btn">
                 <i class="la la-check"></i>
-                {{__('Apply Permit')}}
+                {{__('APPLY PERMIT')}}
             </button>
         </div>
 
@@ -265,8 +264,11 @@
         function delArtist(temp_id, permit_id, fname, lname) {
             $('#del_temp_id').val(temp_id);
             $('#del_permit_id').val(permit_id);
-            $('#del_fname').val(fname);
-            $('#warning_text').html('Are you sure to remove <b>' + fname + ' ' + lname + '</b> from this permit ?');
+            let name = $('#getLangId').val() == 1 ? nameEn : nameAr ;
+            // $('#warning_text').html("{{__('Are you sure to remove')}} <b>" + name  +"</b> {{__('from this permit ?')}}");
+            let warnText = "{{ trans_choice('messages.remove_artist', Auth::user()->LanguageId , ['name' => ':artistname' ])}}";
+            warnText  = warnText.replace(':artistname', name);
+            $('#warning_text').html(warnText);
             $('#warning_text').css('color', '#580000');
         }
 

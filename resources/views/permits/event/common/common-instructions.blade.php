@@ -36,7 +36,7 @@
             <div class="card-title show" data-toggle="collapse" data-target="#collapseFour6" aria-expanded="false"
                 aria-controls="collapseFour6">
                 <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">
-                    {{__('Permit Fee')}} & {{__('Required Documents')}}</h6>
+                    {{__('PERMIT FEE & REQUIRED DOCUMENTS')}}</h6>
             </div>
         </div>
         <div id="collapseFour6" class="collapse show" aria-labelledby="headingFour6"

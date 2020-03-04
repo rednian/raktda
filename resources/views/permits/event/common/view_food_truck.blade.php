@@ -12,7 +12,7 @@
                 <form class="col-md-12" id="truck_details_form">
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
                             <input type="text" class="form-control form-control-sm" name="company_name_en"
                                 id="company_name_en" disabled>
                         </div>
@@ -22,7 +22,7 @@
                                 id="company_name_ar" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Food Services')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}}</label>
                             <textarea type="text" class="form-control form-control-sm" name="food_type" id="food_type"
                                 disabled placeholder="food type" rows="2"></textarea>
                         </div>
@@ -60,11 +60,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-sm-12">
                             <label
-                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar  }}
+                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
                                 <span id="cnd_{{$i}}"></span>
                             </label>
                             <p for="" class="reqName">
-                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                             </p>
                         </div>
                         <input type="hidden" value="{{$req->requirement_id}}" id="truck_req_id_{{$i}}">

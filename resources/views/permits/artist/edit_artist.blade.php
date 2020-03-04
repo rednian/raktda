@@ -72,10 +72,10 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-sm-12">
                                             <label
-                                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucwords($req->requirement_name) : $req->requirement_name_ar}}
+                                                class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
                                                 <span id="cnd_{{$i}}"></span></label>
                                             <p for="" class="reqName">
-                                                {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
+                                                {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                                             </p>
                                         </div>
                                         <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
@@ -123,24 +123,24 @@
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        {{__('Previous')}}
+                        {{__('PREVIOUS')}}
                     </div>
 
                     <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
 
                     <a href="{{URL::signedRoute('company.view_draft_details',[ 'id' => $artist_details->permit_id])}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        {{__('Update')}}
+                        {{__('UPDATE')}}
                     </div>
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
+                        {{__('NEXT')}}
                     </div>
 
                 </div>
@@ -242,6 +242,8 @@
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 multiple: false,
@@ -337,6 +339,8 @@
                 downloadStr: `<i class="la la-download"></i>`,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 // previewHeight: '100px',
                 // previewWidth: "auto",
@@ -870,10 +874,15 @@
                 success: function(result){
                     // console.log(result)
                     $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                     for(let i = 0; i< result.length;i++)
                     {
-                        $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
+                        // $('#area').append('<option value="'+result[i].id+'" >'+result[i].area_en+'</option>');
+                        let area = $('#getLangid').val() == 1 ? result[i].area_en : result[i].area_ar ;
+                        if(area)
+                        {
+                            $('#area').append('<option value="'+result[i].id+'">'+area+'</option>');
+                        }
                     }
                     if(sel_id){
                         $('#area').val(sel_id);

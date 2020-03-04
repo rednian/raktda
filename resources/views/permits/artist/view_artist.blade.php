@@ -2,9 +2,12 @@
 
 @section('title', 'View Artist Details - Smart Government Rak')
 
-@section('title', 'Artist Details')
-
 @section('content')
+
+@if(check_is_blocked()['status'] == 'blocked')
+@include('permits.artist.common.company_block')
+@endif
+
 
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
@@ -39,7 +42,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{$backUrl}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
                     <i class="la la-arrow-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
             </div>
 
@@ -62,96 +65,103 @@
                         {{ucwords($artist_details->firstname_en[0])}}{{ucwords($artist_details->lastname_en[0])}}
                     </span>
                     @else
-                    <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image">
+                    {{-- <img src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="image"> --}}
+                    <a id="artist_image" href="{{url('storage').'/'.$artist_details->original}}"><img
+                            src="{{url('storage').'/'.$artist_details->thumbnail}}" alt="" /></a>
                     @endif
                 </div>
                 <div class="artist--view-head-details">
-                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                    <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0">
                         <i class="fa fa-user-alt text-muted la-2x"></i>
-                        {{getLangId() == 1 ? ucwords($artist_details->firstname_en).' '.ucwords($artist_details->lastname_en) : ucwords($artist_details->firstname_ar).' '.ucwords($artist_details->lastname_ar)}}</span>
-                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                        {{getLangId() == 1 ? ucfirst($artist_details->firstname_en).' '.ucfirst($artist_details->lastname_en) : ucfirst($artist_details->firstname_ar).' '.ucfirst($artist_details->lastname_ar)}}</span>
+                    {{-- <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
                         <i class="fa fa-id-card-alt fa-2x text-muted"></i>
                         {{$artist_details->artist['person_code'] ?? ''}}
-                    </span>
-                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0"><i
+                    </span> --}}
+                    <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0"><i
                             class="fa fa-envelope fa-2x text-muted"></i>{{$artist_details->email}}</span>
-                    <span href="#" class="kt-font-bolder form-control-plaintext kt-padding-b-0">
+                    <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0">
                         <i class="fa fa-flag fa-2x text-muted"></i>
-                        {{getLangId() == 1 ? ucwords($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}
+                        {{getLangId() == 1 ? ucfirst($artist_details->Nationality['nationality_en']) : $artist_details->Nationality['nationality_ar']}}
+                    </span>
+                    <span href="#" class="kt-font-bold form-control-plaintext kt-padding-b-0">
+                        <i class="fa fa-mobile fa-2x text-muted kt-padding-l-20 kt-padding-r-20"></i>
+                        {{$artist_details->mobile_number}}
                     </span>
                 </div>
             </div>
             <div class="mt-5 col-md-12 ">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Profession')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                            {{getLangId() == 1 ? ucwords($artist_details->profession['name_en']) : $artist_details->profession['name_ar']}}
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Profession')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
+                            {{getLangId() == 1 ? ucfirst($artist_details->profession['name_en']) : $artist_details->profession['name_ar']}}
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Birth Date')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Birthdate')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Gender')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Gender')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->gender == '1' ? __('Male') : __('Female')}}</p>
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Passport No')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Passport No')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->passport_number}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Passport Expiry')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Passport Expiry')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->passport_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->passport_expire_date)) : ''}}
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Mobile Number')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                            {{$artist_details->mobile_number}}</p>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Person Code')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
+                            {{$artist_details->artist->person_code}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Visa Type')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                            {{$artist_details->visaType ? $artist_details->visaType->visa_type_en : ''}}</p>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Visa Type')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
+                            {{$artist_details->visaType ? getLangId() == 1 ? ucfirst($artist_details->visaType->visa_type_en) : $artist_details->visaType->visa_type_ar : ''}}
+                        </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Visa Number')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Visa Number')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->visa_number ? $artist_details->visa_number : ''}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Visa Expiry Date')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Visa Expiry Date')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->visa_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->visa_expire_date)) : ''}}
                         </p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('UID No')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('UID No')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->uid_number}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('UID Expiry Date')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('UID Expiry Date')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->uid_expire_date->year > 1 ? date('d-M-Y', strtotime($artist_details->uid_expire_date)) : ''}}
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label">{{__('Phone Number')}}</label>
-                        <p class="col col-md-6 form-control-plaintext kt-font-bolder">
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Phone Number')}}</label>
+                        <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->phone_number ? $artist_details->phone_number : ''}}</p>
                     </div>
                     {{-- <div class="col-md-4 col-sm-12 row">
@@ -161,8 +171,8 @@
                 </div> --}}
             </div>
             <div class="row">
-                <label class="col col-md-2 col-form-label kt-padding-r-0">{{__('Address')}}</label>
-                <p class="col form-control-plaintext kt-font-bolder kt-padding-l-0">
+                <label class="col col-md-2 col-form-label kt-padding-r-0 kt-font-bolder">{{__('Address')}}</label>
+                <p class="col form-control-plaintext kt-padding-l-0">
                     {{ucwords($artist_details->address_en)}}</p>
             </div>
         </div>
@@ -182,7 +192,7 @@
                     @foreach($artist_details->artistPermitDocument as $req)
                     <tr>
                         <td style="width:50%;">
-                            {{$req->requirement ? ucfirst($req->requirement->requirement_name) : ''}}
+                            {{$req->requirement ? getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar : '' }}
                         </td>
                         <td class="text-center">
                             {{$req->issued_date != '0000-00-00' ? date('d-m-Y', strtotime($req->issued_date)) : ''}}
@@ -205,5 +215,14 @@
 </div>
 
 </div>
+
+
+@endsection
+
+@section('script')
+
+<script>
+    $('#artist_image').fancybox();
+</script>
 
 @endsection

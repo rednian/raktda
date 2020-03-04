@@ -10,6 +10,8 @@
 </style>
 @endsection
 
+{{-- {{dd(session(Auth::user()->user_id . '_image_file'))}} --}}
+
 @section('content')
 
 <link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
@@ -79,9 +81,6 @@
 
         @include('permits.event.common.common-event-details')
 
-
-        <input type="hidden" id="settings_event_start_date" value="{{getSettings()->event_start_after}}">
-
         <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
             <div class="kt-form__section kt-form__section--first ">
                 <div class="">
@@ -96,7 +95,7 @@
                                 <p class="reqName">{{__('Add multiple images')}}</p>
                             </div>
                             <div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label>
-                                <div id="image_uploader">{{__('Upload')}}</div>
+                                <div id="image_uploader"></div>
                             </div>
 
                         </div>
@@ -110,26 +109,26 @@
         <div class="kt-form__actions">
             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                 data-ktwizard-type="action-prev" id="prev_btn">
-                {{__('Previous')}}
+                {{__('PREVIOUS')}}
             </div>
 
 
             <a href="{{URL::signedRoute('event.index')}}#applied">
                 <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </div>
             </a>
 
             <div class="btn-group" role="group" id="submit--btn-group">
                 <button id="btnGroupDrop1" type="button" class="btn btn--yellow btn-sm dropdown-toggle"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{__('Submit')}}
+                    {{__('SUBMIT')}}
                 </button>
                 <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
                         id="submit_btn">{{__('Finish & Submit')}}</button>
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="finished"
-                        id="submit_btn_artist">{{__('Submit & Add Artist')}}</button>
+                        id="submit_btn_artist">{{__('Submit and Add Artist')}}</button>
                     <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
                         id="draft_btn">{{__('Save as Draft')}}</button>
                 </div>
@@ -138,7 +137,7 @@
 
             <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                 data-ktwizard-type="action-next" id="next_btn">
-                {{__('Next')}}
+                {{__('NEXT')}}
             </div>
         </div>
     </div>
@@ -197,8 +196,9 @@
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
 <script src="{{asset('js/company/map.js')}}"></script>
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places&callback=initialize"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6nhSpjNed-wgUyVMJQZJTRniW-Oj_Tgw&libraries=places{{getlangId() == 2 ? '&language=ar' : ''}}&callback=initialize"
     async defer></script>
+{{--  --}}
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -226,10 +226,9 @@
 
     $(document).ready(function(){
 
-        $('input[dir=rtl]').keyup(function(e){
+        $('input[dir=rtl],textarea[dir=rtl]').keyup(function(e){
             return false;
             var regex = RegExp('^[\u0621-\u064A\u0660-\u0669\s0-9]+$');
-            console.log(regex.test($(this).val()) ? true : false);
             return regex.test($(this).val()) ? true : false;
         });
 
@@ -244,7 +243,7 @@
             success: function(){}
         })
         // getRequirementsList(5);
-        // wizard.goTo(3);
+      
 
         $('#event_id').val(0);
 
@@ -257,7 +256,11 @@
         $('#liquorEditBtn').hide();
 
         $('#liquor_provided_form').hide();
+        $('#liquor_provided_upload_form').hide();
         $('#limited_types').hide();
+
+
+
     });
 
     function check_duration() {
@@ -280,6 +283,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     returnType: "json",
                     showProgress: false,
                     showFileCounter: false,
@@ -348,6 +353,8 @@
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 maxFileSize: 5242880,
@@ -634,9 +641,10 @@
         $('#issued_date').on('changeDate', function (selected) {
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
-            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
+            // var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
+            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'day');
             $('#expired_date').datepicker('setStartDate', minDate);
-            $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
+            // $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
         });
         $('#expired_date').on('changeDate', function (ev) {
@@ -809,9 +817,11 @@
                             }
                             $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
                             $('#event_sub_type_req').html('*');
+                            $('#event_sub_type_id').removeClass('mk-disabled');
                         }else
                         {
                             $('select[name="event_sub_type_id"]').rules("remove"), "required";$('#event_sub_type_id').removeClass('is-invalid');
+                            $('#event_sub_type_id').addClass('mk-disabled');
                             $('#event_sub_type_req').html('');
                         }
                     }
@@ -838,13 +848,13 @@
                 data: { firm: firm , id: id},
                 success: function (result) {
                     $('#documents_required').empty();
-                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Event Permit Required documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
                  if(result){
                      var res = result;
                      $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">{!!__('Upload')!!}</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -1250,6 +1260,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     maxFileSize: 5242880,
                     showFileCounter: false,
                     showProgress: false,
@@ -1343,10 +1355,12 @@
                 $('#liquor_provided_form').show();
                 $('#liquor_details_form').hide();
                 $('#liquor_upload_form').hide();
+                $('#liquor_provided_upload_form').show();
             }else if(id == 0) {
                 $('#liquor_provided_form').hide();
                 $('#liquor_details_form').show();
                 $('#liquor_upload_form').show();
+                $('#liquor_provided_upload_form').hide();
             }
         }
 
@@ -1395,7 +1409,7 @@
             }
         })
 
-        function liqourDocValidation(){
+        function liqourDocValidation(type){
             var hasFile = true;
             var hasFileArray = [];
             var reqCount = parseInt($('#liquor_document_count').val());
@@ -1414,6 +1428,10 @@
                         {
                             hasFileArray[d] = false;
                             $('#liquor-upload_'+d).css('border', '2px dotted red');
+                            if($('#liqour_req_type_'+d).val() == 'provided' && type == 0) {
+                                hasFileArray[d] = true;
+                                $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
+                            }
                         } else {
                             hasFileArray[d] = true;
                             $("#liquor-upload_" + d).css('border', '2px dotted #A5A5C7');
@@ -1457,6 +1475,8 @@
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     maxFileSize: 5242880,
                     showProgress: false,
@@ -1547,8 +1567,8 @@
 
 
         $('#update_lq').click(function(){
-            var hasFile = liqourDocValidation();
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
+            var hasFile = liqourDocValidation(type);
             if(type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form())
             {
                 if(type == 0)
@@ -1681,16 +1701,18 @@
                 fileName: "image_file",
                 multiple: true,
                 deleteStr: `<i class="la la-trash"></i>`,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileSize: false,
                 showFileCounter: false,
                 maxFileSize: 5242880,
                 abortStr: '',
                 showProgress: false,
                 downloadStr: `<i class="la la-download"></i>`,
-                previewHeight: '100px',
-                previewWidth: "auto",
                 returnType: "json",
                 showDownload:true,
+                sequential:true,
+                maxFileCount:5,
                 // showPreview: true,
                 showDelete: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
@@ -1721,6 +1743,11 @@
             dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            language: {
+                @if(Auth::check() && Auth::user()->LanguageId != 1)
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_'
+                @endif
+            },
         });
 
 </script>

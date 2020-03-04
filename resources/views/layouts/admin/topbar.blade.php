@@ -7,7 +7,7 @@
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="30px,0px" aria-expanded="true">
                 <span class="kt-header__topbar-icon kt-pulse kt-pulse--danger">
                     <i class="flaticon2-bell-alarm-symbol"></i>
-                    <span class="kt-pulse__ring"></span>
+                    {{-- <span class="kt-pulse__ring"></span> --}}
                 </span>
                 <span class="kt-badge kt-badge--dot kt-badge--notify kt-badge--sm kt-badge--danger"></span>
             </div>

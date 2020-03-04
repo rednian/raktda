@@ -196,7 +196,7 @@
 							<div class="dropdown" data-ktwizard-type="action-submit">
 								<button class="btn btn-warning btn-sm btn-wide kt-font-bold kt-font-transform-u dropdown-toggle" type="button"
 												id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									{{ __('Take Action ') }}
+									{{ __('Select Action ') }}
 								</button>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
 									<button type="submit" name="artist_permit_status" value="approved" class="dropdown-item">{{ __('Approve Artist') }}</button>
@@ -318,7 +318,7 @@
 					url: '{{ url('/artist_permit') }}/'+{{ $permit->permit_id }}+'/application/'+{{ $artist_permit->artist_permit_id }}+'/documentDatatable'
 				},
 				columnDefs: [
-					{targets: [3], className: 'no-wrap'},
+					{targets: '_all', className: 'no-wrap'},
 					{targets: [3], className: 'no-wrap', sortable: false},
 					@if(Auth::user()->roles()->whereIn('roles.role_id', [4, 5, 6])->exists())
 					{targets: [3], visible: false},

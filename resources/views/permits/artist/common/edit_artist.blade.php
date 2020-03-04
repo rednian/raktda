@@ -52,6 +52,7 @@
                             $staff_comments])
                             @endcomponent
                             @endif
+                            @include('permits.components.requirements')
                             <div class="kt-wizard-v3__form">
                                 <form id="documents_required" method="post" autocomplete="off">
                                     <input type="hidden" id="artist_number_doc" value={{1}}>
@@ -84,11 +85,12 @@
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <label
-                                                    class="kt-font-bold text--maroon">{{$language_id == 1 ?$req->requirement_name : $req->requirement_name_ar}}
+                                                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar}}
                                                     <span id="cnd_{{$i}}"></span>
                                                 </label>
                                                 <p for="" class="reqName">
-                                                    {{$req->requirement_description}}</p>
+                                                    {{getLangId() == 1 ?  ucfirst($req->requirement_description) : $req->requirement_description_ar }}
+                                                </p>
                                             </div>
                                             <input type="hidden" value="{{$req->requirement_id}}" id="req_id_{{$i}}">
                                             <input type="hidden" value="{{$req->requirement_name}}"
@@ -115,7 +117,7 @@
                                             </div>
                                             <div class="col-lg-2 col-sm-12">
                                                 <label for="" class="text--maroon kt-font-bold"
-                                                    title="Expiry Date">{{__('Expired Date')}}</label>
+                                                    title="Expiry Date">{{__('Expiry Date')}}</label>
                                                 <input type="text" class="form-control form-control-sm date-picker"
                                                     name="doc_exp_date_{{$i}}" data-date-start-date="+0d"
                                                     id="doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
@@ -141,7 +143,7 @@
                 <div class="kt-form__actions">
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-prev" id="prev_btn">
-                        {{__('Previous')}}
+                        {{__('PREVIOUS')}}
                     </div>
                     <input type="hidden" id="permit_id" value={{$artist_details->permit_id}}>
                     @php
@@ -152,8 +154,8 @@
                     case 'amend':
                     $status = 'amend';
                     break;
-                    case 'amend':
-                    $status = 'amend';
+                    case 'edit':
+                    $status = 'edit';
                     break;
                     case 'renew':
                     $status = 'renew';
@@ -178,17 +180,17 @@
 
                     <a href="{{$route_back}}">
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                            {{__('Back')}}
+                            {{__('BACK')}}
                         </div>
                     </a>
                     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
                         <i class="la la-check"></i>
-                        {{__('Submit')}}
+                        {{__('SUBMIT')}}
                     </div>
 
                     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                         data-ktwizard-type="action-next" id="next_btn">
-                        {{__('Next')}}
+                        {{__('NEXT')}}
                     </div>
 
                 </div>
@@ -287,6 +289,11 @@
                 showFileSize: false,
                 maxFileSize: 5242880,
                 showFileCounter: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileCountErrorStr:"<span><b>{{__('Maximum allowed files are:')}}</b></span>",
+                sizeErrorStr: "<span><b>{{__('Allowed Max size: ')}}</b></span>",
+                uploadErrorStr: "<span><b>{{__('Upload is not allowed')}}</b></span>",
                 abortStr: '',
                 multiple: false,
                 maxFileCount:1,
@@ -923,7 +930,7 @@
                 success: function(result){
                     // console.log(result)
                     $('#area').empty();
-                    $('#area').append('<option value=" ">Select</option>');
+                    $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                     for(let i = 0; i< result.length;i++)
                     {
                         if(language_id == "1"){

@@ -116,8 +116,9 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('From Date')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                                        {{date('d M,y',strtotime($event->issued_date))}}&nbsp;
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{date('d F Y',strtotime($event->issued_date))}}&nbsp;
 
                                                     </span>
                                                 </div>
@@ -125,8 +126,9 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('To Date')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                                        {{date('d M,y',strtotime($event->expired_date))}} &nbsp;
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{date('d F Y',strtotime($event->expired_date))}} &nbsp;
 
                                                     </span>
                                                 </div>
@@ -139,13 +141,15 @@
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('No.of.days')}}</span>
                                                 <div class="kt-widget__label">
-                                                    <span class="btn btn-label-info btn-sm btn-bold btn-upper">
-                                                        {{$noofdays.' '.($noofdays > 1 ? 'days' : 'day')}}
+                                                    <span
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        {{$noofdays.' '.($noofdays > 1 ? __('days') :
+                                                        __('day'))}}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('Reference Number')}}</span>
+                                                <span class="kt-widget__date">{{__('Reference No')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -159,7 +163,7 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{getLangId() == 1 ? ucwords($event->type['name_en']) : $event->type['name_ar']}}
+                                                        {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -168,7 +172,7 @@
                                                 <div class="kt-widget__label">
                                                     <span
                                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{getLangId() == 1 ? ucwords($event->name_en) : $event->name_ar}}
+                                                        {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                                                     </span>
                                                 </div>
                                             </div>
@@ -198,7 +202,7 @@
                                             <tr>
                                                 <th>{{__('Event Name')}}</th>
                                                 <th>{{__('Event Type')}}</th>
-                                                <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                                                <th class="text-right">{{__('Fee / Day')}} (AED)</th>
                                                 <th class="text-center">{{__('No.of.days')}}</th>
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
@@ -260,7 +264,7 @@
                                                 $event_fee_total += $truck_fee;
                                                 $event_grand_total += $truck_fee + $truck_vat_amt;
                                                 @endphp
-                                                <td colspan="2">{{__('Truck Fee')}}</td>
+                                                <td colspan="2">{{__('Food Truck')}}</td>
                                                 <td class="text-right">{{number_format($per_truck_fee, 2)}} / truck</td>
                                                 <td class="text-center">
                                                     {{$noofdays}}
@@ -318,7 +322,7 @@
                                                 <th>{{__('Artist Name')}}</th>
                                                 <th>{{__('Profession')}}</th>
                                                 <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                                <th class="text-center">{{__('Term')}}</th>
+                                                <th class="text-center">{{__('Duration')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
                                             </tr>
@@ -345,7 +349,7 @@
                                                     {{number_format($ap->profession['amount'],2)}}
                                                 </td>
                                                 <td class="text-right">
-                                                    {{ucfirst($ap->term).' Term ('. $noofdays.' days )' }}
+                                                    {{$noofdays.' '.__('days')}}
                                                 </td>
                                                 <td class="text-right">
                                                     {{number_format($artist_fee, 2)}}
@@ -421,13 +425,13 @@
                     <div class="kt-form__actions">
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-prev" id="prev_btn">
-                            {{__('Previous')}}
+                            {{__('PREVIOUS')}}
                         </div>
 
 
                         <a href="{{URL::signedRoute('event.index')}}#applied">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
-                                {{__('Back')}}
+                                {{__('BACK')}}
                             </div>
                         </a>
 
@@ -445,21 +449,22 @@
                         <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
                             <i class="fa fa-check"></i>
-                            {{__('Pay')}}
+                            {{__('PAY')}}
                         </div>
+
 
                         {{-- <button onclick="paymentDoneUpdation('xyz', '10245');">payment</button> --}}
 
                         <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
                             class="kt-hide "><span
-                                class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('Next')}}</span>
+                                class="text-white btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u">{{__('NEXT')}}</span>
                         </a>
 
 
 
                         <div class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u"
                             data-ktwizard-type="action-next" id="next_btn">
-                            {{__('Next')}}
+                            {{__('NEXT')}}
                         </div>
 
 
@@ -586,8 +591,11 @@ $output = json_decode($output);
         },
         interaction: {
             merchant: {
-                name: 'RAKTDA NRS Infoways',
+                    name: "{{__('Ras Al Khaimah TDA')}}",
             },
+            @if(getLangId() == 2)
+            locale : 'ar-AE',
+            @endif
             displayControl: {
                 billingAddress  : 'HIDE',
             }
@@ -776,6 +784,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -917,6 +927,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: `<i class="la la-trash"></i>`,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showDelete: false,
                     returnType: "json",
                     showFileCounter: false,
@@ -996,19 +1008,20 @@ $output = json_decode($output);
                 fileName: "pic_file",
                 multiple: false,
                 deleteStr: `<i class="la la-trash"></i>`,
+                showDownload: true,
+                downloadStr:  `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
-                previewHeight: '100px',
-                previewWidth: "auto",
+                // previewHeight: '100px',
+                // previewWidth: "auto",
                 returnType: "json",
                 maxFileCount: 1,
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
-                onSuccess: function (files, response, xhr, pd) {
-                    pd.filename.html('');
-                },
                 onLoad: function (obj) {
                     var url = "{{route('event.get_uploaded_logo',':id')}}" ;
                     url = url.replace(':id', $('#event_id').val() );
@@ -1017,11 +1030,30 @@ $output = json_decode($output);
                         success: function (data) {
                             // console.log(data);
                             if (data.trim() != '') {
-                               obj.createProgress('', "{{url('storage')}}"+'/'+ data, '');
+                                let ex = data.split('/').pop();
+                               obj.createProgress(ex, "{{url('storage')}}"+'/'+ data, '');
                             }
                         }
                     });
                 },
+                downloadCallback: function(files, pd) {
+                    if(files.filepath){
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                    "{{url('storage')}}"+'/' + path,
+                    '_blank'
+                    );
+                    }else {
+                        let event_id = $('#event_id').val();
+                        let user_id = $('#user_id').val();
+                        let path = user_id+'/event/'+event_id+'/photos/'+files;
+                        window.open(
+                        "{{url('storage')}}"+'/' + path,
+                        '_blank'
+                        );
+                    }
+                }
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -1312,6 +1344,8 @@ $output = json_decode($output);
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
                     showFileSize: false,
+                    uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileCounter: false,
                     showProgress: false,
                     abortStr: '',
@@ -1453,13 +1487,15 @@ $output = json_decode($output);
                 deleteStr: `<i class="la la-trash"></i>`,
                 downloadStr: `<i class="la la-download"></i>`,
                 showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                 showFileCounter: false,
                 abortStr: '',
                 showProgress: false,
                 previewHeight: '100px',
                 previewWidth: "auto",
                 returnType: "json",
-                showPreview: true,
+                // showPreview: true,
                 showDelete: false,
                 showDownload: true,
                 uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',

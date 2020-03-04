@@ -7,7 +7,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Artist Permit Details')}}</h3>
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('ARTIST PERMIT DETAILS')}}</h3>
         </div>
 
         <div class="kt-portlet__head-toolbar">
@@ -15,7 +15,7 @@
                 <a href="{{URL::signedRoute('artist.index')}}#draft"
                     class="btn btn--maroon kt-font-bold kt-font-transform-u btn-elevate btn-sm">
                     <i class="la la-angle-left"></i>
-                    {{__('Back')}}
+                    {{__('BACK')}}
                 </a>
             </div>
 
@@ -34,34 +34,34 @@
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('From Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($draft_details[0]->issue_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($draft_details[0]->issue_date))}}
                             </span>
                         </div>
                     </div>
                     <div class="kt-widget__item">
                         <span class="kt-widget__date">{{__('To Date')}}</span>
                         <div class="kt-widget__label">
-                            <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                {{date('d M, y',strtotime($draft_details[0]->expiry_date))}}
+                            <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                {{date('d F Y',strtotime($draft_details[0]->expiry_date))}}
                             </span>
                         </div>
                     </div>
                     @if($draft_details[0]->event)
                     <div class="kt-widget__item">
-                        <span class="kt-widget__date">{{__('Connected Event ?')}}</span>
+                        <span class="kt-widget__date">{{__('Connected Event')}}</span>
                         <div class="kt-widget__label">
                             <span
                                 class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper cursor-text">
-                                {{ getLangId() == 1 ? $draft_details[0]->event->name_en : $draft_details[0]->event->name_ar }}
+                                {{ getLangId() == 1 ? ucfirst($draft_details[0]->event->name_en) : $draft_details[0]->event->name_ar }}
                             </span>
                         </div>
                     </div>
                     @endif
                 </div>
-                <div class="kt-widget__text kt-margin-t-10">
+                <div class="kt-widget__text kt-margin-t-20">
                     <strong>{{__('Work Location')}} :</strong>
-                    {{getLangId() == 1 ? ucwords($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}
+                    {{getLangId() == 1 ? ucfirst($draft_details[0]->work_location) : $draft_details[0]->work_location_ar}}
                 </div>
             </div>
 
@@ -71,23 +71,24 @@
                 <table class="table table-striped table-borderless border" id="applied-artists-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('First Name')}}</th>
-                            <th>{{__('Last Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th>{{__('Mobile Number')}}</th>
-                            <th>{{__('Status')}}</th>
-                            <th class="text-center">{{__('Action')}}</th>
+                            <th>{{__('FIRST NAME')}}</th>
+                            <th>{{__('LAST NAME')}}</th>
+                            <th>{{__('PROFESSION')}}</th>
+                            <th>{{__('MOBILE NUMBER')}}</th>
+                            <th>{{__('STATUS')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($draft_details as $atd)
                         <tr>
-                            <td>{{ucwords($atd->firstname_en)}}</td>
-                            <td>{{ucwords($atd->lastname_en)}}</td>
-                            <td>{{ucwords($atd->profession['name_en'])}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->firstname_en) : $atd->firstname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->lastname_en) : $atd->lastname_ar}}</td>
+                            <td>{{getLangId() == 1 ? ucfirst($atd->profession->name_en) : $atd->profession->name_ar}}
+                            </td>
                             <td>{{$atd->mobile_number}}</td>
                             <td>
-                                {{ucwords($atd->artist_permit_status)}}
+                                {{__(ucfirst($atd->artist_permit_status))}}
                             </td>
                             <td class="text-center">
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"

@@ -77,8 +77,8 @@ $user_lang = $user->languageId;
 
             @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
             <div class="kt-widget__action">
-              <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}" class="btn btn-sm btn--maroon kt-font-transform-u"
-               >{{__('Update Details')}}</a>&nbsp;
+              <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}"
+                class="btn btn-sm btn--maroon kt-font-transform-u">{{__('Update Details')}}</a>&nbsp;
               <button type="button" class="kt-hide btn btn-success btn-sm btn-upper">add user</button>&nbsp;
               <button type="button" class="kt-hide btn btn-brand btn-sm btn-upper">new task</button>
             </div>
@@ -135,7 +135,7 @@ $user_lang = $user->languageId;
                 <table class="table table-borderless table-sm table-display">
                   <tbody>
                     <tr>
-                      <td width="40%">Reference No.</td>
+                      <td width="40%">{{__('Reference No')}}</td>
                       <td>{{$company->reference_number}}</td>
                     </tr>
                   </tbody>
@@ -243,8 +243,8 @@ $user_lang = $user->languageId;
               <table class="table table-borderless border" id="upload-requirement-table">
                 <thead>
                   <tr>
-                    <th>{{__('REQUIREMENT NAME')}}</th>
-                    <th>{{__('FILE')}}</th>
+                    <th>{{__('Document Name')}}</th>
+                    <th>{{__('Files')}}</th>
                     {{-- <th>{{__('ISSUED DATE')}}</th> --}}
                     {{-- <th>{{__('EXPIRED DATE')}}</th> --}}
                     <th></th>
