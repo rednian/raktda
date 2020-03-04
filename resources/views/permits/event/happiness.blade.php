@@ -239,7 +239,7 @@
                                                 </tr>
                                                 @if($event->is_truck == 1)
                                                 <tr>
-                                                    <td colspan="2">{{__('Truck Fee')}}</td>
+                                                    <td colspan="2">{{__('Food Truck')}}</td>
                                                     @php
                                                     $per_truck_fee = getSettings()->food_truck_fee;
                                                     $truck_fee += $noofdays * $per_truck_fee;
@@ -429,7 +429,7 @@
                                         <div class="col-md-8">
                                             <textarea name="remarks" id="remarks" class="form-control form-control-sm "
                                                 rows="4"
-                                                placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                                placeholder="{{__('please enter your valuable comments')}}"></textarea>
                                         </div>
                                     </div>
                                 </form>
@@ -1407,7 +1407,7 @@
                 
                
             }else{
-                alert('Please select your experience');
+                alert("{{__('Please select your experience')}}");
             }
                 
 

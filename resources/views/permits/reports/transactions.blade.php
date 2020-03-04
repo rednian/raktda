@@ -31,13 +31,13 @@
                         <div>
                             <select name="made_from" id="made_from"
                                 class="form-control-sm form-control custom-select custom-select-sm" onchange="t.draw()">
-                                <option value=' '>{{__('From')}}</option>
+                                <option value=''>{{__('FROM')}}</option>
                                 <option value='artist'>{{__('Artist Permit')}}</option>
                                 <option value='event'>{{__('Event Permit')}}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-7">
+                    <div class="col-6">
                         <div class="input-group input-daterange input-group-sm">
                             <div class="kt-input-icon kt-input-icon--right">
                                 <input type="text" class="form-control form-control-sm" placeholder="{{ __('Date') }}"
@@ -57,7 +57,7 @@
                         </div> --}}
                     </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <button type="button" class="btn btn-sm btn--maroon" id="btn-reset">{{ __('RESET') }}</button>
             </div>
             </form>
@@ -88,12 +88,12 @@
         <thead>
             <tr class="kt-font-transform-u text-center">
                 <th>#</th>
-                <th>{{__('Transaction ID')}}</th>
-                <th>{{__('Receipt No')}}</th>
+                <th>{{__('TRANSACTION ID')}}</th>
+                <th>{{__('RECEIPT NO')}}</th>
                 <th>{{__('Amount')}}(AED)</th>
-                <th>{{__('VAT')}}(5%)</th>
+                <th>{{__('Vat')}}(5%)</th>
                 <th>{{__('Total')}}(AED)</th>
-                <th>{{__('From')}}</th>
+                <th>{{__('FROM')}}</th>
                 <th>{{__('Date')}}</th>
                 <th>{{__('View')}}</th>
                 {{-- <th class="text-center">{{__('Action')}}</th> --}}

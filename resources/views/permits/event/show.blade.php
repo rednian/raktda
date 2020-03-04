@@ -239,14 +239,14 @@
                 </td>
                 </tr> --}}
                 <tr>
-                    <td style="width: 50%;">{{ __('Start Date') }} </td>
+                    <td style="width: 50%;">{{ __('From Date') }} </td>
                     <td>:</td>
                     <td style="width: 50%;" class="kt-font-dark col-md-6">
                         {{ date('d-F-Y', strtotime($event->issued_date)) }}
                     </td>
                 </tr>
                 <tr>
-                    <td>{{ __('End Date') }} </td>
+                    <td>{{ __('To Date') }} </td>
                     <td>:</td>
                     <td class="kt-font-dark">
                         {{ date('d-F-Y', strtotime($event->expired_date)) }}

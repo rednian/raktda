@@ -1336,7 +1336,7 @@ class EventController extends Controller
                 return 'None';
             }
         })->editColumn('name_en', function ($permits) {
-            return getLangId() == 1 ? $permits->name_en : $permits->name_ar ;
+            return getLangId() == 1 ? ucwords($permits->name_en) : $permits->name_ar ;
         })->addColumn('action', function ($permit) use ($status, $amend_grace) {
             if(check_is_blocked()['status'] == 'blocked'){
                 return ;
@@ -1389,7 +1389,7 @@ class EventController extends Controller
             }else if($status == 'need modification') {
                 return $ret_status = __('Bounce Back');
             }else {
-                return $ret_status = $permit->status;
+                return $ret_status = __($permit->status);
             }
 
         })->addColumn('details', function ($permit)  use ($status) {

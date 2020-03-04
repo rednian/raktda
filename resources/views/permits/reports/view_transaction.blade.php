@@ -65,7 +65,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Transaction No')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('TRANSACTION ID')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->reference_number}}
                         </p>
@@ -78,12 +78,12 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Made From')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{ucwords($transaction->transaction_type)}}</p>
+                            {{__(ucwords($transaction->transaction_type))}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction ID')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction No')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->payment_transaction_id}}</p>
                     </div>
@@ -180,7 +180,7 @@
                         <tr class="kt-font-transform-u">
                             <th class="text-left">{{__('Event Name')}}</th>
                             <th class="text-left">{{__('Event Type')}}</th>
-                            <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                            <th class="text-right">{{__('Fee / Day')}} (AED) </th>
                             {{-- <th class="text-right">{{__('Vat')}}(5%)</th> --}}
                             <th class="text-center">{{__('No.of.days')}}</th>
                             <th class="text-center">{{__('Qty')}}</th>

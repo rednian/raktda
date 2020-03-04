@@ -132,7 +132,7 @@ class ReportController extends Controller
                 // $total = (double)$transaction->amount + (double)$transaction->vat;
                 // return number_format($total,2);
             })->editColumn('from', function ($transaction) {
-                $type = $transaction->transaction_type == 'artist' ? 'Artist' : 'Event';
+                $type = $transaction->transaction_type == 'artist' ? __('Artist') : __('Event');
                 return ucwords(__("$type Permit"));
             })->addColumn('action', function ($transaction)  {
                 return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction_id]) .  '"><button  class="btn btn-sm btn-secondary btn-hover-warning">'.__('View').'</button></a>';

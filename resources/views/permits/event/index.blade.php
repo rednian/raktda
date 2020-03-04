@@ -92,10 +92,10 @@
                     <thead>
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('EVENT TYPE')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
-                            <th>{{__('Name')}}</th>
+                            <th>{{__('EVENT NAME')}}</th>
                             <th class="text-center">{{__('STATUS')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
@@ -109,7 +109,7 @@
                     <thead>
                         <tr class="kt-font-transform-u">
                             <th>{{__('PERMIT NUMBER')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('EVENT TYPE')}}</th>
                             <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
                             <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
                             <th>{{__('EVENT NAME')}}</th>
@@ -128,10 +128,10 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO')}}</th>
                             <th>{{__('PERMIT NUMBER')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('EVENT TYPE')}}</th>
                             <th class="text-center">{{__('From Date')}} </th>
                             <th class="text-center">{{__('To Date')}} </th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('EVENT NAME')}}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -145,10 +145,10 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO')}}</th>
                             <th>{{__('PERMIT NUMBER')}}</th>
-                            <th>{{__('Event Type')}}</th>
+                            <th>{{__('EVENT TYPE')}}</th>
                             <th class="text-center">{{__('From Date')}} </th>
                             <th class="text-center">{{__('To Date')}} </th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('EVENT NAME')}}</th>
                             <th>{{__('STATUS')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
@@ -170,9 +170,9 @@
                 <table class="table table-striped table-borderless border" id="drafts-events-table">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('From')}} </th>
-                            <th>{{__('To')}} </th>
-                            <th>{{__('Event Name')}}</th>
+                            <th>{{__('From Date')}} </th>
+                            <th>{{__('To Date')}} </th>
+                            <th>{{__('EVENT NAME')}}</th>
                             <th>{{__('ADDED ON')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
@@ -530,10 +530,9 @@
                     }
                 ],
                 language: {
-                    emptyTable: "{{__('No Cancelled or Rejected Permits')}}",
+                    emptyTable: "{{__('No Cancelled or Rejected Event Permits')}}",
                     searchPlaceholder: "{{__('Search')}}"
                 }
-                
             });
        }
 
