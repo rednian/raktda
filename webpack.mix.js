@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.js('resources/sass/js/app.js', 'public/js');
+mix.js('resources/js/app.js', 'public/js');
 
 mix.styles([
     'public/assets/css/demo1/style.bundle.rtl.css',
