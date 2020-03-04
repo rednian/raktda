@@ -199,6 +199,7 @@
     </script>
     {{-- <script src="{{ asset('/js/custom.js') }}" type="text/javascript"></script> --}}
     <script src="{{ asset('/js/company/custom.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('/js/bootstrap.datepicker.ar.js') }}" charset="UTF-8" type="text/javascript"></script>
     <!--end::Page Vendors -->
 
 </body>

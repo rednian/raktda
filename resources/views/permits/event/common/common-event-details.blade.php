@@ -442,7 +442,8 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                             @foreach($areas as $ar)
                             <option value="{{$ar->id}}"
                                 {{isset($event) ? $ar->id == $event->area_id ? 'selected' : '' : '' }}>
-                                {{$ar->area_en}}</option>
+                                {{getLangId() == 1 ? ucfirst($ar->area_en)  : ($ar->area_ar ? $ar->area_ar : $ar->area_en)}}
+                            </option>
                             @endforeach
                         </select>
                     </div>

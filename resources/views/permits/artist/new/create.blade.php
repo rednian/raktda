@@ -96,6 +96,7 @@
                                             {{__('WORK LOCATION (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
+                                            placeholder="Work Location in English"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location :(session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
@@ -103,6 +104,7 @@
                                             {{__('WORK LOCATION (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
+                                            placeholder="موقع العمل باللغة العربية"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
@@ -284,14 +286,20 @@
             autoclose: true,
             todayHighlight: true,
             orientation: "bottom left",
-            zIndexOffset: 98
+            zIndexOffset: 98,
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
        
         $('#permit_to').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
         $('#permit_from').on('changeDate', function (selected) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -17,6 +17,7 @@
     <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css" />
     <style>
         .btn.btn-success {
             background: #80262b;
@@ -86,7 +87,7 @@
                 <!-- begin login-header -->
                 <div class="text-right">
                     <a href="{{route('login-ar')}}">
-                        <h5 style="padding-right: 20px;">عَرَبيّ</h5>
+                        <h5 style="padding-right: 20px;font-family: 'DroidArabicKufiRegular'">عَرَبيّ</h5>
                     </a>
                 </div>
                 <div class="login-header" style="width:auto;">

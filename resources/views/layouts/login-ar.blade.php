@@ -17,7 +17,12 @@
     <link rel='apple-touch-icon' type='image/png' href="{{ asset('/img/apple-touch-icon.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-64x64.png') }}">
     <link rel='icon' type='image/png' href="{{ asset('/img/favicon-32x32.png') }}">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css" />
     <style>
+        * {
+            font-family: 'DroidArabicKufiRegular', sans-serif;
+        }
+
         .btn.btn-success {
             background: #80262b;
             border-color: #80262b;

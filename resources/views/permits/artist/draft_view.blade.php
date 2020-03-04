@@ -108,6 +108,7 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
+                                            placeholder="Work Location in English"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location : (session($user_id.'_apn_location') ? session($user_id.'_apn_location') : '') }}" />
                                     </div>
 
@@ -116,6 +117,7 @@
                                             {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
+                                            placeholder="موقع العمل باللغة العربية"
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar : (session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     {{-- {{dd($artist_details[0])}} --}}
