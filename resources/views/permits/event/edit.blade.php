@@ -640,12 +640,6 @@
         var documentsValidator = '';
         var addiDocumentsValidator = '';
 
-        function toCapitalize(word) {
-            if(word){
-                return word.charAt(0).toUpperCase() + word.substring(1);
-            }
-        }
-
 
         function getRequirementsList()
         {
@@ -663,10 +657,10 @@
                      $('#requirements_count').val(res.length);
                      // fetching the additional requirements
                      getAddtionalRequirementsList($('#event_id').val());
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!} </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? res[i].requirement_name : res[i].requirement_name_ar ) +' <span id="cnd_'+j+'"></span></label><p for="" class="reqName ">'+(res[i].requirement_description ? getLangid == 1 ? res[i].requirement_description : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar ) +' <span id="cnd_'+j+'"></span></label><p for="" class="reqName ">'+(res[i].requirement_description ? getLangid == 1 ? capitalizeFirst(res[i].requirement_description) : displayIfNotNull(res[i].requirement_description_ar) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -718,7 +712,7 @@
                      {
                         for(var i = 0; i < res.length; i++){
 
-                            $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? res[i].requirement_name : res[i].requirement_name_ar )+'<span class="text-danger"> * </span></label><p for="" class="reqName ">'+(res[i].requirement_description != null ? getLangid == 1 ? toCapitalize(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].additional_requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="1"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                            $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon text-capitalize">'+( getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar )+'<span class="text-danger"> * </span></label><p for="" class="reqName ">'+(res[i].requirement_description != null ? getLangid == 1 ? capitalizeFirst(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].additional_requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="1"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                             if(res[i].dates_required == "1")
                             {
@@ -1734,7 +1728,7 @@
                         if(result.length > 0){
                             for(var  i = 0; i< result.length;i++)
                             {
-                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'" >'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'" >'+(langId == 1 ? capitalizeFirst(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
                                 if(result[i].event_type_sub_id == sub_id){
                                     $('#event_sub_type_id option[value='+result[i].event_type_sub_id+']').attr('selected', 'selected');
                                 }

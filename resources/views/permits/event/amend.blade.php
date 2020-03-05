@@ -56,13 +56,13 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name (EN)')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Owner (EN)')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->owner_name}}
                         </p>
                     </div>
                     <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Owner Name (AR)')}}</label>
+                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Owner (AR)')}}</label>
                         <p class="col col-md-6 form-control-plaintext ">
                             {{$event->owner_name_ar}}
                     </div>
@@ -238,7 +238,7 @@
                 <th>{{__('Establishment Name (EN)')}}</th>
                 <th>{{__('Establishment Name (AR)')}}</th>
                 <th>{{__('Traffic Plate No')}}</th>
-                <th>{{__('Types of Provided F & B')}}</th>
+                <th>{{__('Types of Provided F&B')}}</th>
                 <th></th>
             </thead>
             <tbody id="food_truck_list">

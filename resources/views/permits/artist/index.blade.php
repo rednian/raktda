@@ -338,7 +338,8 @@
                 ],
                 language: {
                     emptyTable: "{{__('No Applied Artist Permits')}}",
-                    searchPlaceholder: "{{__('Search')}}"
+                    searchPlaceholder: "{{__('Search')}}",
+                   
                 }
             });
        }
@@ -432,13 +433,6 @@
                     { data: 'details', name: 'details',  className: "text-center"},
                 ],
                 columnDefs: [
-                    {
-                        targets:-3,
-                        render: function(data, type, full, meta) {
-                            return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
-                        }
-                    },
                 ],
                 language: {
                     emptyTable: "{{__('No Artist Drafts Added')}}",

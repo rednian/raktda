@@ -83,7 +83,7 @@
                             </div>
                             @endif
                         </div>
-                        <div class="kt-widget__text kt-margin-t-10">
+                        <div class="kt-widget__text kt-margin-t-20">
                             <strong>{{__('Work Location')}} :</strong>
                             {{getLangId() == 1 ? ucwords($permit_details->work_location) : $permit_details->work_location_ar}}
                         </div>

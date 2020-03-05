@@ -1319,9 +1319,13 @@ $language_id = Auth::user()->LanguageId;
                 $('#doc_issue_date_'+num).prop('required',true);
             }
         }
-        $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true});
+        $('.date-picker').datepicker({ format: 'dd-mm-yyyy', autoclose: true, @if(getLangId() == 2)
+            language: 'ar'
+            @endif});
 
-        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, @if(getLangId() == 2)
+            language: 'ar'
+            @endif});
 
         $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
         $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
@@ -1412,14 +1416,14 @@ $language_id = Auth::user()->LanguageId;
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 var getLangId = $('#getLangid').val();
                                 let apd = data.artist_permit[j];
-                                $('#ex_artist_en_name').html(getLangId == 1 ? capitalizeThis(apd.firstname_en)+' '+capitalizeThis(apd.lastname_en)  : apd.lastname_ar+' '+apd.firstname_ar);
+                                $('#ex_artist_en_name').html(getLangId == 1 ? capitalizeFirst(apd.firstname_en)+' '+capitalizeFirst(apd.lastname_en)  : apd.lastname_ar+' '+apd.firstname_ar);
                                 $('#ex_artist_mobilenumber').html(apd.mobile_number);
                                 $('#ex_artist_email').html(apd.email);
                                 $('#ex_artist_personcode').html(data.person_code);
                                 var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                                 $('#ex_artist_dob').html(dob);
                                 var langid = $('#getLangid').val();
-                                $('#ex_artist_nationality').html(langid == 1 ? capitalizeThis(apd.nationality.nationality_en) : apd.nationality.nationality_ar);
+                                $('#ex_artist_nationality').html(langid == 1 ? capitalizeFirst(apd.nationality.nationality_en) : apd.nationality.nationality_ar);
                                 var gender = apd.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                                 $('#ex_artist_gender').html(gender);
                                 $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');
@@ -1678,14 +1682,14 @@ $language_id = Auth::user()->LanguageId;
                         $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__('Name')}}:</th> <td id="ex_artist_en_name"></td> </tr>  <th>{{__('Birthdate')}}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{{__('Gender')}}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{{__('Mobile Number')}}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{{__('Email')}}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{{__('Nationality')}}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">{{__('Select this Artist')}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{{__('Not this Artist')}}</button> </div>');
                             $('#artistDetailswithcode').val(JSON.stringify(data));
                             var langid = $('#getLangid').val();
-                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeFirst(data.firstname_en)+' '+capitalizeFirst(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
                            
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_email').html(data.email);
                             $('#ex_artist_personcode').html(data.person_code);
                             var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
-                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
+                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeFirst(data.nationality.nationality_en) : data.nationality.nationality_ar);
                             var gender = data.gender == 1 ? 'Male' : 'Female';
                             $('#ex_artist_gender').html(gender);
                             $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');

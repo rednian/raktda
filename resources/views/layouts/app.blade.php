@@ -218,7 +218,6 @@ function unblockPage(){
     KTApp.unblockPage();
 }
     $(document).ready(function(){
-
         //only arabic, numbers and space allowed in arabic with dir=rtl
         $('input[dir=rtl], textarea[dir=rtl]').keypress(function(e){
             var arabicAlphabet = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]|[0-9\s]/g;
@@ -348,6 +347,16 @@ function unblockPage(){
             infoFiltered: '',
             emptyTable: 'لا يوجد بيانات في الجدول',
             zeroRecords: 'لا يوجد بيانات في الجدول',
+            paginate: {
+                previous: '<',
+                next:     '>'
+            },
+            aria: {
+                paginate: {
+                    previous: 'Previous',
+                    next:     'Next'
+                }
+            }
           }
       });
 
@@ -370,10 +379,9 @@ function unblockPage(){
         },
         error: function(){
             alert('error');
-        }
+        }   
         });
     }
 </script>
-<!-- end::Body -->
 
 </html>

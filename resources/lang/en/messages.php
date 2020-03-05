@@ -11,6 +11,18 @@ return [
 
     'liquor_fee_mess' => '{1} if liquor is not provided by venue, liquor fee is AED :amount per day and should be purchased from Ras Al Khaimah |{2} إن لم تكن المشروبات الكحولية مزودة من قبل مزود, تصبح رسوم الخدمة :amount درهم باليوم, ويجب أن تكون مشتراة من إمارة راس الخيمة',
     'question_remove'=>'{1} Are you sure you want to remove :value from this permit?|{2} هل أنت متأكد من إزالة :value من التصريح الحالي؟',
+    'sms_message' => '{1} Your :app_type application with Reference Number: :ref_num has been :status. Please click the click below for the :action. :link|{2} طلبك :app_type بالرقم المرجعي: :ref_num :status. الرجاء الضغط على الرابط أدناه لـ :action. الرابط: :link',
+
+    'payments_sms' => '{1} Your payment is done for the :app_type with Reference Number: :ref_num. Thank you for using our online permit application. Please click the link to download your permit.|{2} تم دفع الرسوم لـ:app_type بالرقم المرجعي: :ref_num. شكرا لاستخدامك خدمة طلبات التصريح الالكترونية. الرجاء الضغط على الرابط أدناه لتحميل التصريح.',
+
+    'application_status' => '{1} Application has been :status|{2} الطلب :status',
+
+    'application_num' => '{1} Your application with Reference Number :ref_num|{2} طلبك بالرقم المرجعي :ref_num',
+
+    'application_status' => '{1} has been :status. To view the the details, please click the button below.|{2} :status. لعرض التفاصيل يرجى الضغط على الزر في الأسفل.',
+
+    'event_cancel_text' => '{1} Are you sure you want to cancel the event: :eventname ?|{2} هل أنت متأكد أنك تريد إلغاء الفعالية: :eventname ؟',
+
 ];
 
 ?>

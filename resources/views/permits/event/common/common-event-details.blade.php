@@ -506,11 +506,9 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
     function check_duration() {
         var iss = $('#issued_date').val();  
         var exp = $('#expired_date').val();
-        if(iss && exp){
-            var diff = dayCount(iss, exp) + 1;
-            var exp_date = moment(iss, 'DD-MM-YYYY').format();
-            $('#expired_date').datepicker('setStartDate', exp_date);
-            $('#date_duration').val(diff + (diff > 1 ? " {!! __('days')!!}" : " {!! __('days')!!}"));
-        }
+        $('#issued_date').datepicker('setStartDate', moment().format('DD-MM-YYYY'));
+        $('#expired_date').datepicker('setStartDate', iss);
+        var diff = dayCount(iss, exp) + 1;
+        $('#date_duration').val(diff + (diff > 2 ? " {!! __('Days')!!}" : ( diff > 1 ? " {!! __('days')!!}" :  " {!! __('day')!!}")));
     }
 </script>

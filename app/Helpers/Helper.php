@@ -519,11 +519,11 @@ function calculateDateDiff($x, $y) {
     $diffr = $from->diff($to) ;
     $term = '';
     $year = $diffr->y;
-    $term .= $year ? $year > 1 ? $year .' '.__('years').' ' : $year .' '.__('year').' ' : '';
+    $term .= $year ? $year .' '. $year > 2 ? __('Years').' ' :  $year > 1 ? __('years').' ' : __('year').' ' : '';
     $month = $diffr->m;
-    $term .= $month ? $month > 1 ? $month .' '.__('months').' ' : $month .' '.__('month').' ' : '';
+    $term .= $month ? $month .' '.$month > 2 ? __('Months').' ' : $month > 1 ? __('months').' ' : __('month').' ' : '';
     $day = $diffr->d;
-    $term .= $day ? $day > 1  ? $day.' '.__('days') : $day.' '.__('day') : '';
+    $term .= $day ? $day.' '.$day > 2  ? __('Days') : $day > 1  ? __('days') : __('days') : '';
     return $term;
 }
 
@@ -599,3 +599,9 @@ function storeArtistPermitPrint($id)
     return;
 }
 
+// function formatDate($date) {
+//     if(auth()->user()->LanguageId != 1){
+//         Carbon::setLocale('ar');
+//     }
+//     return Carbon::parse($date);
+// }

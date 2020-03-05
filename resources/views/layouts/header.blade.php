@@ -37,7 +37,7 @@
                                     class="kt-notification__item notification-item">
                                     <div class="kt-notification__item-icon"> <i class="flaticon2-bell-2"></i> </div>
                                     <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> {{ $notification->data['title'] }}
+                                        <div class="kt-notification__item-title"> {{ __($notification->data['title']) }}
                                         </div>
                                         <div class="kt-notification__item-time">
                                             {{ humanDate($notification->created_at) }}</div>

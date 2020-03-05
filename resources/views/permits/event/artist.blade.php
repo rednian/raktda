@@ -85,14 +85,14 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (EN)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (EN)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
                                             placeholder="Work Location in English" name="work_loc" id="work_loc"
                                             dir="ltr" value="{{$event->venue_en}}" />
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm mk-disabled"
                                             placeholder="موقع العمل باللغة العربية" name="work_loc_ar" id="work_loc_ar"
                                             dir="rtl" value="{{$event->venue_ar}}" />

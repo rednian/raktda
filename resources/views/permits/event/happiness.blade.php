@@ -1140,13 +1140,6 @@
 
         };
 
-        function toCapitalize(word) {
-            if(word)
-            {
-                return word.charAt(0).toUpperCase() + word.substring(1);
-            }
-        }
-
 
         function getRequirementsList()
         {
@@ -1164,7 +1157,7 @@
                      $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( getLangid == 1 ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar ) +' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+(res[i].requirement_description != null ? getLangid == 1 ? toCapitalize(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar ) +' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+(res[i].requirement_description != null ? getLangid == 1 ? capitalizeFirst(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
                          if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
                             $('#cnd_'+j).html(' * ');
@@ -1207,7 +1200,7 @@
                      var j =  parseInt($('#requirements_count').val()) + 1 ;
                      if(j != NaN){
                      for(var i = 0; i < res.length; i++){
-                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+(getLangid == 1 ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+'<span class="text-danger"> * </span></label><p for="" class="reqName">'+(res[i].requirement_description != null ? getLangid == 1 ? toCapitalize(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#addi_documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+(getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar )+'<span class="text-danger"> * </span></label><p for="" class="reqName">'+(res[i].requirement_description != null ? getLangid == 1 ? capitalizeFirst(res[i].requirement_description) : res[i].requirement_description_ar : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {

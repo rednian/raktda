@@ -120,13 +120,13 @@ class ArtistController extends Controller
 
         return Datatables::of($permits)->editColumn('issued_date', function ($permits) {
             if ($permits->issued_date) {
-                return  Carbon::parse($permits->issued_date)->format('d-M-Y');
+                return  Carbon::parse($permits->issued_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
         })->editColumn('expired_date', function ($permits) {
             if ($permits->expired_date) {
-                return  Carbon::parse($permits->expired_date)->format('d-M-Y');
+                return  Carbon::parse($permits->expired_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
@@ -897,7 +897,7 @@ class ArtistController extends Controller
 
         DB::commit();
         
-        $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
+        $result = ['success', __('Permit Applied Successfully'), 'Success'];
 	} catch (Exception $e) {
 		DB::rollBack();
 		
@@ -1246,7 +1246,7 @@ class ArtistController extends Controller
         }
            
             $this->makeSessionForgetPermitDetails();
-            $result = ['success', __('Artist Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -1889,19 +1889,19 @@ class ArtistController extends Controller
 
         return Datatables::of($drafts)->editColumn('created_at', function ($draft) {
             if ($draft->created_at) {
-                return  $draft->created_at;
+                return Carbon::parse( $draft->created_at)->format('d-m-Y');
             } else {
                 // return 'none';
             }
         })->editColumn('issued_date', function ($draft) {
             if ($draft->issue_date) {
-                return  Carbon::parse($draft->issue_date)->format('d-M-Y');
+                return  Carbon::parse($draft->issue_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
         })->editColumn('expired_date', function ($draft) {
             if ($draft->expiry_date) {
-                return  Carbon::parse($draft->expiry_date)->format('d-M-Y');
+                return  Carbon::parse($draft->expiry_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
@@ -1941,7 +1941,7 @@ class ArtistController extends Controller
                 ['created_by', Auth::user()->user_id],
             ])->where('permit_id', $permit_id)->delete();
             DB::commit();
-            $result = ['success', __('Draft Deleted successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Deleted successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -2020,7 +2020,7 @@ class ArtistController extends Controller
 
         DB::commit();
 		
-        $result = ['success', __('Draft Saved Successfully'), 'Success'];
+        $result = ['success', __('Permit Draft Added Successfully'), 'Success'];
 	} catch (Exception $e) {
 		DB::rollBack();
 		
@@ -2273,12 +2273,12 @@ class ArtistController extends Controller
             ArtistTempDocument::where('permit_id', $permit_id)->delete();
             if ($old_permit_status == 'modification request') {
                 $this->sendNotification($permit, 'edit');
-                $message = ['success', __('Artist Permit Updated Successfully'), 'Success'];
+                $message = ['success', __('Permit Edited Successfully'), 'Success'];
             } else if ($old_permit_status == 'active') {
                 $this->sendNotification($permit, 'amend');
-                $message = ['success', __('Artist Permit Amended Successfully'), 'Success'];
+                $message = ['success', __('Permit Amended Successfully'), 'Success'];
             } else {
-                $message = ['success', __('Artist Permit Added Successfully'), 'Success'];
+                $message = ['success', __('Permit Added Successfully'), 'Success'];
             }
         } 
             DB::commit();

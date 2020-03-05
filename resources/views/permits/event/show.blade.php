@@ -212,7 +212,7 @@
             {{-- <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6> --}}
             <table class="table table-sm table-hover table-borderless table-display">
                 <tr>
-                    <td>{{ __('Permit Status') }} </td>
+                    <td>{{ __('Status') }} </td>
                     <td>:</td>
                     <td class="kt-font-dark"> {!! permitStatus($event->status)!!}</td>
                 </tr>

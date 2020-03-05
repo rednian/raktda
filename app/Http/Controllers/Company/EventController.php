@@ -45,7 +45,6 @@ class EventController extends Controller
 
     public function index(Request $request)
     {
-
         if(!$request->hasValidSignature()){
             return abort(401);
         }
@@ -816,7 +815,7 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $event_id)->latest()->first();
             $this->sendNotification($event, 'new');
-            $result = ['success', __('Event Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -1145,7 +1144,7 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id',$request->event_id)->latest()->first();
             $this->sendNotification($event, 'edit');
-            $result = ['success', __('Event Permit Updated Successfully'), 'Success'];
+            $result = ['success', __('Permit Edited Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -1321,17 +1320,17 @@ class EventController extends Controller
 
         return Datatables::of($permits)->editColumn('created_at', function ($permits) {
             if ($permits->created_at) {
-                return  $permits->created_at;
+                return  Carbon::parse($permits->created_at)->format('d-m-Y');
             }
         })->editColumn('issued_date', function ($permits) {
             if ($permits->issued_date) {
-                return  Carbon::parse($permits->issued_date)->format('d-M-Y');
+                return  Carbon::parse($permits->issued_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
         })->editColumn('expired_date', function ($permits) {
             if ($permits->expired_date) {
-                return  Carbon::parse($permits->expired_date)->format('d-M-Y');
+                return  Carbon::parse($permits->expired_date)->format('d-m-Y');
             } else {
                 return 'None';
             }
@@ -1568,7 +1567,7 @@ class EventController extends Controller
         DB::commit();
         $event = Event::where('event_id', $request->event_id)->latest()->first();
         $this->sendNotification($event, 'amend');
-        $result = ['success', __('Event Permit Amended successfully'), 'Success'];
+        $result = ['success', __('Permit Amended successfully'), 'Success'];
     } catch (Exception $e) {
         DB::rollBack();
         $result = ['error', __($e->getMessage()), 'Error'];
@@ -1849,7 +1848,7 @@ class EventController extends Controller
         Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
             DB::commit();
-            $result = ['success', __('Event Permit Draft Saved successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Added successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -1894,7 +1893,7 @@ class EventController extends Controller
 
             Event::where('event_id', $event_id)->delete();
             DB::commit();
-            $result = ['success', __('Draft Deleted successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Deleted Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -2082,7 +2081,7 @@ class EventController extends Controller
         Storage::deleteDirectory('public/' . $userid . '/event/temp/');
 
         DB::commit();
-            $result = ['success', __('Draft Updated Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Updated Successfully'), 'Success'];
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];
@@ -2324,7 +2323,7 @@ class EventController extends Controller
                 $adirectory='permit_downloads/artist/'.$permit_id;
                 $artistPrint = storage_path('app/'.$adirectory).'/ArtistPermit#'. $artistpermitnumber.'.pdf';
             } else {
-                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." AED ". number_format($amount,2) ." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid";
+                $message = "Dear ". Auth::user()->NameEn .", \n Your payment for the permit ".$event_permit_number." AED ". number_format($amount,2) ." is successfully completed. Please click the link below to download permit ". URL::signedRoute('event.index')."#valid \n عزيزي ". Auth::user()->NameEn .", رسوم التصريح رقم ".$event_permit_number." مبلغ ". number_format($amount,2) ." درهم, تمت بنجاح. يمكنك تحميل التصريح من التطبيق.";
             }
 
 

@@ -104,7 +104,7 @@
                                     </div>
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc"
-                                            class="col-form-label col-form-label-sm">{{__('Work Location (EN)')}}<span
+                                            class="col-form-label col-form-label-sm">{{__('WORK LOCATION (EN)')}}<span
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc"
                                             id="work_loc" onkeyup="checkFilled()" dir="ltr"
@@ -114,7 +114,7 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0">
                                         <label for="work_loc" class="col-form-label col-form-label-sm">
-                                            {{__('Work Location (AR)')}} <span class="text-danger">*</span></label>
+                                            {{__('WORK LOCATION (AR)')}} <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm" name="work_loc_ar"
                                             id="work_loc_ar" onkeyup="checkFilled()" dir="rtl"
                                             placeholder="موقع العمل باللغة العربية"
@@ -122,7 +122,7 @@
                                     </div>
                                     {{-- {{dd($artist_details[0])}} --}}
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('Connected Event')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">
@@ -144,7 +144,7 @@
 
                                     <div class="form-group col-lg-3 kt-margin-b-0" id="events_div">
                                         <label for="event_id" class="col-form-label col-form-label-sm">
-                                            {{__('Selected Event')}} <span class="text-danger">*</span></label>
+                                            {{__('SELECT EVENT')}} <span class="text-danger">*</span></label>
                                         <select type="text" class="form-control form-control-sm" name="event_id"
                                             id="event_id" onchange="check_Add_Event()">
                                             <option value=" ">{{__('Select')}}</option>
@@ -238,7 +238,7 @@
                 class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u {{ count($artist_details) < 0 ? 'd-none' :'' }}"
                 id="submit_btn">
                 <i class="la la-check"></i>
-                {{__('APPLY ARTIST')}}
+                {{__('APPLY PERMIT')}}
             </button>
         </div>
 

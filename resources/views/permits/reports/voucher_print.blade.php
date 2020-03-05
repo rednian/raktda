@@ -143,7 +143,7 @@
         </table>
         <div id="heading">
             <div>
-                <b> Payment Voucher</b>
+                <b>{{__('Payment Voucher')}}</b>
             </div>
         </div>
     </header>
@@ -251,7 +251,7 @@
                     <tr class="kt-font-transform-u">
                         <th style="text-align:left">{{__('Event Name')}}</th>
                         <th style="text-align:left">{{__('Event Type')}}</th>
-                        <th style="text-align:right">{{__('Fee')}} (AED) / Day</th>
+                        <th style="text-align:right">{{__('Fee / Day')}} (AED)</th>
                         <th class="text-center">{{__('No.of.days')}}</th>
                         <th class="text-center">{{__('Qty')}}</th>
                         <th style="text-align:right">{{__('Total')}} (AED) </th>
@@ -333,7 +333,7 @@
 
         @endif
 
-        <div class="pull-right">
+        <div class="{{getLangId() == 1 ? 'pull-right' : 'pull-left'}}">
             <table class=" table table-borderless" id="total_div">
                 <tbody>
                     <tr>
@@ -347,7 +347,7 @@
                         <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">----------------------------------------</td>
+                        <td colspan="2">--------------------------------------------------</td>
                     </tr>
                     <tr>
                         <td class="kt-font-transform-u">

@@ -857,7 +857,10 @@
 
     $('.date-picker').datepicker({
         format: 'dd-mm-yyyy',
-        autoclose: true
+        autoclose: true,
+        @if(getLangId() == 2)
+            language: 'ar'
+            @endif
     })
 
     $('#permit_from').on('changeDate', function(ev) {$('#permit_from').valid() || $('#permit_from').removeClass('invalid').addClass('success');});

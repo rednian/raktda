@@ -78,7 +78,7 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Made From')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{__(ucwords($transaction->transaction_type))}}</p>
+                            {{$transaction->transaction_type == 'event' ? __('Event Permit') : __('Artist Permit')}}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -276,7 +276,7 @@
 
 
             <div class="table-responsive">
-                <div class="pull-right">
+                <div class="{{getLangId() == 1 ? 'pull-right' : 'pull-left'}}">
                     <table class=" table table-borderless" id="total_div">
                         <tbody>
                             <tr>
