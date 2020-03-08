@@ -8,14 +8,16 @@
     <title>{{$event_details->permit_number}} - Event Permit</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
     <style>
-        body{
-            font-family: 'arabic1' !important;
+        body {
+            /* font-family: 'arabic1' !important; */
             /* font-size: x-large; */
         }
+
         * {
             box-sizing: border-box;
             overflow: hidden;
         }
+
         .logo--header,
         .logo--logo-header {
             width: 100%;
@@ -129,7 +131,6 @@
             text-align: center;
             font-size: 10px;
         }
-
     </style>
 
 </head>

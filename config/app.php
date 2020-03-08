@@ -177,9 +177,8 @@ return [
         'A6digital\Image\DefaultProfileImageServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
-        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
-
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
     ],
     /*
     |--------------------------------------------------------------------------
