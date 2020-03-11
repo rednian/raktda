@@ -16,7 +16,7 @@ function dateDuration($start, $end)
 
 function sms($number, $message = [])
 {
-    $is_payment =array_key_exists('payment', $message) ? 'payment': 'details';
+    $is_payment = array_key_exists('payment', $message) ? 'payment' : 'details';
     $content = "Dear Customer,\nYour {$message['name']} application with reference number: {$message['reference_number']} has been {$message['status']}. Please click the link below for the {$is_payment}.\n{$message['url']}";
     sendSms($number, $content);
 }
@@ -34,7 +34,7 @@ function sendSms($user_mobile_number = null, $message)
     $smpp->open($destination_ip, $port, $username, $password);
 
     $utf = true;
-    $message = iconv('Windows-1256','UTF-16BE',$message);
+    $message = iconv('Windows-1256', 'UTF-16BE', $message);
     $smpp->send_long($sender, $user_mobile_number, $message, $utf);
     $smpp->close();
 }
@@ -48,20 +48,22 @@ function requestType($type)
     return $type;
 }
 
-function duration($start = null, $end = null){
-        // parts using either ',' or 'and' appropriately
-        // $age = ($d = $diff->d) ? ' and '.$d.' '.str_plural('day', $d) : '';
-        // $age = ($m = $diff->m) ? ($age ? ', ' : ' and ').$m.' '.str_plural('month', $m).$age : $age;
-        // $age = ($y = $diff->y) ? $y.' '.str_plural('year', $y).$age  : $age;
+function duration($start = null, $end = null)
+{
+    // parts using either ',' or 'and' appropriately
+    // $age = ($d = $diff->d) ? ' and '.$d.' '.str_plural('day', $d) : '';
+    // $age = ($m = $diff->m) ? ($age ? ', ' : ' and ').$m.' '.str_plural('month', $m).$age : $age;
+    // $age = ($y = $diff->y) ? $y.' '.str_plural('year', $y).$age  : $age;
 
-        // // trim redundant ',' or 'and' parts
-        // return ($s = trim(trim($age, ', '), ' and ')) ? $s.' old' : 'newborn';
+    // // trim redundant ',' or 'and' parts
+    // return ($s = trim(trim($age, ', '), ' and ')) ? $s.' old' : 'newborn';
     $days = Carbon::parse($start)->diff($end)->format('%m Month and %d days');
     return $days;
-    return $days  >= 31 ? Carbon::parse($start)->diffInMonths($end).' Month': $days.' Days';
+    return $days  >= 31 ? Carbon::parse($start)->diffInMonths($end) . ' Month' : $days . ' Days';
 }
 
-function type($name = null, $type = null){
+function type($name = null, $type = null)
+{
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
 
@@ -70,17 +72,17 @@ function type($name = null, $type = null){
 
     $html = '<div class="kt-user-card-v2">';
     $html .= ' <div class="kt-user-card-v2__details">';
-    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>';
-    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>';
+    $html .= '  <span class="kt-user-card-v2__name">' . ucfirst($name) . '</span>';
+    $html .= '  <span class="kt-user-card-v2__email kt-link">' . ucfirst($type) . '</span>';
     $html .= ' </div>';
     $html .= '</div>';
 
     return $html;
-
 }
 
 
-function profileName($name = null, $type = null){
+function profileName($name = null, $type = null)
+{
 
     $classname = ['dark', 'success', 'danger', 'warning', 'info', 'primary'];
 
@@ -89,41 +91,43 @@ function profileName($name = null, $type = null){
 
     $html = '<div class="kt-user-card-v2">';
     $html .= '<div class="kt-user-card-v2__pic">';
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--'.$classname[array_rand($classname)].'"><span>'.$first.'</span></div>';
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--' . $classname[array_rand($classname)] . '"><span>' . $first . '</span></div>';
     $html .= ' </div>';
     $html .= ' <div class="kt-user-card-v2__details">';
-    $html .= '  <span class="kt-user-card-v2__name">'.ucfirst($name).'</span>';
-    $html .= '  <span class="kt-user-card-v2__email kt-link">'.ucfirst($type).'</span>';
+    $html .= '  <span class="kt-user-card-v2__name">' . ucfirst($name) . '</span>';
+    $html .= '  <span class="kt-user-card-v2__email kt-link">' . ucfirst($type) . '</span>';
     $html .= ' </div>';
     $html .= '</div>';
 
     return $html;
-
 }
 
-function humanDate($date){
-    if ($date->diffInMonths(Carbon::now()) > 1 ) {
+function humanDate($date)
+{
+    if ($date->diffInMonths(Carbon::now()) > 1) {
         return $date->format('d-F-Y');
     }
     return $date->diffForHumans();
 }
 
-function defaults($name = null, $role){
+function defaults($name = null, $role)
+{
     $fname = explode(' ', $name);
     $html = '<div class="kt-user-card-v2">';
     $html .= ' <div class="kt-user-card-v2__pic">';
-    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--success"><span>'.strtoupper(substr($fname[0], 0, 1)).'</span></div>';
+    $html .= ' <div class="kt-badge kt-badge--xl kt-badge--success"><span>' . strtoupper(substr($fname[0], 0, 1)) . '</span></div>';
     $html .= '  </div>';
     $html .= '  <div class="kt-user-card-v2__details">';
-    $html .= '   <span class="kt-user-card-v2__name">'.ucwords($name).'</span>';
-    $html .= '   <span class="kt-user-card-v2__email kt-link">'.ucwords($role).'</span>';
+    $html .= '   <span class="kt-user-card-v2__name">' . ucwords($name) . '</span>';
+    $html .= '   <span class="kt-user-card-v2__email kt-link">' . ucwords($role) . '</span>';
     $html .= '   </div>';
     $html .= '   </div>';
 
     return $html;
 }
 
-function fileName($filename = null){
+function fileName($filename = null)
+{
     $array = explode('.', $filename);
     return strtolower(array_pop($array));
 }
@@ -220,17 +224,18 @@ function permitStatus($status)
 {
     $status = strtolower(trim($status));
     $classname = null;
-    if (in_array($status, ['new', 'approved-unpaid', 'active', 'checked', 'approved', 'new request',
+    if (in_array($status, [
+        'new', 'approved-unpaid', 'active', 'checked', 'approved', 'new request',
         'new registration', 'new request'
     ])) {
-         $classname = 'success';
+        $classname = 'success';
     }
 
-    if( in_array($status, [
-            'send back for amendments', 'processing', 'modification request',
-            'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
-            'pending', 'bounced back request', 'renew trade license request', 'amend request', 'amendment request'
-    ])){
+    if (in_array($status, [
+        'send back for amendments', 'processing', 'modification request',
+        'modified', 'need modification', 'amended', 'pending', 'need approval', 'draft', 'unchecked', 'back',
+        'pending', 'bounced back request', 'renew trade license request', 'amend request', 'amendment request'
+    ])) {
         $classname = 'warning';
     }
 
@@ -239,8 +244,10 @@ function permitStatus($status)
     }
 
 
-    if (in_array($status, ['modification request', 'send back for amendments', 'back','amended' ])) { $status = 'Bounced Back'; }
-//    if (in_array($status, ['modified'])) { $status = 'Bounced Back Request'; }
+    if (in_array($status, ['modification request', 'send back for amendments', 'back', 'amended'])) {
+        $status = 'Bounced Back';
+    }
+    //    if (in_array($status, ['modified'])) { $status = 'Bounced Back Request'; }
 
 
 
@@ -428,29 +435,29 @@ function translateAr($word)
 function check_is_blocked()
 {
     $companyID  = Auth::user()->EmpClientId;
-    $data['status'] = 'active';$data['comments'] = [];
-    if($companyID){
+    $data['status'] = 'active';
+    $data['comments'] = [];
+    if ($companyID) {
         $data['status'] = Auth::user()->company->status;
     }
-    if($data['status'] == 'blocked'){
+    if ($data['status'] == 'blocked') {
         $data['comments'] = \App\CompanyComment::where('company_id', $companyID)->latest()->first();
     }
-    return $data ;
+    return $data;
 }
 
 function getPaymentOrderId($from, $id)
 {
-    $pre =  $from == 'artist' ?  'POID1' : 'POID2' ;
+    $pre =  $from == 'artist' ?  'POID1' : 'POID2';
     $last_transaction = \App\Transaction::where('transaction_type', $from)->latest()->first();
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
         $payment_no = sprintf("%07d",  415);
     } else {
-        $last_trn = explode('-',$last_transaction->payment_order_id);
+        $last_trn = explode('-', $last_transaction->payment_order_id);
         $last_year = $last_trn[1];
-        if($last_year == date('Y'))
-        {
+        if ($last_year == date('Y')) {
             $n = $last_trn[2];
             $f = substr($n, 0, 1);
             $l = substr($n, -1, 1);
@@ -459,44 +466,43 @@ function getPaymentOrderId($from, $id)
                 $x++;
             }
             $payment_no = sprintf("%0" . $x . "d", (int) $n + 1);
-        }else {
+        } else {
             $payment_no = sprintf("%07d",  1);
         }
-
     }
-    if($from == 'event'){
+    if ($from == 'event') {
         $times = \App\EventTransaction::where('event_id', $id)->distinct('transaction_id')->count('transaction_id');
         $times += 1;
-    }else {
+    } else {
         $times = \App\ArtistPermitTransaction::where('artist_permit_id', $id)->distinct('transaction_id')->count('transaction_id');
         $times += 1;
     }
 
-    return $pre.'-'.date('Y').'-'.$payment_no.'-'.$times;
+    return $pre . '-' . date('Y') . '-' . $payment_no . '-' . $times;
 }
 
-function paymentNotification($event, $artist, $files, $amount) {
+function paymentNotification($event, $artist, $files, $amount)
+{
     $subject = $title = $content = $artist_permit_number = $event_permit_number = '';
 
     $event_permit_number = isset($event->permit_number) ? $event->permit_number : '';
     $artist_permit_number = isset($artist->permit_number) ? $artist->permit_number : '';
 
-    if($event && $artist)
-    {
-        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #'. $artist_permit_number;
-        $title .= 'Payment for <b>#' . $event_permit_number .  ' and #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid';
-    }else if($event){
-        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number ;
+    if ($event && $artist) {
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number . ', #' . $artist_permit_number;
+        $title .= 'Payment for <b>#' . $event_permit_number .  ' and #' . $artist_permit_number . ' is completed successfully';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> and Artist Permit  <b>' . $artist_permit_number . '</b> AED ' . number_format($amount, 2) . ' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index') . '#valid';
+    } else if ($event) {
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $event_permit_number;
         $title .= 'Payment for <b>#' . $event_permit_number .  ' is completed successfully';
-        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('event.index').'#valid';
-    }else {
-        $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number ;
-        $title .= 'Payment for #'. $artist_permit_number.' is completed successfully';
-        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED '.number_format($amount,2).' is completed successfully.  Please find the permit and payment voucher in the attachments.';
-        $url = \URL::signedRoute('artist.index').'#valid';
+        $content = 'The payment for Event Permit <b>' . $event_permit_number . '</b> AED ' . number_format($amount, 2) . ' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('event.index') . '#valid';
+    } else {
+        $subject = 'Payment Successful to RAKTDA - Permits - #' . $artist_permit_number;
+        $title .= 'Payment for #' . $artist_permit_number . ' is completed successfully';
+        $content = 'The payment for Artist Permit  <b>' . $artist_permit_number . '</b> AED ' . number_format($amount, 2) . ' is completed successfully.  Please find the permit and payment voucher in the attachments.';
+        $url = \URL::signedRoute('artist.index') . '#valid';
     }
     $buttonText = "Download Permit";
     $user = User::where('user_id', \Auth::user()->user_id)->first();
@@ -510,24 +516,25 @@ function paymentNotification($event, $artist, $files, $amount) {
         'attach' => true,
         'file' => $files
     ]));
-
 }
 
-function calculateDateDiff($x, $y) {
+function calculateDateDiff($x, $y)
+{
     $from = \Carbon\Carbon::parse($x);
     $to = \Carbon\Carbon::parse($y);
-    $diffr = $from->diff($to) ;
+    $diffr = $from->diff($to);
     $term = '';
     $year = $diffr->y;
-    $term .= $year ? $year .' '. $year > 2 ? __('Years').' ' :  $year > 1 ? __('years').' ' : __('year').' ' : '';
+    $term .= $year ? $year . ' ' . ($year > 2 ? __('Years') . ' ' :  $year > 1 ? __('years') . ' ' : __('year') . ' ') : '';
     $month = $diffr->m;
-    $term .= $month ? $month .' '.$month > 2 ? __('Months').' ' : $month > 1 ? __('months').' ' : __('month').' ' : '';
+    $term .= $month ? $month . ' ' . ($month > 2 ? __('Months') . ' ' : $month > 1 ? __('months') . ' ' : __('month') . ' ') : '';
     $day = $diffr->d;
-    $term .= $day ? $day.' '.$day > 2  ? __('Days') : $day > 1  ? __('days') : __('days') : '';
+    $term .= $day ? $day . ' ' . ($day > 2  ? __('Days') : $day > 1  ? __('days') : __('days')) : '';
     return $term;
 }
 
-function diffInDays($x, $y) {
+function diffInDays($x, $y)
+{
     $from = \Carbon\Carbon::parse($x);
     $to = \Carbon\Carbon::parse($y);
     return $from->diffInDays($to);
@@ -539,39 +546,38 @@ function storeEventPermitPrint($id)
     $event_details = \App\Event::with('type', 'country')->where('event_id', $id)->first();
     $data['event_details'] = $event_details;
     $event_permit_no = $event_details->permit_number;
-    if($event_details->truck()->exists()){
+    if ($event_details->truck()->exists()) {
         $data['truck'] = \App\EventTruck::where('event_id', $id)->get();
     }
-    if($event_details->liquor()->exists()){
+    if ($event_details->liquor()->exists()) {
         $data['liquor'] = \App\EventLiquor::where('event_id', $id)->first();
     }
 
-    $directory='permit_downloads/event/'.$id;
+    $directory = 'permit_downloads/event/' . $id;
     if (!Storage::has($directory)) {
-        $resp= Storage::makeDirectory($directory);
+        $resp = Storage::makeDirectory($directory);
     }
 
     PDF::loadView('permits.event.print', $data, [], [
-        'title' => 'Event Permit '. $event_permit_no,
+        'title' => 'Event Permit ' . $event_permit_no,
         'default_font_size' => 10
-    ])->save(storage_path('app/'.$directory).'/EventPermit#'. $event_permit_no.'.pdf');
+    ])->save(storage_path('app/' . $directory) . '/EventPermit#' . $event_permit_no . '.pdf');
 
 
-    if($event_details->truck()->where('paid',1)->exists()){
+    if ($event_details->truck()->where('paid', 1)->exists()) {
 
         PDF::loadView('permits.event.truckprint', $data, [], [
-            'title' => 'Truck Permit '. $event_permit_no,
+            'title' => 'Truck Permit ' . $event_permit_no,
             'default_font_size' => 10
-        ])->save(storage_path('app/'.$directory).'/TruckPermit#'. $event_permit_no.'.pdf');
+        ])->save(storage_path('app/' . $directory) . '/TruckPermit#' . $event_permit_no . '.pdf');
     }
-    if($event_details->liquor()->exists() && $event_details->liquor()->value('paid') == 1){
-        if($event_details->liquor->provided != null || $event_details->liquor->provided != 1)
-        {
+    if ($event_details->liquor()->exists() && $event_details->liquor()->value('paid') == 1) {
+        if ($event_details->liquor->provided != null || $event_details->liquor->provided != 1) {
 
             PDF::loadView('permits.event.liquorprint', $data, [], [
-                'title' => 'Liquor Permit '. $event_permit_no,
+                'title' => 'Liquor Permit ' . $event_permit_no,
                 'default_font_size' => 10
-            ])->save(storage_path('app/'.$directory).'/LiquorPermit#'. $event_permit_no.'.pdf');
+            ])->save(storage_path('app/' . $directory) . '/LiquorPermit#' . $event_permit_no . '.pdf');
         }
     }
 
@@ -586,15 +592,15 @@ function storeArtistPermitPrint($id)
     $data['company_details'] = Auth::user()->company;
     $artist_permit_no = $permit_details->permit_number;
 
-    $directory='permit_downloads/artist/'.$id;
+    $directory = 'permit_downloads/artist/' . $id;
     if (!Storage::has($directory)) {
-        $resp= Storage::makeDirectory($directory);
+        $resp = Storage::makeDirectory($directory);
     }
 
     PDF::loadView('permits.artist.permit_print', $data, [], [
-        'title' => 'Artist Permit '. $artist_permit_no,
+        'title' => 'Artist Permit ' . $artist_permit_no,
         'default_font_size' => 10
-    ])->save(storage_path('app/'.$directory).'/ArtistPermit#'. $artist_permit_no.'.pdf');
+    ])->save(storage_path('app/' . $directory) . '/ArtistPermit#' . $artist_permit_no . '.pdf');
 
     return;
 }

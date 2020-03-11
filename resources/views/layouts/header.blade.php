@@ -133,7 +133,7 @@
                     <div class="kt-notification__custom kt-space-between pull-right">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign Out')}}</a>
+                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign out')}}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
                         </form>
                     </div>

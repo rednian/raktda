@@ -333,7 +333,7 @@
 
         @endif
 
-        <div class="{{getLangId() == 1 ? 'pull-right' : 'pull-left'}}">
+        <div>
             <table class=" table table-borderless" id="total_div">
                 <tbody>
                     <tr>
@@ -343,7 +343,7 @@
                         <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                     </tr>
                     <tr>
-                        <td>{{__('Total Vat')}} (5%)</td>
+                        <td>{{__('Total Vat (5%)')}} </td>
                         <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
                     </tr>
                     <tr>

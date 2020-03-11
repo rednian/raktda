@@ -83,7 +83,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction No')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction No.')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->payment_transaction_id}}</p>
                     </div>

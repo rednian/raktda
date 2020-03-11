@@ -1610,7 +1610,7 @@
                             $('#ex_artist_dob').html(dob);
                             
                             $('#ex_artist_nationality').html(langid == 1 ? capitalizeFirst(data.nationality.nationality_en) : data.nationality.nationality_ar);
-                            var gender = data.gender == 1 ? 'Male' : 'Female';
+                            var gender = data.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                             $('#ex_artist_gender').html(gender);
                             $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');
                             $('#profImg').css({
@@ -1676,10 +1676,13 @@
                             show: true
                         });
 
+                        let NotFoundMessage = "{{trans_choice('messages.no_artist_found', Auth::user()->LanguageId ,['personcode' => ':personcode'])}}";
+                            NotFoundMessage = NotFoundMessage.replace(":personcode", code);
+
                         if(data.artist_d == null)
                         {
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
+                            return;
                         }else if(data.artist_d.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
@@ -1718,9 +1721,7 @@
                         }
                         else
                         {
-
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">** Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
                         }
 
                     },error:function(){

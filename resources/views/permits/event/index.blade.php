@@ -229,7 +229,7 @@
         <div class="modal-content">
             <div class="modal-header">
 
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Delete Draft')}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Delete')}}</h5>
 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -241,7 +241,7 @@
                         {{__('Data will be lost !')}}</label>
                     <input type="hidden" id="del_draft_id" name="del_draft_id">
                     <div>
-                        <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
+                        <input type="submit" class="btn btn-sm btn--maroon pull-right" value="{{__('Delete')}}">
                     </div>
                 </form>
             </div>

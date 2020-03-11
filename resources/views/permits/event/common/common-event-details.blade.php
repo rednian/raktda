@@ -118,7 +118,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                             500-1000</option>
                                                         <option value="1000&above"
                                                             {{isset($event) ? $event->audience_number == '1000&above' ? 'selected': '' : ''}}>
-                                                            {{__('1000 & above')}}
+                                                            {{__('1000 & Above')}}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -145,7 +145,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Food Truck')}} ?</label>
+                                                {{__('Food Truck ?')}}</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio ">
@@ -250,7 +250,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Liquor Serving')}} ?</label>
+                                                {{__('Liquor Serving ?')}}</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio">

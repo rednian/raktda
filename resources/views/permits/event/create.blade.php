@@ -841,7 +841,7 @@
                 data: { firm: firm , id: id},
                 success: function (result) {
                     $('#documents_required').empty();
-                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('An image of the Event Logo / Banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
                  if(result){
                      var res = result;
                      $('#requirements_count').val(res.length);
@@ -920,14 +920,20 @@
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "top left"
+            orientation: "top left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
         $('#regis_issue_date , #regis_expiry_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
 
@@ -1738,8 +1744,18 @@
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             language: {
                 @if(Auth::check() && Auth::user()->LanguageId != 1)
-                info: 'رض _START_ إلى _END_ للـــ _TOTAL_'
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
                 @endif
+                paginate: {
+                    previous: '<',
+                    next:     '>'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next:     'Next'
+                    }
+                }
             },
         });
 

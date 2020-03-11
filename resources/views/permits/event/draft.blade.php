@@ -86,11 +86,9 @@
                             </button>
                             <div class="dropdown-menu py-0" aria-labelledby="btnGroupDrop1">
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary btn-hover-success"
-                                    value="finished" id="submit_btn">Finish &
-                                    Submit</button>
+                                    value="finished" id="submit_btn">{{__('Finish & Submit')}}</button>
                                 <button name="submit" class="dropdown-item btn btn-sm btn-secondary" value="drafts"
-                                    id="draft_btn">Update
-                                    Draft</button>
+                                    id="draft_btn">{{__('Update to Drafts')}}</button>
                             </div>
                         </div>
 
@@ -715,7 +713,7 @@
                  if(result){
                     $('#documents_required').empty();
                      var res = result;
-                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">Event Logo </label><p class="reqName">A image of the event logo/ banner </p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
+                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event Logo')}}</label><p class="reqName">{{__('An image of the Event Logo / Banner')}}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div><input hidden id="requirements_count" value="'+ res.length +'" />');
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
                          $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+capitalizeFirst(res[i].requirement_name)+' <span id="cnd_'+j+'"></span></label><p class="reqName">'+( res[i].requirement_description ? capitalizeFirst(res[i].requirement_description) : '')+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');

@@ -38,7 +38,7 @@
                 @endif
                 @include('permits.event.common.liquor-fee')
                 <div class="col-md-12 form-group form-group-xs d-flex">
-                    <label class="col-form-label"> {{__('Provided by venue')}} ?</label>
+                    <label class="col-form-label"> {{__('Provided by venue ?')}}</label>
                     {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">
                                 <input type="checkbox" name="isTruck" id="isTruck">
                                 <span></span>
@@ -87,7 +87,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 form-group form-group-xs" id="limited_types">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor service')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor Service')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"
                                 id="liquor_types" autocomplete="off"></textarea>
