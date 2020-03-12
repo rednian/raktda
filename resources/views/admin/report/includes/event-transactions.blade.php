@@ -4,6 +4,9 @@
     .dt-buttons{
         margin-top: auto;
     }
+    body{
+        font-family: Poppins;
+    }
     th{
         font-size: 10px;font-weight: bold;white-space: nowrap;
     }
@@ -64,14 +67,17 @@
 
         box-shadow: -1px 5px 5px -5px;
     }
+th{
+    font-weight: bold;
 
+}
     </style>
 @endsection
 @section('content')
 
     <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
              style="padding: 20px">
-
+{{--
         <div class="col">
             <span style="    font-weight: bold;
                               color: #adadad;
@@ -89,6 +95,16 @@
                               margin-bottom: 7px;" class="btn">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i>BACK</button></a>
              </div>
+        --}}
+
+        <div class="row">
+            <div class="col-10" style="font-size: 16px;color: grey;font-weight: 500">{{__('EVENTS TRANSACTIONS REPORT')}}</div>
+                  <div class="col">
+                       <a href="{{url('artist_reports#transaction-report-tab')}}"><button style="background-color: #b45454;
+                       border: none;
+                       float: right;" class="btn  btn-danger btn-sm"> <i class="fa fa-arrow-left" style="margin: 2px"></i>{{__('BACK')}}</button></a></div>
+                  </div>
+
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 6px">
             {{-- <a class="navbar-brand" href="#">Navbar w/ text</a>--}}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -200,6 +216,7 @@
                                     '<tfoot><tr><th colspan="3" class="text-right">Total</th><th style="text-align:right;">' + amount + '</th><th style="text-align:right;">' + vat + '</th><th style="text-align: right">' + totalAmount + '</th></tr></tfoot>'
                                 );
                                 $(win.document.body).find('td').css({'font-size': '15px'})
+                                $(win.document.body).find('td').css({'white-space': 'nowrap'})
                                 $(win.document.body).find('th').css({'font-size': '15px'})
                                 $(win.document.body).find('h3').css({'font-size': '15px'})
                                 $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
@@ -336,6 +353,7 @@
                              );
                              $(win.document.body).find('td').css({'font-size':'15px'})
                              $(win.document.body).find('th').css({'font-size':'15px'})
+                             $(win.document.body).find('td').css({'white-space': 'nowrap'})
                              $(win.document.body).find('h3').css({'font-size':'15px'})
                              $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
                              $(win.document.body)
@@ -472,6 +490,7 @@
                                );
                                $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
                                $(win.document.body).find('td').css({'font-size':'15px'})
+                               $(win.document.body).find('td').css({'white-space': 'nowrap'})
                                $(win.document.body).find('th').css({'font-size':'15px'})
                                $(win.document.body).find('h3').css({'font-size':'15px'})
                                $(win.document.body)
@@ -626,6 +645,7 @@
                                 );
                                 $(win.document.body).find('td').css({'font-size':'15px'})
                                 $(win.document.body).find('th').css({'font-size':'15px'})
+                                $(win.document.body).find('td').css({'white-space': 'nowrap'})
                                 $(win.document.body).find('h3').css({'font-size':'15px'})
                                 $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
                                 $(win.document.body)
@@ -768,6 +788,7 @@
                                     );
                                     $(win.document.body).find('td').css({'font-size':'15px'})
                                     $(win.document.body).find('th').css({'font-size':'15px'})
+                                    $(win.document.body).find('td').css({'white-space': 'nowrap'})
                                     $(win.document.body).find('h3').css({'font-size':'15px'})
                                     $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
                                     $(win.document.body)
@@ -948,6 +969,7 @@ footer:true,
                                             $(win.document.body).find('td').css({'font-size':'15px'})
                                             $(win.document.body).find('th').css({'font-size':'15px'})
                                             $(win.document.body).find('h3').css({'font-size':'15px'})
+                                            $(win.document.body).find('td').css({'white-space': 'nowrap'})
                                             $(win.document.body).find('#totalAmount').append($('#totalFooter').html());
                                             $(win.document.body).prepend('<img src="{{asset('img/raktdalogo.png')}}"/>');
                                             $(win.document.body).find('h1').css('display', 'none')

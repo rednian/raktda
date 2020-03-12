@@ -2,6 +2,12 @@
     #event-report_wrapper .dt-buttons {
         background-color: #edeef4;
     }
+    td{
+        font-size: 13px;
+    }
+    body{
+        font-family: Poppins;
+    }
 
 </style>
 
@@ -42,23 +48,40 @@
         </button>
         </li>
     </ul>
-
+@php
+    $company=\App\Company::has('event')->get();
+@endphp
 
 <table class="table table-hover  table-bordered table-striped " id="event-report">
     <thead>
 
     <tr id="filter_to_hide" style="display: none">
-        <th colspan="2"><select class="foform-control-sm form-control custom-select custom-select-sm "
+               <th colspan="2"><select class="foform-control-sm form-control custom-select custom-select-sm "
                                 name="applied_date" id="applied-date">
                 <option value="">{{__('APPLIED DATE')}}</option>
                 <option value="1">{{__('Today')}}</option>
                 <option value="2">{{__('Yesterday')}}</option>
-                <option value="3">{{__('7 Days')}}</option>
-                <option value="4">{{__('30 Days')}}</option>
+                <option value="3">{{__('Last 7 Days')}}</option>
+                <option value="4">{{__('Last 30 Days')}}</option>
                 <option value="5">{{__('This Month')}}</option>
                 <option value="6">{{__('Last Month')}}</option>
             </select></th>
-        <th colspan="2"><select name="application_type" style="width: fit-content" id="application-type"
+        <th colspan="3">
+            <select name="establishment" id="establishment" class="form-control-sm form-control custom-select custom-select-sm ">
+                <option value="">{{__('ESTABLISHMENT')}}</option>
+                @foreach($company as $c)
+                <option value="{{$c->company_id}}">{{\Illuminate\Support\Facades\Auth::user()->LanguageId==1?$c->name_en:$c->name_ar}}</option>
+         @endforeach
+            </select>
+        </th>
+        <th colspan="3">
+            <select name="status" id="status" class="form-control-sm form-control custom-select custom-select-sm ">
+                <option value="">{{__('STATUS')}}</option>
+                <option value="new">{{__('New')}}</option>
+                <option value="amended">{{__('Amended')}}</option>
+            </select>
+        </th>
+        <th colspan="3"><select name="application_type" style="width: fit-content" id="application-type"
                                 class="form-control-sm form-control custom-select custom-select-sm ">
                 <option value="">{{__('APPLICATION TYPE')}}</option>
                 <option value="corporate">{{__('Corporate')}}</option>
@@ -67,16 +90,9 @@
             </select>
         </th>
 
-        <th colspan="2">
-            <select name="status" id="status" class="form-control-sm form-control custom-select custom-select-sm ">
-                <option value="">{{__('STATUS')}}</option>
-                <option value="new">{{__('New')}}</option>
-                <option value="amended">{{__('Amended')}}</option>
-            </select>
-        </th>
-        <th>
-            <button class="btn btn-sm btn-secondary" id="reset_event_table">{{__('RESET')}}</button>
-        </th>
+        {{--        <th>
+                    <button class="btn btn-sm btn-secondary" id="reset_event_table">{{__('RESET')}}</button>
+                </th>--}}
     </tr>
     <tr>
         <th style="font-weight: bold;white-space: nowrap">{{ __('REFERENCE NO.') }}</th>
@@ -86,7 +102,7 @@
         <th style="font-weight: bold">{{ __('DESCRIPTION') }}</th>
         <th style="font-weight: bold">{{ __('VENUE') }}</th>
         <th style="font-weight: bold">{{ __('ADDRESS') }}</th>
-        <th style="font-weight: bold">{{ __('COMPANY') }}</th>
+        <th style="font-weight: bold">{{ __('ESTABLISHMENT') }}</th>
         <th style="font-weight: bold;white-space: nowrap">{{ __('EVENT DATE') }}</th>
         <th style="font-weight: bold;white-space: nowrap">{{ __('NO. OF DAYS') }}</th>
         <th style="font-weight: bold">{{ __('STATUS') }}</th>

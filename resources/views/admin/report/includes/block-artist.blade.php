@@ -3,30 +3,26 @@
         color: #6d6d6d;
     }
 
-    /* body {
-        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        font-size: 13px;
-    } */
-
     .activeButton {
         border-bottom: 2px solid #000000;
         height: 26px;
         box-shadow: 1px 7px 9px -5px black;
     }
 
-    #block-artist_filter {
-        margin-top: 9px;
-    }
+td{
+    white-space: nowrap;
+    font-weight: 500;
+
+}
 
     #event-report_filter {
-        width: 42%;
+        width: 20%;
         float: right;
     }
 
     .dt-button-collection span {
         color: #6d6d6d;
-
-        background-color:red
+        background-color:#fbfbfb
     }
 
 
@@ -97,7 +93,9 @@
         border: navajowhite;
         border-bottom: 3px solid #8b0000b8;
     }
-
+body{
+    font-family: Poppins;
+}
 </style>
 
 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-1x nav-tabs-line-danger" role="tablist"
@@ -249,7 +247,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
     $artistWithThisId = \App\ArtistPermit::where('artist_permit_id', $artists->artist_permit_id)->with('profession')->first();
     ?>
 
-    <div class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog"
+    <div  class="modal fade" id="artist_modal_{{$artists->artist_id}}" tabindex="-1" role="dialog"
          aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content" style="font-family: Arial;border: none;box-shadow: 1px 8px 24px -2px black;">
@@ -289,16 +287,16 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 <th style="padding: 9px;white-space: nowrap"><span> {{__('VISA NO.')}}</span></th>
                             </tr>
                             <tr align="left">
-                                <td style=";padding: 9px;width: 16%">{{$artistWithThisId->artist->person_code}}</td>
-                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
-                                <td style=";padding: 9px;width: 14%">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
-                                <td style="padding: 9px;width: 20%">{{$artistWithThisId->email}}</td>
-                                <td style=";padding: 9px;width:17%">{{$artistWithThisId->passport_number}}</td>
+                                <td style=";padding: 9px;width: 16%;font-size: 11px">{{$artistWithThisId->artist->person_code}}</td>
+                                <td style=";padding: 9px;width: 14%;font-size: 11px">{{$artistWithThisId->profession?$artistWithThisId->profession->name_en:''}}</td>
+                                <td style=";padding: 9px;width: 14%;font-size: 11px">{{$artistWithThisId->country?$artistWithThisId->country->nationality_en:''}}</td>
+                                <td style="padding: 9px;width: 20%;font-size: 11px">{{$artistWithThisId->email}}</td>
+                                <td style=";padding: 9px;width:17%;font-size: 11px">{{$artistWithThisId->passport_number}}</td>
                                 <?php
                                 $passport_expire_date = \Illuminate\Support\Facades\Date::make($artistWithThisId->passport_expire_date)->format('d-M-Y');
                                 ?>
-                                <td style="padding: 9px;width: 18%">{{$passport_expire_date}}</td>
-                                <td style="padding: 9px;width:10%;">{{$artistWithThisId->visa_number}}</td>
+                                <td style="padding: 9px;width: 18%;font-size: 11px">{{$passport_expire_date}}</td>
+                                <td style="padding: 9px;width:10%;font-size: 11px">{{$artistWithThisId->visa_number}}</td>
                             </tr>
                         </table>
 
@@ -441,10 +439,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 "searching": true,
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6, 7, 8,9, 11,4],
                         "visible": false,
                         "searchable": false
                     },
+
                 ],
                 buttons: ['pageLength',
                     {
@@ -465,6 +464,12 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
+
+                            $(win.document.body).find('th:first')
+                                .css( 'white-space', 'nowrap' )
+                            $(win.document.body).find('td')
+                                .css( 'white-space', 'nowrap' )
+
                             $(win.document.body).find('h1')
                                 .css( 'display', 'none' )
 
@@ -626,7 +631,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6, 7, 8,9, 11,4],
                         "visible": false,
                     },
                     {
@@ -889,7 +894,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6, 7, 8,9, 11,4],
                         "visible": false,
                     },
                     {
@@ -1147,7 +1152,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 "searching": true,
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6, 7, 8,9, 11,4],
                         "visible": false,
                         "searchable": false
                     },
@@ -1453,7 +1458,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6, 7, 8,9, 11,4],
                         "visible": false,
                         "searchable": false
                     },
@@ -1790,7 +1795,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 ajax: {
                     url: '{{ route('admin.event_reports.events')}}',
                     method: 'post',
-                    data: {events: xyz}
+                    data: {events: xyz},
                 },
                 columns: [
                     {data: 'reference_number', name: 'reference_number'},
@@ -1900,7 +1905,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {data: 'company_id', name: 'company_id'},
                     {data: 'issued_date', name: 'issued_date'},
                     {data: 'expired_date', name: 'expired_date'},
-
                     {data: 'status', name: 'status'},
                     {data: 'event_id', name: 'event_id'},
                 ],
@@ -2090,7 +2094,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [2, 4, 6, 9],
+                        "targets": [4,5,6, 10],
                         "visible": false,
                         "searchable": false
                     },
@@ -2169,6 +2173,109 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
         });
 
+        $('#establishment').change(function () {
+            $('#event_ul_list li a').removeClass('active');
+            $('#active_events a').removeClass('active');
+            $('#events_next_30_days a').removeClass('active');
+            $('#events_next_60_days a').removeClass('active');
+            var link = $('#active_events a')
+            if (!link.hasClass('active')) {
+                link.addClass('active');
+            }
+            var currentdate = new Date();
+            var datetime = +currentdate.getDate() + "-"
+                + (currentdate.getMonth() + 1) + "-"
+                + currentdate.getFullYear() + "  "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            var time= + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+
+            var establishment = $('#establishment').val();
+            table = $('#event-report').DataTable({
+                dom: 'Bfrtip',
+                "columnDefs": [
+                    {
+                        "targets": [4,5,6, 10],
+                        "visible": false,
+                        "searchable": false
+                    },
+
+                ],
+                "searching": false,
+                buttons: ['pageLength',
+                    {
+                        extend: 'print',
+                        title: function () {
+                            return 'Events Searched By Establishment ' +datetime+Date.now();
+                        },
+                        exportOptions: {
+                            columns: [0, 1, 3, 7, 8, 9]
+                        },
+                        customize: function (doc){
+
+                            $(doc.document.body).prepend('<h3 style="text-align: center">Events Searched By Establishment</h3>')
+
+                            $(doc.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<img src="{{asset('img/raktdalogo.png')}}"/>'
+                                );
+                            $(doc.document.body).find('h1')
+                                .css( 'display', 'none');
+
+                            $(doc.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css({ 'font-size': 'inherit'});
+                        },
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        },
+                        title: function () {
+                            return 'Events Searched With Establishment'
+                        },
+                    }
+                ],
+                lengthMenu: [
+                    [10, 25, 50, -1],
+                    ['10 rows', '25 rows', '50 rows', 'Show all']
+                ],
+                processing: true,
+                language: {
+                    processing: '<span>Processing</span>',
+                },
+                serverSide: true,
+                footer: true,
+                ajax: {
+                    url: '{{ route('admin.event_reports.establishment')}}',
+                    method: 'get',
+                    data: {establishment: establishment}
+                },
+                columns: [
+
+                    {data: 'reference_number', name: 'reference_number'},
+                    {data: 'application_type', name: 'application_type'},
+                    {data: 'event_type_id', name: 'event_type_id'},
+                    {data: 'name_en', name: 'name_en'},
+                    {data: 'description_en', name: 'description_en'},
+                    {data: 'venue_en', name: 'venue_en'},
+                    {data: 'address', name: 'address'},
+                    {data: 'company_id', name: 'company_id'},
+                    {data: 'issued_date', name: 'issued_date'},
+                    {data: 'expired_date', name: 'expired_date'},
+                    {data: 'status', name: 'status'},
+                    {data: 'event_id', name: 'event_id'},
+
+
+                ],
+            });
+
+        });
 
         // Applied Date
         $('#applied-date').change(function () {
@@ -2339,7 +2446,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [2, 4, 6, 9],
+                        "targets": [4,5,6, 10],
                         "visible": false,
                         "searchable": false
                     },
@@ -2428,7 +2535,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                     {data: 'reference_number', name: 'reference_number'},
                     {data: 'application_type', name: 'application_type'},
                     {data: 'event_type_id', name: 'event_type_id'},
-
                     {data: 'name_en', name: 'name_en'},
                     {data: 'description_en', name: 'description_en'},
                     {data: 'venue_en', name: 'venue_en'},
@@ -2782,7 +2888,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 dom: 'Bfrtip',
                 "columnDefs": [
                     {
-                        "targets": [ 6, 7, 8,9, 11],
+                        "targets": [ 6,7,8,9,11,4],
                         "visible": false,
                         "searchable": false
                     },
@@ -2791,7 +2897,6 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 "searching": false,
                 buttons: ['pageLength',
                     {
-
                         extend: 'print',
 
                         title: function () {
@@ -3925,6 +4030,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
+                            $(win.document.body).find('th').css({'white-space':'nowrap'})
                             $(win.document.body).find( 'table' )
                                 .addClass( 'compact' )
                                 .css({ 'font-size': 'inherit'});
@@ -4110,7 +4216,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
 
-                            $(win.document.body).find('h1').css('display','none')
+                            $(win.document.body).find('h1').css('display','none');
+                            $(win.document.body).find('th').css({'white-space':'nowrap'});
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
@@ -4251,7 +4358,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#todayTotalAmount').append(totalAmount)
-                            $(win.document.body).find('h1').css('display','none')
+                            $(win.document.body).find('h1').css('display','none');
+                            $(win.document.body).find('th').css({'white-space':'nowrap'});
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
@@ -4427,7 +4535,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#totalAmountLastThirty').append(totalAmount)
-                            $(win.document.body).find('h1').css('display','none')
+                            $(win.document.body).find('h1').css('display','none');
+                            $(win.document.body).find('th').css({'white-space':'nowrap'})
                             $(win.document.body)
                                 .css( 'font-size', '10pt' )
                                 .prepend(
@@ -4599,7 +4708,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
-                            $(win.document.body).find('h1').css({'display':'none'})
+                            $(win.document.body).find('h1').css({'display':'none'});
+                            $(win.document.body).find('th').css({'white-space':'nowrap'});
                             $(win.document.body).find('table')
                                 .addClass('compact')
                                 .css({'font-size': 'inherit'});
@@ -4760,7 +4870,8 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
                             $(win.document.body).find('h1')
-                                .css( 'display', 'none' )
+                                .css( 'display', 'none' );
+                            $(win.document.body).find('th').css({'white-space':'nowrap'})
                             $(win.document.body).find('table')
                                 .addClass('compact')
                                 .css({'font-size': 'inherit'});

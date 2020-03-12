@@ -6,7 +6,12 @@
         #transaction-report-tab:hover ul{
             display: block;
         }
-
+        td{
+            font-size: 13px;
+        }
+        body{
+            font-family: Poppins,Roboto;
+        }
     </style>
 
 @endsection
