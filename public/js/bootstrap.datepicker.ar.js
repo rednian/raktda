@@ -48,6 +48,6 @@ $.fn.datepicker.dates["ar"] = {
         "نوفمبر",
         "ديسمبر"
     ],
-    today: "هذا اليوم",
-    rtl: true
+    today: "هذا اليوم"
+    // rtl: true
 };

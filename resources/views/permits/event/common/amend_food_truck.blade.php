@@ -31,7 +31,7 @@
                                 id="company_name_ar" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F&B')}}</label>
                             <textarea class="form-control form-control-sm" name="food_type" id="food_type"
                                 autocomplete="off" placeholder="{{__('Food Services')}}" rows="2"></textarea>
                         </div>

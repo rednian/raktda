@@ -61,8 +61,8 @@
                                         :</label>
                                     <div class="col-md-8">
                                         <textarea name="remarks" id="remarks" class="form-control form-control-sm "
-                                            rows="5" dir="ltr"
-                                            placeholder="{{__('please enter your valueable comments')}}"></textarea>
+                                            rows="5"
+                                            placeholder="{{__('please enter your valuable comments')}}"></textarea>
                                     </div>
                                 </div>
                             </form>

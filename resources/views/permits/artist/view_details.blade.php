@@ -197,7 +197,7 @@
                             <td>{{$artistPermit->mobile_number}}</td>
                             {{-- <td>{{$artistPermit->email}}</td> --}}
                             <td>
-                                {{ucwords($artistPermit->artist_permit_status)}}
+                                {{__(ucwords(trim($artistPermit->artist_permit_status)))}}
                             </td>
 
 

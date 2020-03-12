@@ -56,7 +56,7 @@
                 <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
                 <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-arrow-left"></i>
-                    {{__('Back')}}</button>
+                    {{__('BACK')}}</button>
                 {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button> --}}
             </div>
@@ -76,7 +76,7 @@
                                 id="company_name_ar" dir="rtl" autocomplete="off" />
                         </div>
                         <div class=" col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}} <span
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F&B')}} <span
                                     class="text-danger">*</span></label>
                             <textarea class="form-control form-control-sm" name="food_type" id="food_type"
                                 autocomplete="off" rows="2"></textarea>

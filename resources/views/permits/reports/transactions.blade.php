@@ -164,7 +164,17 @@
                 emptyTable: "{{__('No Transactions')}}",
                 searchPlaceholder: "{{__('Search')}}",
                 @if(Auth::check() && Auth::user()->LanguageId != 1)
-                info: 'رض _START_ إلى _END_ للـــ _TOTAL_'
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+                paginate: {
+                    previous: '<',
+                    next:     '>'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next:     'Next'
+                    }
+                }
                 @endif
             },
             buttons: [

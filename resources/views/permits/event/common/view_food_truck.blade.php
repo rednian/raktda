@@ -22,7 +22,7 @@
                                 id="company_name_ar" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
-                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F & B')}}</label>
+                            <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F&B')}}</label>
                             <textarea type="text" class="form-control form-control-sm" name="food_type" id="food_type"
                                 disabled placeholder="food type" rows="2"></textarea>
                         </div>
