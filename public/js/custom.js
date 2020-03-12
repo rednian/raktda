@@ -16,7 +16,7 @@ var KTAppOptions = {
             "shape":["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
         }
     }
-}; 
+};
 
 
 
@@ -34,7 +34,7 @@ $(document).ready(function(){
         }
       });
   });
-  
+
 // datatable default setting
     $.extend( true, $.fn.dataTable.defaults, {
         // dom: '<"row"<"col text-left"f>>rt<"pull-left"p><"pull-left kt-margin-l-5"l><"pull-right m-r-sm"i><"clearfix">',
@@ -62,7 +62,7 @@ $(document).ready(function(){
     // select2 settings
     $('.select2').select2({dropdownAutoWidth: true});
     $('.kt-selectpicker').selectpicker();
-  
+
       autosize.update($('textarea'));
 
        window.getIcon = function( fileName){
@@ -81,7 +81,7 @@ $(document).ready(function(){
             if(data.hasOwnProperty('message')){
                 $.notify(
                     { title: data.message[2], message: data.message[1] },
-                    { type: data.message[0], 
+                    { type: data.message[0],
                         animate: {
                         enter: 'animated zoomIn',
                         exit: 'animated zoomOut'
@@ -90,7 +90,7 @@ $(document).ready(function(){
             }
 
         }).bind('ajaxSend', function(){
-            
+
 
         }).bind('ajaxError', function(data){
             $.notify({

@@ -102,9 +102,13 @@ function profileName($name = null, $type = null)
     return $html;
 }
 
-function humanDate($date)
-{
-    if ($date->diffInMonths(Carbon::now()) > 1) {
+
+function humanDate($date){
+    if(auth()->user()->LanguageId == 2){
+            Carbon::setLocale('ar');
+    }
+
+    if ($date->diffInMonths(Carbon::now()) > 1 ) {
         return $date->format('d-F-Y');
     }
     return $date->diffForHumans();
