@@ -48,6 +48,13 @@ function dayCount(from, to) {
     return to.diff(from, "days");
 }
 
-function capitalizeThis(word) {
+function capitalizeFirst(word) {
     return word.charAt(0).toUpperCase() + word.substring(1);
+}
+
+function displayIfNotNull(value) {
+    if (value == null) {
+        return "";
+    }
+    return value;
 }

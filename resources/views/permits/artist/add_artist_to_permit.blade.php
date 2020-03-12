@@ -1344,8 +1344,12 @@ function checkVisaRequired(){
        $('#submit_btn').css('display', 'none');
     });
 
-    $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true});
-    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true});
+    $('.date-picker').datepicker({format: 'dd-mm-yyyy',autoclose: true, @if(getLangId() == 2)
+            language: 'ar'
+            @endif});
+    $('#dob').datepicker({format: 'dd-mm-yyyy',autoclose: true,todayHighlight: true, @if(getLangId() == 2)
+            language: 'ar'
+            @endif});
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
     $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
@@ -1434,10 +1438,13 @@ function checkVisaRequired(){
                             show: true
                         });
 
+                        let NotFoundMessage = "{{trans_choice('messages.no_artist_found', Auth::user()->LanguageId ,['personcode' => ':personcode'])}}";
+                            NotFoundMessage = NotFoundMessage.replace(":personcode", code);
+
                         if(data.artist_d == null)
                         {
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">{!!__("This is an Optional field")!!}</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
+                            return;
                         }else if(data.artist_d.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="kt--maroon text-center kt-font-bold">{!!__("Sorry, This Artist is blocked ! Please Select a New Artist")!!}</div>');
@@ -1455,13 +1462,13 @@ function checkVisaRequired(){
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 var getLangId = $('#getLangid').val();
                                 let apd = data.artist_permit[j];
-                                $('#ex_artist_en_name').html(getLangId == 1 ? capitalizeThis(apd.firstname_en)+' '+capitalizeThis(apd.lastname_en)  : apd.lastname_ar+' '+apd.firstname_ar);
+                                $('#ex_artist_en_name').html(getLangId == 1 ? capitalizeFirst(apd.firstname_en)+' '+capitalizeFirst(apd.lastname_en)  : apd.lastname_ar+' '+apd.firstname_ar);
                                 $('#ex_artist_mobilenumber').html(apd.mobile_number);
                                 $('#ex_artist_email').html(apd.email);
                                 $('#ex_artist_personcode').html(data.person_code);
                                 var dob = moment(apd.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                                 $('#ex_artist_dob').html(dob);
-                                $('#ex_artist_nationality').html(getLangId == 1 ? capitalizeThis(apd.nationality.nationality_en) : apd.nationality.nationality_ar);
+                                $('#ex_artist_nationality').html(getLangId == 1 ? capitalizeFirst(apd.nationality.nationality_en) : apd.nationality.nationality_ar);
                                 var gender = apd.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                                 $('#ex_artist_gender').html(gender);
                                 $('#profImg').attr('src', apd.thumbnail ? "{{url('storage')}}"+'/'+apd.thumbnail : '');
@@ -1476,8 +1483,7 @@ function checkVisaRequired(){
                         }
                         else
                         {
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">** Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
                         }
 
                     },error:function(){
@@ -1649,14 +1655,14 @@ function checkVisaRequired(){
                             );
                             $("#artistDetailswithcode").val(JSON.stringify(data));
                             var langid = $('#getLangid').val();
-                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeFirst(data.firstname_en)+' '+capitalizeFirst(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
 
                             $("#ex_artist_mobilenumber").html(data.mobile_number);
                             $("#ex_artist_email").html(data.email);
                             $("#ex_artist_personcode").html(data.person_code);
                             var dob = moment(data.birthdate, "YYYY-MM-DD").format("DD-MM-YYYY");
                             $("#ex_artist_dob").html(dob);
-                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
+                            $("#ex_artist_nationality").html(langid == 1 ? capitalizeFirst(data.nationality.nationality_en) : data.nationality.nationality_ar);
                             var gender = data.gender == 1 ? __('Male') : __('Female');
                             $("#ex_artist_gender").html(gender);
                             $("#profImg").attr(

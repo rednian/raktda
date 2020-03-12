@@ -871,7 +871,7 @@
         setWizard();
         uploadFunction();
         PicUploadFunction();
-        // wizard.goTo(2);
+        // wizard.goTo(3);
 
         $('.hd-eu').hide();
         getAreas(5);
@@ -1496,9 +1496,13 @@
         });
 
 
-        $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true,  @if(getLangId() == 2)
+            language: 'ar',
+            @endif});
 
-        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
+        $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true,  @if(getLangId() == 2)
+            language: 'ar',
+            @endif});
         //endDate:'-10Y' //startView: 3
 
         $('#dob').on('changeDate', function (ev) {
@@ -1597,7 +1601,7 @@
                         $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{{__("Name")}}:</th> <td id="ex_artist_en_name"></td> </tr> <tr> <th>{{__("Birthdate")}}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{{__("Gender")}}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{{__("Mobile Number")}}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{{__("Email")}}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{{__("Nationality")}}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(2)" data-dismiss="modal">{{__("Select this Artist")}}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{{__("Not this Artist")}}</button> </div>');
                             $('#artistDetailswithcode').val(JSON.stringify(data));
                             var langid = $('#getLangid').val();
-                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeThis(data.firstname_en)+' '+capitalizeThis(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
+                            $('#ex_artist_en_name').html(langid == 1 ? capitalizeFirst(data.firstname_en)+' '+capitalizeFirst(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
 
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_email').html(data.email);
@@ -1605,8 +1609,8 @@
                             var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
                             
-                            $('#ex_artist_nationality').html(langid == 1 ? capitalizeThis(data.nationality.nationality_en) : data.nationality.nationality_ar);
-                            var gender = data.gender == 1 ? 'Male' : 'Female';
+                            $('#ex_artist_nationality').html(langid == 1 ? capitalizeFirst(data.nationality.nationality_en) : data.nationality.nationality_ar);
+                            var gender = data.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                             $('#ex_artist_gender').html(gender);
                             $('#profImg').attr('src', data.thumbnail ? "{{url('storage')}}"+'/'+data.thumbnail : '');
                             $('#profImg').css({
@@ -1672,10 +1676,13 @@
                             show: true
                         });
 
+                        let NotFoundMessage = "{{trans_choice('messages.no_artist_found', Auth::user()->LanguageId ,['personcode' => ':personcode'])}}";
+                            NotFoundMessage = NotFoundMessage.replace(":personcode", code);
+
                         if(data.artist_d == null)
                         {
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
+                            return;
                         }else if(data.artist_d.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry This Artist is blocked ! Please Select a New Artist")!!}</div>');
@@ -1714,9 +1721,7 @@
                         }
                         else
                         {
-
-                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold">** Optional field</span><br/>{!!__("Sorry ! No artist found with ") !!}<span class="text--maroon kt-font-bold" id="not_artist_personcode"></span> {!!__("( or is already added )")!!}. <br /> {!!__("Please Add Another Artist")!!} ! </p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("Ok")!!}</button> </div>');
-                            $('#not_artist_personcode').html(code);
+                            $('#person_code_modal').append('<p class="text-center text-danger kt-font-bolder"><span class="text--maroon kt-font-bold"> '+NotFoundMessage+'</span></p> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-wide btn-sm mr-3" onclick="clearPersonCode()"data-dismiss="modal">{!!__("OK")!!}</button> </div>');
                         }
 
                     },error:function(){

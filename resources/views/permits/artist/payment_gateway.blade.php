@@ -84,7 +84,7 @@
                             </div>
                             @endif
                         </div>
-                        <div class="kt-widget__text kt-margin-t-10">
+                        <div class="kt-widget__text kt-margin-t-20">
                             <strong>{{__('Work Location')}} :</strong>
                             {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                         </div>
@@ -292,7 +292,7 @@
                     <div>
                         <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
                             <input type="checkbox" id="isEventPay" name="isEventPay" onchange="check_permit()">
-                            {{__('Do you wish to pay Connected Event Permit fee ?')}}
+                            {{__('Do you want to pay the connected Event Permit?')}}
                             <span></span>
                         </label>
                     </div>
@@ -335,7 +335,7 @@
 
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('Pay')}}</button>
+                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
                         {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
 

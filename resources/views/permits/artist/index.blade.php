@@ -211,7 +211,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
 
-                        <h5 class="modal-title" id="exampleModalLabel">{{__('Delete Draft')}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{__('Delete')}}</h5>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
@@ -223,7 +223,7 @@
                                 {{__('Data will be lost !')}}</label>
                             <input type="hidden" id="del_draft_id" name="del_draft_id">
                             <div>
-                                <input type="submit" class="btn btn-sm btn--maroon pull-right" value="Delete">
+                                <input type="submit" class="btn btn-sm btn--maroon pull-right" value="{{__('Delete')}}">
                             </div>
                         </form>
                     </div>
@@ -338,7 +338,8 @@
                 ],
                 language: {
                     emptyTable: "{{__('No Applied Artist Permits')}}",
-                    searchPlaceholder: "{{__('Search')}}"
+                    searchPlaceholder: "{{__('Search')}}",
+                   
                 }
             });
        }
@@ -383,7 +384,10 @@
                                     noofapproved++;
                                 }
                             }
-                            return "{{__('Approved')}} " + noofapproved + ' of ' + total;
+                            // return "{{__('Approved')}} " + noofapproved + ' of ' + total;
+                            $value =  "{{trans_choice('messages.approved_count_mess' , Auth::user()->LanguageId , ['num' => ':approved', 'total' => ':total' ])}}";
+                            $value = $value.replace(':approved', noofapproved).replace(':total', total);
+                            return $value; 
                         }
                     },
                     {
@@ -432,13 +436,6 @@
                     { data: 'details', name: 'details',  className: "text-center"},
                 ],
                 columnDefs: [
-                    {
-                        targets:-3,
-                        render: function(data, type, full, meta) {
-                            return '<span >'+ moment(data).format('DD-MMM-YYYY') +'</span>';
-
-                        }
-                    },
                 ],
                 language: {
                     emptyTable: "{{__('No Artist Drafts Added')}}",

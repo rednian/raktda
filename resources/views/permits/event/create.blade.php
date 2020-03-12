@@ -242,8 +242,6 @@
             type: "POST",
             success: function(){}
         })
-        // getRequirementsList(5);
-      
 
         $('#event_id').val(0);
 
@@ -263,12 +261,7 @@
 
     });
 
-    function check_duration() {
-        var iss = $('#issued_date').val();
-        var exp = $('#expired_date').val();
-        var diff = dayCount(iss, exp);
-        $('#date_duration').val(diff + (diff > 1 ? ' days' : ' day'));
-    }
+
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -626,13 +619,19 @@
             autoclose: true,
             todayHighlight: true,
             startDate: '+1d',
-            orientation: "bottom left"
+            orientation: "bottom left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
         $('#expired_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
         // $('#time_start').timepicker();
@@ -813,7 +812,7 @@
                         if(result.length > 0){
                             for(var  i = 0; i< result.length;i++)
                             {
-                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'">'+(langId == 1 ? toCapitalize(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
+                                $('#event_sub_type_id').append('<option value="'+result[i].event_type_sub_id+'">'+(langId == 1 ? capitalizeFirst(result[i].sub_name_en) : result[i].sub_name_ar)+'</option>');
                             }
                             $('select[name="event_sub_type_id"]').rules('add', { required: true, messages: {required:''}});
                             $('#event_sub_type_req').html('*');
@@ -829,18 +828,12 @@
             }
         }
 
-        function toCapitalize(word) {
-            if(word)
-            {
-                return word.charAt(0).toUpperCase() + word.substring(1);
-            }
-        }
-
-
         function getRequirementsList()
         {
             var firm = $('#firm_type').val();
             var id = $('#event_type_id').val();
+            var langId = $('#getLangid').val();
+
             if(firm && id){
                 $.ajax({
                 url: "{{route('company.event.get_requirements')}}",
@@ -848,13 +841,13 @@
                 data: { firm: firm , id: id},
                 success: function (result) {
                     $('#documents_required').empty();
-                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('A image of the event logo/ banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
+                    $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{!!__('Required Documents')!!}</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{!!__('Event Logo')!!}</label><p class="reqName">{!!__('An image of the Event Logo / Banner')!!}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">{!!__('Upload')!!}</div></div></div><input hidden id="requirements_count"  />');
                  if(result){
                      var res = result;
                      $('#requirements_count').val(res.length);
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( res[i].requirement_name ? toCapitalize(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( res[i].requirement_description ? toCapitalize(res[i].requirement_description) : '' )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">{!!__('Upload')!!}</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+( langId == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( langId == 1 ? capitalizeFirst(res[i].requirement_description) : displayIfNotNull(res[i].requirement_description_ar) )+'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">{!!__('Upload')!!}</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><input type="hidden" id="eventReqIsMandatory_'+j+'" value="'+res[i].event_type_requirements[0].is_mandatory+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
 
                          if(res[i].dates_required == "1")
                          {
@@ -927,14 +920,20 @@
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "top left"
+            orientation: "top left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
         $('#regis_issue_date , #regis_expiry_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
             todayHighlight: true,
-            orientation: "bottom left"
+            orientation: "bottom left",
+            @if(getLangId() == 2)
+            language: 'ar'
+            @endif
         });
 
 
@@ -1745,8 +1744,18 @@
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             language: {
                 @if(Auth::check() && Auth::user()->LanguageId != 1)
-                info: 'رض _START_ إلى _END_ للـــ _TOTAL_'
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
                 @endif
+                paginate: {
+                    previous: '<',
+                    next:     '>'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next:     'Next'
+                    }
+                }
             },
         });
 

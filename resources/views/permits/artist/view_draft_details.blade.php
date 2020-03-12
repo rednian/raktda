@@ -88,7 +88,7 @@
                             </td>
                             <td>{{$atd->mobile_number}}</td>
                             <td>
-                                {{__(ucfirst($atd->artist_permit_status))}}
+                                {{__(ucfirst(trim($atd->artist_permit_status)))}}
                             </td>
                             <td class="text-center">
                                 <a href="{{URL::signedRoute('temp_artist_details.view' , [ 'id' => $atd->id , 'from' => 'view-draft'])}}"

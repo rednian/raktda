@@ -37,7 +37,7 @@
                                     class="kt-notification__item notification-item">
                                     <div class="kt-notification__item-icon"> <i class="flaticon2-bell-2"></i> </div>
                                     <div class="kt-notification__item-details">
-                                        <div class="kt-notification__item-title"> {{ $notification->data['title'] }}
+                                        <div class="kt-notification__item-title"> {{ __($notification->data['title']) }}
                                         </div>
                                         <div class="kt-notification__item-time">
                                             {{ humanDate($notification->created_at) }}</div>
@@ -133,7 +133,7 @@
                     <div class="kt-notification__custom kt-space-between pull-right">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign Out')}}</a>
+                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign out')}}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
                         </form>
                     </div>

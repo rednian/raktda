@@ -1,4 +1,3 @@
-
 <?php
 
 return [
@@ -34,14 +33,12 @@ return [
     // ],
 
     'custom_font_dir' => base_path('/resources/fonts/'), // don't forget the trailing slash!
-	'custom_font_data' => [
-		'arabic1' => [
-			'R'  => 'DroidKufi-Regular.ttf',
+    'custom_font_data' => [
+        'droid' => [
+            'R'  => 'DroidKufi-Regular.ttf',
             'B'  => 'DroidKufi-Bold.ttf',
-            'useOTL' => 0xFF,
-            'useKashida' => 75,
-		]
-	// 	// ...add as many as you want.
-	]
+        ]
+        // 	// ...add as many as you want.
+    ]
 
 ];

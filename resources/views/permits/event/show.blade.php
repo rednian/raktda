@@ -12,7 +12,7 @@
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Event Permit Details')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('EVENT PERMIT DETAILS')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$event->permit_number}}
@@ -212,7 +212,7 @@
             {{-- <h6 class="kt-font-dark">{{ __('Permit Information') }}</h6> --}}
             <table class="table table-sm table-hover table-borderless table-display">
                 <tr>
-                    <td>{{ __('Permit Status') }} </td>
+                    <td>{{ __('Status') }} </td>
                     <td>:</td>
                     <td class="kt-font-dark"> {!! permitStatus($event->status)!!}</td>
                 </tr>

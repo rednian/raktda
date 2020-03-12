@@ -118,7 +118,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                             500-1000</option>
                                                         <option value="1000&above"
                                                             {{isset($event) ? $event->audience_number == '1000&above' ? 'selected': '' : ''}}>
-                                                            {{__('1000 & above')}}
+                                                            {{__('1000 & Above')}}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -145,7 +145,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Food Truck')}} ?</label>
+                                                {{__('Food Truck ?')}}</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio ">
@@ -250,7 +250,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
                                         <div class="form-group form-group-sm row">
                                             <label class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Liquor Serving')}} ?</label>
+                                                {{__('Liquor Serving ?')}}</label>
                                             <div class="col-lg-8">
                                                 <div class="kt-radio-inline">
                                                     <label class="kt-radio">
@@ -506,11 +506,9 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
     function check_duration() {
         var iss = $('#issued_date').val();  
         var exp = $('#expired_date').val();
-        if(iss && exp){
-            var diff = dayCount(iss, exp) + 1;
-            var exp_date = moment(iss, 'DD-MM-YYYY').format();
-            $('#expired_date').datepicker('setStartDate', exp_date);
-            $('#date_duration').val(diff + (diff > 1 ? " {!! __('days')!!}" : " {!! __('days')!!}"));
-        }
+        $('#issued_date').datepicker('setStartDate', moment().format('DD-MM-YYYY'));
+        $('#expired_date').datepicker('setStartDate', iss);
+        var diff = dayCount(iss, exp) + 1;
+        $('#date_duration').val(diff + (diff > 2 ? " {!! __('Days')!!}" : ( diff > 1 ? " {!! __('days')!!}" :  " {!! __('day')!!}")));
     }
 </script>

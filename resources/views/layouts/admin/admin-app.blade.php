@@ -311,7 +311,7 @@ function unblockPage(){
     $.ajax({
       url: '{{ route('admin.language') }}',
       data: {lang: lang},
-      type: 'post'
+      type: 'post',
     }).done(function(response){
       if(response.success) location.reload();
     });
@@ -323,6 +323,7 @@ function unblockPage(){
       data: { id: id },
       type: 'GET',
       dataType: 'JSON',
+
       success: function(data){
         location.href = url;
       },
