@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2020-02-27 16:05:21
+Date: 2020-03-09 15:09:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -125,15 +125,15 @@ CREATE TABLE `areas` (
 -- ----------------------------
 -- Records of areas
 -- ----------------------------
-INSERT INTO `areas` VALUES ('1', 'Al Dafran', null, '1');
-INSERT INTO `areas` VALUES ('2', 'Al Falah ', null, '1');
-INSERT INTO `areas` VALUES ('3', 'Al Hosn', null, '1');
-INSERT INTO `areas` VALUES ('4', 'Al Etihad', null, '1');
-INSERT INTO `areas` VALUES ('5', 'Al Bustan', null, '2');
-INSERT INTO `areas` VALUES ('6', 'Al Khakeel', null, '2');
-INSERT INTO `areas` VALUES ('7', 'Al Mushairaf', null, '2');
-INSERT INTO `areas` VALUES ('8', 'Al Nuaamiya', null, '2');
-INSERT INTO `areas` VALUES ('9', 'Al Agbiyya', null, '8');
+INSERT INTO `areas` VALUES ('1', 'Al Dafran', 'الدفران', '1');
+INSERT INTO `areas` VALUES ('2', 'Al Falah ', 'الفلاح', '1');
+INSERT INTO `areas` VALUES ('3', 'Al Hosn', 'الحصن', '1');
+INSERT INTO `areas` VALUES ('4', 'Al Etihad', 'الاتحاد', '1');
+INSERT INTO `areas` VALUES ('5', 'Al Bustan', 'البستان', '2');
+INSERT INTO `areas` VALUES ('6', 'Al Khakeel', 'الخيل', '2');
+INSERT INTO `areas` VALUES ('7', 'Al Mushairaf', 'المشيرف', '2');
+INSERT INTO `areas` VALUES ('8', 'Al Nuaamiya', 'النعامية', '2');
+INSERT INTO `areas` VALUES ('9', 'Al Agbiyya', 'الاجبية', '8');
 INSERT INTO `areas` VALUES ('10', 'Al Bateen', 'البطين', '8');
 INSERT INTO `areas` VALUES ('11', 'Al Faqa', 'الفقه', '8');
 INSERT INTO `areas` VALUES ('12', 'Al Jahli', 'الجاهلي', '8');
@@ -143,14 +143,14 @@ INSERT INTO `areas` VALUES ('15', 'Deira', 'ديرة', '3');
 INSERT INTO `areas` VALUES ('16', 'Jumeriah', 'جميرا', '3');
 INSERT INTO `areas` VALUES ('17', 'Karama', 'الكرامة', '3');
 INSERT INTO `areas` VALUES ('19', 'Al Gofra', 'الجفرة', '4');
-INSERT INTO `areas` VALUES ('20', 'Bitnah', null, '4');
-INSERT INTO `areas` VALUES ('21', 'Fazeel', 'فضيل', '4');
+INSERT INTO `areas` VALUES ('20', 'Bitnah', 'بيتنا', '4');
+INSERT INTO `areas` VALUES ('21', 'Fazeel', 'فاضل', '4');
 INSERT INTO `areas` VALUES ('22', 'Khor Fakkan', 'خورفكان', '4');
 INSERT INTO `areas` VALUES ('23', 'Murshid', 'مرشد', '4');
 INSERT INTO `areas` VALUES ('24', 'Al Fulayyah', 'الفلية', '5');
 INSERT INTO `areas` VALUES ('25', 'Al Hamrah', 'الحمرا', '5');
 INSERT INTO `areas` VALUES ('26', 'Al Jazirah', 'الجزيرة', '5');
-INSERT INTO `areas` VALUES ('27', 'Digdagga', 'الدقدقة', '5');
+INSERT INTO `areas` VALUES ('27', 'Digdagga', 'دقداقة', '5');
 INSERT INTO `areas` VALUES ('28', 'Abu Shagara', 'ابو شجاره', '6');
 INSERT INTO `areas` VALUES ('29', 'Al Abar', 'العبار', '6');
 INSERT INTO `areas` VALUES ('30', 'Al Dhaid', 'الذيد', '6');
@@ -159,26 +159,26 @@ INSERT INTO `areas` VALUES ('32', 'Al Abreq A', 'الأبرق', '7');
 INSERT INTO `areas` VALUES ('33', 'Al Hassan', 'الحسن', '7');
 INSERT INTO `areas` VALUES ('34', 'Al Khor', 'الخور', '7');
 INSERT INTO `areas` VALUES ('35', 'Al Mudar', 'المدار', '7');
-INSERT INTO `areas` VALUES ('36', 'Al Darbijaniyah', null, '5');
-INSERT INTO `areas` VALUES ('37', 'Al Dhait', null, '5');
-INSERT INTO `areas` VALUES ('38', 'Al Hamra', null, '5');
-INSERT INTO `areas` VALUES ('39', 'Al Hamra Village', null, '5');
-INSERT INTO `areas` VALUES ('40', 'Al Hudaihbah', null, '5');
-INSERT INTO `areas` VALUES ('41', 'Al Juwais', null, '5');
-INSERT INTO `areas` VALUES ('42', 'Al Nakheel', null, '5');
-INSERT INTO `areas` VALUES ('43', 'Al Seer', null, '5');
-INSERT INTO `areas` VALUES ('44', 'Al Soor', null, '5');
-INSERT INTO `areas` VALUES ('45', 'Al Uraibi', null, '5');
-INSERT INTO `areas` VALUES ('46', 'Al Zahra', null, '5');
-INSERT INTO `areas` VALUES ('47', 'Dafan Al Khor', null, '5');
-INSERT INTO `areas` VALUES ('48', 'Dafan Al Nakheel', null, '5');
-INSERT INTO `areas` VALUES ('49', 'Jazeera Al Hamra', null, '5');
-INSERT INTO `areas` VALUES ('50', 'Julfar', null, '5');
-INSERT INTO `areas` VALUES ('51', 'Khuzam', null, '5');
-INSERT INTO `areas` VALUES ('52', 'Mamourah ', null, '5');
-INSERT INTO `areas` VALUES ('53', 'Seih Al Burairat', null, '5');
-INSERT INTO `areas` VALUES ('54', 'Seih Al Hudaibah', null, '5');
-INSERT INTO `areas` VALUES ('55', 'Seih Al Uraibi', null, '5');
+INSERT INTO `areas` VALUES ('36', 'Al Darbijaniyah', 'الدربيجانية', '5');
+INSERT INTO `areas` VALUES ('37', 'Al Dhait', 'الظيت', '5');
+INSERT INTO `areas` VALUES ('38', 'Al Hamra', 'الحمرا', '5');
+INSERT INTO `areas` VALUES ('39', 'Al Hamra Village', 'قرية الحمرا', '5');
+INSERT INTO `areas` VALUES ('40', 'Al Hudaihbah', 'الحضيبة', '5');
+INSERT INTO `areas` VALUES ('41', 'Al Juwais', 'الجويس', '5');
+INSERT INTO `areas` VALUES ('42', 'Al Nakheel', 'النخيل', '5');
+INSERT INTO `areas` VALUES ('43', 'Al Seer', 'السير', '5');
+INSERT INTO `areas` VALUES ('44', 'Al Soor', 'السور', '5');
+INSERT INTO `areas` VALUES ('45', 'Al Uraibi', 'العريبي', '5');
+INSERT INTO `areas` VALUES ('46', 'Al Zahra', 'الزهراء', '5');
+INSERT INTO `areas` VALUES ('47', 'Dafan Al Khor', 'دفان الخور', '5');
+INSERT INTO `areas` VALUES ('48', 'Dafan Al Nakheel', 'دفان النخيل', '5');
+INSERT INTO `areas` VALUES ('49', 'Jazeera Al Hamra', 'الجزيرة الحمراء', '5');
+INSERT INTO `areas` VALUES ('50', 'Julfar', 'جلفار', '5');
+INSERT INTO `areas` VALUES ('51', 'Khuzam', 'خزام', '5');
+INSERT INTO `areas` VALUES ('52', 'Mamourah ', 'المعمورة', '5');
+INSERT INTO `areas` VALUES ('53', 'Seih Al Burairat', 'سيح البريرات', '5');
+INSERT INTO `areas` VALUES ('54', 'Seih Al Hudaibah', 'سيح الحديبة', '5');
+INSERT INTO `areas` VALUES ('55', 'Seih Al Uraibi', 'سيح العريبي', '5');
 
 -- ----------------------------
 -- Table structure for artist
@@ -200,9 +200,6 @@ CREATE TABLE `artist` (
 -- ----------------------------
 -- Records of artist
 -- ----------------------------
-INSERT INTO `artist` VALUES ('1', 'active', '2000', '2020-02-25 14:18:36', '2020-02-25 14:18:36', null, '16', null, null);
-INSERT INTO `artist` VALUES ('2', 'blocked', '2001', '2020-02-25 17:58:57', '2020-02-25 17:58:57', null, '16', null, null);
-INSERT INTO `artist` VALUES ('3', 'active', '2002', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null);
 
 -- ----------------------------
 -- Table structure for artist_action
@@ -220,12 +217,11 @@ CREATE TABLE `artist_action` (
   PRIMARY KEY (`artist_action_id`),
   KEY `artist_id` (`artist_id`),
   CONSTRAINT `artist_action_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of artist_action
 -- ----------------------------
-INSERT INTO `artist_action` VALUES ('1', '2', '1', '??????', 'ASSADASD', 'blocked', '2020-02-25 17:58:58', '2020-02-25 17:58:58');
 
 -- ----------------------------
 -- Table structure for artist_permit
@@ -299,9 +295,6 @@ CREATE TABLE `artist_permit` (
 -- ----------------------------
 -- Records of artist_permit
 -- ----------------------------
-INSERT INTO `artist_permit` VALUES ('1', null, 'Aurora Golden', '2012-12-22', '2009-06-01', 'Parsons', 'Mona Valdez', 'Rajah', '1', 'Brynn', '30', '1', '343', '5', '5', '4', '54', null, 'zeboxu@mailinator.net', '+1 (983) 11', 'P.O. Box 58', '+1 (655) 591-1388', '0', '5', 'Est adipisicing qua', '39', '2020-02-26', 'Reprehender', '2020-03-05', '106', '16/artist/1/photos/thumb_1_25_02_2020_14_18_36.jpg', '16/artist/1/photos/photo_1_25_02_2020_14_18_36.jpg', null, null, null, 'approved', '1', '1', '2020-02-25 14:18:36', '2020-02-25 16:58:37', null, '1', '', '16', '16', null);
-INSERT INTO `artist_permit` VALUES ('2', null, 'Norman Sanford', '2000-02-29', '2011-03-03', 'Brady', 'Gail Downs', 'Lillith', '1', 'Rana', '148', '1', '269', '2', '5', '4', '150', null, 'feqi@mailinator.net', '+1 (717) 52', 'PO Box 468', '+1 (509) 755-6657', '0', '1', 'Voluptatem nostrud ', '4', '2020-02-29', 'Nam ut labo', '2020-03-05', '982', '16/artist/2/photos/thumb_1_25_02_2020_14_21_20.jpg', '16/artist/2/photos/photo_1_25_02_2020_14_21_20.jpg', null, null, null, 'approved', '2', '2', '2020-02-25 14:21:20', '2020-02-25 14:25:58', null, '3', '', '16', '16', null);
-INSERT INTO `artist_permit` VALUES ('3', null, 'Barbara Hess', '2020-04-16', '1980-02-05', 'قفهغهعفغ', 'Chiquita Frank', 'بلاتنتالفغات', '1', 'Garrison', '34', '1', '159', '5', '1', '3', '557567890', null, 'cohuba@mailinator.com', '456789', 'P.O. Box 768', '34567890', '0', '5', 'Molestiae exercitati', '40', '2020-05-21', 'Aut sit und', '2020-05-27', '467', '16/artist/3/photos/thumb_1_27_02_2020_10_56_23.png', '16/artist/3/photos/photo_1_27_02_2020_10_56_23.png', null, null, null, 'approved', '3', '3', '2020-02-27 10:56:24', '2020-02-27 11:45:15', null, '1', '', '16', '16', null);
 
 -- ----------------------------
 -- Table structure for artist_permit_check
@@ -345,41 +338,11 @@ CREATE TABLE `artist_permit_checklist` (
   KEY `artist_permit_check_id` (`artist_permit_check_id`),
   CONSTRAINT `artist_permit_checklist_ibfk_1` FOREIGN KEY (`artist_permit_id`) REFERENCES `artist_permit` (`artist_permit_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `artist_permit_checklist_ibfk_2` FOREIGN KEY (`artist_permit_check_id`) REFERENCES `artist_permit_check` (`artist_permit_check_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of artist_permit_checklist
 -- ----------------------------
-INSERT INTO `artist_permit_checklist` VALUES ('1', '2', 'firstname', 'Lillith', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('2', '2', 'lastname', 'Gail Downs', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('3', '2', 'profession', 'Musician', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('4', '2', 'nationality', 'Mongolian', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('5', '2', 'gender', 'Male', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('6', '2', 'person_code', '2001', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('7', '2', 'passport_number', 'Nam Ut Labo', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('8', '2', 'visa_number', '269', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('9', '2', 'uid_number', '982', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('10', '2', 'visa_expiry_date', '29-Feb-2000', '1', '2020-02-25 14:25:58', '2020-02-25 14:25:58', null);
-INSERT INTO `artist_permit_checklist` VALUES ('31', '1', 'firstname', 'Rajah', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('32', '1', 'lastname', 'Mona Valdez', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('33', '1', 'profession', 'Announcer', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('34', '1', 'nationality', 'Botswanan', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('35', '1', 'gender', 'Male', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('36', '1', 'person_code', '2000', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('37', '1', 'passport_number', 'Reprehender', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('38', '1', 'visa_number', '343', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('39', '1', 'uid_number', '106', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('40', '1', 'visa_expiry_date', '22-Dec-2012', '4', '2020-02-25 16:58:37', '2020-02-25 16:58:37', null);
-INSERT INTO `artist_permit_checklist` VALUES ('41', '3', 'firstname', 'بلاتنتالفغات', '5', '2020-02-27 11:45:15', '2020-02-27 11:45:15', null);
-INSERT INTO `artist_permit_checklist` VALUES ('42', '3', 'lastname', 'Chiquita Frank', '5', '2020-02-27 11:45:15', '2020-02-27 11:45:15', null);
-INSERT INTO `artist_permit_checklist` VALUES ('43', '3', 'profession', 'Announcer', '5', '2020-02-27 11:45:15', '2020-02-27 11:45:15', null);
-INSERT INTO `artist_permit_checklist` VALUES ('44', '3', 'nationality', 'Bruneian', '5', '2020-02-27 11:45:15', '2020-02-27 11:45:15', null);
-INSERT INTO `artist_permit_checklist` VALUES ('45', '3', 'gender', 'Male', '5', '2020-02-27 11:45:15', '2020-02-27 11:45:15', null);
-INSERT INTO `artist_permit_checklist` VALUES ('46', '3', 'person_code', '2002', '5', '2020-02-27 11:45:16', '2020-02-27 11:45:16', null);
-INSERT INTO `artist_permit_checklist` VALUES ('47', '3', 'passport_number', 'Aut Sit Und', '5', '2020-02-27 11:45:16', '2020-02-27 11:45:16', null);
-INSERT INTO `artist_permit_checklist` VALUES ('48', '3', 'visa_number', '159', '5', '2020-02-27 11:45:16', '2020-02-27 11:45:16', null);
-INSERT INTO `artist_permit_checklist` VALUES ('49', '3', 'uid_number', '467', '5', '2020-02-27 11:45:16', '2020-02-27 11:45:16', null);
-INSERT INTO `artist_permit_checklist` VALUES ('50', '3', 'visa_expiry_date', '16-Apr-2020', '5', '2020-02-27 11:45:16', '2020-02-27 11:45:16', null);
 
 -- ----------------------------
 -- Table structure for artist_permit_comment
@@ -398,13 +361,11 @@ CREATE TABLE `artist_permit_comment` (
   KEY `artist_permit_id` (`artist_permit_id`),
   CONSTRAINT `artist_permit_comment_ibfk_1` FOREIGN KEY (`permit_comment_id`) REFERENCES `permit_comment` (`permit_comment_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `artist_permit_comment_ibfk_2` FOREIGN KEY (`artist_permit_id`) REFERENCES `artist_permit` (`artist_permit_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of artist_permit_comment
 -- ----------------------------
-INSERT INTO `artist_permit_comment` VALUES ('1', null, '2', null, null, '1');
-INSERT INTO `artist_permit_comment` VALUES ('2', null, '5', null, null, '1');
 
 -- ----------------------------
 -- Table structure for artist_permit_document
@@ -428,27 +389,11 @@ CREATE TABLE `artist_permit_document` (
   KEY `artist_permit_id` (`artist_permit_id`),
   KEY `requirement_id` (`requirement_id`),
   CONSTRAINT `artist_permit_document_ibfk_1` FOREIGN KEY (`artist_permit_id`) REFERENCES `artist_permit` (`artist_permit_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of artist_permit_document
 -- ----------------------------
-INSERT INTO `artist_permit_document` VALUES ('1', null, '2020-02-10', '2020-03-05', '16/artist/1/1/document_1_25_02_2020_14_18_36.pdf', '1', '2020-02-25 14:18:36', '2020-02-25 14:18:36', null, '16', null, null, '1');
-INSERT INTO `artist_permit_document` VALUES ('2', null, '2020-02-10', '2020-08-09', '16/artist/1/6/document_1_25_02_2020_14_18_36.pdf', '6', '2020-02-25 14:18:36', '2020-02-25 14:18:36', null, '16', null, null, '1');
-INSERT INTO `artist_permit_document` VALUES ('3', null, '2020-02-10', '2020-02-25', '16/artist/1/10/document_1_25_02_2020_14_18_36.pdf', '10', '2020-02-25 14:18:37', '2020-02-25 14:18:37', null, '16', null, null, '1');
-INSERT INTO `artist_permit_document` VALUES ('4', null, '0000-00-00', '0000-00-00', '16/artist/1/32/document_1_25_02_2020_14_18_36.pdf', '32', '2020-02-25 14:18:37', '2020-02-25 14:18:37', null, '16', null, null, '1');
-INSERT INTO `artist_permit_document` VALUES ('5', null, '0000-00-00', '0000-00-00', '16/artist/1/34/document_1_25_02_2020_14_18_36.pdf', '34', '2020-02-25 14:18:37', '2020-02-25 14:18:37', null, '16', null, null, '1');
-INSERT INTO `artist_permit_document` VALUES ('6', null, '2020-01-27', '2020-03-05', '16/artist/2/1/document_1_25_02_2020_14_21_20.pdf', '1', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('7', null, '2020-02-17', '2020-03-06', '16/artist/2/4/document_1_25_02_2020_14_21_20.pdf', '4', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('8', null, '2020-02-25', '2020-02-25', '16/artist/2/6/document_1_25_02_2020_14_21_20.pdf', '6', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('9', null, '2020-02-25', '2020-02-25', '16/artist/2/10/document_1_25_02_2020_14_21_20.pdf', '10', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('10', null, '0000-00-00', '0000-00-00', '16/artist/2/32/document_1_25_02_2020_14_21_20.pdf', '32', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('11', null, '0000-00-00', '0000-00-00', '16/artist/2/34/document_1_25_02_2020_14_21_20.pdf', '34', '2020-02-25 14:21:20', '2020-02-25 14:21:20', null, '16', null, null, '2');
-INSERT INTO `artist_permit_document` VALUES ('12', null, '2020-01-29', '2020-03-07', '16/artist/3/1/document_1_27_02_2020_10_56_23.pdf', '1', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null, '3');
-INSERT INTO `artist_permit_document` VALUES ('13', null, '2020-01-26', '2020-03-07', '16/artist/3/4/document_1_27_02_2020_10_56_23.pdf', '4', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null, '3');
-INSERT INTO `artist_permit_document` VALUES ('14', null, '2020-01-27', '2020-07-26', '16/artist/3/6/document_1_27_02_2020_10_56_23.pdf', '6', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null, '3');
-INSERT INTO `artist_permit_document` VALUES ('15', null, '2020-01-27', '2020-03-07', '16/artist/3/10/document_1_27_02_2020_10_56_23.pdf', '10', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null, '3');
-INSERT INTO `artist_permit_document` VALUES ('16', null, '0000-00-00', '0000-00-00', '16/artist/3/32/document_1_27_02_2020_10_56_23.pdf', '32', '2020-02-27 10:56:24', '2020-02-27 10:56:24', null, '16', null, null, '3');
 
 -- ----------------------------
 -- Table structure for artist_permit_transaction
@@ -537,7 +482,7 @@ CREATE TABLE `artist_temp_data` (
   `type` varchar(255) DEFAULT NULL,
   `is_paid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of artist_temp_data
@@ -561,7 +506,7 @@ CREATE TABLE `artist_temp_document` (
   `temp_data_id` int(255) DEFAULT NULL,
   `doc_id` int(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of artist_temp_document
@@ -589,90 +534,11 @@ CREATE TABLE `audits` (
   PRIMARY KEY (`id`),
   KEY `audits_auditable_type_auditable_id_index` (`auditable_type`,`auditable_id`),
   KEY `audits_user_id_user_type_index` (`user_id`,`user_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of audits
 -- ----------------------------
-INSERT INTO `audits` VALUES ('1', null, null, 'created', 'App\\User', '16', '[]', '{\"NameEn\":\"Oscar Peck\",\"email\":\"hakekogup@mailinator.com\",\"mobile_number\":\"1234566345\",\"username\":\"bagud\",\"password\":\"$2y$10$VPtYEol70Qu6Y3ArXwSzteBN.YMjC9p4ghjyGCEEPOq6pP2BzqRhS\",\"IsActive\":0,\"type\":1,\"EmpClientId\":1,\"modifiedAt\":\"2020-02-23 18:06:24\",\"createdAt\":\"2020-02-23 18:06:24\",\"user_id\":16}', 'http://raktda.test/registration', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:06:24', '2020-02-23 18:06:24');
-INSERT INTO `audits` VALUES ('2', null, null, 'updated', 'App\\User', '16', '{\"modifiedAt\":\"2020-02-23 18:06:24\",\"phoneCode\":null}', '{\"modifiedAt\":\"2020-02-23 18:06:37\",\"phoneCode\":\"971\"}', 'http://raktda.test/registration', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:06:37', '2020-02-23 18:06:37');
-INSERT INTO `audits` VALUES ('3', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"email_verified_at\":null,\"modifiedAt\":null}', '{\"email_verified_at\":\"2020-02-23 18:09:09\",\"modifiedAt\":\"2020-02-23 18:09:09\"}', 'http://raktda.test/email/verify/16?expires=1582470498&signature=ed42f8bf5887c62217268a9c4e3152f5249f4f86b554c11027f45cd2426ac08e', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-23 18:09:09', '2020-02-23 18:09:09');
-INSERT INTO `audits` VALUES ('4', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:11:54\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:11:54', '2020-02-23 18:11:54');
-INSERT INTO `audits` VALUES ('5', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:12:03\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:12:03', '2020-02-23 18:12:03');
-INSERT INTO `audits` VALUES ('6', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:12:27\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:12:27', '2020-02-23 18:12:27');
-INSERT INTO `audits` VALUES ('7', null, null, 'updated', 'App\\User', '16', '{\"remember_token\":null,\"password\":\"$2y$10$VPtYEol70Qu6Y3ArXwSzteBN.YMjC9p4ghjyGCEEPOq6pP2BzqRhS\",\"modifiedAt\":null}', '{\"remember_token\":\"2koChdt9n8SZkVWp053JsdSLUMzjONE3Yh4DvXu69m9rke9r4Q9G5xO4IU5r\",\"password\":\"$2y$10$ZpblCCShX\\/C.yNH7PeRmFOZfpIPNky\\/Ie8jsOK0OHtQvl5i3JBLxy\",\"modifiedAt\":\"2020-02-23 18:14:13\"}', 'http://raktda.test/password/reset', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-23 18:14:13', '2020-02-23 18:14:13');
-INSERT INTO `audits` VALUES ('8', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:16:45\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:16:45', '2020-02-23 18:16:45');
-INSERT INTO `audits` VALUES ('9', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"remember_token\":\"2koChdt9n8SZkVWp053JsdSLUMzjONE3Yh4DvXu69m9rke9r4Q9G5xO4IU5r\"}', '{\"remember_token\":\"iGNuhBRKK0d1w7XGXyxXLRRTDHbsAlFe70scHY2WQtnuV1D7I4gPEpLKI0uc\"}', 'http://raktda.test/logout', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-23 18:17:12', '2020-02-23 18:17:12');
-INSERT INTO `audits` VALUES ('10', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:30:18\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:30:18', '2020-02-23 18:30:18');
-INSERT INTO `audits` VALUES ('11', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:31:00\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:31:01', '2020-02-23 18:31:01');
-INSERT INTO `audits` VALUES ('12', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:32:01\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:32:01', '2020-02-23 18:32:01');
-INSERT INTO `audits` VALUES ('13', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:32:38\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:32:38', '2020-02-23 18:32:38');
-INSERT INTO `audits` VALUES ('14', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:34:45\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:34:46', '2020-02-23 18:34:46');
-INSERT INTO `audits` VALUES ('15', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:36:16\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:36:17', '2020-02-23 18:36:17');
-INSERT INTO `audits` VALUES ('16', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:38:52\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:38:52', '2020-02-23 18:38:52');
-INSERT INTO `audits` VALUES ('17', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:39:00\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:39:00', '2020-02-23 18:39:00');
-INSERT INTO `audits` VALUES ('18', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-23 18:39:12\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:39:12', '2020-02-23 18:39:12');
-INSERT INTO `audits` VALUES ('19', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-23 18:39:30\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-23 18:39:31', '2020-02-23 18:39:31');
-INSERT INTO `audits` VALUES ('20', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"remember_token\":\"YKVtWL0VqD8NI1qa8dKHI2VM0ouleRJ6nLGEwLFnxOTNwb3N0N3oiWDQhpTd\"}', '{\"remember_token\":\"R1ACqIrGYaiQLgJIhZzNOycbkz3SBlHIlXmCyU2T0af8ho8MuNGNp2jSdxux\"}', 'http://raktda.test/logout', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-24 09:49:15', '2020-02-24 09:49:15');
-INSERT INTO `audits` VALUES ('21', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-24 11:28:21\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-24 11:28:22', '2020-02-24 11:28:22');
-INSERT INTO `audits` VALUES ('22', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-24 11:44:05\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-24 11:44:05', '2020-02-24 11:44:05');
-INSERT INTO `audits` VALUES ('23', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"remember_token\":\"R1ACqIrGYaiQLgJIhZzNOycbkz3SBlHIlXmCyU2T0af8ho8MuNGNp2jSdxux\"}', '{\"remember_token\":\"OTevL5pFM8UaO5Qpq2SdV8vOIQfdsW0qDKji13IhunplQWWMDkeJetVWnomM\"}', 'http://raktda.test/logout', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-24 12:15:34', '2020-02-24 12:15:34');
-INSERT INTO `audits` VALUES ('24', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-25 09:42:13\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 09:42:13', '2020-02-25 09:42:13');
-INSERT INTO `audits` VALUES ('25', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-25 09:51:46\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 09:51:46', '2020-02-25 09:51:46');
-INSERT INTO `audits` VALUES ('26', 'App\\User', '16', 'created', 'App\\Artist', '1', '[]', '{\"artist_status\":\"active\",\"person_code\":2000,\"created_by\":16,\"updated_at\":\"2020-02-25 14:18:36\",\"created_at\":\"2020-02-25 14:18:36\",\"artist_id\":1}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:18:36', '2020-02-25 14:18:36');
-INSERT INTO `audits` VALUES ('27', 'App\\User', '16', 'created', 'App\\ArtistPermit', '1', '[]', '{\"profession_id\":5,\"passport_number\":\"Reprehenderit id as\",\"uid_number\":\"106\",\"uid_expire_date\":\"2020-03-05 00:00:00\",\"passport_expire_date\":\"2020-02-26 00:00:00\",\"visa_type_id\":\"4\",\"visa_number\":\"343\",\"visa_expire_date\":\"2012-12-22 00:00:00\",\"sponsor_name_en\":\"Aurora Golden\",\"language_id\":\"5\",\"religion_id\":\"1\",\"emirate_id\":\"5\",\"fax_number\":\"+1 (983) 113-9367\",\"po_box\":\"P.O. Box 58\",\"area_id\":\"39\",\"address_en\":\"Est adipisicing qua\",\"mobile_number\":\"54\",\"phone_number\":\"+1 (655) 591-1388\",\"email\":\"zeboxu@mailinator.net\",\"identification_number\":\"\",\"updated_by\":16,\"artist_permit_status\":\"unchecked\",\"firstname_ar\":\"Rajah\",\"lastname_ar\":\"Parsons\",\"firstname_en\":\"Brynn\",\"lastname_en\":\"Mona Valdez\",\"gender_id\":\"1\",\"country_id\":\"30\",\"birthdate\":\"2000-02-01 00:00:00\",\"permit_id\":1,\"artist_id\":1,\"created_by\":16,\"updated_at\":\"2020-02-25 14:18:36\",\"created_at\":\"2020-02-25 14:18:36\",\"artist_permit_id\":1}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:18:36', '2020-02-25 14:18:36');
-INSERT INTO `audits` VALUES ('28', 'App\\User', '16', 'updated', 'App\\ArtistPermit', '1', '{\"original\":null,\"thumbnail\":null}', '{\"original\":\"16\\/artist\\/1\\/photos\\/photo_1_25_02_2020_14_18_36.jpg\",\"thumbnail\":\"16\\/artist\\/1\\/photos\\/thumb_1_25_02_2020_14_18_36.jpg\"}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:18:36', '2020-02-25 14:18:36');
-INSERT INTO `audits` VALUES ('29', 'App\\User', '16', 'created', 'App\\Artist', '2', '[]', '{\"artist_status\":\"active\",\"person_code\":2001,\"created_by\":16,\"updated_at\":\"2020-02-25 14:21:20\",\"created_at\":\"2020-02-25 14:21:20\",\"artist_id\":2}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `audits` VALUES ('30', 'App\\User', '16', 'created', 'App\\ArtistPermit', '2', '[]', '{\"profession_id\":2,\"passport_number\":\"Nam ut laboris nisi \",\"uid_number\":\"982\",\"uid_expire_date\":\"2020-03-05 00:00:00\",\"passport_expire_date\":\"2020-02-29 00:00:00\",\"visa_type_id\":\"4\",\"visa_number\":\"269\",\"visa_expire_date\":\"2000-02-29 00:00:00\",\"sponsor_name_en\":\"Norman Sanford\",\"language_id\":\"5\",\"religion_id\":\"3\",\"emirate_id\":\"1\",\"fax_number\":\"+1 (717) 526-8998\",\"po_box\":\"PO Box 468\",\"area_id\":\"4\",\"address_en\":\"Voluptatem nostrud \",\"mobile_number\":\"150\",\"phone_number\":\"+1 (509) 755-6657\",\"email\":\"feqi@mailinator.net\",\"identification_number\":\"\",\"updated_by\":16,\"artist_permit_status\":\"unchecked\",\"firstname_ar\":\"Lillith\",\"lastname_ar\":\"Brady\",\"firstname_en\":\"Rana\",\"lastname_en\":\"Gail Downs\",\"gender_id\":\"1\",\"country_id\":\"148\",\"birthdate\":\"2011-03-03 00:00:00\",\"permit_id\":2,\"artist_id\":2,\"created_by\":16,\"updated_at\":\"2020-02-25 14:21:20\",\"created_at\":\"2020-02-25 14:21:20\",\"artist_permit_id\":2}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `audits` VALUES ('31', 'App\\User', '16', 'updated', 'App\\ArtistPermit', '2', '{\"original\":null,\"thumbnail\":null}', '{\"original\":\"16\\/artist\\/2\\/photos\\/photo_1_25_02_2020_14_21_20.jpg\",\"thumbnail\":\"16\\/artist\\/2\\/photos\\/thumb_1_25_02_2020_14_21_20.jpg\"}', 'http://raktda.test/company/artist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `audits` VALUES ('32', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-25 14:23:24\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:23:24', '2020-02-25 14:23:24');
-INSERT INTO `audits` VALUES ('33', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-25 14:23:39\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:23:39', '2020-02-25 14:23:39');
-INSERT INTO `audits` VALUES ('34', 'App\\User', '1', 'updated', 'App\\ArtistPermit', '2', '{\"is_checked\":null,\"artist_permit_status\":\"unchecked\",\"updated_at\":\"2020-02-25 14:21:20\"}', '{\"is_checked\":1,\"artist_permit_status\":\"approved\",\"updated_at\":\"2020-02-25 14:25:58\"}', 'http://raktda.test/artist_permit/2/application/2/checklist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:25:58', '2020-02-25 14:25:58');
-INSERT INTO `audits` VALUES ('35', 'App\\User', '1', 'updated', 'App\\ArtistPermit', '1', '{\"is_checked\":null,\"artist_permit_status\":\"unchecked\",\"updated_at\":\"2020-02-25 14:18:36\"}', '{\"is_checked\":1,\"artist_permit_status\":\"rejected\",\"updated_at\":\"2020-02-25 14:31:25\"}', 'http://raktda.test/artist_permit/1/application/1/checklist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 14:31:25', '2020-02-25 14:31:25');
-INSERT INTO `audits` VALUES ('36', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-25 16:23:23\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 16:23:23', '2020-02-25 16:23:23');
-INSERT INTO `audits` VALUES ('37', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-25 16:23:44\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 16:23:44', '2020-02-25 16:23:44');
-INSERT INTO `audits` VALUES ('38', 'App\\User', '1', 'updated', 'App\\ArtistPermit', '1', '{\"artist_permit_status\":\"unchecked\",\"updated_at\":\"2020-02-25 14:33:10\"}', '{\"artist_permit_status\":\"rejected\",\"updated_at\":\"2020-02-25 16:56:31\"}', 'http://raktda.test/artist_permit/1/application/1/checklist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 16:56:31', '2020-02-25 16:56:31');
-INSERT INTO `audits` VALUES ('39', 'App\\User', '1', 'updated', 'App\\ArtistPermit', '1', '{\"artist_permit_status\":\"rejected\",\"updated_at\":\"2020-02-25 16:56:31\"}', '{\"artist_permit_status\":\"approved\",\"updated_at\":\"2020-02-25 16:58:37\"}', 'http://raktda.test/artist_permit/1/application/1/checklist', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 16:58:37', '2020-02-25 16:58:37');
-INSERT INTO `audits` VALUES ('40', 'App\\User', '1', 'updated', 'App\\Artist', '2', '{\"artist_status\":\"active\",\"updated_at\":\"2020-02-25 14:21:20\"}', '{\"artist_status\":\"blocked\",\"updated_at\":\"2020-02-25 17:58:57\"}', 'http://raktda.test/permit/artist/2/updatestatus', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-25 17:58:57', '2020-02-25 17:58:57');
-INSERT INTO `audits` VALUES ('41', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 09:44:13\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 09:44:13', '2020-02-26 09:44:13');
-INSERT INTO `audits` VALUES ('42', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 09:44:25\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 09:44:25', '2020-02-26 09:44:25');
-INSERT INTO `audits` VALUES ('43', 'App\\User', '1', 'created', 'App\\User', '17', '[]', '{\"NameEn\":\"Sean Merrill\",\"NameAr\":\"Abdul Lang\",\"designation\":\"Quia minim et non eu\",\"email\":\"fahacagid@mailinator.com\",\"mobile_number\":\"27\",\"username\":\"koniva\",\"password\":\"$2y$10$WyGeAWSCmL0WvQGQlzvHP.rk1sGqzBH4fiwyZqJ0gmWD34QrB5JEi\",\"type\":4,\"IsActive\":1,\"CreatedBy\":1,\"modifiedAt\":\"2020-02-26 11:59:51\",\"createdAt\":\"2020-02-26 11:59:51\",\"user_id\":17}', 'http://raktda.test/user_management', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 11:59:51', '2020-02-26 11:59:51');
-INSERT INTO `audits` VALUES ('44', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 13:08:55\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 13:08:56', '2020-02-26 13:08:56');
-INSERT INTO `audits` VALUES ('45', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 13:26:22\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 13:26:22', '2020-02-26 13:26:22');
-INSERT INTO `audits` VALUES ('46', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 14:07:23\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:07:23', '2020-02-26 14:07:23');
-INSERT INTO `audits` VALUES ('47', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 14:15:23\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:15:23', '2020-02-26 14:15:23');
-INSERT INTO `audits` VALUES ('48', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 14:15:38\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:15:38', '2020-02-26 14:15:38');
-INSERT INTO `audits` VALUES ('49', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 14:24:22\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:24:23', '2020-02-26 14:24:23');
-INSERT INTO `audits` VALUES ('50', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 14:25:10\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:25:10', '2020-02-26 14:25:10');
-INSERT INTO `audits` VALUES ('51', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 14:31:05\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 14:31:05', '2020-02-26 14:31:05');
-INSERT INTO `audits` VALUES ('52', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-26 16:32:05\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 16:32:05', '2020-02-26 16:32:05');
-INSERT INTO `audits` VALUES ('53', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-26 16:34:10\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-26 16:34:10', '2020-02-26 16:34:10');
-INSERT INTO `audits` VALUES ('54', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"remember_token\":\"OTevL5pFM8UaO5Qpq2SdV8vOIQfdsW0qDKji13IhunplQWWMDkeJetVWnomM\"}', '{\"remember_token\":\"Dagt2rWmIB5B5b2K3v5sNVIEsl1mVrTzjaOLwGTFS07o6VnCJULH3OAIvCkG\"}', 'http://raktda.test/logout', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 09:34:51', '2020-02-27 09:34:51');
-INSERT INTO `audits` VALUES ('55', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"remember_token\":\"iGNuhBRKK0d1w7XGXyxXLRRTDHbsAlFe70scHY2WQtnuV1D7I4gPEpLKI0uc\"}', '{\"remember_token\":\"J65f0jEPWxfXbN1JfHEB9LJbMewI0IwhhcLyzC3YIkpOULEuCT5U8jrboyRe\"}', 'http://raktda.test/logout', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 09:51:36', '2020-02-27 09:51:36');
-INSERT INTO `audits` VALUES ('56', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 10:13:24\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 10:13:24', '2020-02-27 10:13:24');
-INSERT INTO `audits` VALUES ('57', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 10:13:33\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 10:13:33', '2020-02-27 10:13:33');
-INSERT INTO `audits` VALUES ('58', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 10:13:39\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 10:13:39', '2020-02-27 10:13:39');
-INSERT INTO `audits` VALUES ('59', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 10:15:04\"}', 'http://raktda.test/update_language', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36', null, '2020-02-27 10:15:04', '2020-02-27 10:15:04');
-INSERT INTO `audits` VALUES ('60', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 10:47:07\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 10:47:08', '2020-02-27 10:47:08');
-INSERT INTO `audits` VALUES ('61', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 10:48:20\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 10:48:20', '2020-02-27 10:48:20');
-INSERT INTO `audits` VALUES ('62', 'App\\User', '16', 'created', 'App\\Artist', '3', '[]', '{\"artist_status\":\"active\",\"person_code\":2002,\"created_by\":16,\"updated_at\":\"2020-02-27 10:56:24\",\"created_at\":\"2020-02-27 10:56:24\",\"artist_id\":3}', 'http://192.168.0.130/raktda/public/company/artist', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 10:56:24', '2020-02-27 10:56:24');
-INSERT INTO `audits` VALUES ('63', 'App\\User', '16', 'created', 'App\\ArtistPermit', '3', '[]', '{\"profession_id\":5,\"passport_number\":\"Aut sit unde ipsa \",\"uid_number\":\"467\",\"uid_expire_date\":\"2020-05-27 00:00:00\",\"passport_expire_date\":\"2020-05-21 00:00:00\",\"visa_type_id\":\"3\",\"visa_number\":\"159\",\"visa_expire_date\":\"2020-04-16 00:00:00\",\"sponsor_name_en\":\"Barbara Hess\",\"language_id\":\"1\",\"religion_id\":\"1\",\"emirate_id\":\"5\",\"fax_number\":\"456789\",\"po_box\":\"P.O. Box 768\",\"area_id\":\"40\",\"address_en\":\"Molestiae exercitati\",\"mobile_number\":\"557567890\",\"phone_number\":\"34567890\",\"email\":\"cohuba@mailinator.com\",\"identification_number\":\"\",\"updated_by\":16,\"artist_permit_status\":\"unchecked\",\"firstname_ar\":\"\\u0628\\u0644\\u0627\\u062a\\u0646\\u062a\\u0627\\u0644\\u0641\\u063a\\u0627\\u062a\",\"lastname_ar\":\"\\u0642\\u0641\\u0647\\u063a\\u0647\\u0639\\u0641\\u063a\",\"firstname_en\":\"Garrison\",\"lastname_en\":\"Chiquita Frank\",\"gender_id\":\"1\",\"country_id\":\"34\",\"birthdate\":\"1980-02-05 00:00:00\",\"permit_id\":3,\"artist_id\":3,\"created_by\":16,\"updated_at\":\"2020-02-27 10:56:24\",\"created_at\":\"2020-02-27 10:56:24\",\"artist_permit_id\":3}', 'http://192.168.0.130/raktda/public/company/artist', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 10:56:24', '2020-02-27 10:56:24');
-INSERT INTO `audits` VALUES ('64', 'App\\User', '16', 'updated', 'App\\ArtistPermit', '3', '{\"original\":null,\"thumbnail\":null}', '{\"original\":\"16\\/artist\\/3\\/photos\\/photo_1_27_02_2020_10_56_23.png\",\"thumbnail\":\"16\\/artist\\/3\\/photos\\/thumb_1_27_02_2020_10_56_23.png\"}', 'http://192.168.0.130/raktda/public/company/artist', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 10:56:24', '2020-02-27 10:56:24');
-INSERT INTO `audits` VALUES ('65', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 11:00:42\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:00:42', '2020-02-27 11:00:42');
-INSERT INTO `audits` VALUES ('66', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 11:01:31\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:01:31', '2020-02-27 11:01:31');
-INSERT INTO `audits` VALUES ('67', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 11:01:40\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:01:40', '2020-02-27 11:01:40');
-INSERT INTO `audits` VALUES ('68', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 11:02:10\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:02:10', '2020-02-27 11:02:10');
-INSERT INTO `audits` VALUES ('69', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 11:14:11\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:14:11', '2020-02-27 11:14:11');
-INSERT INTO `audits` VALUES ('70', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 11:20:12\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:20:12', '2020-02-27 11:20:12');
-INSERT INTO `audits` VALUES ('71', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"remember_token\":\"J65f0jEPWxfXbN1JfHEB9LJbMewI0IwhhcLyzC3YIkpOULEuCT5U8jrboyRe\"}', '{\"remember_token\":\"NPOxT9Ixvzap2nCbYZVwihVyq9jgbJj52RTkC01VsGoC3K3zusppRTbvRCEn\"}', 'http://192.168.0.130/raktda/public/logout', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:28:36', '2020-02-27 11:28:36');
-INSERT INTO `audits` VALUES ('72', 'App\\User', '1', 'updated', 'App\\ArtistPermit', '3', '{\"is_checked\":null,\"artist_permit_status\":\"unchecked\",\"updated_at\":\"2020-02-27 10:56:24\"}', '{\"is_checked\":1,\"artist_permit_status\":\"approved\",\"updated_at\":\"2020-02-27 11:45:15\"}', 'http://192.168.0.130/raktda/public/artist_permit/3/application/3/checklist', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:45:15', '2020-02-27 11:45:15');
-INSERT INTO `audits` VALUES ('73', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"remember_token\":\"Dagt2rWmIB5B5b2K3v5sNVIEsl1mVrTzjaOLwGTFS07o6VnCJULH3OAIvCkG\"}', '{\"remember_token\":\"Vujy96pDh9LsMNFoJLpSpgJVEw2bwwsx0xtnjQaPH5KcK01fzPvWXiF97zry\"}', 'http://192.168.0.130/raktda/public/logout', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:48:07', '2020-02-27 11:48:07');
-INSERT INTO `audits` VALUES ('74', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"remember_token\":\"NPOxT9Ixvzap2nCbYZVwihVyq9jgbJj52RTkC01VsGoC3K3zusppRTbvRCEn\"}', '{\"remember_token\":\"CaEh3kZfDui8eCTfF7OG0cCXayDKlPAq22rjKUU1V23TP3OOdxqyQncOXjQP\"}', 'http://192.168.0.130/raktda/public/logout', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:50:26', '2020-02-27 11:50:26');
-INSERT INTO `audits` VALUES ('75', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 11:57:11\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:57:12', '2020-02-27 11:57:12');
-INSERT INTO `audits` VALUES ('76', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 11:57:39\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:57:40', '2020-02-27 11:57:40');
-INSERT INTO `audits` VALUES ('77', 'App\\User', '1', 'updated', 'App\\User', '1', '{\"remember_token\":\"Vujy96pDh9LsMNFoJLpSpgJVEw2bwwsx0xtnjQaPH5KcK01fzPvWXiF97zry\"}', '{\"remember_token\":\"mquNEYZcN3fNbgzBRk1Kl0Ymnl0DyS1B82YH4VSnkaQs3pkKA7HRqpBksqIU\"}', 'http://192.168.0.130/raktda/public/logout', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:57:43', '2020-02-27 11:57:43');
-INSERT INTO `audits` VALUES ('78', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":1,\"modifiedAt\":null}', '{\"LanguageId\":\"2\",\"modifiedAt\":\"2020-02-27 11:58:06\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 11:58:06', '2020-02-27 11:58:06');
-INSERT INTO `audits` VALUES ('79', 'App\\User', '16', 'updated', 'App\\User', '16', '{\"LanguageId\":2,\"modifiedAt\":null}', '{\"LanguageId\":\"1\",\"modifiedAt\":\"2020-02-27 12:11:23\"}', 'http://192.168.0.130/raktda/public/update_language', '192.168.0.169', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0', null, '2020-02-27 12:11:23', '2020-02-27 12:11:23');
 
 -- ----------------------------
 -- Table structure for company
@@ -734,14 +600,11 @@ CREATE TABLE `company_artist` (
   KEY `company_id` (`company_id`),
   CONSTRAINT `company_artist_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`artist_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `company_artist_ibfk_2` FOREIGN KEY (`company_id`) REFERENCES `company` (`company_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of company_artist
 -- ----------------------------
-INSERT INTO `company_artist` VALUES ('1', '1', '1');
-INSERT INTO `company_artist` VALUES ('2', '2', '1');
-INSERT INTO `company_artist` VALUES ('3', '3', '1');
 
 -- ----------------------------
 -- Table structure for company_artist_draft
@@ -1376,16 +1239,11 @@ CREATE TABLE `event` (
   KEY `event_type_id` (`event_type_id`),
   KEY `event_type_sub_id` (`event_type_sub_id`),
   CONSTRAINT `event_ibfk_2` FOREIGN KEY (`event_type_id`) REFERENCES `event_type` (`event_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of event
 -- ----------------------------
-INSERT INTO `event` VALUES ('1', 'Eleanor Reilly', 'active', 'RNE0001', 'Deleniti dolor dolores quidem quis occaecat omnis voluptas voluptas quia fugiat elit ut quia', 'Sit inventore autem deleniti quis exercitationem deserunt maiores magnam laboris est laborum Sint qui voluptate quidem', '16/event/1/photos/logo_thumb_1_23_02_2020_18_15_46.jpg', '16/event/1/photos/logo_1_23_02_2020_18_15_46.jpg', null, 'Victor Holman', null, 'Maiores vel quo unde velit cillum aliquip porro et velit aspernatur ut ut commodo cupidatat atque sit pariatur Soluta dolore', null, 'Dai Schroeder', null, null, '2020-03-06', '2020-04-04', '18:15:46', '18:15:46', null, 'Est quo reiciendis v', 'Officiis debitis distinctio Anim officia voluptatibus enim et a debitis blanditiis in ipsa earum aut molestiae dolorum ex', 'Dolore ratione mollit est nostrud sed cum sequi mollitia et sapiente ipsum autem est voluptatibus officiis sint excepteur', null, '0', 'Alias laudantium sint necessitatibus sed sit dolor sit dolor', null, '232', '1', '41', '5', '2020-02-23 18:15:46', null, '2020-02-27 09:39:46', null, null, '16', null, null, null, 'Eos lorem maxime per', 'Debitis tempora et N', '500-1000', '0', '0', 'government', '', null, null, 'Mikayla Gardner', '14', null, null, 'new request');
-INSERT INTO `event` VALUES ('2', 'Florence Wilcox', 'new', 'RNE0002', 'Fugiat autem sed unde dolore aut esse beatae cillum Nam nisi non nulla non et', 'Ipsam enim consequatur ea esse odit aliquid illo consequatur lorem libero deleniti error adipisci vitae fuga Qui sed lorem', '16/event/2/photos/logo_thumb_1_26_02_2020_09_34_40.jpg', '16/event/2/photos/logo_1_26_02_2020_09_34_40.jpg', null, 'Yvonne Norman', null, 'Accusamus dolor amet ut dolor dolor est aperiam ipsam officiis et nesciunt in asperiores nemo veniam', null, 'Petra Rivera', null, null, '2020-03-05', '2020-04-03', '09:34:40', '09:34:40', null, 'Sunt inventore prae', 'Commodo consequatur dolores sunt placeat debitis sint nemo mollit labore do lorem', 'Reprehenderit doloribus porro voluptatem quia eum nulla quaerat irure quia', null, '0', 'At tempor consequatur duis elit omnis nostrum reprehenderit consequat Eos quaerat delectus iure molestias adipisicing fugiat quod est perferendis', null, '232', '4', '25', '5', '2020-02-26 09:34:40', null, '2020-02-26 09:34:40', null, null, '16', null, null, null, 'Nulla ad est quis q', 'Ut id voluptatem D', '100-500', '0', '0', 'corporate', '', null, null, 'Cameran Hines', '29', null, null, 'new request');
-INSERT INTO `event` VALUES ('3', 'Illana Patton', 'new', 'RNE0003', 'Est aut nemo inventore alias reprehenderit occaecat voluptates nihil quaerat ut', 'Officiis architecto tempora quam ratione vel molestiae iure necessitatibus consectetur suscipit quae sit similique odit eum dolor ut', '16/event/3/photos/logo_thumb_1_26_02_2020_09_36_40.jpg', '16/event/3/photos/logo_1_26_02_2020_09_36_40.jpg', null, 'Colleen Barnett', null, 'Ut omnis perspiciatis duis laborum velit dolore distinctio Eaque hic velit dolor commodi quod alias voluptate ex unde Nam dolor', null, 'Jameson Hanson', null, null, '2020-02-28', '2020-03-24', '09:36:40', '09:36:40', null, 'Earum perferendis do', 'Optio ad earum sunt ipsum voluptate fugiat et ex officia quam impedit doloremque', 'Ut non inventore amet libero aut qui harum magnam dolor ex qui molestias lorem nemo ipsam nesciunt', null, '0', 'Dolor pariatur Quisquam proident esse earum omnis eu accusantium reprehenderit quis unde fuga Et saepe impedit iure', null, '232', '6', '41', '5', '2020-02-26 09:36:40', null, '2020-02-26 09:36:40', null, null, '16', null, null, null, 'Eos possimus unde a', 'Elit delectus susc', '500-1000', '0', '0', 'government', '', null, null, 'Ariel Morales', '37', null, null, 'new request');
-INSERT INTO `event` VALUES ('4', 'Asher Buchanan', 'need approval', 'RNE0004', 'Nihil excepteur lorem repellendus Sint elit sed sint nobis quidem minim vitae consequatur Minima rerum culpa quia do commodi rem', 'Ea vitae ad et voluptatibus corrupti id et culpa similique necessitatibus magna qui omnis non exercitationem eos laboris', '16/event/4/photos/logo_thumb_1_26_02_2020_09_38_20.png', '16/event/4/photos/logo_1_26_02_2020_09_38_20.png', '2020-02-26 10:28:35', 'Portia Whitley', null, 'Amet error adipisci autem nemo quis esse sed eiusmod odio pariatur Laboris alias labore obcaecati quos', null, 'Daryl Conley', null, null, '2020-03-05', '2020-03-31', '00:00:00', '00:00:00', null, 'Architecto quod comm', 'Animi voluptatem ipsam aut doloremque sed fuga Lorem veniam debitis autem labore consequuntur ipsum itaque autem at inventore voluptatem Est', 'Dolor earum aliquid officia praesentium aliquid aliqua Qui labore consectetur neque laboriosam harum minima sed ullam nostrum voluptate enim fugit', null, null, 'Id id harum quia irure vel obcaecati commodo culpa rem velit', null, '232', '2', '46', '5', '2020-02-26 09:38:20', '1', '2020-02-26 11:32:04', null, 'sfgd', '16', '2020-02-26 09:59:11', '1', null, 'Error fugiat est vo', 'Est commodi iure no', '500-1000', '1', '1', 'corporate', '', null, null, 'Hannah Franco', '5', null, null, 'bounced\r\n             back request');
-INSERT INTO `event` VALUES ('5', 'Ulric Wilkins', 'active', 'RNE0005', 'Quaerat magna et exercitation quia distinctio Nulla nisi mollit labore laborum labore magnam fugiat aut ad illo dolorum dignissimos', 'Voluptate aut dolorum consequat Ut aut cupidatat atque et et ex esse', null, null, null, 'Forrest Waters', null, 'Sint beatae doloremque ea tempore nulla molestiae similique et corrupti', null, 'Sybill Henson', null, null, '2020-03-03', '2020-03-04', '09:59:59', '09:59:59', 'EP0001', 'Totam omnis commodi ', 'Quaerat delectus iste anim voluptatibus quis animi eu duis nihil ullamco dignissimos quod', 'Repellendus Labore rerum voluptatem Esse voluptas ut temporibus velit qui', null, '0', 'Aut ducimus occaecat laudantium laudantium ullamco cum et sed blanditiis quidem minus nostrud est ullam sunt Nam velit vero', null, '232', '6', '38', '5', '2020-02-27 09:59:59', null, '2020-02-27 10:03:49', null, null, '16', '2020-02-27 10:01:02', '1', null, 'Facilis rem sequi li', 'Est et numquam nost', '0-100', '0', '0', 'corporate', '', '1', '0', 'Ruth Curtis', '42', null, null, 'new request');
 
 -- ----------------------------
 -- Table structure for event_additional_requirement
@@ -1532,7 +1390,6 @@ CREATE TABLE `event_liquor` (
 -- ----------------------------
 -- Records of event_liquor
 -- ----------------------------
-INSERT INTO `event_liquor` VALUES ('1', '4', null, null, null, '2020-02-26 10:45:19', '2020-02-26 10:45:19', '0', '16', null, null, null, '1234567654', '1', null);
 
 -- ----------------------------
 -- Table structure for event_liquor_truck_requirement
@@ -1578,24 +1435,11 @@ CREATE TABLE `event_other_upload` (
   PRIMARY KEY (`event_other_upload_id`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_other_upload_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of event_other_upload
 -- ----------------------------
-INSERT INTO `event_other_upload` VALUES ('1', '16/event/1/pictures/picture_1_23_02_2020_18_15_46.jpg', '1', null, '2020-02-23 18:15:46', '2020-02-23 18:15:46', '16/event/1/pictures/thumb/picture_thumb_1_23_02_2020_18_15_46.jpg', '304134', '16');
-INSERT INTO `event_other_upload` VALUES ('2', '16/event/2/pictures/picture_1_26_02_2020_09_34_40.jpg', '2', null, '2020-02-26 09:34:40', '2020-02-26 09:34:40', '16/event/2/pictures/thumb/picture_thumb_1_26_02_2020_09_34_40.jpg', '3415', '16');
-INSERT INTO `event_other_upload` VALUES ('3', '16/event/2/pictures/picture_2_26_02_2020_09_34_40.png', '2', null, '2020-02-26 09:34:40', '2020-02-26 09:34:40', '16/event/2/pictures/thumb/picture_thumb_2_26_02_2020_09_34_40.png', '46180', '16');
-INSERT INTO `event_other_upload` VALUES ('4', '16/event/2/pictures/picture_3_26_02_2020_09_34_40.png', '2', null, '2020-02-26 09:34:40', '2020-02-26 09:34:40', '16/event/2/pictures/thumb/picture_thumb_3_26_02_2020_09_34_40.png', '52035', '16');
-INSERT INTO `event_other_upload` VALUES ('5', '16/event/3/pictures/picture_1_26_02_2020_09_36_40.png', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_1_26_02_2020_09_36_40.png', '46180', '16');
-INSERT INTO `event_other_upload` VALUES ('6', '16/event/3/pictures/picture_2_26_02_2020_09_36_40.png', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_2_26_02_2020_09_36_40.png', '52035', '16');
-INSERT INTO `event_other_upload` VALUES ('7', '16/event/3/pictures/picture_3_26_02_2020_09_36_40.jpg', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_3_26_02_2020_09_36_40.jpg', '12388', '16');
-INSERT INTO `event_other_upload` VALUES ('8', '16/event/3/pictures/picture_4_26_02_2020_09_36_40.jpg', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_4_26_02_2020_09_36_40.jpg', '16042', '16');
-INSERT INTO `event_other_upload` VALUES ('9', '16/event/3/pictures/picture_5_26_02_2020_09_36_40.png', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_5_26_02_2020_09_36_40.png', '58972', '16');
-INSERT INTO `event_other_upload` VALUES ('10', '16/event/3/pictures/picture_6_26_02_2020_09_36_40.jpg', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_6_26_02_2020_09_36_40.jpg', '3694', '16');
-INSERT INTO `event_other_upload` VALUES ('11', '16/event/3/pictures/picture_7_26_02_2020_09_36_40.jpg', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_7_26_02_2020_09_36_40.jpg', '4765', '16');
-INSERT INTO `event_other_upload` VALUES ('12', '16/event/3/pictures/picture_8_26_02_2020_09_36_40.jpg', '3', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40', '16/event/3/pictures/thumb/picture_thumb_8_26_02_2020_09_36_40.jpg', '7992', '16');
-INSERT INTO `event_other_upload` VALUES ('13', '16/event/4/pictures/picture_1_26_02_2020_09_38_20.jpg', '4', null, '2020-02-26 10:45:19', '2020-02-26 10:45:19', '16/event/4/pictures/thumb/picture_thumb_1_26_02_2020_09_38_20.jpg', '3415', '16');
 
 -- ----------------------------
 -- Table structure for event_requirement
@@ -1616,7 +1460,7 @@ CREATE TABLE `event_requirement` (
   KEY `event_type_id` (`event_type_id`),
   KEY `event_id` (`event_id`),
   KEY `requirement_id` (`requirement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of event_requirement
@@ -1627,6 +1471,11 @@ INSERT INTO `event_requirement` VALUES ('3', '16/event/4/7/business_events_1_26_
 INSERT INTO `event_requirement` VALUES ('4', '16/event/4/7/business_events_2_26_02_2020_09_38_20.png', '4', '0000-00-00', '0000-00-00', '2', '2020-02-26 09:38:20', '2020-02-26 09:38:20', '7', 'event');
 INSERT INTO `event_requirement` VALUES ('5', '16/event/5/7/sports_events_2_27_02_2020_09_59_59.pdf', '5', '0000-00-00', '0000-00-00', '6', '2020-02-27 09:59:59', '2020-02-27 09:59:59', '7', 'event');
 INSERT INTO `event_requirement` VALUES ('6', '16/event/5/15/sports_events_1_27_02_2020_09_59_59.pdf', '5', '0000-00-00', '0000-00-00', '6', '2020-02-27 09:59:59', '2020-02-27 09:59:59', '15', 'event');
+INSERT INTO `event_requirement` VALUES ('7', '16/event/8/7/sports_events_1_29_02_2020_09_51_26.jpg', '8', '0000-00-00', '0000-00-00', '6', '2020-02-29 09:51:26', '2020-02-29 09:51:26', '7', 'event');
+INSERT INTO `event_requirement` VALUES ('8', '16/event/8/15/sports_events_1_29_02_2020_09_51_26.jpg', '8', '0000-00-00', '0000-00-00', '6', '2020-02-29 09:51:26', '2020-02-29 09:51:26', '15', 'event');
+INSERT INTO `event_requirement` VALUES ('9', '16/event/14/7/sports_events_1_29_02_2020_09_58_30.jpg', '14', '0000-00-00', '0000-00-00', '6', '2020-02-29 09:58:30', '2020-02-29 09:58:30', '7', 'event');
+INSERT INTO `event_requirement` VALUES ('10', '16/event/14/15/sports_events_1_29_02_2020_09_58_30.jpg', '14', '0000-00-00', '0000-00-00', '6', '2020-02-29 09:58:30', '2020-02-29 09:58:30', '15', 'event');
+INSERT INTO `event_requirement` VALUES ('11', '16/event/15/7/business_events_1_29_02_2020_10_01_03.jpg', '15', '0000-00-00', '0000-00-00', '2', '2020-02-29 10:01:03', '2020-02-29 10:01:03', '7', 'event');
 
 -- ----------------------------
 -- Table structure for event_transaction
@@ -1649,13 +1498,11 @@ CREATE TABLE `event_transaction` (
   KEY `event_id` (`event_id`),
   CONSTRAINT `event_transaction_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `event` (`event_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `event_transaction_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`transaction_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of event_transaction
 -- ----------------------------
-INSERT INTO `event_transaction` VALUES ('1', '5', '16', '1', '200', '260', '2020-02-27 10:03:48', '2020-02-27 10:03:48', null, null, 'event');
-INSERT INTO `event_transaction` VALUES ('2', '5', '16', '1', '5000', '250', '2020-02-27 10:03:48', '2020-02-27 10:03:48', null, null, 'liquor');
 
 -- ----------------------------
 -- Table structure for event_truck
@@ -1684,7 +1531,6 @@ CREATE TABLE `event_truck` (
 -- ----------------------------
 -- Records of event_truck
 -- ----------------------------
-INSERT INTO `event_truck` VALUES ('1', 'قصثقثقق', 'werewr', '3456775', 'ثثقثقثصقثصقثصقثصقثص', '2020-02-13', '2020-03-03', '4', '2020-02-26 10:44:57', '2020-02-26 10:44:57', '0', '16', '0');
 
 -- ----------------------------
 -- Table structure for event_type
@@ -2081,51 +1927,6 @@ CREATE TABLE `notifications` (
 -- ----------------------------
 -- Records of notifications
 -- ----------------------------
-INSERT INTO `notifications` VALUES ('0651a909-3556-494e-94e0-414e6b5ef148', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0003<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0003<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/3\\/application?signature=f733e81139423763c7befcbd4aff68b80a276141f3694a5aea3c2eb76f939e15\"}', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40');
-INSERT INTO `notifications` VALUES ('06e13a56-79c8-4982-aa6d-892b077f23ef', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Artist Permit <b>#RNA0002<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0002<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/2\\/application?signature=2e9177d24fbbf60e1816ce08544d21089f9f24edb9d7650b1b074dd7b8370827\"}', null, '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `notifications` VALUES ('0900146f-2e93-455a-9e73-238867ffd340', 'App\\Notifications\\AllNotification', 'App\\User', '4', '{\"title\":\"Event Permit For Approval\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> needs to have an approval from your department. Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4?signature=be2b9d94c75a2ff0dfbe268a6a0e0d5ab7138bb55b46d2f8a41283de6c078ca1\"}', null, '2020-02-26 11:32:06', '2020-02-26 11:32:06');
-INSERT INTO `notifications` VALUES ('0d8bac71-e35c-471d-80ff-0079ce6ec35f', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Applications Requires Amendment\",\"content\":\"Your application with the reference number <b>RNE0004<\\/b> has been bounced back for amendment. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/4?signature=ad4ed9eee5905623b30bb3981c0d14ec96af64695fca1e74e632a667b599ecf7\"}', null, '2020-02-26 09:39:13', '2020-02-26 09:39:13');
-INSERT INTO `notifications` VALUES ('14992d8e-cfb8-43db-92e3-c87d4e1a3179', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0003<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0003<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/3\\/application?signature=f733e81139423763c7befcbd4aff68b80a276141f3694a5aea3c2eb76f939e15\"}', null, '2020-02-26 09:36:40', '2020-02-26 09:36:40');
-INSERT INTO `notifications` VALUES ('14d2ade8-0f95-4e1f-a189-a0413ac01f40', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0002<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0002<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/2\\/application?signature=74cace09a1a50efeb483bd7607c16715c14a2c38d2b28cd07552848b32388759\"}', null, '2020-02-26 09:34:42', '2020-02-26 09:34:42');
-INSERT INTO `notifications` VALUES ('18e3f693-1fbe-4e27-bf1c-89f756f6b51a', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Edited\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 10:43:18', '2020-02-26 10:43:18');
-INSERT INTO `notifications` VALUES ('1e42c934-ab18-4b93-a39d-fb3b0b90b0e0', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Artist Permit <b>#RNA0003<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0003<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/192.168.0.130\\/raktda\\/public\\/artist_permit\\/3\\/application?signature=3b8ddeac16b147cec6c146989233bc9ea5fb17f110edbb85dc6d6c129fed2242\"}', null, '2020-02-27 10:56:26', '2020-02-27 10:56:26');
-INSERT INTO `notifications` VALUES ('24dc7065-9fe1-4570-bfc6-a1dd21206637', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 09:38:20', '2020-02-26 09:38:20');
-INSERT INTO `notifications` VALUES ('2d7f2820-3e32-4c02-a5cd-3f40a6c5acf2', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Artist Permit <b>#RNA0001<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0001<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/1\\/application?signature=466f29ee6f1ea392c7f0bafc2e67cfaac9937cb808e2315daf7f5855bad7663d\"}', null, '2020-02-25 14:18:39', '2020-02-25 14:18:39');
-INSERT INTO `notifications` VALUES ('35c46466-88e8-4bf8-a248-fefb1b4edc3b', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Payment for <b>#EP0001 is completed successfully\",\"content\":\"The payment for Event Permit <b>EP0001<\\/b> AED 5,200.00 is completed successfully.  Please find the permit and payment voucher in the attachments.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event?signature=60115866b6edceca9307aa26e082d5d11d4bedb83aa8d1b41406a72f509e6c1d#valid\"}', null, '2020-02-27 10:03:51', '2020-02-27 10:03:51');
-INSERT INTO `notifications` VALUES ('36237b8d-c7fb-4490-b39c-ded22903c76e', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Artist Permit <b># RNA0002<\\/b> - Application Cancelled\",\"content\":\"Your Artist Permit application with the reference number <b>RNA0002<\\/b> has been cancelled by the Administrator. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/artist\\/get_permit_details\\/2?signature=7a831c559e5f17986e962aea2c6a3e6355fbd59020432feeda4f6ab82dfba7a6\"}', null, '2020-02-25 14:56:53', '2020-02-25 14:56:53');
-INSERT INTO `notifications` VALUES ('368b7738-8779-4a91-aa47-1d4b8639ea01', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0005<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0005<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/5\\/application?signature=a0a35a35dd651bd6173f26f9458423bdbd835522650096f4f44eef72ddb63013\"}', null, '2020-02-27 10:00:00', '2020-02-27 10:00:00');
-INSERT INTO `notifications` VALUES ('3d7b1bb4-afe5-4c5a-8b64-9ae386333eec', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Artist Permit <b># RNA0001<\\/b> - Application Requires Amendment\",\"content\":\"Your application with the reference number <b>RNA0001<\\/b> has been bounced back for amendment. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/artist\\/get_permit_details\\/1?status=amend&signature=15489e868275bb2021a9a85296d283d323a8faf71dd60463461d7c820672952b\"}', null, '2020-02-25 14:31:46', '2020-02-25 14:31:46');
-INSERT INTO `notifications` VALUES ('436d3b0e-bba0-47a6-b96a-8782f3bab53d', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0001<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0001<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/1\\/application?signature=7860fdf81acf7a7362e14a16edae5a2a51298c7d0800ef7704d0ffb142ba0f40\"}', null, '2020-02-23 18:15:46', '2020-02-23 18:15:46');
-INSERT INTO `notifications` VALUES ('48c05cf9-42e6-4b05-82d9-c1ed5150eae0', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"New Company <b>Philip Osborn<\\/b> registered\",\"content\":\"New Company <b>Philip Osborn<\\/b> is registered.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/company_registration\\/1\\/application?signature=3aaa436478873c170048803d294ccd7c46da099fa207084dc2f83fdc9f003098\"}', null, '2020-02-23 18:11:33', '2020-02-23 18:11:33');
-INSERT INTO `notifications` VALUES ('54036ab6-ffba-4728-a6cd-f8d5b3cfba3a', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"New Company <b>Philip Osborn<\\/b> registered\",\"content\":\"New Company <b>Philip Osborn<\\/b> is registered.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/company_registration\\/1\\/application?signature=3aaa436478873c170048803d294ccd7c46da099fa207084dc2f83fdc9f003098\"}', null, '2020-02-23 18:09:50', '2020-02-23 18:09:50');
-INSERT INTO `notifications` VALUES ('548aa931-231d-462f-9028-306f093d0581', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Applications Requires Amendment\",\"content\":\"Your application with the reference number <b>RNE0004<\\/b> has been bounced back for amendment. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/4?signature=ad4ed9eee5905623b30bb3981c0d14ec96af64695fca1e74e632a667b599ecf7\"}', null, '2020-02-26 10:43:51', '2020-02-26 10:43:51');
-INSERT INTO `notifications` VALUES ('5cc436a9-8382-4715-8564-27f13d1a5c08', 'App\\Notifications\\AllNotification', 'App\\Company', '1', '{\"title\":\"Application has been Approved\",\"content\":\"Your application has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/profile\\/1?signature=2a03f182592a123862ca9e07c1e9bd343e8e63d4413c9606204b76ddf51cadfb\"}', null, '2020-02-23 18:10:38', '2020-02-23 18:10:38');
-INSERT INTO `notifications` VALUES ('602a7d86-aa81-4db2-8e60-06dee751be53', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"New Company <b>Philip Osborn<\\/b> registered\",\"content\":\"New Company <b>Philip Osborn<\\/b> is registered.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/company_registration\\/1\\/application?signature=3aaa436478873c170048803d294ccd7c46da099fa207084dc2f83fdc9f003098\"}', null, '2020-02-23 18:09:50', '2020-02-23 18:09:50');
-INSERT INTO `notifications` VALUES ('64c0a9d6-5e6c-445d-a15c-979aec59d985', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Artist Permit <b># RNA0002<\\/b> - Application Approved\",\"content\":\"Your Artist Permit application with the reference number <b>RNA0002<\\/b> has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/artist\\/get_permit_details\\/2?signature=7a831c559e5f17986e962aea2c6a3e6355fbd59020432feeda4f6ab82dfba7a6\"}', null, '2020-02-25 14:26:09', '2020-02-25 14:26:09');
-INSERT INTO `notifications` VALUES ('695e197c-e186-40d7-b61e-7a185c61a062', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Artist Permit <b>#RNA0001<\\/b> Edited\",\"content\":\"The artist permit with reference number <b>RNA0001<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/1\\/application?signature=466f29ee6f1ea392c7f0bafc2e67cfaac9937cb808e2315daf7f5855bad7663d\"}', null, '2020-02-25 14:33:10', '2020-02-25 14:33:10');
-INSERT INTO `notifications` VALUES ('6e322ce0-f9ea-4418-9104-29b07004283b', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Artist Permit <b>#RNA0001<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0001<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/1\\/application?signature=466f29ee6f1ea392c7f0bafc2e67cfaac9937cb808e2315daf7f5855bad7663d\"}', null, '2020-02-25 14:18:39', '2020-02-25 14:18:39');
-INSERT INTO `notifications` VALUES ('7ac0d5bf-b04d-4a58-9522-4c1fd6ec33d6', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0001<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0001<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/1\\/application?signature=7860fdf81acf7a7362e14a16edae5a2a51298c7d0800ef7704d0ffb142ba0f40\"}', null, '2020-02-23 18:15:46', '2020-02-23 18:15:46');
-INSERT INTO `notifications` VALUES ('7e51bee9-7e84-49f9-9d33-80c6580f66d3', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Application has been Approved\",\"content\":\"Your application has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/profile\\/1?signature=2a03f182592a123862ca9e07c1e9bd343e8e63d4413c9606204b76ddf51cadfb\"}', null, '2020-02-23 18:10:42', '2020-02-23 18:10:42');
-INSERT INTO `notifications` VALUES ('80f1c9b9-76a1-49bc-9b5a-8bea8787ce37', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Edited\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 10:45:19', '2020-02-26 10:45:19');
-INSERT INTO `notifications` VALUES ('8205c47a-4d09-4159-aa4e-26f9771da11c', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Application has been Approved\",\"content\":\"Your application with the reference number <b>RNE0005<\\/b> has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/5?signature=b244ce21aed830e1823736046c8e628b4460a00805888705bfeeac7b68faff21\"}', null, '2020-02-27 10:01:02', '2020-02-27 10:01:02');
-INSERT INTO `notifications` VALUES ('83ff3372-a326-4c02-b436-0bdfc417e8c7', 'App\\Notifications\\AllNotification', 'App\\Company', '1', '{\"title\":\"Application has been Approved\",\"content\":\"Your application has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/profile\\/1?signature=2a03f182592a123862ca9e07c1e9bd343e8e63d4413c9606204b76ddf51cadfb\"}', null, '2020-02-26 10:35:53', '2020-02-26 10:35:53');
-INSERT INTO `notifications` VALUES ('8602a027-1400-4b82-8708-c2d7435c817e', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Event Permit <b># RNE0004<\\/b> Application has been Approved\",\"content\":\"Your application with the reference number <b>RNE0004<\\/b> has been cancelled by the administrator. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/4?tab=applied&signature=866daa2e16020c4e7d5c47059a97b1a58e4f234dd510ba8d9da03cb3828c2357\"}', null, '2020-02-26 09:55:55', '2020-02-26 09:55:55');
-INSERT INTO `notifications` VALUES ('86ae0585-d50b-430d-83e2-d59798462255', 'App\\Notifications\\AllNotification', 'App\\User', '5', '{\"title\":\"Event Permit For Approval\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> needs to have an approval from your department. Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4?signature=be2b9d94c75a2ff0dfbe268a6a0e0d5ab7138bb55b46d2f8a41283de6c078ca1\"}', null, '2020-02-26 11:32:08', '2020-02-26 11:32:08');
-INSERT INTO `notifications` VALUES ('8b50265a-149c-4b34-a3d4-f9f6de44702e', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 09:38:20', '2020-02-26 09:38:20');
-INSERT INTO `notifications` VALUES ('9b98e1fd-da4e-4210-8f52-ceb4c6917041', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Artist Permit <b>#RNA0002<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0002<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/2\\/application?signature=2e9177d24fbbf60e1816ce08544d21089f9f24edb9d7650b1b074dd7b8370827\"}', null, '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `notifications` VALUES ('9c3228d8-9ec7-4fec-959c-ff93bca8e93f', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Artist Permit <b>#RNA0003<\\/b> Applied \",\"content\":\"The artist permit with reference number <b>RNA0003<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/192.168.0.130\\/raktda\\/public\\/artist_permit\\/3\\/application?signature=3b8ddeac16b147cec6c146989233bc9ea5fb17f110edbb85dc6d6c129fed2242\"}', null, '2020-02-27 10:56:26', '2020-02-27 10:56:26');
-INSERT INTO `notifications` VALUES ('9d7e981a-3d75-4895-82cf-f8f05e6f1839', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Artist Permit <b>#RNA0001<\\/b> Edited\",\"content\":\"The artist permit with reference number <b>RNA0001<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/artist_permit\\/1\\/application?signature=466f29ee6f1ea392c7f0bafc2e67cfaac9937cb808e2315daf7f5855bad7663d\"}', null, '2020-02-25 14:33:10', '2020-02-25 14:33:10');
-INSERT INTO `notifications` VALUES ('a36f53a0-c33f-4f5f-88f2-b2946e5ca5cc', 'App\\Notifications\\AllNotification', 'App\\User', '6', '{\"title\":\"Event Permit For Approval\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> needs to have an approval from your department. Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4?signature=be2b9d94c75a2ff0dfbe268a6a0e0d5ab7138bb55b46d2f8a41283de6c078ca1\"}', null, '2020-02-26 11:32:08', '2020-02-26 11:32:08');
-INSERT INTO `notifications` VALUES ('a3c50c13-04c8-4636-87f3-1b7072fc776f', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Artist Permit <b># RNA0001<\\/b> - Application Approved\",\"content\":\"Your Artist Permit application with the reference number <b>RNA0001<\\/b> has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/artist\\/get_permit_details\\/1?signature=a082435d6bbb912b2b756334d4e1c89dc005525bb592d2cbb2d8778837ec4a3a\"}', null, '2020-02-26 09:40:12', '2020-02-26 09:40:12');
-INSERT INTO `notifications` VALUES ('a7df0776-bdee-4070-ab89-3f7389ce32cb', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Event Permit <b># RNE0004<\\/b> Application has been Approved\",\"content\":\"Your application with the reference number <b>RNE0004<\\/b> has been cancelled by the administrator. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/4?tab=applied&signature=866daa2e16020c4e7d5c47059a97b1a58e4f234dd510ba8d9da03cb3828c2357\"}', null, '2020-02-26 10:28:36', '2020-02-26 10:28:36');
-INSERT INTO `notifications` VALUES ('ae201340-229a-4181-aa78-71f1442be2be', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0002<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0002<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/2\\/application?signature=74cace09a1a50efeb483bd7607c16715c14a2c38d2b28cd07552848b32388759\"}', null, '2020-02-26 09:34:42', '2020-02-26 09:34:42');
-INSERT INTO `notifications` VALUES ('b11ec2c3-d2f3-4eed-87bc-72ce70151e5b', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Applications Requires Amendment\",\"content\":\"Your application with the reference number <b>RNE0004<\\/b> has been bounced back for amendment. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/event\\/4?signature=ad4ed9eee5905623b30bb3981c0d14ec96af64695fca1e74e632a667b599ecf7\"}', null, '2020-02-26 10:42:07', '2020-02-26 10:42:07');
-INSERT INTO `notifications` VALUES ('b1253dfb-8938-4943-963c-fc3e17cdbf40', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"Event Permit <b>#RNE0005<\\/b> Applied\",\"content\":\"The event permit with reference number <b>RNE0005<\\/b> is applied.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/5\\/application?signature=a0a35a35dd651bd6173f26f9458423bdbd835522650096f4f44eef72ddb63013\"}', null, '2020-02-27 10:00:00', '2020-02-27 10:00:00');
-INSERT INTO `notifications` VALUES ('cd8bbe3b-fa17-4559-850c-72cf14296f6c', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Application has been Approved\",\"content\":\"Your application has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/raktda.test\\/company\\/profile\\/1?signature=2a03f182592a123862ca9e07c1e9bd343e8e63d4413c9606204b76ddf51cadfb\"}', null, '2020-02-26 10:35:59', '2020-02-26 10:35:59');
-INSERT INTO `notifications` VALUES ('e0cb7b33-c500-47e9-8296-fc5449cf947a', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Edited\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 10:45:19', '2020-02-26 10:45:19');
-INSERT INTO `notifications` VALUES ('e77f1190-dfee-4df8-b340-c49bbe534ae2', 'App\\Notifications\\AllNotification', 'App\\User', '16', '{\"title\":\"Artist Permit <b># RNA0003<\\/b> - Application Approved\",\"content\":\"Your Artist Permit application with the reference number <b>RNA0003<\\/b> has been approved. To view the details, please click the button below.\",\"url\":\"http:\\/\\/192.168.0.130\\/raktda\\/public\\/company\\/artist\\/get_permit_details\\/3?signature=7cc305eb91bda7ae95275723c1f864a112c9a504b4c6e67f5cba08c2cbdbed51\"}', null, '2020-02-27 11:47:19', '2020-02-27 11:47:19');
-INSERT INTO `notifications` VALUES ('f279d1a2-0ecf-4c6c-8691-063deecd0f95', 'App\\Notifications\\AllNotification', 'App\\User', '3', '{\"title\":\"New Company <b>Philip Osborn<\\/b> registered\",\"content\":\"New Company <b>Philip Osborn<\\/b> is registered.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/company_registration\\/1\\/application?signature=3aaa436478873c170048803d294ccd7c46da099fa207084dc2f83fdc9f003098\"}', null, '2020-02-23 18:11:33', '2020-02-23 18:11:33');
-INSERT INTO `notifications` VALUES ('f7ed1e4f-c55e-4fcc-8b22-527387adabe9', 'App\\Notifications\\AllNotification', 'App\\User', '1', '{\"title\":\"Event Permit <b>#RNE0004<\\/b> Edited\",\"content\":\"The event permit with reference number <b>RNE0004<\\/b> is submitted after modification.  Please click the link below.\",\"url\":\"http:\\/\\/raktda.test\\/event\\/4\\/application?signature=5d83b3d7aba75c5f3483be40a0c00e052a05032325531b847f5b60a50e956300\"}', null, '2020-02-26 10:43:18', '2020-02-26 10:43:18');
 
 -- ----------------------------
 -- Table structure for password_resets
@@ -2190,9 +1991,6 @@ CREATE TABLE `permit` (
 -- ----------------------------
 -- Records of permit
 -- ----------------------------
-INSERT INTO `permit` VALUES ('1', '1', '1', '1', '2020-02-26 09:40:04', 'AP0001', '16', 'RNA0001', '2020-03-05', '2020-04-03', 'Dolore ratione mollit est nostrud sed cum sequi mollitia et sapiente ipsum autem est voluptatibus officiis sint excepteur', 'Alias laudantium sint necessitatibus sed sit dolor sit dolor', null, 'short', 'active', 'bounced back request', '1', '2020-02-25 14:18:36', '2020-02-27 15:57:47', null, '16', null, null, null, null, null, null, null, '0', '1', '2020-02-26 09:40:12', '1', null);
-INSERT INTO `permit` VALUES ('2', '2', '1', '1', '2020-02-27 15:48:36', null, '16', 'RNA0002', '2020-03-05', '2020-04-04', 'Ut doloribus aliquam', 'Eos corporis sint', null, 'short', 'new', 'new request', '1', '2020-02-25 14:21:20', '2020-02-27 15:57:47', null, '16', null, null, null, null, '2020-02-25 14:56:53', '1', 'sdsads', '0', null, '2020-02-25 14:26:09', '1', null);
-INSERT INTO `permit` VALUES ('3', '3', '1', '1', '2020-02-27 11:47:18', null, '16', 'RNA0003', '2020-03-07', '2020-04-16', 'يقببلتنلالاعل', 'hotel', null, 'long', 'approved-unpaid', 'new request', '1', '2020-02-27 10:56:24', '2020-02-27 15:57:47', null, '16', null, null, null, null, null, null, null, '0', null, '2020-02-27 11:47:17', '1', null);
 
 -- ----------------------------
 -- Table structure for permit_approver
@@ -2246,13 +2044,6 @@ CREATE TABLE `permit_comment` (
 -- ----------------------------
 -- Records of permit_comment
 -- ----------------------------
-INSERT INTO `permit_comment` VALUES ('1', null, null, '2020-02-25 14:26:09', '0', 'approved-unpaid', null, null, '2', '1', '1', '2020-02-25 14:26:09', '2020-02-25 14:26:09', null);
-INSERT INTO `permit_comment` VALUES ('2', null, null, null, '1', null, null, 'Test comment', '1', null, '1', '2020-02-25 14:31:25', '2020-02-25 14:31:25', null);
-INSERT INTO `permit_comment` VALUES ('3', null, null, '2020-02-25 14:31:46', '1', 'modification request', null, 'test comment in a whole application', '1', '1', '1', '2020-02-25 14:31:46', '2020-02-25 14:31:46', null);
-INSERT INTO `permit_comment` VALUES ('4', null, null, '2020-02-25 14:56:53', '0', 'cancelled', 'شسشش', 'sdsads', '2', '1', '1', '2020-02-25 14:56:53', '2020-02-25 14:56:53', null);
-INSERT INTO `permit_comment` VALUES ('5', null, null, null, '1', null, null, 'Comment', '1', null, '1', '2020-02-25 16:56:31', '2020-02-25 16:56:31', null);
-INSERT INTO `permit_comment` VALUES ('6', null, null, '2020-02-26 09:40:12', '0', 'approved-unpaid', null, null, '1', '1', '1', '2020-02-26 09:40:12', '2020-02-26 09:40:12', null);
-INSERT INTO `permit_comment` VALUES ('7', null, null, '2020-02-27 11:47:17', '0', 'approved-unpaid', null, 'please pay', '3', '1', '1', '2020-02-27 11:47:17', '2020-02-27 11:47:17', null);
 
 -- ----------------------------
 -- Table structure for permit_duration
@@ -2287,9 +2078,6 @@ CREATE TABLE `permit_reference` (
 -- ----------------------------
 -- Records of permit_reference
 -- ----------------------------
-INSERT INTO `permit_reference` VALUES ('1', '16', '2020-02-25 14:18:37', '2020-02-25 14:18:37');
-INSERT INTO `permit_reference` VALUES ('2', '16', '2020-02-25 14:21:20', '2020-02-25 14:21:20');
-INSERT INTO `permit_reference` VALUES ('3', '16', '2020-02-27 10:56:24', '2020-02-27 10:56:24');
 
 -- ----------------------------
 -- Table structure for procedure
@@ -2523,29 +2311,29 @@ CREATE TABLE `requirement` (
 -- ----------------------------
 INSERT INTO `requirement` VALUES ('1', ' فتجعلها تبدو ', 'passport', null, 'passport should be valid', null, null, 'short', 'corporate', 'artist', '1', '2020-01-18 09:38:50', '2020-01-18 09:38:50', null, null, null, '1', '1');
 INSERT INTO `requirement` VALUES ('3', 'Event brief and sponsorship package', 'Event brief and sponsorship package', null, 'Event brief and sponsorship package', null, null, null, 'government', 'event', '1', '2019-11-27 15:52:43', '2019-11-27 15:52:43', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('4', 'medical report', 'medical report', null, 'should be valid 6 months from the date of issuance. This is not required for event related artists.', '6', null, 'long', null, 'artist', '1', '2020-01-19 14:42:44', '2020-01-19 14:42:44', null, null, '1', null, '1');
-INSERT INTO `requirement` VALUES ('6', 'Visa', 'Visa', null, 'Visa Should be Valid ', null, null, 'short', null, 'artist', '1', '2020-01-21 11:15:39', '2020-01-21 11:15:39', null, null, null, null, '1');
-INSERT INTO `requirement` VALUES ('7', 'NOC letter from the venue', 'NOC letter from the venue', null, 'NOC letter from the venue', null, null, null, 'corporate', 'event', '1', '2019-12-23 09:54:07', '2019-12-23 09:54:07', null, null, '1', null, null);
-INSERT INTO `requirement` VALUES ('8', 'Responsible Manager ID copy', 'Responsible Manager ID copy', null, 'Event owner’s passport copy', null, null, null, 'corporate', 'event', '1', '2019-12-23 09:54:10', '2019-12-23 09:54:10', null, null, null, null, '1');
-INSERT INTO `requirement` VALUES ('10', 'labor card', 'labor card', null, 'optional', '6', null, 'long', null, 'artist', '1', '2019-11-13 17:30:42', '2019-11-13 17:30:42', null, '1', null, null, '1');
-INSERT INTO `requirement` VALUES ('13', 'add organiser\'s id copy', 'add organiser\'s id copy', null, null, null, null, null, 'corporate', 'event', '1', '2020-02-19 10:59:17', '2020-02-19 10:59:17', '2020-02-19 10:59:17', '1', null, null, '0');
+INSERT INTO `requirement` VALUES ('4', 'تقرير طبي', 'medical report', null, 'should be valid 6 months from the date of issuance. This is not required for event related artists.', '6', null, 'long', null, 'artist', '1', '2020-03-04 17:22:58', '2020-03-04 17:22:58', null, null, '1', null, '1');
+INSERT INTO `requirement` VALUES ('6', 'التأشيرة', 'Visa', null, 'Visa Should be Valid ', null, null, 'short', null, 'artist', '1', '2020-03-04 17:23:04', '2020-03-04 17:23:04', null, null, null, null, '1');
+INSERT INTO `requirement` VALUES ('7', 'رسالة لامانع من المزود', 'NOC letter from the venue', null, 'NOC letter from the venue', null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:12', '2020-03-04 17:23:12', null, null, '1', null, null);
+INSERT INTO `requirement` VALUES ('8', 'صورة من الهوية الإماراتية للمدير المسؤول', 'Responsible Manager ID copy', null, 'Event owner’s passport copy', null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:19', '2020-03-04 17:23:19', null, null, null, null, '1');
+INSERT INTO `requirement` VALUES ('10', 'بطاقة العمل', 'labor card', null, 'optional', '6', null, 'long', null, 'artist', '1', '2020-03-04 17:23:26', '2020-03-04 17:23:26', null, '1', null, null, '1');
+INSERT INTO `requirement` VALUES ('13', 'إضافة صورة الهوية الإماراتية للشخص المنظم', 'add organiser\'s id copy', null, null, null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:37', '2020-03-04 17:23:37', '2020-02-19 10:59:17', '1', null, null, '0');
 INSERT INTO `requirement` VALUES ('14', 'official letter', 'official letter', null, null, null, null, null, 'government', 'event', '1', '2019-11-27 16:00:16', '2019-11-27 16:00:16', null, '1', null, null, '0');
-INSERT INTO `requirement` VALUES ('15', 'Risk management Plan', 'Risk management Plan', null, null, null, null, null, 'corporate', 'event', '1', '2019-12-23 09:54:12', '2019-12-23 09:54:12', null, '1', null, null, '0');
-INSERT INTO `requirement` VALUES ('20', 'Insurance policy', 'Insurance policy', null, null, null, null, null, 'corporate', 'event', '1', '2019-12-23 09:54:13', '2019-12-23 09:54:13', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('21', 'Ambulance', 'Ambulance', null, null, null, null, null, 'corporate', 'event', '1', '2019-12-23 09:54:14', '2019-12-23 09:54:14', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('22', 'Noc Letter', 'Noc Letter', null, '', null, null, null, 'government', 'event', '1', '2019-11-27 16:06:29', '2019-11-27 16:06:34', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('15', 'خطة إدارة المخاطر', 'Risk management Plan', null, null, null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:45', '2020-03-04 17:23:45', null, '1', null, null, '0');
+INSERT INTO `requirement` VALUES ('20', 'بوليصة تأمين', 'Insurance policy', null, null, null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:51', '2020-03-04 17:23:51', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('21', 'سيارة إسعاف', 'Ambulance', null, null, null, null, null, 'corporate', 'event', '1', '2020-03-04 17:23:59', '2020-03-04 17:23:59', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('22', 'رسالة لامانع', 'Noc Letter', null, '', null, null, null, 'government', 'event', '1', '2020-03-04 17:24:06', '2020-03-04 17:24:06', null, null, null, null, '0');
 INSERT INTO `requirement` VALUES ('23', 'RAK Health Department', 'RAK Health Department', null, '', null, null, null, null, 'truck', '1', '2020-01-18 16:59:36', '2020-01-18 16:59:36', null, null, null, null, '0');
 INSERT INTO `requirement` VALUES ('24', 'Purchase Receipt Voucher', 'Purchase Receipt Voucher', null, '', null, null, null, null, 'liquor', '1', '2019-12-16 10:42:18', '2019-12-16 10:42:18', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('25', 'Business trade license', 'Business trade license', null, '', '12', null, null, 'corporate', 'company', '1', '2020-02-25 11:01:25', '2020-02-25 11:01:25', null, null, null, null, '1');
-INSERT INTO `requirement` VALUES ('26', 'Contact person emirates ID', 'Contact person emirates ID', null, '', null, null, null, null, 'company', '1', '2019-12-30 13:41:36', '2019-12-30 13:41:36', null, null, null, null, '1');
-INSERT INTO `requirement` VALUES ('27', 'NOC from manager', 'NOC from manager', null, '', null, null, null, null, 'company', '0', '2020-01-16 10:16:25', '2020-01-16 10:16:25', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('28', 'Vehicle Registration', 'Vehicle Registration', null, '', null, null, null, null, 'truck', '1', '2019-12-22 18:23:53', '2019-12-22 18:23:53', null, null, null, null, '1');
-INSERT INTO `requirement` VALUES ('32', 'NOC from sponsor', 'NOC from sponsor', null, null, null, '0', 'long', null, 'artist', '1', '2020-01-18 16:58:31', '2020-01-18 16:58:31', null, '1', null, null, '0');
-INSERT INTO `requirement` VALUES ('33', 'Other Documents', 'Other Documents', null, '', null, '0', null, 'corporate', 'event', '1', '2020-02-19 11:34:37', '2020-02-19 11:34:37', '2020-02-19 11:34:37', null, null, null, '0');
-INSERT INTO `requirement` VALUES ('34', 'Other Documents', 'Other Documents', null, '', null, '0', 'long', null, 'artist', '1', '2020-01-22 11:01:18', '2020-01-22 11:01:18', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('35', 'Other Documents', 'Other Documents', null, '', null, '0', null, 'government', 'event', '1', '2020-01-22 11:01:21', '2020-01-22 11:01:21', null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('36', 'Liquor Supplier Agreement', 'Liquor Supplier Agreement', null, '', null, '0', null, 'provided', 'liquor', '1', null, null, null, null, null, null, '0');
-INSERT INTO `requirement` VALUES ('37', 'Liquor License', 'Liquor License', null, '', null, '0', null, 'provided', 'liquor', '1', null, null, null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('25', 'الرخصة التجارية للمنشأة', 'Business trade license', null, '', '12', null, null, 'corporate', 'company', '1', '2020-03-04 17:26:10', '2020-03-04 17:26:10', null, null, null, null, '1');
+INSERT INTO `requirement` VALUES ('26', 'الهوية الإماراتية لجهة الاتصال', 'Contact person emirates ID', null, '', null, null, null, null, 'company', '1', '2020-03-04 17:24:57', '2020-03-04 17:24:57', null, null, null, null, '1');
+INSERT INTO `requirement` VALUES ('27', 'شهادة لا مانع من المدير', 'NOC from manager', null, '', null, null, null, null, 'company', '0', '2020-03-04 17:25:10', '2020-03-04 17:25:10', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('28', 'تسجيل المركبة', 'Vehicle Registration', null, '', null, null, null, null, 'truck', '1', '2020-03-04 17:25:17', '2020-03-04 17:25:17', null, null, null, null, '1');
+INSERT INTO `requirement` VALUES ('32', 'شهادة لا مانع من الكفيل', 'NOC from sponsor', null, null, null, '0', 'long', null, 'artist', '1', '2020-03-04 17:25:24', '2020-03-04 17:25:24', null, '1', null, null, '0');
+INSERT INTO `requirement` VALUES ('33', 'مستندات أخرى', 'Other Documents', null, '', null, '0', null, 'corporate', 'event', '1', '2020-03-04 17:25:31', '2020-03-04 17:25:31', '2020-02-19 11:34:37', null, null, null, '0');
+INSERT INTO `requirement` VALUES ('34', 'مستندات أخرى', 'Other Documents', null, '', null, '0', 'long', null, 'artist', '1', '2020-03-04 17:25:33', '2020-03-04 17:25:33', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('35', 'مستندات أخرى', 'Other Documents', null, '', null, '0', null, 'government', 'event', '1', '2020-03-04 17:25:35', '2020-03-04 17:25:35', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('36', 'اتفاقية مزود مشروبات كحولية', 'Liquor Supplier Agreement', null, '', null, '0', null, 'provided', 'liquor', '1', '2020-03-04 17:25:42', '2020-03-04 17:25:42', null, null, null, null, '0');
+INSERT INTO `requirement` VALUES ('37', 'رخصة مشروبات كحولية', 'Liquor License', null, '', null, '0', null, 'provided', 'liquor', '1', '2020-03-04 17:25:48', '2020-03-04 17:25:48', null, null, null, null, '0');
 
 -- ----------------------------
 -- Table structure for roles
@@ -2694,7 +2482,6 @@ CREATE TABLE `transaction` (
 -- ----------------------------
 -- Records of transaction
 -- ----------------------------
-INSERT INTO `transaction` VALUES ('1', 'TRN0001', 'event', '2020-02-27', '1', '2020-02-27 10:03:48', '2020-02-27 10:03:48', null, '16', '011PO4', '005806287048', 'POID2-2020-0000408-1');
 
 -- ----------------------------
 -- Table structure for user
@@ -2727,7 +2514,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', null, '4', 'Admin', 'Admin', 'mquNEYZcN3fNbgzBRk1Kl0Ymnl0DyS1B82YH4VSnkaQs3pkKA7HRqpBksqIU', 'admin', 'chri11s@nrsinfoways.com', null, null, '$2y$10$Ly67WHMQtgO8KXFNvoCd2ewHq9dqgkHHvEqZtDehwuzTkK2438vVi', '2019-12-23 17:34:38', '1', '1', null, '2020-02-27 11:57:43', '1', null, '2020-02-27 11:57:39', null);
+INSERT INTO `user` VALUES ('1', null, '4', 'Admin', 'Admin', 'xqvLsncyS1h3qDQvBeFnYo1PrGSjwQb6ifGZaO3IMowQjEf4AI5kJUj47vW3', 'admin', 'chri11s@nrsinfoways.com', null, null, '$2y$10$Ly67WHMQtgO8KXFNvoCd2ewHq9dqgkHHvEqZtDehwuzTkK2438vVi', '2019-12-23 17:34:38', '1', '1', null, '2020-03-07 09:27:00', '1', null, '2020-03-07 09:27:00', null);
 INSERT INTO `user` VALUES ('3', null, '4', 'Rawan Al Turk', 'Rawan Al Turk', null, 'rawan', null, null, null, '$2y$10$0P44XnK78.gZ5p/ukGGfLuqkKiI4/.bEThhioXl5JoqXOOFsoElua', null, '1', '1', null, '2020-01-26 14:01:49', '2', null, '2020-01-26 14:01:49', null);
 INSERT INTO `user` VALUES ('4', null, '4', 'Natalie Serkova ', 'Natalie Serkova ', null, 'natalie', null, null, null, '$2y$10$0P44XnK78.gZ5p/ukGGfLuqkKiI4/.bEThhioXl5JoqXOOFsoElua', null, '1', '1', null, '2020-01-26 14:02:05', '1', null, '2020-01-26 14:02:05', '142');
 INSERT INTO `user` VALUES ('5', null, '4', 'Mohamed Loojab', 'Mohamed Loojab', null, 'mohamed', null, null, null, '$2y$10$0P44XnK78.gZ5p/ukGGfLuqkKiI4/.bEThhioXl5JoqXOOFsoElua', null, '1', '1', null, '2019-11-14 03:39:30', '1', null, '2019-11-14 03:39:30', null);
@@ -2735,7 +2522,7 @@ INSERT INTO `user` VALUES ('6', null, '4', 'Mohammed Nawab', 'Mohammed Nawab', n
 INSERT INTO `user` VALUES ('8', null, '1', 'Myrna Orhtmann', 'Myrna Orhtmann', null, 'myrna', null, null, null, '$2y$10$0P44XnK78.gZ5p/ukGGfLuqkKiI4/.bEThhioXl5JoqXOOFsoElua', null, '1', '1', null, '2020-01-26 14:02:01', '1', null, '2020-01-26 14:02:01', '137');
 INSERT INTO `user` VALUES ('9', null, '1', 'Gerhard Reinhard', 'Gerhard Reinhard', null, 'gerhard', null, null, null, '$2y$10$0P44XnK78.gZ5p/ukGGfLuqkKiI4/.bEThhioXl5JoqXOOFsoElua', '2019-12-24 10:03:09', '1', '1', null, '2020-01-26 14:02:14', '2', null, '2020-01-26 14:02:14', '139');
 INSERT INTO `user` VALUES ('15', null, '1', null, 'Norman Sheppard', null, 'chris', 'dufepipe@mailinator.com', null, null, '$2y$10$Ly67WHMQtgO8KXFNvoCd2ewHq9dqgkHHvEqZtDehwuzTkK2438vVi', '2020-02-23 09:24:36', '0', null, '971', '2020-02-23 11:40:06', '1', null, '2020-02-23 09:24:14', '140');
-INSERT INTO `user` VALUES ('16', null, '1', null, 'Oscar Peck', 'CaEh3kZfDui8eCTfF7OG0cCXayDKlPAq22rjKUU1V23TP3OOdxqyQncOXjQP', 'company', 'chris@nrsinfoways.com', '1234566345', null, '$2y$10$ZpblCCShX/C.yNH7PeRmFOZfpIPNky/Ie8jsOK0OHtQvl5i3JBLxy', '2020-02-23 18:09:09', '0', null, '971', '2020-02-27 12:11:23', '1', null, '2020-02-27 12:11:23', '1');
+INSERT INTO `user` VALUES ('16', null, '1', null, 'Oscar Peck', 'O4tZMGAczV2kwgbFuqbeQawTEWhtxXULdTz19i4gjeCRCjtrECW3aYFe1ylX', 'company', 'chris@nrsinfoways.com', '1234566345', null, '$2y$10$ZpblCCShX/C.yNH7PeRmFOZfpIPNky/Ie8jsOK0OHtQvl5i3JBLxy', '2020-02-23 18:09:09', '0', null, '971', '2020-03-03 13:55:32', '1', null, '2020-03-03 13:55:32', '1');
 INSERT INTO `user` VALUES ('17', null, '4', 'Abdul Lang', 'Sean Merrill', null, 'koniva', 'fahacagid@mailinator.com', '27', 'Quia minim et non eu', '$2y$10$WyGeAWSCmL0WvQGQlzvHP.rk1sGqzBH4fiwyZqJ0gmWD34QrB5JEi', null, '1', '1', null, '2020-02-26 11:59:51', '1', null, '2020-02-26 11:59:51', null);
 
 -- ----------------------------
@@ -2752,8 +2539,8 @@ CREATE TABLE `visa_type` (
 -- ----------------------------
 -- Records of visa_type
 -- ----------------------------
-INSERT INTO `visa_type` VALUES ('2', 'Tourist Visas', 'Tourist Visas');
-INSERT INTO `visa_type` VALUES ('3', 'Residence Visa', 'Residence Visa');
-INSERT INTO `visa_type` VALUES ('4', 'Visit Visa', 'Visit Visa');
-INSERT INTO `visa_type` VALUES ('5', 'Family Visa', 'Family Visa');
-INSERT INTO `visa_type` VALUES ('6', 'Employment Visa', 'Employment Visa');
+INSERT INTO `visa_type` VALUES ('2', 'Tourist Visa', 'تأشيرة سياحة');
+INSERT INTO `visa_type` VALUES ('3', 'Residence Visa', 'تأشيرة إقامة');
+INSERT INTO `visa_type` VALUES ('4', 'Visit Visa', 'تأشيرة زيارة');
+INSERT INTO `visa_type` VALUES ('5', 'Family Visa', 'تأشيرة لأفراد العائلة');
+INSERT INTO `visa_type` VALUES ('6', 'Employment Visa', 'تصريح وإقامة عمل');
