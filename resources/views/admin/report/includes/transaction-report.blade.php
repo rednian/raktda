@@ -3,7 +3,9 @@
         width: 42%;
         float: right;
     }
-
+    body{
+        font-family: Poppins,Roboto;
+    }
     #artist-transaction-table_filter {
         width: 42%;
         float: right;
@@ -79,8 +81,8 @@
         <li class="nav-item" style="width: 23%;">
             <a class="nav-link input-group sm-2">
                 <div class="input-group-prepend">
-                    <input style="height: 19px" type="text" class="form-control"  id="startDate" placeholder="{{__('From')}}">
-                    <input style="height: 19px" type="text" class="form-control" id="endDate" placeholder="{{__('To')}}">
+                    <input style="height: 19px;width: 50%" type="text" class="form-control"  id="startDate" placeholder="{{__('From')}}">
+                    <input style="height: 19px;width:50%" type="text" class="form-control" id="endDate" placeholder="{{__('To')}}">
                 </div>
 
             </a>
@@ -96,12 +98,12 @@
             <table class="table  table-striped table-hover table-bordered" id="artist-transaction-table">
                 <thead>
                 <tr>
-                    <th style="">TRANSACTION ID</th>
-                    <th style="text-align: right">TYPE</th>
-                    <th style="">TRANSACTION DATE</th>
-                    <th style="text-align: right">AMOUNT (AED)</th>
-                    <th style="text-align: right">VAT (5%)</th>
-                    <th style="text-align: right">TOTAL (AED)</th>
+                    <th style="white-space: nowrap;font-weight: bold">TRANSACTION ID</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">TYPE</th>
+                    <th style="white-space: nowrap;font-weight: bold">TRANSACTION DATE</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">AMOUNT (AED)</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">VAT (5%)</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">TOTAL (AED)</th>
 
                     <th style="">ACTION</th>
                 </tr>

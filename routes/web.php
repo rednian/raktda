@@ -121,6 +121,7 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
 
 
+
     //---------------------------------------------------------------------------------------------------------------
     // Artist Permit
     //---------------------------------------------------------------------------------------------------------------
@@ -224,6 +225,9 @@ Route::middleware(['admin', 'auth', 'set_lang', ])->group(function(){
 
     Route::get('artist_reports/artist_permit_report/show/{id}', 'Admin\ReportController@artist_permit_report')
         ->name('admin.artist_permit_report.show');
+
+    Route::get('artist_reports/artist_permit_report/establishment', 'Admin\EventReportController@establishment')
+        ->name('admin.event_reports.establishment');
 
 
     Route::get('artist_reports/artist_permit_report/active_permit', 'Admin\ReportController@datatable')

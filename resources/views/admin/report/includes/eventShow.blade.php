@@ -5,7 +5,9 @@
             text-align: left;
             font-size: 13px;
         }
-
+        body{
+            font-family: Poppins,Roboto;
+        }
         .print_button {
             height: 27px;
             line-height: 2px;

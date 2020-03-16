@@ -336,7 +336,7 @@ class TransactionReportController extends Controller
                 /*               $trans = Transaction::whereMonth('transaction_date', $month)->whereYear('transaction_date', $year)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();*/
             }
             $chart_data['label'] =$day;
-            $chart_data['total'] =array_sum($total);
+            $chart_data['total'] =number_format(array_sum($total),2);
             $chart_data['data'] =$total;
             return json_encode($chart_data);
         }

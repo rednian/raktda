@@ -20,9 +20,6 @@
             <h3 class="kt-portlet__head-title  kt-font-transform-u">{{__('View Transaction Report')}}
             </h3>
         </div>
-
-
-
         <div class="kt-portlet__head-toolbar">
 
             <div class="my-auto float-right permit--action-bar">
@@ -170,8 +167,6 @@
 
 
             @if($transaction->eventTransaction()->exists())
-
-
             {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
             </h5> --}}
             <div class="col-md-12">
@@ -301,8 +296,6 @@
                     </table>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
