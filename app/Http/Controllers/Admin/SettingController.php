@@ -66,7 +66,7 @@ class SettingController extends Controller
 		// 	]));
 		// }
 
-		Excel::load(storage_path() . '/app/public/translations.xlsx', function($reader){
+		Excel::load(storage_path() . '/app/public/translation.xlsx', function($reader){
 		    // Getting all results
 		    $arr = array();
 		    $reader->each(function($sheet) use($arr){

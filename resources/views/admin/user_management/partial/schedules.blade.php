@@ -18,9 +18,9 @@
 					<span></span>
 				</label>
 			</span>
-			
+
 			@if($type == 'custom')
-			<a href="{{ URL::signedRoute('user_management.schedule.edit', ['user' => $empSched->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a> 
+			<a href="{{ URL::signedRoute('user_management.schedule.edit', ['user' => $empSched->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a>
 
 			@if($id !=$sched->emp_custom_id )
 			<button data-url="{{ route('user_management.schedule.delete', ['user' => $empSched->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-danger btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10 kt-margin-r-10 btn-delete-schedule">{{ __('Delete Schedule') }}</button>
@@ -37,7 +37,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+
 					@foreach($sched->getSchedule as $day)
 					<tr>
 						<td>{{ __($day->day) }}</td>
@@ -46,7 +46,7 @@
 						<td>{{ $day->is_dayoff == 1 ? '--:-- --' : date('h:i A', strtotime($day->time_end)) }}</td>
 					</tr>
 					@endforeach
-					
+
 				</tbody>
 			</table>
 			@else
@@ -82,12 +82,12 @@
 					<span></span>
 				</label>
 			</span>
-			
+
 			@if($type == 'custom')
-			<a href="{{ URL::signedRoute('user_management.schedule.edit', ['user' => $user->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a> 
+			<a href="{{ URL::signedRoute('user_management.schedule.edit', ['user' => $user->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('Edit Schedule') }}</a>
 
 			<button data-url="{{ route('user_management.schedule.delete', ['user' => $user->user_id, 'custom' => $sched->emp_custom_id]) }}" class="btn btn-sm btn-danger btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10 kt-margin-r-10 btn-delete-schedule">{{ __('Delete Schedule') }}</button>
-			
+
 			@endif
 
 	        <table class="table table-borderless table-striped table-hover border">
@@ -100,7 +100,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					
+
 					@foreach($sched->getSchedule as $day)
 					<tr>
 						<td>{{ __($day->day) }}</td>
@@ -109,7 +109,7 @@
 						<td>{{ $day->is_dayoff == 1 ? '--:-- --' : date('h:i A', strtotime($day->time_end)) }}</td>
 					</tr>
 					@endforeach
-					
+
 				</tbody>
 			</table>
 			@else

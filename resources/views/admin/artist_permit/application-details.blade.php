@@ -8,7 +8,7 @@
 				 <div class="kt-portlet__head-toolbar">
 						<a href="{{ URL::signedRoute('admin.artist_permit.index') }}" class="btn btn-sm btn-secondary btn-elevate kt-font-transform-u">
 							 <i class="la la-arrow-left"></i>
-							 {{ __('Back') }}
+							 {{ __('BACK') }}
 						</a>
             @if(!Auth::user()->roles()->whereIn('roles.role_id', [4,5,6])->exists())
 						<div class="dropdown dropdown-inline">
@@ -103,7 +103,7 @@
                 </span> --}}
                 <div class="kt-widget__content border-top kt-margin-t-15">
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Revision Number')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('PERMIT REVISION')}}</span>
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
                   </div>
                   <div class="kt-widget__details">
@@ -117,7 +117,7 @@
                     </span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artists')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('ARTISTS')}}</span>
                     <div class="kt-badge kt-badge__pics">
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
@@ -166,7 +166,7 @@
                   </table>
 
 
-                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('CONTACT INFORMATION') }}</h6>
                   <table class="table table-borderless table-sm table-display">
                     <tbody>
                       <tr>
@@ -247,7 +247,7 @@
                      <section class="row">
                          <div class="col-md-5">
                             <button id="btn-action" class="btn btn-maroon btn-sm btn-elevate kt-margin-l-5 kt-font-transform-u kt-bold">
-                                {{ __('Take Action For Application') }}
+                                {{ __('TAKE ACTION FOR APPLICATION') }}
                             </button>
                          </div>
                      </section>
@@ -285,7 +285,7 @@
                     <tr>
                       <th>{{ __('NAME') }}</th>
                       <th>{{ __('REMARKS') }}</th>
-                      <th>{{ __('ACTION TAKEN') }}</th>
+                      <th>{{ __('ACTION') }}</th>
                       <th>{{ __('CHECKED DATE') }}</th>
                     </tr>
                   </thead>
@@ -297,7 +297,7 @@
                  <table class="table table-striped table-borderless table-hover" id="table-permit-history">
                    <thead>
                      <tr>
-                       <th>{{ __('REVISION NUMBER') }}</th>
+                       <th>{{ __('PERMIT REVISION') }}</th>
                        <th>{{ __('REFERENCE NO.') }}</th>
                        <th>{{ __('PERMIT NO.') }}</th>
                        <th>{{ __('NO. OF ARTIST') }}</th>

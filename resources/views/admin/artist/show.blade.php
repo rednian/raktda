@@ -153,7 +153,7 @@ $language = Auth::user()->LanguageId;
                   @csrf
                   <div class="form-group row form-group-sm">
                     <div class="col-md-6">
-                      <label for="">{{ __('Remarks (EN)') }} <span class="text-danger">*</span></label>
+                      <label for="">{{ __('Remarks') }} <span class="text-danger">*</span></label>
                       <textarea required="" name="remarks" maxlength="255" class="form-control form-control-sm" rows="3"
                         autocomplete="off"></textarea>
                     </div>

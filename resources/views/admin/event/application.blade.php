@@ -127,7 +127,7 @@
 															<div class="col-6">
 																<section class="kt-form kt-form--label-right ">
 																    <div class="form-group form-group-sm  row">
-																        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event details </label>
+																        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL EVENT DETAILS') }}</label>
 																        <div class="col-1">
 																            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 																                <label>
@@ -284,7 +284,7 @@
                                                                     <div class="col-6">
 																		<section class="kt-form kt-form--label-right ">
 																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event date details </label>
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL EVENT DATE DETAILS') }} </label>
 																		        <div class="col-1">
 																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 																		                <label>
@@ -387,7 +387,7 @@
 															<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-truck"
 																		aria-expanded="true"
 																		aria-controls="collapse-truck">
-																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('Food Truck Details') }}</h6>
+																	<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('FOOD TRUCK DETAILS') }}</h6>
 															</div>
 														</div>
 														<div id="collapse-truck" class="collapse show" aria-labelledby="heading-truck" data-parent="#accordion-truck">
@@ -410,7 +410,7 @@
                                                                     <div class="col-6">
 																		<section class="kt-form kt-form--label-right ">
 																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('Check all event Food Truck details')}}</label>
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('CHECK ALL EVENT FOOD TRUCK DETAILS')}}</label>
 																		        <div class="col-1">
 																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 																		                <label>
@@ -562,7 +562,7 @@
                                                                     <div class="col-6">
 																		<section class="kt-form kt-form--label-right ">
 																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('Check all event liquor details')}}</label>
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{__('CHECK ALL EVENT LIQUOR DETAILS')}}</label>
 																		        <div class="col-1">
 																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 																		                <label>
@@ -703,7 +703,7 @@
 																	<div class="col-6">
 																		<section class="kt-form kt-form--label-right ">
 																		    <div class="form-group form-group-sm  row">
-																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all event location details </label>
+																		        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL EVENT LOCATION DETAILS') }} </label>
 																		        <div class="col-1">
 																		            <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
 																		                <label>
@@ -841,7 +841,7 @@
 											{{-- @if ($event->otherUpload()->count() > 0) --}}
 											<li class="nav-item">
 												<a class="nav-link" data-toggle="tab" href="#kt_portlet_base_demo_3_3_tab_content" role="tab">
-													{{__('EVENT IMAGES ATTACHMENT')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
+													{{__('EVENT IMAGES')}} <span class="kt-badge kt-badge--outline kt-badge--info">{{$event->otherUpload()->count()}}</span>
 												</a>
 											</li>
 											{{-- @endif --}}
@@ -1029,13 +1029,13 @@
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note') }}</label>
-																		<textarea dir="ltr" disabled name="note_en" rowspan="3" class="form-control form-control-sm" placeholder="Please write a short note that will appear in the printed permit"></textarea>
+																		<textarea dir="ltr" disabled name="note_en" rowspan="3" class="form-control form-control-sm"></textarea>
 																	</div>
 																</div>
 																<div class="col-sm-6">
 																	<div class="form-group-sm">
 																		<label>{{ __('Note (AR)') }}</label>
-																		<textarea dir="rtl" disabled placeholder="Please write an arabic note" name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
+																		<textarea dir="rtl" disabled name="note_ar" rowspan="3" class="form-control form-control-sm"></textarea>
 																	</div>
 																</div>
 															</section>
@@ -1074,7 +1074,7 @@
 													<div class="card-header" id="heading-requirements">
 														<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirements" aria-expanded="true" aria-controls="collapse-requirements">
 															<h6><span class="kt-font-bolder kt-font-transform-u kt-font-dark">{{ __('ADDITIONAL ATTACHMENT') }}</span>
-																<small class="text-muted">{{ __('Add additional attachment to display in the client uploads.') }}</small>
+																<small class="text-muted">{{ __('Add additional attachment to display in the client uplaods.') }}</small>
 															</h6>
 														</div>
 														</div>
@@ -1095,8 +1095,8 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th class="no-wrap">#</th>
-                                                                        <th>Document Name</th>
-                                                                        <th>Description</th>
+                                                                        <th>{{ __('DOCUMENT NAME') }}</th>
+                                                                        <th>{{ __('DESCRIPTION') }}</th>
                                                                         <th class="no-wrap"></th>
                                                                     </tr>
                                                                 </thead>

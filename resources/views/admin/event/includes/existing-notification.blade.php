@@ -7,13 +7,13 @@
             <li><a stytle="" class="kt-font-dark" href="{{ route('admin.artist_permit.show', $event->permit->permit_id) }}">This event has an artist with reference number <span class="kt-font-danger">{{ $event->reference_number }}</span></a></li>
          @endif
          @if ($event->firm == 'government')
-            <li>This event is for Government ...</li>
+            <li>{{ __('This event is for Government') }}...</li>
          @endif
          @if ($event->is_truck)
-            <li>This event has Food Truck.</li>
+            <li>{{ __('This event has Food Truck.') }}</li>
          @endif
          @if ($event->is_liquor)
-            <li>This event serve a Liqour.</li>
+            <li>{{ __('This event serve a Liqour.') }}</li>
          @endif
          @if ($event->comment()->count() > 0)
             @php

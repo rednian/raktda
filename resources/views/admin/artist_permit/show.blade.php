@@ -21,7 +21,7 @@
                 <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end">
 
                     <a class="dropdown-item kt-font-transform-u" href="{{ URL::signedRoute('admin.company.show', $permit->owner->company->company_id) }}">
-                        {{ __('Establishment Profile') }}
+                        {{ __('ESTABLISHMENT PROFILE') }}
                     </a>
 
                 </div>
@@ -77,7 +77,7 @@
           <div class="col-md-8">
             <div class="kt-widget kt-widget--project-1">
               <div class="kt-widget__body kt-padding-0">
-                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('Artist Permit Details') }}</h6>
+                <h6 class="kt-font-dark kt-font-bold kt-margin-b-15 kt-font-transform-u">{{ __('ARTIST PERMIT DETAILS') }}</h6>
                 <div class="kt-widget__stats kt-padding-l-0 kt-margin-t-5 kt-padding-b-5 border-top border-bottom">
                   <div class="kt-widget__item">
                     <span class="kt-widget__subtitel">{{__('Permit Start Date')}}</span>
@@ -186,7 +186,7 @@
 
                 <div class="kt-widget__content border-top kt-margin-t-5">
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Revision Number')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('PERMIT REVISION')}}</span>
                     <span class="kt-widget__value">{{str_pad($permit->rivision_number, 3, 0, STR_PAD_LEFT)}}</span>
                   </div>
                   <div class="kt-widget__details">
@@ -200,7 +200,7 @@
                     </span>
                   </div>
                   <div class="kt-widget__details">
-                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('Artists')}}</span>
+                    <span class="kt-widget__subtitle kt-padding-b-5 kt-font-transform-u">{{__('ARTISTS')}}</span>
                     <div class="kt-badge kt-badge__pics">
                       @if ($permit->artistPermit()->exists())
                         @foreach ($permit->artistPermit as $number => $artist_permit)
@@ -249,7 +249,7 @@
                   </table>
 
 
-                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('Contact Information') }}</h6>
+                  <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10 kt-margin-t-20">{{ __('CONTACT INFORMATION') }}</h6>
                   <table class="table table-borderless table-sm table-display">
                     <tbody>
                       <tr>
@@ -405,7 +405,7 @@
                    <table class="table table-striped table-borderless table-hover border" id="table-permit-history">
                      <thead>
                        <tr>
-                         <th>{{ __('RIVISION NO.') }}</th>
+                         <th>{{ __('PERMIT REVISION') }}</th>
                          <th>{{ __('REFERENCE NO.') }}</th>
                          <th>{{ __('PERMIT NO.') }}</th>
                          <th>{{ __('NO. OF ARTIST') }}</th>

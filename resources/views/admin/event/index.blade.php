@@ -165,7 +165,7 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
                   id="new-event-type-sub-id" onchange="newEventTable.draw()">
-                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORIES')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->where('status',
                   'new');})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
@@ -218,9 +218,9 @@
               {{-- <th>{{ __('TIME') }}</th> --}}
               <th>{{ __('OWNER NAME') }}</th>
               <th>{{ __('EXPECTED NUMBER OF AUDIENCE') }}</th>
-              <th>{{ __('HAS LIQUOR') }}</th>
+              <th>{{ __('HAS A LIQUOR?') }}</th>
               <th>{{ __('FOOD TRUCK') }}</th>
-              <th>{{ __('HAS ARTIST PERMIT?') }}</th>
+              <th>{{ __('HAS ARTIST?') }}</th>
               <th>{{ __('EVENT DETAILS') }}</th>
               <th>{{ __('VENUE') }}</th>
               <th>{{ __('EVENT LOCATION') }}</th>
@@ -260,7 +260,7 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
                   id="pending-event-type-sub-id" onchange="pendingEventTable.draw()">
-                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORIES')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status', ['amended',
                   'checked']);})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
@@ -356,7 +356,7 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
                   id="processing-event-type-sub-id" onchange="eventProcessingTable.draw()">
-                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORIES')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',
                   ['approved-unpaid', 'processing', 'need approval', 'need
                   modification']);})->where('event_type_sub_id', '!=', 0)->get())
@@ -454,7 +454,7 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
                   id="active-event-type-sub-id" onchange="eventActiveTable.draw()">
-                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORIES')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status',
                   ['active']);})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
@@ -553,7 +553,7 @@
               <div class="col-3">
                 <select name="event_type_sub_id" class="form-control form-control-sm custom-select custom-select-sm"
                   id="archieve-event-type-sub-id" onchange="eventArchiveTable.draw()">
-                  <option selected disabled>{{__('EVENT SUBCATEGORY')}}</option>
+                  <option selected disabled>{{__('EVENT SUBCATEGORIES')}}</option>
                   @if ($subs = App\EventTypeSub::whereHas('event', function($q){$q->whereIn('status', ['cancelled',
                   'rejected', 'expired']);})->where('event_type_sub_id', '!=', 0)->get())
                   @foreach ($subs as $sub)
@@ -624,7 +624,7 @@
       </div>
       <div class="tab-pane fade" id="calendar" role="tabpanel">
         <section class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 kt-hide">
             <section class="accordion accordion-solid accordion-toggle-plus" id="accordion-address">
               <div class="card">
                 <div class="card-header" id="heading-address">
@@ -657,7 +657,7 @@
               </div>
             </section>
           </div>
-          <div class="col-md-9">
+          <div class="col-md-12">
             <section id="event-calendar"></section>
           </div>
         </section>

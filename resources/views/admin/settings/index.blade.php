@@ -67,9 +67,9 @@
 								 <tr>
 										<th>{{ __('DOCUMENT NAME') }}</th>
 										<th>{{ __('DESCRIPTION') }}</th>
-										<th>{{ __('VALIDITY (months)') }}</th>
+										<th>{{ __('VALIDITY (in months)') }}</th>
 										{{-- <th>{{ __('PERMIT TERM') }}</th> --}}
-										<th>{{ __('DATE REQUIRED') }}</th>
+										<th>{{ __('IS DATE REQUIRED') }}</th>
 										<th>{{ __('STATUS') }}</th>
 										<th>{{ __('ACTIONS') }}</th>
 								 </tr>
@@ -132,7 +132,7 @@
 								<div class="card">
 									<div class="card-header" id="inspection-settings-heading">
 										<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#inspection-settings-details" aria-expanded="true" aria-controls="inspection-settings-details">
-											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Inspection') }}</h6>
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('INSPECTION') }}</h6>
 										</div>
 									 </div>
 									 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
@@ -159,7 +159,7 @@
 								<div class="card">
 									<div class="card-header" id="event-settings-heading">
 										<div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#event-settings-details" aria-expanded="true" aria-controls="event-settings-details">
-											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('Event') }}</h6>
+											<h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('EVENT') }}</h6>
 										</div>
 									 </div>
 									 <div id="event-settings-details" class="collapse show" aria-labelledby="event-settings-heading" data-parent="#event-settings">
@@ -196,7 +196,7 @@
 								                <div class="col-sm-6">
 								                    <div class="form-group form-group-sm">
 								                        <label for="example-search-input" class="kt-font-dark">
-								                        	{{ __('Artist Permit Grace Period for Ammendments (No. of days)') }}
+								                        	{{ __('Artist Permit Grace Period for Amendments (No. of days)') }}
 								                            <span class="text-danger">*</span>
 								                        </label>
 								                        <input min="1" value="{{ $general_settings->artist_permit_grace_period_amendment }}" type="text" name="artist_permit_grace_period_amendment" required class="form-control form-control-sm">

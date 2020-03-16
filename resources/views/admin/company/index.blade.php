@@ -76,13 +76,13 @@
             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-t-15 " role="tablist" id="company-nav">
                <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">
-                  {{ __('Registration Request') }}
+                  {{ __('Registration Requests') }}
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
-                  {{ __('Pending Registration') }}
+                  {{ __('Pending Registrations') }}
                      <span class="kt-badge kt-badge--outline kt-badge--info">{{$pending}}</span>
                 </a>
               </li>
