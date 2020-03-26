@@ -1,13 +1,13 @@
 <style>
     #event-transaction-table_filter {
-        width: 42%;
+
         float: right;
     }
     body{
         font-family: Poppins,Roboto;
     }
     #artist-transaction-table_filter {
-        width: 42%;
+
         float: right;
     }
 
@@ -75,7 +75,7 @@
 
         <li class="nav-item" id="selectmonth">
             <button id="tooltipMonth" disabled style="display: none;font-size: 12px">{{__('Select month to get transactions')}}</button>
-            <a class="nav-link" href="#"   style="margin-right:12px"><input style="height: 16px;width: 112px;background-color: #f7f8f9;border: 1px solid #d6d6d6;border-radius: 1px" type="text" class="form-control form-control-1 input-sm" id="amountCollectedMonth" placeholder="Select Month"></a>
+            <a class="nav-link" href="#" style="margin-right:12px"><input style="height: 16px;width: 112px;background-color: #f7f8f9;border: 1px solid #d6d6d6;border-radius: 3px" type="text" class="form-control form-control-1 input-sm" id="amountCollectedMonth" placeholder="Select Month"></a>
         </li>
 
         <li class="nav-item" style="width: 23%;">
@@ -98,19 +98,19 @@
             <table class="table  table-striped table-hover table-bordered" id="artist-transaction-table">
                 <thead>
                 <tr>
-                    <th style="white-space: nowrap;font-weight: bold">TRANSACTION ID</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">TYPE</th>
-                    <th style="white-space: nowrap;font-weight: bold">TRANSACTION DATE</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">AMOUNT (AED)</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">VAT (5%)</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">TOTAL (AED)</th>
+                    <th style="white-space: nowrap;font-weight: bold">{{__('TRANSACTION ID')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('TYPE')}}</th>
+                    <th style="white-space: nowrap;font-weight: bold">{{__('TRANSACTION DATE')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('AMOUNT (AED)')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('VAT (5%)')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('TOTAL (AED)')}}</th>
 
-                    <th style="">ACTION</th>
+                    <th style="">{{__('ACTION')}}</th>
                 </tr>
                 </thead>
                 <tfoot align="right">
                 <tr><th></th>
-                    <th></th><th  class="text-right">Total</th>
+                    <th></th><th  class="text-right">{{__('Total')}}</th>
                     <th><span id="amountFooter"></span></th>
                     <th> <span  id="vatFooter"></span></th>
                     <th> <span  id="totalFooter"></span></th>
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-3" style="white-space: nowrap;font-weight: bold">Total Amount: </div><div class="col-4" id="totalAmountInMonth"> </div>
+            <div class="col-3" style="white-space: nowrap;font-weight: bold">{{__('Total Amount')}}: </div><div class="col-4" id="totalAmountInMonth"> </div>
         </div>
     </div>
 
