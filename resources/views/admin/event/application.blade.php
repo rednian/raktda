@@ -463,7 +463,7 @@
 																			</div>
 																			<div class="row form-group form-group-sm">
 																				<div class="col-3">
-																						<label class="kt-font-dark">{{ __('Service Type') }} <span class="text-danger">*</span></label>
+																						<label class="kt-font-dark">{{ __('Provided F & B') }} <span class="text-danger">*</span></label>
 																						<div class="input-group input-group-sm">
 																							<input value="{{ $truck->food_type }}" name="food_type" readonly="readonly" type="text"
 																											class="form-control">
@@ -866,7 +866,7 @@
 														<tr>
 																<th>#</th>
 																<th>{{ __('ESTABLISHMENT NAME') }}</th>
-																<th>{{ __('SERVICE TYPE') }}</th>
+																<th>{{ __('PROVIDED F & B') }}</th>
 																<th>{{ __('TRAFFIC PLATE NUMBER') }}</th>
 																<th>{{ __('ACTION') }}</th>
 														</tr>
@@ -879,7 +879,7 @@
 													<thead>
 														<tr>
 																<th>{{ __('DOCUMENT NAME') }}</th>
-																<th>{{ __('FILES') }}</th>
+																<th>{{ __('NO. OF FILES') }}</th>
 																<th>{{ __('ISSUED DATE') }}</th>
 																<th>{{ __('EXPIRY DATE') }}</th>
 																<th>{{ __('ACTION') }}</th>
@@ -891,7 +891,7 @@
 												<table class="table border borderless table-hover table-sm" id="image-table">
 													<thead>
 														<tr>
-															<th>{{ __('FILES') }}</th>
+															<th>{{ __('NO. OF FILES') }}</th>
 														</tr>
 													</thead>
 													</table>

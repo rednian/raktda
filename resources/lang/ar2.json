@@ -1,4 +1,6 @@
 {
+"PROVIDED F & B": "أنواع الأطعة والمشروبات المقدمة",
+"Provided F & B": "أنواع الأطعة والمشروبات المقدمة",
 "Accepted documents formats (pdf, jpg, png)":"تنسيقات المستندات المقبولة (pdf ، jpg ، png)",
 "Accepted image formats (jpg, png)":"تنسيقات الصور المقبولة (jpg ، png)",
 "Account Information":"تفاصيل الحساب",
@@ -710,5 +712,6 @@
 "Time Start":"زمن البدء",
 "Tuesday":"الثلاثاء",
 "VALIDITY (in months)":"الصلاحية (بالأشهر)",
-"Wednesday":"الأربعاء"
+"Wednesday":"الأربعاء",
+"You can only add maximum of 10 additional attachment": "يمكنك إضافة 10 ملفات كحد أقصى"
 }

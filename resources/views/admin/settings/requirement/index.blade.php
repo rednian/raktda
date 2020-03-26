@@ -36,7 +36,7 @@
               @foreach($requirements as $requirement)
                 <option value="{{ $requirement->requirement_type }}">{{ ucwords($requirement->requirement_type) }}</option>
               @endforeach
-            @endif        
+            @endif
         </select>
      </div>
   </div>
@@ -55,19 +55,19 @@
                   data.requirement_type = $('select[name=requirement_type]').val();
                }
            },
-    
+
            columnDefs: [
                 {targets:  [0, 1,3], className: 'no-wrap'},
                 {targets:  4, className: 'no-wrap',sortable: false},
            ],
            columns: [
-       
+
                { data: 'requirement_type', name: 'requirement_type'},
                { data: 'requirement_name', name: 'requirement_name'},
                { data: 'requirement_description', name: 'requirement_description'},
-               { 
+               {
                   render : function(data, type, full, meta){
-                    
+
                     var status = full.status ?  'checked': '';
 
                     var html  = '<span class="kt-switch kt-switch--outline kt-switch--icon kt-switch--success">';
@@ -76,7 +76,7 @@
                         html += '      <span></span>';
                         html += ' </label>';
                         html += '</span>';
-                      return html;                                                                          
+                      return html;
                   }
                },
                {
@@ -88,7 +88,7 @@
                    },
                },
            ],
-            
+
            fnCreatedRow: function(row, data, index){
 
               //change the status
@@ -125,7 +125,7 @@
 
         $("div.toolbar").html($('.select-container').removeClass('hide'));
         $('#table-requirement').wrap('<div class="table-responsive"></div>');
-       
+
 
     });
 </script>

@@ -131,7 +131,8 @@ class EventController extends Controller
                         'url' => $url,
                         'mail'=> ['']
 					]));
-				}
+                }
+
 		        //END SEND NOTIFICATION COMPANY
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];

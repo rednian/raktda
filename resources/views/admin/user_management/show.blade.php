@@ -39,7 +39,7 @@
          </ul>
          <div class="tab-content">
             <div class="tab-pane active" id="personal" role="tabpanel">
-              
+
               <form method="POST" id="formAddUser" action="{{ route('user_management.update_user', $user->user_id) }}">
               @csrf
               @method('patch')
@@ -49,7 +49,7 @@
                     <button id="btnSaveChangesUserInfo" type="button" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('SAVE CHANGES') }}</button>
                  </div>
               </section>
-              
+
               <section class="accordion kt-margin-b-5 accordion-solid accordion-toggle-plus kt-margin-t-0" id="inspection-settings">
               <div class="card">
                 <div class="card-header" id="inspection-settings-heading">
@@ -59,7 +59,7 @@
                  </div>
                  <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
                   <div class="card-body">
-                    
+
                     <section class="row kt-margin-t-10">
                               <div class="col-sm-6">
                                   <div class="form-group form-group-sm">
@@ -174,7 +174,7 @@
                                 </label>
                                 <input value="{{ $user->username }}" type="text" name="username" required class="form-control form-control-sm">
                             </div>
-                        </div> 
+                        </div>
                     </section>
                     <section class="row kt-margin-t-20">
                         <div class="col-sm-6">
@@ -255,7 +255,7 @@
                     </button>
                  </div>
               </div>
-              
+
               <section class="row kt-margin-t-10">
                   <div class="col-6">
                     <div class="form-group form-group-sm kt-margin-b-0">
@@ -281,15 +281,15 @@
                     <a href="{{ URL::signedRoute('user_management.schedule.create', ['user' => $user->user_id]) }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('ADD CUSTOM SCHEDULE') }}</a>
                  </div>
               </section>
-              
+
               @endif
 
               <section class="row kt-margin-t-10">
                   <div class="col-12" id="showScheduleContainer">
-                      
+
                   </div>
               </section>
-              
+
             </div>
             <div class="tab-pane" id="leave" role="tabpanel">
               <section class="row">
@@ -303,7 +303,7 @@
                     <div id="leave_calendar"></div>
                   </div>
               </section>
-              
+
             </div>
             <div class="tab-pane" id="appointments" role="tabpanel">
                <section class="row">
@@ -311,7 +311,7 @@
                     <a href="{{ route('event_type.create') }}" class="btn btn-sm btn-warning btn-elevate kt-bold kt-font-transform-u kt-pull-right kt-margin-b-10">{{ __('NEW EVENT TYPE') }}</a>
                  </div>
               </section>
-              
+
             </div>
          </div>
       </div>
@@ -320,7 +320,7 @@
 @section('script')
   {{-- <script src="{{ asset('assets/vendors/general/fullcalendar/fullcalendar.min.js') }}"></script> --}}
   <script>
-  
+
     var changePassword = 0;
     var changeStatus = 0;
 
@@ -386,7 +386,7 @@
         getSchedules('system', {{ App\ScheduleType::where('is_active')->first()->schedule_type_id }});
         @endif
 
-        
+
 
         var hash = window.location.hash;
 
@@ -399,7 +399,7 @@
           window.location.hash = this.hash;
           $('html,body').scrollTop(scrollmem);
         });
-         
+
         //ON SHOWING THE TAB
       $('#main-tab.nav.nav-tabs a').on('shown.bs.tab', function (event) {
 
@@ -420,7 +420,7 @@
 
       //ON CLOSING THE TAB
       $('#main-tab.nav.nav-tabs a[data-toggle="tab"]').on('hidden.bs.tab', function (e) {
-      
+
       var prevTab = $(e.target).attr('href');
           if(prevTab == '#personal'){
             //tblpersonal.destroy();
@@ -453,12 +453,12 @@
     //FORM SETTINGS
     $('form#formAddUser').validate();
     $(document).on('click', '#btnSaveChangesUserInfo', function(){
-      
+
       if(changePassword == 1 || changeStatus == 1){
-          bootbox.prompt({ 
+          bootbox.prompt({
             title: "Current User Identity Verification<br><small>Enter your password.</small>",
             inputType: "password",
-            callback: function(result){ 
+            callback: function(result){
                 if(result){
                   $('form#formAddUser input[name=admin_password]').val(result);
                   $('form#formAddUser').trigger('submit');
@@ -473,7 +473,7 @@
             }
           });
       }
-      
+
     });
 
     $(document).on('change','input[name=IsActive][type=checkbox]', function(){
@@ -573,6 +573,6 @@
         }
     });
  }
-   
+
 </script>
 @stop

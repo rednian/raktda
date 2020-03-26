@@ -32,7 +32,7 @@
 										<i class="kt-nav__link-icon flaticon2-reload"></i>
 										<span class="kt-nav__link-text">{{ __('Save & Continue') }}</span>
 									</a>
-								</li>{{-- 
+								</li>{{--
 								<li class="kt-nav__item">
 									<a href="#" class="kt-nav__link">
 										<i class="kt-nav__link-icon flaticon2-power"></i>
@@ -138,7 +138,7 @@
                 <div class="col-sm-6">
                     <div class="form-group form-group-sm">
                         <label for="example-search-input" class="kt-font-dark"> {{ __('Permit Term') }}
-                            
+
                         </label>
                         <select name="term" id="" class="form-control form-control-sm custom-select custom-select-sm">
                         	<option value=""></option>
@@ -148,7 +148,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <input type="hidden" name="submit_type">
         	</form>
 		</div>
@@ -184,7 +184,7 @@
 					remote: {
 		                url: '{{ route('requirements.isexist') }}',
 		            }
-     			}     		
+     			}
      		}
      	});
 

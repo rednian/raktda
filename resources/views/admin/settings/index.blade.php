@@ -142,7 +142,7 @@
 								                <div class="col-sm-6">
 								                    <div class="form-group form-group-sm">
 								                        <label for="example-search-input" class="kt-font-dark">
-								                        	{{ __('Number of inspections per day (per inspector)') }}
+								                        	{{ __('Number of inspection per day (per inspector)') }}
 								                            <span class="text-danger">*</span>
 								                        </label>
 								                        <input min="1" value="{{ $general_settings->inspection_per_day }}" type="text" name="inspection_per_day" required class="form-control form-control-sm">
