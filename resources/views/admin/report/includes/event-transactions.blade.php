@@ -75,7 +75,7 @@ th{
 @endsection
 @section('content')
 
-    <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
+ <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet"
              style="padding: 20px">
 {{--
         <div class="col">
@@ -217,6 +217,7 @@ th{
                                 );
                                 $(win.document.body).find('td').css({'font-size': '15px'})
                                 $(win.document.body).find('td').css({'white-space': 'nowrap'})
+                                $(win.document.body).find('th').css({'white-space': 'nowrap'})
                                 $(win.document.body).find('th').css({'font-size': '15px'})
                                 $(win.document.body).find('h3').css({'font-size': '15px'})
                                 $(win.document.body).find('#totalAmount').append($('#totalFooter').html());

@@ -14,9 +14,13 @@ td{
     font-weight: 500;
 
 }
+th{
+    white-space: nowrap;
+
+}
 
     #event-report_filter {
-        width: 20%;
+
         float: right;
     }
 
@@ -28,13 +32,14 @@ td{
 
 
     #block-artist_filter {
-        width: 42%;
+
         float: right;
     }
 
     #buttonsId {
         border-bottom: 3px solid #8b000029;
     }
+  
 
     #search_button_css {
         background: transparent;
@@ -131,14 +136,14 @@ body{
     <li>
         <button class="btn btn-secondary btn-sm" style="box-shadow: -1px 3px 3px -3px #1e1e1e;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 8px;
 margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetButton">
-            RESET
+            {{__('RESET')}}
         </button>
     </li>
 </ul>
 <table class="table  table-hover  table-bordered table-striped border" id="block-artist">
     <thead>
     <tr id="filterTableCollapse" style="display: none;font-family:arial">
-        <th colspan="2">
+        <th colspan="1">
             <div class="col-sm" style="display: inline-flex;width:100%">
                 <input type="text" class="form-control form-control-sm " name="search-artist-name"
                        id="search-artist-name" placeholder="{{__('Name')}}">
@@ -4021,7 +4026,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             var vat=$('#vatFooter').html();
 
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>{{__('Total')}}</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#totalAmountLastSeven').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none')
@@ -4355,7 +4360,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
 
 
                             $(win.document.body).find('table').append(
-                                '<tfoot align="right"><tr><th></th><th></th><th>Total</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
+                                '<tfoot align="right"><tr><th></th><th></th><th>{{__('Total')}}</th><th>'+amount+'</th><th>'+vat+'</th><th>'+totalAmount+'</th></tr></tfoot>'
                             );
                             $(win.document.body).find('#todayTotalAmount').append(totalAmount)
                             $(win.document.body).find('h1').css('display','none');

@@ -39,7 +39,7 @@
         <button id="filter_event_button"
                 style="height: 23px;line-height: 2px;border-radius: 2px;margin-top: 10px;margin-left: 11px;"
                 class="btn btn-sm pull-right btn-warning">
-           <i class="fa fa-filter"></i> FILTER
+           <i class="fa fa-filter"></i> {{__("FILTER")}}
         </button>
 
         <button id="reset_event_table"
