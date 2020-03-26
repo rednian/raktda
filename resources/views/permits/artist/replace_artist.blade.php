@@ -122,7 +122,7 @@ $language_id = Auth::user()->LanguageId;
                                                             </div>
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="dob"
-                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birthdate')}}
+                                                                    class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Date of Birth')}}
                                                                     <span class="text-danger">*</span>
                                                                 </label>
                                                                 <div class="col-lg-8">
@@ -403,7 +403,7 @@ $language_id = Auth::user()->LanguageId;
                                     <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                                         aria-expanded="false" aria-controls="collapseTwo6">
                                         <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">
-                                            {{__('CONTACT INFORMATION')}}
+                                            {{__('CONTACT DETAILS')}}
                                         </h6>
                                     </div>
                                 </div>
@@ -652,7 +652,7 @@ $language_id = Auth::user()->LanguageId;
                     <input type="hidden" id="permitTerm_{{$i}}" value="{{$req->term}}">
                     @if($req->dates_required == 1)
                     <div class="col-lg-2 col-sm-12">
-                        <label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__('Issued Date')}}</label>
+                        <label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__('Issue Date')}}</label>
                         <input type="text" class="form-control form-control-sm date-picker" name="doc_issue_date_{{$i}}"
                             data-date-end-date="0d" id="doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY"
                             onchange="setExpiryMindate('{{$i}}')" />
@@ -1413,7 +1413,7 @@ $language_id = Auth::user()->LanguageId;
                             let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
-                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{!!__('Name')!!}:</th> <td id="ex_artist_en_name"></td> </tr>  <tr> <th>{!!__('Birthdate')!!}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{!!__('Gender')!!}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{!!__('Mobile Number')!!}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{!!__('Email')!!}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{!!__('Nationality')!!}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(1)" data-dismiss="modal">{!!__('Select this artist')!!}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{!!__('Not this artist')!!}</button> </div>');
+                                $('#person_code_modal').append('<div class="kt-widget30__item d-flex justify-content-around"> <div class="kt-widget30__pic mr-2"> <img id="profImg" title="image"> </div> <div class="kt-widget30__info" id="PC_Popup_Table"> <table> <tr> <th>{!!__('Name')!!}:</th> <td id="ex_artist_en_name"></td> </tr>  <tr> <th>{!!__('Date of Birth')!!}:</th> <td id="ex_artist_dob"></td> </tr> <tr> <th>{!!__('Gender')!!}:</th> <td id="ex_artist_gender"></td> </tr> <tr> <th>{!!__('Mobile Number')!!}:</th> <td id="ex_artist_mobilenumber"></td> </tr><tr> <th>{!!__('Email')!!}:</th> <td id="ex_artist_email"></td> </tr> <tr> <th>{!!__('Nationality')!!}:</th> <td id="ex_artist_nationality"></td> </tr> </table> </div> <input type="hidden" id="artistDetailswithcode"> </div> <div class="d-flex justify-content-center mt-4"> <button class="btn btn--yellow btn-bold btn-sm mr-3" onclick="setArtistDetails(1)" data-dismiss="modal">{!!__('Select this artist')!!}</button> <button class="btn btn--maroon btn-bold btn-sm" onclick="clearPersonCode()" data-dismiss="modal">{!!__('Not this artist')!!}</button> </div>');
                                 $('#artistDetailswithcode').val(JSON.stringify(data));
                                 var getLangId = $('#getLangid').val();
                                 let apd = data.artist_permit[j];

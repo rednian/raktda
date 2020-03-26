@@ -395,7 +395,7 @@
         <thead class="text-center">
             <tr class="kt-font-transform-u">
                 <th class="text-left">{{__('Document Name')}}</th>
-                <th>{{__('Issued Date')}}</th>
+                <th>{{__('Issue Date')}}</th>
                 <th>{{__('Expiry Date')}}</th>
                 <th>{{__('View')}}</th>
             </tr>

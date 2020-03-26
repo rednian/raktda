@@ -2705,7 +2705,7 @@ class EventController extends Controller
                 break;
             case ('amend'):
                 $reason = 'Amended';
-                $contenttext = 'submitted for amendment';
+                $contenttext = 'submitted for amendment approval';
                 break;
             case ('cancel'):
                 $reason = 'cancelled';

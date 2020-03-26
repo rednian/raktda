@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
 
     Route::post('dashboard','Company\ReportController@filterdashboard')->name('dashboard.filter');
 
+    Route::resource('classification', 'Company\ClassificationController');
+
     Route::resource('artist', 'Company\ArtistController');
     Route::get('artist/new/{id}', 'Company\ArtistController@create')->name('company.add_new_permit');
     // Route::post('apply_artist_permit',  'Company\ArtistController@store')->name('company.apply_artist_permit');
