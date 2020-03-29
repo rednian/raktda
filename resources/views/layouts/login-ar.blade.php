@@ -110,7 +110,7 @@
                         <h3 class="caption-title text-center" style="color: #a63a3f">راس الخيمة<br /> مشروع الحكومة
                             الذكية</h3>
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
-                        <h4 style="margin-top: 10%;" class="text-center">تسجيل الدخول لحسابك</h4>
+                        <h4 style="margin-top: 10%;" class="text-center">تسجيل الدخول</h4>
                     </div>
                     @if (Session::has('error'))
                     <section class="row">

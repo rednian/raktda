@@ -95,7 +95,7 @@
                         <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br /> Smart
                             Government Project</h3>
                         {{--<img src="{{ asset('img/logo-en.svg') }}">--}}
-                        <h4 style="margin-top: 10%;" class="text-center">Login to your Account</h4>
+                        <h4 style="margin-top: 10%;" class="text-center">Login</h4>
                     </div>
                     @if (Session::has('error'))
                     <section class="row">
@@ -159,7 +159,7 @@
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>
                         <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                            Don't have account yet? Click <a href="{{ URL::signedRoute('company.create') }}"
+                            If you do not have an account, Click <a href="{{ URL::signedRoute('company.create') }}"
                                 class="text-success">here</a> to register.
                         </div>
                         {{--<hr />--}}

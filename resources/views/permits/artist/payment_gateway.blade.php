@@ -74,7 +74,7 @@
                             </div>
                             @if($permit_details->event)
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Connected Event ?')}} :</span>
+                                <span class="kt-widget__date">{{__('Connected to Event')}} :</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Add New Artist Permit - Smart Government Rak')
+@section('title', 'New Artist Permit - Smart Government Rak')
 @section('content')
 
 {{-- {{dd(session()->all())}} --}}
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
-            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('ADD NEW ARTIST PERMIT')}}
+            <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('NEW ARTIST PERMIT')}}
             </h3>
         </div>
 
@@ -35,6 +35,8 @@
             </div>
         </div>
     </div>
+
+   
     @php
     $user_id = Auth::user()->user_id;
     @endphp
@@ -108,7 +110,7 @@
                                             value="{{count($artist_details) > 0 ? $artist_details[0]->work_location_ar :(session($user_id.'_apn_location_ar') ? session($user_id.'_apn_location_ar') : '')}}" />
                                     </div>
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED TO EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio  ">
@@ -175,6 +177,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
                         @if(count($artist_details) > 0)
                         @foreach($artist_details as $ad)
                         {{-- {{dd($ad)}} --}}

@@ -2277,8 +2277,8 @@ class ArtistController extends Controller
                 $contenttext = 'submitted after modification';
                 break;
             case ('amend'):
-                $reason = 'submitted for amendment';
-                $contenttext = 'submitted for amendment';
+                $reason = 'submitted for amendment approval';
+                $contenttext = 'submitted for amendment approval';
                 break;
             default:
                 $reason = '';

@@ -85,7 +85,7 @@
 
                                         <div class="form-group form-group-sm row">
                                             <label for="dob"
-                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Birthdate')}}
+                                                class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Date of Birth')}}
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <div class="col-lg-8">
@@ -377,7 +377,7 @@
             <div class="card-header" id="headingTwo6">
                 <div class="card-title collapsed" data-toggle="collapse" data-target="#collapseTwo6"
                     aria-expanded="false" aria-controls="collapseTwo6">
-                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('CONTACT INFORMATION')}}
+                    <h6 class="kt-font-transform-u  kt-font-bolder kt-font-dark">{{__('CONTACT DETAILS')}}
                     </h6>
                 </div>
             </div>

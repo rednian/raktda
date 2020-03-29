@@ -122,7 +122,7 @@
                                     </div>
                                     {{-- {{dd($artist_details[0])}} --}}
                                     <div class="form-group col-lg-2 kt-margin-b-0">
-                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED EVENT')}}
+                                        <label for="" class="col-form-label col-form-label-sm">{{__('CONNECTED TO EVENT')}}
                                         </label>
                                         <div class="kt-radio-inline">
                                             <label class="kt-radio ">

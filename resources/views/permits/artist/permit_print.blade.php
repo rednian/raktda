@@ -306,13 +306,13 @@
                         <table class="date--row-2">
                             <tr>
                                 <td>
-                                    <h5>Issued Date</h5>
+                                    <h5>Issue Date</h5>
                                 </td>
                                 <td>
                                     <p>{{date('d-m-Y', strtotime($permit_details['issued_date']))}}</p>
                                 </td>
                                 <td>
-                                    <h5>تاريخ الاصدار</h5>
+                                    <h5>تاريخ الإصدار</h5>
                                 </td>
                             </tr>
                         </table>

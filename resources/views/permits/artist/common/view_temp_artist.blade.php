@@ -98,7 +98,7 @@
                         </p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Birthdate')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Date of Birth')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{date('d-M-Y', strtotime($artist_details->birthdate))}}</p>
                     </div>
@@ -185,7 +185,7 @@
                 <thead class="text-center">
                     <tr class=" kt-font-transform-u">
                         <th class="text-left">{{__('Document Name')}}</th>
-                        <th>{{__('Issued Date')}}</th>
+                        <th>{{__('Issue Date')}}</th>
                         <th>{{__('Expiry Date')}}</th>
                         <th>{{__('View')}}</th>
                     </tr>
