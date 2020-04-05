@@ -44,7 +44,8 @@
                             <br>
                             <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
                                 <input type="checkbox" id="agree" name="agree">
-                                {{__('I read and understand all service, rules and agree to continue submitting it')}}
+                                {{-- {{__('I read and understand all service, rules and agree to continue submitting it')}} --}}
+                                {{__('I accept the above service terms and conditions')}}
                                 <span></span>
                             </label>
                             {{-- </div> --}}
@@ -1291,9 +1292,9 @@
 
         $("#upload_doc").on("click", function () {
             wizard.isFirstStep() ? !checkForTick() ? setThis('none', 'block', 'block', 'none') : '' : !(detailsValidator.form()) ? wizard.stop() : wizard.goTo(3) ;
-            wizard.isFirstStep() ? !(detailsValidator.form()) ? wizard.stop() : '' : '';
+            wizard.isFirstStep() ? !(detailsValidator.form()) ? wizard.stop() : setThis('block', 'none', 'none', 'block') : '';
             wizard.currentStep == 3 ? setThis('block', 'none', 'none', 'block') : '';
-            wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
+           // wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
         });
 
         const setThis = (prev, next, back, submit) => {

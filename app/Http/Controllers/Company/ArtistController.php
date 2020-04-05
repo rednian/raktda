@@ -181,6 +181,7 @@ class ArtistController extends Controller
                 $expired_date = strtotime($permit->expired_date);
                 $approved_date = strtotime($permit->approved_date);
                 $today = strtotime(date('Y-m-d 00:00:00'));
+                
                 $diff = abs($today - $issued_date) / 60 / 60 / 24;
                 $approvediff = abs($today - $approved_date) / 60 / 60 / 24;
                 $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
@@ -2332,10 +2333,12 @@ class ArtistController extends Controller
             return abort(401);
         }
 
-        $hasHappiness = Happiness::where('type', 'artist')->where('application_id', $permit->permit_id)->exists();
-        if (!$hasHappiness) {
-            return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
-        }
+        // $hasHappiness = Happiness::where('type', 'artist')->where('application_id', $permit->permit_id)->exists();
+        // if (!$hasHappiness) {
+        //     return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
+        // }
+
+        
         $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'Nationality')->get();
         $data['permit_details'] = $permit;
@@ -2348,7 +2351,9 @@ class ArtistController extends Controller
 
         $pdf = PDF::loadView('permits.artist.permit_print', $data, [], [
             'title' => 'Artist Permit',
-            'default_font_size' => 10
+            'default_font_size' => 10,
+            'show_watermark' => in_array($permit->permit_status,['expired']) ? true : false ,
+            'watermark' => ucfirst($permit->permit_status)
         ]);
 
         return $pdf->stream('Artist Permit-' . $permitNumber . '.pdf');
