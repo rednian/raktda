@@ -155,22 +155,10 @@
                             {{$artist_details->uid_number}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('UID Expiry Date')}}</label>
-                        <p class="col col-md-6 form-control-plaintext">
-                            {{$artist_details->uid_expire_date != '0000-00-00' ? date('d-M-Y', strtotime($artist_details->uid_expire_date)) : ''}}
-                        </p>
-                    </div>
-                    <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Phone Number')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$artist_details->phone_number ? $artist_details->phone_number : ''}}</p>
                     </div>
-
-                    {{-- <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 ">{{__('Sponsor Name')}}</label>
-                    <p class="col col-md-6 form-control-plaintext kt-font-bolder">
-                        {{$artist_details->sponsor_name_en}}</p>
-                </div> --}}
 
             </div>
             <div class="row">

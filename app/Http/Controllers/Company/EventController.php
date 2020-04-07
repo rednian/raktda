@@ -1227,37 +1227,36 @@ class EventController extends Controller
 
     public function fetch_applied(Request $request)
     {
-        if ($request->ajax()) {
             return $this->datatable_function('applied');
-        }
+        
     }
 
     public function fetch_valid(Request $request)
     {
-        if ($request->ajax()) {
+        
             return $this->datatable_function('valid');
-        }
+        
     }
 
     public function fetch_draft(Request $request)
     {
-        if ($request->ajax()) {
+        
             return $this->datatable_function('draft');
-        }
+        
     }
 
     public function fetch_expired(Request $request)
     {
-        if ($request->ajax()) {
+       
             return $this->datatable_function('expired');
-        }
+        
     }
 
     public function fetch_cancelled(Request $request)
     {
-        if ($request->ajax()) {
+     
             return $this->datatable_function('cancelled');
-        }
+        
     }
 
 

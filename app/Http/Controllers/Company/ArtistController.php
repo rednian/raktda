@@ -69,30 +69,22 @@ class ArtistController extends Controller
 
     public function fetch_applied(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('applied');
-        }
+        return $this->datatable_function('applied');
     }
 
     public function fetch_valid(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('valid');
-        }
+        return $this->datatable_function('valid');
     }
 
     public function fetch_expired(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('expired');
-        }
+        return $this->datatable_function('expired');
     }
 
     public function fetch_cancelled(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('cancelled');
-        }
+        return $this->datatable_function('cancelled');
     }
 
     function datatable_function($status)
@@ -661,7 +653,7 @@ class ArtistController extends Controller
                 'gender' => $artistDetails['gender'],
                 'uid_number' => $artistDetails['uidNumber'],
                 'birthdate' => $artistDetails['dob'] ? Carbon::parse($artistDetails['dob'])->toDateString() : '',
-                'uid_expire_date' => $artistDetails['uidExp'] ? Carbon::parse($artistDetails['uidExp'])->toDateString() : '',
+                //'uid_expire_date' => $artistDetails['uidExp'] ? Carbon::parse($artistDetails['uidExp'])->toDateString() : '',
                 'passport_number' => $artistDetails['passport'],
                 'passport_expire_date' => $artistDetails['ppExp'] ? Carbon::parse($artistDetails['ppExp'])->toDateString() : '',
                 'visa_type' => $artistDetails['visaType'],
@@ -669,8 +661,8 @@ class ArtistController extends Controller
                 'visa_expire_date' => $artistDetails['visaExp'] ? Carbon::parse($artistDetails['visaExp'])->toDateString() : '',
                 'sponsor_name_en' => $artistDetails['spName'],
                 'emirates_id' => $artistDetails['idNo'],
-                'language' => $artistDetails['language'],
-                'religion' => $artistDetails['religion'],
+                //'language' => $artistDetails['language'],
+                //'religion' => $artistDetails['religion'],
                 'profession_id' => $artistDetails['profession'],
                 'city' => $artistDetails['city'],
                 'area' => $artistDetails['area'],
@@ -681,7 +673,7 @@ class ArtistController extends Controller
                 'permit_id' =>  $permit_id,
                 'person_code' => $artistDetails['code'],
                 'po_box' => $artistDetails['po_box'],
-                'fax_number' => $artistDetails['fax_no'],
+                //'fax_number' => $artistDetails['fax_no'],
                 'is_old_artist' => $artistDetails['is_old_artist'],
                 'artist_permit_status' => 'unchecked',
                 'issue_date' => $permitDetails['from'] ? Carbon::parse($permitDetails['from'])->toDateString() : '',
@@ -987,16 +979,16 @@ class ArtistController extends Controller
                             'profession_id' => $data->profession_id,
                             'passport_number' => $data->passport_number,
                             'uid_number' => $data->uid_number,
-                            'uid_expire_date' => $data->uid_expire_date,
+                            //'uid_expire_date' => $data->uid_expire_date,
                             'passport_expire_date' => $data->passport_expire_date,
                             'visa_type_id' => $data->visa_type,
                             'visa_number' => $data->visa_number,
                             'visa_expire_date' => $data->visa_expire_date,
                             'sponsor_name_en' => $data->sponsor_name_en,
-                            'language_id' => $data->language,
-                            'religion_id' => $data->religion,
+                            //'language_id' => $data->language,
+                            //'religion_id' => $data->religion,
                             'emirate_id' => $data->city,
-                            'fax_number' => $data->fax_number,
+                            //'fax_number' => $data->fax_number,
                             'po_box' => $data->po_box,
                             'area_id' => $data->area,
                             'address_en' => $data->address_en,
@@ -1513,22 +1505,19 @@ class ArtistController extends Controller
                 'profession_id' => $artistDetails['profession'],
                 'uid_number' => $artistDetails['uidNumber'],
                 'passport_number' => $artistDetails['passport'],
-                'uid_expire_date' => $artistDetails['uidExp'] ? Carbon::parse($artistDetails['uidExp'])->toDateString() : '',
+                //'uid_expire_date' => $artistDetails['uidExp'] ? Carbon::parse($artistDetails['uidExp'])->toDateString() : '',
                 'passport_expire_date' => $artistDetails['ppExp'] ? Carbon::parse($artistDetails['ppExp'])->toDateString() : '',
                 'visa_type' => $artistDetails['visaType'],
                 'visa_number' => $artistDetails['visaNumber'],
                 'visa_expire_date' => $artistDetails['visaExp'] ? Carbon::parse($artistDetails['visaExp'])->toDateString() : '',
                 'sponsor_name_en' => $artistDetails['spName'],
                 'emirates_id' => $artistDetails['idNo'],
-                'language' => $artistDetails['language'],
-                'religion' => $artistDetails['religion'],
                 'city' => $artistDetails['city'],
                 'area' => $artistDetails['area'],
                 'address_en' => $artistDetails['address'],
                 'mobile_number' => $artistDetails['mobile'],
                 'phone_number' => $artistDetails['landline'],
                 'po_box' => $artistDetails['po_box'],
-                'fax_number' => $artistDetails['fax_number'],
                 'email' => $artistDetails['email'],
             ]);
 
@@ -1708,17 +1697,14 @@ class ArtistController extends Controller
                     'thumbnail' => $pd->thumbnail,
                     'passport_number' => $pd->passport_number,
                     'uid_number' => $pd->uid_number,
-                    'uid_expire_date' => $pd->uid_expire_date ? Carbon::parse($pd->uid_expire_date)->toDateString() : '',
+                    // 'uid_expire_date' => $pd->uid_expire_date ? Carbon::parse($pd->uid_expire_date)->toDateString() : '',
                     'passport_expire_date' => $pd->passport_expire_date ? Carbon::parse($pd->passport_expire_date)->toDateString() : '',
                     'visa_type' => $pd->visa_type_id,
                     'visa_number' => $pd->visa_number,
                     'visa_expire_date' => $pd->visa_expire_date ? Carbon::parse($pd->visa_expire_date)->toDateString() : '',
                     'sponsor_name_en' => $pd->sponsor_name_en,
                     'sponsor_name_ar' => $pd->sponsor_name_ar,
-                    'language' => $pd->language_id,
-                    'religion' => $pd->religion_id,
                     'city' => $pd->emirate_id,
-                    'fax_number' => $pd->fax_number,
                     'po_box' => $pd->po_box,
                     'area' => $pd->area_id,
                     'address_en' => $pd->address_en,
@@ -2060,16 +2046,16 @@ class ArtistController extends Controller
                         'profession_id' => $data->profession_id,
                         'passport_number' => $data->passport_number,
                         'uid_number' => $data->uid_number,
-                        'uid_expire_date' => $data->uid_expire_date,
+                        // 'uid_expire_date' => $data->uid_expire_date,
                         'passport_expire_date' => $data->passport_expire_date,
                         'visa_type_id' => $data->visa_type,
                         'visa_number' => $data->visa_number,
                         'visa_expire_date' => $data->visa_expire_date,
                         'sponsor_name_en' => $data->sponsor_name_en,
-                        'language_id' => $data->language,
-                        'religion_id' => $data->religion,
+                        // 'language_id' => $data->language,
+                        // 'religion_id' => $data->religion,
                         'emirate_id' => $data->city,
-                        'fax_number' => $data->fax_number,
+                        // 'fax_number' => $data->fax_number,
                         'po_box' => $data->po_box,
                         'area_id' => $data->area,
                         'address_en' => $data->address_en,
