@@ -68,12 +68,12 @@ $user_lang = $user->languageId;
     <div class="kt-widget kt-widget--user-profile-3">
       <div class="kt-widget__top">
 
-        <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
+        {{-- <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light">
           {!! defaultProfile($company->name_en, null)!!}
-        </div>
+        </div> --}}
         <div class="kt-widget__content">
           <div class="kt-widget__head">
-            <span class="kt-widget__title">{{ucfirst($company->name_en).' '.$company->name_ar }}</span>
+            <span class="kt-widget__title">{{$user_lang == 1  ? ucfirst($company->name_en) : $company->name_ar }}</span>
 
             @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
             <div class="kt-widget__action">
@@ -112,7 +112,7 @@ $user_lang = $user->languageId;
                     {{__('License Number')}}
                   </span>
                   <div class="kt-widget__label">
-                    <span class="btn btn-label-success btn-sm btn-bold btn-upper">{{$company->trade_license }}</span>
+                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">{{$company->trade_license }}</span>
                   </div>
                 </div>
 
@@ -122,7 +122,7 @@ $user_lang = $user->languageId;
                   </span>
                   <div class="kt-widget__label">
                     <span
-                      class="btn btn-label-danger btn-sm btn-bold btn-upper">{{$company->trade_license_expired_date->format('d-F-Y')}}</span>
+                      class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">{{$company->trade_license_expired_date->format('d-F-Y')}}</span>
                   </div>
                 </div>
 
@@ -244,7 +244,7 @@ $user_lang = $user->languageId;
                 <thead>
                   <tr>
                     <th>{{__('Document Name')}}</th>
-                    <th>{{__('Files')}}</th>
+                    <th>{{__('No.of.Files')}}</th>
                     {{-- <th>{{__('ISSUED DATE')}}</th> --}}
                     {{-- <th>{{__('EXPIRED DATE')}}</th> --}}
                     <th></th>
@@ -317,6 +317,9 @@ $user_lang = $user->languageId;
         // {render: function(data){ return null}},
         {render: function(data){ return null}},
         ],
+        language: {
+                    searchPlaceholder: "{{__('Search')}}",
+                },
         createdRow: function(row, data, index){
           $('.btn-remove',row).click(function(){
             $.ajax({

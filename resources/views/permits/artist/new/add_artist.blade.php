@@ -44,7 +44,8 @@
                             <br>
                             <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
                                 <input type="checkbox" id="agree" name="agree">
-                                {{__('I read and understand all service, rules and agree to continue submitting it')}}
+                                {{-- {{__('I read and understand all service, rules and agree to continue submitting it')}} --}}
+                                {{__('I accept the above service terms and conditions')}}
                                 <span></span>
                             </label>
                             {{-- </div> --}}
@@ -223,7 +224,7 @@
                                                                 </div>
                                                             </div>
 
-
+{{-- 
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="uid_expiry"
                                                                     class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry Date')}}
@@ -258,7 +259,20 @@
                                                                         </select>
                                                                     </div>
                                                                 </div>
+                                                            </div> --}}
+
+                                                               <div class="form-group form-group-sm row">
+                                                        <label for="sp_name"
+                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponsor Name')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="sp_name" id="sp_name"
+                                                                    placeholder="{{__('Sponsor Name')}}">
                                                             </div>
+                                                        </div>
+                                                    </div>
 
 
 
@@ -417,20 +431,9 @@
 
                                                     <input type="hidden" value="" name="id_no" id="id_no">
 
-                                                    <div class="form-group form-group-sm row">
-                                                        <label for="sp_name"
-                                                            class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Sponsor Name')}}
-                                                        </label>
-                                                        <div class="col-lg-8">
-                                                            <div class="input-group input-group-sm">
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="sp_name" id="sp_name"
-                                                                    placeholder="{{__('Sponsor Name')}}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                 
 
-                                                    <div class=" form-group form-group-sm row">
+                                                    {{-- <div class=" form-group form-group-sm row">
                                                         <label for="language"
                                                             class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Language')}}
                                                         </label>
@@ -448,7 +451,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
 
                                                 </div>
@@ -526,7 +529,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group form-group-sm row">
+                                                    {{-- <div class="form-group form-group-sm row">
                                                         <label for="fax_no"
                                                             class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('Fax No')}}</label>
                                                         <div class="col-lg-8">
@@ -537,6 +540,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                     --}}
                                                 </section>
                                             </div>
                                         </div>
@@ -589,7 +593,7 @@
                                                                     @foreach ($emirates as $em)
                                                                     <option value="{{$em->id}}"
                                                                         {{$em->id == '5' ? 'selected' : ''}}>
-                                                                        {{ getLangId() == 1 ? $em->name_en : $em->name_ar}}
+                                                                        {{ getLangId() == 1 ? ucfirst($em->name_en) : $em->name_ar}}
                                                                     </option>
                                                                     @endforeach
                                                                 </select>
@@ -1146,10 +1150,10 @@
                 gender: "required",
                 nationality: "required",
                 uid_number: 'required',
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
+                //uid_expiry: {
+                //    required: true,
+                //    dateNL: true
+                //},
                 // visa_number: 'required', 
                 // visa_type:'required',
                 // visa_expiry: {
@@ -1180,7 +1184,7 @@
                 pp_expiry:'',
                 address: "",
                 uid_number: '',
-                uid_expiry: '',
+                //uid_expiry: '',
                 visa_number:'',
                 visa_type:'',
                 visa_expiry:'',
@@ -1208,7 +1212,7 @@
                     $('input[name="passport"]').rules("remove", "required");$('#passport').removeClass('is-invalid');
                     $('input[name="pp_expiry"]').rules("remove", "required");$('#pp_expiry').removeClass('is-invalid');
                     $('input[name="uid_number"]').rules("remove", "required");$('#uid_number').removeClass('is-invalid');
-                    $('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
+                    //$('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
                     $('input[name="id_no"]').rules('add', { required: true, messages: {required:''}});
                     for (var i = 1; i <= $('#requirements_count').val(); i++) {
                         if($('#req_id_'+i).val() == 6){
@@ -1225,7 +1229,7 @@
                     $('input[name="passport"]').rules('add', { required: true, messages: {required:''}});
                     $('input[name="pp_expiry"]').rules('add', { required: true, messages: {required:''}});
                     $('input[name="uid_number"]').rules('add', { required: true, messages: {required:''}});
-                    $('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
+                    //$('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
                     for (var i = 1; i <= $('#requirements_count').val(); i++) {
                         if($('#req_id_'+i).val() == 6){
                             docRules['doc_issue_date_' + i] = 'required';
@@ -1291,9 +1295,9 @@
 
         $("#upload_doc").on("click", function () {
             wizard.isFirstStep() ? !checkForTick() ? setThis('none', 'block', 'block', 'none') : '' : !(detailsValidator.form()) ? wizard.stop() : wizard.goTo(3) ;
-            wizard.isFirstStep() ? !(detailsValidator.form()) ? wizard.stop() : '' : '';
+            wizard.isFirstStep() ? !(detailsValidator.form()) ? wizard.stop() : setThis('block', 'none', 'none', 'block') : '';
             wizard.currentStep == 3 ? setThis('block', 'none', 'none', 'block') : '';
-            wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
+           // wizard.isFirstStep() ? setThis('none', 'block', 'block', 'none') : '';
         });
 
         const setThis = (prev, next, back, submit) => {
@@ -1367,16 +1371,16 @@
                         visaExp: $('#visa_expiry').val(),
                         spName: $('#sp_name').val(),
                         idNo: $('#id_no').val(),
-                        language: $('#language').val(),
-                        religion: $('#religion').val(),
+                       // language: $('#language').val(),
+                       // religion: $('#religion').val(),
                         gender: $('#gender').val(),
                         city: $('#city').val(),
                         area: $('#area').val(),
                         address: $('#address').val(),
-                        fax_no: $('#fax_no').val(),
+                        //fax_no: $('#fax_no').val(),
                         po_box: $('#po_box').val(),
                         uidNumber: $('#uid_number').val(),
-                        uidExp: $('#uid_expiry').val(),
+                        //uidExp: $('#uid_expiry').val(),
                         dob: $('#dob').val(),
                         landline: $('#landline').val(),
                         mobile: $('#mobile').val(),
@@ -1508,9 +1512,9 @@
         $('#dob').on('changeDate', function (ev) {
             $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success');
         });
-        $('#uid_expiry').on('changeDate', function (ev) {
-            $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');
-        });
+        //$('#uid_expiry').on('changeDate', function (ev) {
+        //    $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');
+        //});
         $('#pp_expiry').on('changeDate', function (ev) {
             $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');
         });
@@ -1799,17 +1803,17 @@
             var visaExp = moment(apd.visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#visa_expiry').val(visaExp).datepicker('update');
             var uidExp = moment(apd.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#uid_expiry').val(uidExp).datepicker('update');
+            //$('#uid_expiry').val(uidExp).datepicker('update');
             $('#visa_type').val(apd.visa_type_id),
             $('#visa_number').val(apd.visa_number),
             $('#sp_name').val(apd.sponsor_name_en),
             $('#id_no').val(apd.identification_number);
-            if(apd.language_id){
-                $('#language').val(apd.language_id);
-            }
-            if(apd.religion_id){
-                $('#religion').val(apd.religion_id);
-            }
+            //if(apd.language_id){
+            //    $('#language').val(apd.language_id);
+            //}
+          //  if(apd.religion_id){
+            //    $('#religion').val(apd.religion_id);
+            //}
             $('#gender').val(apd.gender_id);
             if(apd.emirate_id){
                 $('#city').val(apd.emirate_id);
@@ -1820,7 +1824,7 @@
             $('#dob').val(dob).datepicker('update'),
             $('#landline').val(apd.phone_number),
             $('#po_box').val(apd.po_box),
-            $('#fax_no').val(apd.fax_number),
+            //$('#fax_no').val(apd.fax_number),
             $('#mobile').val(apd.mobile_number),
             $('#email').val(apd.email);
             $('#artist_permit_id').val(apd.artist_permit_id);

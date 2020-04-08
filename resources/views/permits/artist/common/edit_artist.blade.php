@@ -487,10 +487,6 @@
                     dateNL: true
                 },
                 uid_number: "required",
-                uid_expiry: {
-                    required: true,
-                    dateNL: true
-                },
                 passport: "required",
                 pp_expiry: {
                     required: true,
@@ -522,7 +518,7 @@
                 profession: "",
                 dob: "",
                 uid_number: "",
-                uid_expiry: "",
+                //uid_expiry: "",
                 permit_type: "",
                 passport: "",
                 pp_expiry: "",
@@ -556,7 +552,6 @@
                     $('input[name="passport"]').rules("remove", "required");$('#passport').removeClass('is-invalid');
                     $('input[name="pp_expiry"]').rules("remove", "required");$('#pp_expiry').removeClass('is-invalid');
                     $('input[name="uid_number"]').rules("remove", "required");$('#uid_number').removeClass('is-invalid');
-                    $('input[name="uid_expiry"]').rules("remove", "required");$('#uid_expiry').removeClass('is-invalid');
                     $('input[name="id_no"]').rules('add', { required: true, messages: {required:''}});
                     for (var i = 1; i <= $('#requirements_count').val(); i++) {
                         if($('#req_id_'+i).val() == 6){
@@ -573,7 +568,6 @@
                     $('input[name="passport"]').rules('add', { required: true, messages: {required:''}});
                     $('input[name="pp_expiry"]').rules('add', { required: true, messages: {required:''}});
                     $('input[name="uid_number"]').rules('add', { required: true, messages: {required:''}});
-                    $('input[name="uid_expiry"]').rules('add', { required: true, messages: {required:''}});
                     for (var i = 1; i <= $('#requirements_count').val(); i++) {
                         if($('#req_id_'+i).val() == 6){
                             docRules['doc_issue_date_' + i] = 'required';
@@ -703,16 +697,13 @@
                     visaExp: $('#visa_expiry').val(),
                     spName: $('#sp_name').val(),
                     idNo: $('#id_no').val(),
-                    language: $('#language').val(),
-                    religion: $('#religion').val(),
                     gender: $('#gender').val(),
                     city: $('#city').val(),
                     area: $('#area').val(),
-                    fax_number: $('#fax_no').val(),
+                    //fax_number: $('#fax_no').val(),
                     po_box: $('#po_box').val(),
                     address: $('#address').val(),
                     uidNumber: $('#uid_number').val(),
-                    uidExp: $('#uid_expiry').val(),
                     dob: $('#dob').val(),
                     landline: $('#landline').val(),
                     mobile: $('#mobile').val(),
@@ -919,7 +910,7 @@
     $('#dob').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, startView: 2});
 
     $('#dob').on('changeDate', function(ev) { $('#dob').valid() || $('#dob').removeClass('invalid').addClass('success'); });
-    $('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
+    //$('#uid_expiry').on('changeDate', function(ev) { $('#uid_expiry').valid() || $('#uid_expiry').removeClass('invalid').addClass('success');});
     $('#pp_expiry').on('changeDate', function(ev) { $('#pp_expiry').valid() || $('#pp_expiry').removeClass('invalid').addClass('success');});
     $('#visa_expiry').on('changeDate', function(ev) { $('#visa_expiry').valid() || $('#visa_expiry').removeClass('invalid').addClass('success');});
 

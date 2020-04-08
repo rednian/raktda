@@ -70,14 +70,20 @@
                   @endphp
                   <div class="form-group  row">
                     <label class="col-xl-3 col-lg-3 col-form-label">{{__('Name (EN)')}}</label>
-                    <div class="row col-lg-9 col-xl-6 m-auto">
-                      <input type="text" class="col-xl-5 col-lg-5 form-control form-control-sm" name="acccount_name_en"
-                        id="acccount_name_en" value="{{$user->NameEn}}" />
-                      <label class="col-xl-2 col-lg-2 col-form-label">{{__('Name (AR)')}}</label>
-                      <input type="text" class="col-xl-5 col-lg-5 form-control form-control-sm" name="acccount_name_ar"
-                        id="acccount_name_ar" dir="rtl" value="{{$user->NameAr}}" />
+                    <div class="col-lg-9 col-xl-6">
+                      <input type="text" class="form-control form-control-sm" name="acccount_name_en"
+                        id="acccount_name_en" dir="ltr" value="{{$user->NameEn}}" />
                     </div>
                   </div>
+
+                   <div class="form-group  row">
+                      <label class="col-xl-3 col-lg-3 col-form-label">{{__('Name (AR)')}}</label>
+                      <div class="col-lg-9 col-xl-6">
+                        <input type="text" class="form-control form-control-sm" name="acccount_name_ar"
+                        id="acccount_name_ar" dir="rtl" value="{{$user->NameAr}}" />
+                      </div>
+                  </div>
+
                   <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">{{__('Username')}}</label>
                     <div class="col-lg-9 col-xl-6">
@@ -88,12 +94,12 @@
                   <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">{{__('Email Address')}}</label>
                     <div class="col-lg-9 col-xl-6">
-                      <div class="input-group">
-                        <div class="input-group-prepend"><span class="input-group-text"><i class="la la-at"></i></span>
-                        </div>
+                      {{-- <div class="input-group"> --}}
+                        {{-- <div class="input-group-prepend"><span class="input-group-text"><i class="la la-at"></i></span>
+                        </div> --}}
                         <input type="text" class="form-control form-control-sm" name="account_email" id="account_email"
                           value="{{$user->email}}" placeholder="Email" aria-describedby="basic-addon1">
-                      </div>
+                      {{-- </div> --}}
                     </div>
                   </div>
 
@@ -142,7 +148,7 @@
             </div>
 
             <div>
-              <button class="btn btn-sm btn--yellow pull-right">{{__('Save Changes')}}</button>
+              <button class="btn btn-sm btn--yellow {{ getLangId() == 1 ? 'pull-right' : 'pull-left'}}">{{__('Save Changes')}}</button>
             </div>
             </form>
           </div>
@@ -152,6 +158,7 @@
     </div>
 
 
+
     {{-- change password modal --}}
 
     <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -159,7 +166,7 @@
       <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{__('Change Password')}} ?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{__('Change Password ?')}}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             </button>
           </div>

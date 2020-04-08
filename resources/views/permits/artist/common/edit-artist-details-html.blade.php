@@ -142,7 +142,7 @@
                                         </div>
 
 
-                                        <div class="form-group form-group-sm row">
+                                        {{-- <div class="form-group form-group-sm row">
                                             <label for="dob"
                                                 class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}
                                                 <span class="text-danger hd-uae">*</span>
@@ -155,10 +155,10 @@
                                                         value="{{$artist_details->uid_expire_date != '0000-00-00' ? date('d-m-Y', strtotime($artist_details->uid_expire_date)) : ''}}" />
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
 
-                                        <div class="form-group form-group-sm row">
+                                        {{-- <div class="form-group form-group-sm row">
                                             <label for="religion"
                                                 class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Religion')}}
                                             </label>
@@ -176,7 +176,20 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                        </div> --}}
+
+                                         <div class="form-group form-group-sm row">
+                                    <label for="sp_name"
+                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
+                                    </label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control form-control-sm " name="sp_name"
+                                                id="sp_name" placeholder="{{__('Sponsor Name')}}"
+                                                value="{{$artist_details->sponsor_name_en}}">
                                         </div>
+                                    </div>
+                                </div>
 
 
 
@@ -328,21 +341,10 @@
 
                                 <input type="hidden" name="id_no" id="id_no" value="">
 
-                                <div class="form-group form-group-sm row">
-                                    <label for="sp_name"
-                                        class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
-                                    </label>
-                                    <div class="col-lg-8">
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" class="form-control form-control-sm " name="sp_name"
-                                                id="sp_name" placeholder="{{__('Sponsor Name')}}"
-                                                value="{{$artist_details->sponsor_name_en}}">
-                                        </div>
-                                    </div>
-                                </div>
+                               
 
 
-                                <div class=" form-group form-group-sm row">
+                                {{-- <div class=" form-group form-group-sm row">
                                     <label for="language"
                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
                                     </label>
@@ -360,7 +362,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                             </div>
 
@@ -435,7 +437,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group form-group-sm row">
+                                {{-- <div class="form-group form-group-sm row">
                                     <label for="fax_no"
                                         class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Fax No')}}
                                     </label>
@@ -446,7 +448,7 @@
                                                 value="{{$artist_details->fax_number}}">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </section>
                         </div>
                     </div>

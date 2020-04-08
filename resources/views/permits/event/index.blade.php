@@ -130,6 +130,7 @@
                             <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('EVENT NAME')}}</th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -146,7 +147,6 @@
                             <th class="text-center">{{__('From Date')}} </th>
                             <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('EVENT NAME')}}</th>
-                            <th>{{__('STATUS')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
                         </tr>
@@ -462,21 +462,14 @@
                     { data: 'type_name', name: 'type_name' },
                     { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
                     { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
-                    { data: 'name_en', name: 'name_en' },        
+                    { data: 'name_en', name: 'name_en' },    
+                    { data: 'download', name: 'download',  className: "text-center" },    
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
                 responsive: true,
                 columnDefs: [
                     { responsivePriority: 1, targets: 1 },
                     { targets: '_all', className:'no-wrap'},
-                    {
-                        targets:-3,
-                        width: '10%',
-                        className: 'text-center',
-                        render: function(data, type, full, meta) {
-                            return `<span class="kt-font-transform-c text-center">${data}</span>`;
-                        }
-                    }
                 ],
                 language: {
                     emptyTable: "{{__('No Expired Event Permits')}}",
@@ -501,7 +494,6 @@
                     { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
                     { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
                     { data: 'name_en', name: 'name_en' },        
-                    { data: 'permit_status', name: 'permit_status' },
                     { data: 'action', name: 'action' ,  className: "text-center"},
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
@@ -509,14 +501,6 @@
                 columnDefs: [
                     { responsivePriority: 1, targets: 1 },
                     { targets: '_all', className:'no-wrap'},
-                    {
-                        targets:-3,
-                        width: '10%',
-                        className: 'text-center',
-                        render: function(data, type, full, meta) {
-                            return `<span class="kt-font-transform-c text-center">${data}</span>`;
-                        }
-                    }
                 ],
                 language: {
                     emptyTable: "{{__('No Cancelled or Rejected Event Permits')}}",

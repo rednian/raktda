@@ -90,7 +90,7 @@
                         <h5 style="padding-right: 20px;font-family: 'DroidArabicKufiRegular'">عَرَبيّ</h5>
                     </a>
                 </div>
-                <div class="login-header" style="width:auto;">
+                <div class="login-header" style="width:auto;padding-top:60px;">
                     <div class="brand">
                         <h3 class="caption-title text-center" style="color: #a63a3f"> Ras Al Khaimah <br /> Smart
                             Government Project</h3>
@@ -139,7 +139,7 @@
                         </div>
                         <section class="row">
                             <div class="col-sm-6">
-                                <div class="checkbox m-b-30" style="margin-top: 0">
+                                <div class="checkbox" style="margin-top: 0">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
                                         Remember Me
@@ -155,12 +155,12 @@
                             </div>
                         </section>
 
-                        <div class="login-buttons">
+                        <div class="login-buttons m-t-10">
                             <button type="submit" class="btn btn-success btn-block btn-lg">Sign me in</button>
                         </div>
-                        <div class="m-t-20 m-b-40 p-b-40 text-inverse">
-                            If you do not have an account, Click <a href="{{ URL::signedRoute('company.create') }}"
-                                class="text-success">here</a> to register.
+                        <div class="m-t-20 m-b-40 p-b-40 text-inverse text-center">
+                            Not Registered ? Click <a href="{{ URL::signedRoute('company.create') }}"
+                                class="text-success">here</a> to Register.
                         </div>
                         {{--<hr />--}}
                         {{--<p <center></center>lass="text-center">--}}

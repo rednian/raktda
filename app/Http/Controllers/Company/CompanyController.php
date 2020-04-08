@@ -50,6 +50,7 @@ class CompanyController extends Controller
 
    public function store(Request $request)
    {
+
        $valid_company = Validator::make($request->all(), [
          'name_en'=> 'required|max:255',
          'trade_license'=> 'required|max:255',

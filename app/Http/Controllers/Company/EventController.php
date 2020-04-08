@@ -1173,10 +1173,10 @@ class EventController extends Controller
             return abort(401);
         }
 
-        $hasHappiness = Happiness::where('type', 'event')->where('application_id', $id)->exists();
-        if (!$hasHappiness) {
-            return redirect(URL::signedRoute('event.happiness', ['event' => $id]));
-        }
+        // $hasHappiness = Happiness::where('type', 'event')->where('application_id', $id)->exists();
+        // if (!$hasHappiness) {
+        //     return redirect(URL::signedRoute('event.happiness', ['event' => $id]));
+        // }
 
         $event_details = Event::with('type', 'country')->where('event_id', $id)->first();
 
@@ -1205,7 +1205,9 @@ class EventController extends Controller
 
         $pdf = PDF::loadView('permits.event.print', $data, [], [
             'title' => 'Event Permit',
-            'default_font_size' => 10
+            'default_font_size' => 10,
+            'show_watermark' => in_array($event_details->status,['expired']) ? true : false ,
+            'watermark' => ucfirst($event_details->status)
         ]);
 
         if ($event_details->truck()->where('paid', 1)->exists()) {
@@ -1225,37 +1227,36 @@ class EventController extends Controller
 
     public function fetch_applied(Request $request)
     {
-        if ($request->ajax()) {
             return $this->datatable_function('applied');
-        }
+        
     }
 
     public function fetch_valid(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('valid', '');
-        }
+        
+            return $this->datatable_function('valid');
+        
     }
 
     public function fetch_draft(Request $request)
     {
-        if ($request->ajax()) {
-            return $this->datatable_function('draft', '');
-        }
+        
+            return $this->datatable_function('draft');
+        
     }
 
     public function fetch_expired(Request $request)
     {
-        if ($request->ajax()) {
+       
             return $this->datatable_function('expired');
-        }
+        
     }
 
     public function fetch_cancelled(Request $request)
     {
-        if ($request->ajax()) {
+     
             return $this->datatable_function('cancelled');
-        }
+        
     }
 
 
@@ -1372,11 +1373,7 @@ class EventController extends Controller
             }
             return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show', ['id' =>  $permit->event_id, 'tab' => $from]) . '" title="' . __('View Details') . '" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            if ($permit->status == 'expired') {
-                return;
-            } else {
-                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
-            }
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 

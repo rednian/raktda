@@ -105,7 +105,9 @@
                             <th>{{__('FROM DATE')}}</th>
                             <th>{{__('TO DATE')}}</th>
                             <th>{{__('WORK LOCATION')}}</th>
+                            <th class="text-center">{{__('ACTION')}}</th>
                             {{-- <th class="text-center">{{__('ARTISTS')}}</th> --}}
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -464,7 +466,9 @@
                     { data: 'issued_date', name: 'issued_date', className: 'no-wrap' },
                     { data: 'expired_date', name: 'expired_date', className: 'no-wrap' },
                     { data: 'work_location', name: 'work_location' ,className: 'work-location-column'},
+                    { data: 'action', name: 'action' ,  className: "text-center no-wrap"},
                     // { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
+                    { data: 'download', name: 'download' ,  className: "text-center" },
                     { data: 'details', name: 'details' ,  className: "text-center"},
                 ],
                 // columnDefs: [
@@ -507,16 +511,6 @@
                     // { data: 'permit_id', name: 'permit_id', className: 'no-wrap text-center' },
                     { data: 'action', name: 'action', className:'text-center' },
                     { data: 'details', name: 'details' ,  className: "text-center"},
-                ],
-                columnDefs: [
-                    // {
-                    //     targets:5,
-                    //     className:'text-center',
-                    //     render: function(data, type, full, meta) {
-                    //         var artistPermit = JSON.parse(data);  
-                    //         return artistPermit.length;
-                    //     }
-                    // },
                 ],
                 language: {
                     emptyTable: "{{__('No Cancelled or Rejected Permits')}}",

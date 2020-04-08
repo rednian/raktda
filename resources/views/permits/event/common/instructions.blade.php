@@ -24,7 +24,8 @@
 </section> --}}
 <label class="kt-checkbox kt-checkbox--brand ml-2 mt-3" id="agree_cb">
     <input type="checkbox" id="agree" name="agree" checked disabled>
-    {{__('I read and understand all service, rules and agree to continue submitting it')}}
+    {{-- {{__('I read and understand all service, rules and agree to continue submitting it')}} --}}
+    {{__('I accept the above service terms and conditions')}}
     <span></span>
 </label>
 </div>

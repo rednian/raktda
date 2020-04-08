@@ -15,6 +15,7 @@
     "Today": "اليوم",
     "Last Week": "آخر اسبوع",
     "Last 30 days": "آخر 30 يوم",
+    "Last 30 Days": "آخر 30 يوم",
 
     "Account Settings": "إعدادات الحساب",
 
@@ -378,7 +379,7 @@
     "Add multiple images": "إضافة عدة صور",
     "Week List": "القائمة الاسبوعية",
     "Transaction No.": "رقم المعاملة",
-    "Sign out": "تسجيل خروج",
+    "Logout": "تسجيل خروج",
     "Artist Photo": "صورة الفنان",
     "Use Passport size picture with white background": "الرجاء استخدام صورة بالحجم المستخدم لجواز السفر مع خلفية بيضاء",
     "VIEW DRAFT DETAILS": "عرض تفاصيل المسودة",
@@ -415,8 +416,26 @@
     "Yes": "نعم",
     "YES": "نعم",
 
+    "Business License Expiry Date":"تاريخ انتهاء الرخصة",
+    "Business License Number":"رقم الرخصة",
+    "Establishment Details (AR)":"اسم المنشأة بالعربي",
+    "Full Name (EN)":"الاسم بالانكليزي",
+    "Full Name (AR)":"الاسم بالعربي",
+    "No.of.Files":"عدد الملفات",
+    "Emirates ID":"بطاقة الهوية الإماراتية",
+    "Emirates ID Expiry Date":"تاريخ انتهاء الهوية الإمارايتة",
+    "Change Password ?":"تغيير كلمة المرور ؟",
+    "Old Password":"كلمة السر القديمة",
+    "New Password":"كلمة السر الجديدة",
+    "Confirm Password":"تأكيد كلمة المرور",
+
     "Payment completed Successfully to RAKTDA":"تمت عملية الدفع بنجاح لهيئة رأس الخيمة لتنمية السياحة ",
     "Payment is completed successfully.  Please find the permit and payment receipt voucher in the attachments.":"تمت عملية الدفع بنجاح. الرجاء تحميل التصريح و إيصال الدفع من المرفقات.",
-    "Ras Al Khaimah":"رأس الخيمة"
-
+    "Ras Al Khaimah":"رأس الخيمة",
+    "I accept the above service terms and conditions":"أوافق على ما ورد أعلاه من شروط وأحكام الخدمة",
+    "Yesterday":"",
+    "Last 7 days":"",
+    "This Month":"",    
+    "Last Month":"",
+    "Custom From & To":""
 }

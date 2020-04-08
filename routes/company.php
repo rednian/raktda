@@ -57,8 +57,8 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('fetch_applied_artists', 'Company\ArtistController@fetch_applied')->name('company.fetch_applied_artists');
     Route::get('fetch_existing_artists', 'Company\ArtistController@fetch_valid')->name('company.fetch_existing_artists');
     Route::get('fetch_existing_drafts',  'Company\ArtistController@fetch_drafts')->name('company.fetch_existing_drafts');
-    Route::get('fetch_expired_permits',  'Company\ArtistController@fetch_expired')->name('company.fetch_expired_permits');
-    Route::get('fetch_cancelled_permits',  'Company\ArtistController@fetch_cancelled')->name('company.fetch_cancelled_permits');
+    Route::get('fetch_expired_artists',  'Company\ArtistController@fetch_expired')->name('company.fetch_expired_permits');
+    Route::get('fetch_cancelled_artists',  'Company\ArtistController@fetch_cancelled')->name('company.fetch_cancelled_permits');
     Route::post('delete_artist', 'Company\ArtistController@delete_artist')->name('company.delete_artist');
     Route::post('update_artist_temp', 'Company\ArtistController@update_artist_temp')->name('company.update_artist_temp');
     Route::post('get_files_uploaded', 'Company\ArtistController@get_files_uploaded')->name('company.get_files_uploaded');

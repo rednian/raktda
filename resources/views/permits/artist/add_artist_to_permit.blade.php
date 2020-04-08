@@ -222,7 +222,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group form-group-sm row">
+                                                            {{-- <div class="form-group form-group-sm row">
                                                                 <label for="uid_expiry"
                                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('UID Expiry Date')}}<span
                                                                         class="text-danger hd-uae">*</span>
@@ -236,8 +236,8 @@ $language_id = \Auth::user()->LanguageId;
                                                                             id="uid_expiry" />
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group form-group-sm row">
+                                                            </div> --}}
+                                                            {{-- <div class="form-group form-group-sm row">
                                                                 <label for="religion"
                                                                     class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                                     {{__('Religion')}}
@@ -256,7 +256,20 @@ $language_id = \Auth::user()->LanguageId;
                                                                         </select>
                                                                     </div>
                                                                 </div>
+                                                            </div> --}}
+
+
+                                                    <div class="form-group form-group-sm row">
+                                                        <label for="sp_name"
+                                                            class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <div class="input-group input-group-sm">
+                                                                <input type="text" class="form-control form-control-sm "
+                                                                    name="sp_name" id="sp_name">
                                                             </div>
+                                                        </div>
+                                                    </div>
 
                                                         </section>
                                                     </div>
@@ -401,19 +414,8 @@ $language_id = \Auth::user()->LanguageId;
 
                                                     <input type="hidden" value="" name="id_no" id="id_no">
 
-                                                    <div class="form-group form-group-sm row">
-                                                        <label for="sp_name"
-                                                            class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Sponsor Name')}}
-                                                        </label>
-                                                        <div class="col-lg-8">
-                                                            <div class="input-group input-group-sm">
-                                                                <input type="text" class="form-control form-control-sm "
-                                                                    name="sp_name" id="sp_name">
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class=" form-group form-group-sm row">
+                                                    {{-- <div class=" form-group form-group-sm row">
                                                         <label for="language"
                                                             class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">{{__('Language')}}
                                                         </label>
@@ -431,7 +433,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
                                                 </div>
                                             </div>
@@ -499,7 +501,7 @@ $language_id = \Auth::user()->LanguageId;
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-group-sm row">
+                                                    {{-- <div class="form-group form-group-sm row">
                                                         <label for="fax_no"
                                                             class="col-md-4 col-sm-12 col-form-label kt-font-bold text-left text-lg-right">
                                                             {{__('Fax No')}}</label>
@@ -509,7 +511,7 @@ $language_id = \Auth::user()->LanguageId;
                                                                     name="fax_no" id="fax_no">
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </section>
                                             </div>
                                         </div>
@@ -1004,10 +1006,10 @@ $language_id = \Auth::user()->LanguageId;
             dateNL: true
         },
         uid_number: "required",
-        uid_expiry: {
-            required: true,
-            dateNL: true
-        },
+        //uid_expiry: {
+        //    required: true,
+         //   dateNL: true
+        //},
         passport: "required",
         pp_expiry: {
             required: true,
@@ -1039,7 +1041,7 @@ $language_id = \Auth::user()->LanguageId;
         profession: "",
         dob: "",
         uid_number: "",
-        uid_expiry: "",
+        //uid_expiry: "",
         permit_type: "",
         passport: "",
         pp_expiry: "",
@@ -1218,8 +1220,8 @@ function checkVisaRequired(){
                     visaExp: $('#visa_expiry').val(),
                     spName: $('#sp_name').val(),
                     idNo: $('#id_no').val(),
-                    language: $('#language').val(),
-                    religion: $('#religion').val(),
+                    //language: $('#language').val(),
+                    //religion: $('#religion').val(),
                     gender: $('#gender').val(),
                     city: $('#city').val(),
                     area: $('#area').val(),
@@ -1228,7 +1230,7 @@ function checkVisaRequired(){
                     uidExp: $('#uid_expiry').val(),
                     dob: $('#dob').val(),
                     po_box: $('#po_box').val(),
-                    fax_no: $('#fax_no').val(),
+                    //fax_no: $('#fax_no').val(),
                     landline: $('#landline').val(),
                     mobile: $('#mobile').val(),
                     email: $('#email').val(),
@@ -1562,17 +1564,12 @@ function checkVisaRequired(){
             var visaExp = moment(apd.visa_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
             $('#visa_expiry').val(visaExp).datepicker('update');
             var uidExp = moment(apd.uid_expire_date, 'YYYY-MM-DD').format('DD-MM-YYYY');
-            $('#uid_expiry').val(uidExp).datepicker('update');
+            //$('#uid_expiry').val(uidExp).datepicker('update');
             $('#visa_type').val(apd.visa_type_id),
             $('#visa_number').val(apd.visa_number),
             $('#sp_name').val(apd.sponsor_name_en),
             $('#id_no').val(apd.identification_number);
-            if(apd.language_id){
-                $('#language').val(apd.language_id);
-            }
-            if(apd.religion_id){
-                $('#religion').val(apd.religion_id);
-            }
+           
             $('#gender').val(apd.gender_id);
             if(apd.emirate_id){
                 $('#city').val(apd.emirate_id);
@@ -1583,7 +1580,7 @@ function checkVisaRequired(){
             $('#dob').val(dob).datepicker('update'),
             $('#landline').val(apd.phone_number),
             $('#po_box').val(apd.po_box),
-            $('#fax_no').val(apd.fax_number),
+           // $('#fax_no').val(apd.fax_number),
             $('#mobile').val(apd.mobile_number),
             $('#email').val(apd.email);
             $('#artist_permit_id').val(apd.artist_permit_id);

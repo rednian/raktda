@@ -121,7 +121,7 @@
                                     {{-- <td>{{$artistPermit->email}}</td> --}}
                                     <td style="color:{{$artistPermit->artist_permit_status == 'approved' ? 'limegreen' : 'darkred'}}"
                                         class="kt-font-bold">
-                                        {{ucwords($artistPermit->artist_permit_status)}}
+                                        {{__(ucfirst($artistPermit->artist_permit_status))}}
                                     </td>
                                     <td class=" text-center">
                                         {{-- <a href="#" data-toggle="modal"
