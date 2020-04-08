@@ -88,7 +88,7 @@
             </a>
         </li>
         <li class="nav-item" style="line-height: 43px">
-            Total Amount : <span style="color: #6d6d6d;font-weight: 500" id="totalAmount"></span>
+            {{__('Total Amount')}} : <span style="color: #6d6d6d;font-weight: 500" id="totalAmount"></span>
 
         </li>
     </ul>
@@ -101,9 +101,9 @@
                     <th style="white-space: nowrap;font-weight: bold">{{__('TRANSACTION ID')}}</th>
                     <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('TYPE')}}</th>
                     <th style="white-space: nowrap;font-weight: bold">{{__('TRANSACTION DATE')}}</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('AMOUNT (AED)')}}</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('VAT (5%)')}}</th>
-                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('TOTAL (AED)')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('AMOUNT(AED)')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('VAT(5%)')}}</th>
+                    <th style="text-align: right;white-space: nowrap;font-weight: bold">{{__('TOTAL(AED)')}}</th>
 
                     <th style="">{{__('ACTION')}}</th>
                 </tr>

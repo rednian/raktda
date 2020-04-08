@@ -81,7 +81,7 @@ th{
         <div class="col">
             <span style="    font-weight: bold;
                               color: #adadad;
-                              font-size: 15px;">EVENTS TRANSACTIONS REPORT</span>
+                              font-size: 15px;">{{__('EVENT TRANSACTION REPORT')}}</span>
             <a href="{{url('artist_reports#transaction-report-tab')}}"><button style="    background-color: #b45454;
                               color: white;
                               box-shadow: -1px 6px 11px -6px #969696;
@@ -93,12 +93,12 @@ th{
                               margin-top: -14px;
                               margin-right: -10px;
                               margin-bottom: 7px;" class="btn">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>BACK</button></a>
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>{{__('BACK')}}</button></a>
              </div>
         --}}
 
         <div class="row">
-            <div class="col-10" style="font-size: 16px;color: grey;font-weight: 500">{{__('EVENTS TRANSACTIONS REPORT')}}</div>
+            <div class="col-10" style="font-size: 16px;color: grey;font-weight: 500">{{__('EVENT TRANSACTION REPORT')}}</div>
                   <div class="col">
                        <a href="{{url('artist_reports#transaction-report-tab')}}"><button style="background-color: #b45454;
                        border: none;
@@ -147,16 +147,16 @@ th{
                                       box-shadow: 2px 7px 8px -3px #b7b7b7;
                                       padding: 3px;
                                       border-radius: 5px;"></span>
-                        <input style="height: 31px; border: none; margin-top: -4px;" type="text" id="start_date" class="form-control" placeholder="From Date">
+                        <input style="height: 31px; border: none; margin-top: -4px;" type="text" id="start_date" class="form-control" placeholder="{{__('From Date')}}">
 
                     </li>
                     <li style="padding: 4px;display: flex">
-                        <input style="height: 31px;color: #bfbfbf; border: none; margin-top: -4px;" type="text" id="end_date" class="form-control" placeholder="To Date">
+                        <input style="height: 31px;color: #bfbfbf; border: none; margin-top: -4px;" type="text" id="end_date" class="form-control" placeholder="{{__('To Date')}}">
 
                     </li>
                    </ul>
                 <span class="navbar-text" style="white-space: nowrap">
-           Total Amount : <span style="color: #6d6d6d;font-weight: 500" id="totalAmount"></span></span>
+                {{__('Total Amount')}} : <span style="color: #6d6d6d;font-weight: 500" id="totalAmount"></span></span>
             </div>
         </nav>
 
@@ -261,7 +261,7 @@ th{
                        data:{selectEventTypeId:selectEventTypeId,selectApplicationTypeId:selectApplicationTypeId,days:days}
                     },
                     "columns": [
-                        {title: 'REFERENCE NO.', data: 'reference_number', name: 'reference_number'},
+                        {title: 'REFER NO.', data: 'reference_number', name: 'reference_number'},
                         {title: 'EVENT NAME', data: 'event_name', name: 'event_name'},
                         {title: 'TRANSACTION DATE', data: 'transaction_date', name: 'transaction_date'},
                         {title: 'EVENT DATE', data: 'issued_date', name: 'issued_date'},
@@ -397,16 +397,16 @@ th{
                      data:{days:days}
                  },
                  "columns": [
-                     {title:'REFERENCE NO.',data: 'reference_number', name: 'reference_number'},
-                     {title:'EVENT NAME',data: 'event_name', name: 'event_name'},
-                     {title:'TRANSACTION DATE',data: 'transaction_date', name: 'transaction_date'},
-                     {title:'EVENT DATE',data: 'issued_date', name: 'issued_date'},
-                     {title:'EXPIRY DATE',data: 'expired_date', name: 'expired_date'},
-                     {title:'TYPE',data: 'application_type', name: 'application_type'},
-                     {title:'EVENT TYPE',data: 'event_type', name: 'event_type'},
-                     {title:'AMOUNT',data: 'amount', name: 'amount'},
-                     {title:'VAT (5%)',data: 'vat', name: 'vat'},
-                     {title:'TOTAL',data: 'total', name: 'total'},
+                     {title:'{{__("REFERENCE NO.")}}',data: 'reference_number', name: 'reference_number'},
+                     {title:'{{__("EVENT NAME")}}',data: 'event_name', name: 'event_name'},
+                     {title:'{{__("TRANSACTION DATE")}}',data: 'transaction_date', name: 'transaction_date'},
+                     {title:'{{__("EVENT DATE")}}',data: 'issued_date', name: 'issued_date'},
+                     {title:'{{__("EXPIRY DATE")}}',data: 'expired_date', name: 'expired_date'},
+                     {title:'{{__("TYPE")}}',data: 'application_type', name: 'application_type'},
+                     {title:'{{__("EVENT TYPE")}}',data: 'event_type', name: 'event_type'},
+                     {title:'{{__("AMOUNT")}}',data: 'amount', name: 'amount'},
+                     {title:'{{__("VAT(5%)")}}',data: 'vat', name: 'vat'},
+                     {title:'{{__("TOTAL")}}',data: 'total', name: 'total'},
                  ],
                  footerCallback: function ( row, data, start, end, display ) {
                      var api = this.api();
@@ -480,7 +480,7 @@ th{
                            },
                            customize: function ( win ) {
                                $(win.document.body).prepend(
-                                   '<h3 style="text-align:center"><span style="position:absolute;margin-left: -20px">Event Transactions</span><span style="float: right;font-size: 13px;font-weight: bold;margin-top: 8px" id="totalAmount">TOTAL AMOUNT: </span></h3>'
+                                   '<h3 style="text-align:center"><span style="position:absolute;margin-left: -20px">Event Transactions</span><span style="float: right;font-size: 13px;font-weight: bold;margin-top: 8px" id="totalAmount">{{__('Total Amount')}}: </span></h3>'
                                );
                                var totalAmount= $('#totalAmount').html();
                                var amount=$('#amountFooter').html();
