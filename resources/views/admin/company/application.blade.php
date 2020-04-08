@@ -1,3 +1,4 @@
+
 @extends('layouts.admin.admin-app')
 @section('content')
 <section class="kt-portlet kt-portlet--last kt-portlet--head-sm kt-portlet--responsive-mobile">
@@ -41,7 +42,7 @@
                <div class="card-body kt-font-dark">
                 <section class="kt-form kt-form--label-right ">
                     <div class="form-group form-group-sm  row">
-                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all establishment details </label>
+                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL ESTABLISHMENT DETAILS') }}</label>
                         <div class="col-1">
                             <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                                 <label>
@@ -194,7 +195,7 @@
                <div class="card-body kt-font-dark">
                 <section class="kt-form kt-form--label-right ">
                     <div class="form-group form-group-sm  row">
-                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all contact details </label>
+                        <label class="col-11 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL CONTACT DETAILS') }}</label>
                         <div class="col-1">
                             <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                                 <label>
@@ -294,7 +295,7 @@
          <div class="card">
             <div class="card-header" id="heading-requirement">
                <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
-                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('ESTALISHMENT ATTACHMENTS') }}</h6>
+                  <h6 class="kt-font-bolder kt-font-transform-u kt-font-dark"> {{ __('ATTACHMENTS') }}</h6>
                </div>
              </div>
              <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement" data-parent="#accordion-requirement">
@@ -370,7 +371,7 @@
                   <tr>
                     <th>{{__('NAME')}}</th>
                     <th>{{__('REMARKS')}}</th>
-                    <th>{{__('ACTION TAKEN')}}</th>
+                    <th>{{__('ACTION')}}</th>
                     <th>{{__('CHECKED DATE')}}</th>
                   </tr>
                 </thead>
