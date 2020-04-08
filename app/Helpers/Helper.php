@@ -533,7 +533,7 @@ function calculateDateDiff($x, $y)
     $month = $diffr->m;
     $term .= $month ? $month . ' ' . ($month > 2 ? __('Months') . ' ' : $month > 1 ? __('months') . ' ' : __('month') . ' ') : '';
     $day = $diffr->d;
-    $term .= $day ? $day . ' ' . ($day > 2  ? __('Days') : $day > 1  ? __('days') : __('days')) : '';
+    $term .= $day ? $day . ' ' . ($day > 2  ? __('Days') : $day > 1  ? __('days') : __('day')) : '';
     return $term;
 }
 

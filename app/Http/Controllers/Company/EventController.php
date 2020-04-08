@@ -894,7 +894,7 @@ class EventController extends Controller
                 'end' => date('Y-m-d', strtotime($event->expired_date)) . 'T' . date('H:i:s', strtotime($event->time_end)),
                 'id' => $event->event_id,
                 'url' => $event->created_by == $user->user_id ? URL::signedRoute('event.show', ['id' =>  $event->event_id, 'tab' => 'calendar'])  : '#',
-                'description' => 'Venue : ' . ($user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar),
+                'description' => __('Venue') .': ' . ($user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar),
                 'backgroundColor' => '#8c272d !important',
                 'textColor' => '#fff !important',
             ];
