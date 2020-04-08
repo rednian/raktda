@@ -402,18 +402,18 @@
                             <div class="kt-wizard-v3__form">
                                 <form id="happiness_center" autocomplete="off" novalidate>
                                     <div class="d-flex justify-content-around happiness--center">
-                                        <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id, 0)">
+                                        <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id, 0)" title="{{__('Dissatisfied')}}">
 
                                             <?php echo file_get_contents('./img/sad.svg'); ?>
 
                                         </div>
-                                        <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id, 50)">
+                                        <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id, 50)" title="{{__('Neutral')}}">
 
                                             <?php echo file_get_contents('./img/notbad.svg'); ?>
 
                                         </div>
 
-                                        <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 100)">
+                                        <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 100)" title="{{__('Satisfied')}}">
 
                                             <?php echo file_get_contents('./img/happiness.svg'); ?>
 

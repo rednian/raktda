@@ -433,7 +433,11 @@
     "Payment is completed successfully.  Please find the permit and payment receipt voucher in the attachments.":"تمت عملية الدفع بنجاح. الرجاء تحميل التصريح و إيصال الدفع من المرفقات.",
     "Ras Al Khaimah":"رأس الخيمة",
     "I accept the above service terms and conditions":"أوافق على ما ورد أعلاه من شروط وأحكام الخدمة",
-    "Yesterday":"",
+    "Satisfied":"سعيد ",
+    "Neutral":"حيادي",
+    "Dissatisfied":"غير سعيد",
+
+    "Yesterday":"البارِحة",
     "Last 7 days":"",
     "This Month":"",    
     "Last Month":"",
