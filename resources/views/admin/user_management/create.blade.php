@@ -70,6 +70,34 @@
 					 <div id="inspection-settings-details" class="collapse show" aria-labelledby="inspection-settings-heading" data-parent="#inspection-settings">
 						<div class="card-body">
 
+                            <section class="row kt-margin-t-10">
+
+				            	@if($type == 'g')
+								<div class="col-sm-6">
+				                    <div class="form-group form-group-sm">
+				                        <label for="example-search-input" class="kt-font-dark">{{ __('Government Entity Name') }}
+				                            <span class="text-danger">*</span>
+				                        </label>
+				                        <select required name="government_id" class="form-control form-control-sm">
+				                        	<option disabled selected>{{ __('Select Government Entity') }}</option>
+				                        	@foreach(App\Government::orderBy('government_name_en')->get() as $dep)
+											<option value="{{ $dep->government_id }}">{{ Auth::user()->LanguageId == 1 ? $dep->government_name_en : $dep->government_name_ar }}</option>
+				                        	@endforeach
+				                        </select>
+				                    </div>
+				                </div>
+				            	@endif
+
+				                <div class="col-sm-6">
+				                    <div class="form-group form-group-sm">
+				                        <label for="example-search-input" class="kt-font-dark">{{ __('Designation') }}
+				                        	<span class="text-danger">*</span>
+				                        </label>
+				                        <input  autocomplete="off" value="" type="text" name="designation" class="form-control form-control-sm">
+				                    </div>
+				                </div>
+				            </section>
+
 							<section class="row kt-margin-t-10">
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
@@ -89,33 +117,7 @@
 				                </div>
 				            </section>
 
-				            <section class="row kt-margin-t-10">
 
-				            	@if($type == 'g')
-								<div class="col-sm-6">
-				                    <div class="form-group form-group-sm">
-				                        <label for="example-search-input" class="kt-font-dark">{{ __('Department') }}
-				                            <span class="text-danger">*</span>
-				                        </label>
-				                        <select required name="government_id" class="form-control form-control-sm">
-				                        	<option value=""></option>
-				                        	@foreach(App\Government::orderBy('government_name_en')->get() as $dep)
-											<option value="{{ $dep->government_id }}">{{ Auth::user()->LanguageId == 1 ? $dep->government_name_en : $dep->government_name_ar }}</option>
-				                        	@endforeach
-				                        </select>
-				                    </div>
-				                </div>
-				            	@endif
-
-				                <div class="col-sm-6">
-				                    <div class="form-group form-group-sm">
-				                        <label for="example-search-input" class="kt-font-dark">{{ __('Designation') }}
-				                        	<span class="text-danger">*</span>
-				                        </label>
-				                        <input  autocomplete="off" value="" type="text" name="designation" class="form-control form-control-sm">
-				                    </div>
-				                </div>
-				            </section>
 
 				            <section class="row kt-margin-t-10">
 				                <div class="col-sm-6">

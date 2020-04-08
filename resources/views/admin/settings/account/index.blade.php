@@ -21,7 +21,7 @@
 			</div>
 			<div class="kt-portlet__body kt-padding-t-0">
 
-				
+
 				 <ul id="main-tab" class="nav nav-tabs  nav-tabs-line nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
 						<li class="nav-item">
 							 <a class="nav-link active" data-toggle="tab" href="#personal" role="tab">{{ __('Personal Details') }}</a>
@@ -83,7 +83,7 @@
 						<div class="tab-pane" id="credentials" role="tabpanel">
 
 							{{-- <h5 class="kt-font-dark kt-margin-t-20">{{ __('Change Username') }}</h5> --}}
-							<section class="row kt-margin-t-20">
+							<section class="row kt-margin-t-20 kt-hide">
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label class="kt-checkbox kt-checkbox--default kt-font-dark">
@@ -93,7 +93,7 @@
 				                    </div>
 				                </div>
 				            </section>
-				            <section class="row">
+				            <section class="row kt-hide">
 				                <div class="col-sm-6">
 				                    <div class="form-group form-group-sm">
 				                        <label for="example-search-input" class="kt-font-dark">
@@ -153,7 +153,7 @@
 				            </section>
 
 						</div>
-					
+
 				 </div>
 				 </form>
 			</div>
@@ -161,7 +161,7 @@
 @stop
 @section('script')
 	<script>
-		
+
 		$(document).ready(function(){
 
 			var hash = window.location.hash;

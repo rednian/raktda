@@ -101,10 +101,10 @@
                                                 <li>Date of Birth : <span>{{$artist->artist_permit?$artist->artist_permit->birthdate:'' }}</span></li>
                                                 <li>Age :</li>
                                                 <li>Gender</li>
-                                                <li>Religion</li>
+                                                {{-- <li>Religion</li> --}}
                                                 <li>Identification Number</li>
                                                 <li>UID Number</li>
-                                                <li>UID Expiry Date</li>
+                                                {{-- <li>UID Expiry Date</li> --}}
                                                 <li>Visa Type</li>
                                                 <li>Visa Number</li>
                                                 <li>Passport Number</li>

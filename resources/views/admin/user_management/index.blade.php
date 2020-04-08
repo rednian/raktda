@@ -40,10 +40,10 @@
 				            <li class="nav-item">
 				               <a class="nav-link active" data-toggle="tab" href="#employee" role="tab">{{ __('Employee') }}</a>
 				            </li>
-				            <li class="nav-item">
+				            <li class="nav-item kt-hide">
 				               <a class="nav-link" data-toggle="tab" href="#leave" role="tab">{{ __('Time Off') }}</a>
 				            </li>
-				            <li class="nav-item">
+				            <li class="nav-item kt-hide">
 				               <a class="nav-link" data-toggle="tab" href="#holiday" role="tab">{{ __('Holiday') }}</a>
 				            </li>
 				        </ul>
@@ -128,7 +128,7 @@
 							 <thead>
 							 <tr>
 									<th>{{ __('NAME') }}</th>
-									<th>{{ __('DEPARTMENT') }}</th>
+									<th>{{ __('GOVERNMENT ENTITY') }}</th>
 									<th>{{ __('ROLE') }}</th>
 									<th>{{ __('DATE ADDED') }}</th>
 									<th>{{ __('STATUS') }}</th>

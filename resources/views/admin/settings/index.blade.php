@@ -27,10 +27,10 @@
 						<li class="nav-item">
 							 <a class="nav-link" data-toggle="tab" href="#event_types" role="tab">{{ __('Event Types') }}</a>
 						</li>
-						<li class="nav-item">
-							 <a class="nav-link" data-toggle="tab" href="#general_settings" role="tab">{{ __('General Settings') }}</a>
+						<li class="nav-item kt-hide">
+							 <a class="nav-link kt-hide" data-toggle="tab" href="#general_settings" role="tab">{{ __('General Settings') }}</a>
 						</li>
-						<li class="nav-item">
+						<li class="nav-item kt-hide">
 							 <a class="nav-link" data-toggle="tab" href="#schedule_settings" role="tab">{{ __('Schedule Settings') }}</a>
 						</li>
 				 </ul>

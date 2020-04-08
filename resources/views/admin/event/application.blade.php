@@ -1082,13 +1082,13 @@
 														<div class="card-body">
                                                             <div v-if="show" class="alert alert-outline-danger kt-margin-b-5 kt-padding-b-5 kt-padding-t-5 fade show" role="alert">
                                                                 <div class="alert-icon"><i class="flaticon-warning"></i></div>
-                                                                <div class="alert-text">You can only add maximum of 10 additional attachment.</div>
+                                                            <div class="alert-text">{{__('You can only add maximum of 10 additional attachment.')}}</div>
 
                                                             </div>
                                                             <div class="form-group form-group-xs">
                                                                 <button @click="add" class="btn btn-sm btn-warning kt-font-transform-u kt-font-dark" type="button">
                                                                     <span class="la la-plus"></span>
-                                                                    Add Attachment
+                                                                   {{ __('ADD') }}
                                                                 </button>
                                                             </div>
                                                             <table class="table table-borderless table-hover border table-sm">

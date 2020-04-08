@@ -152,7 +152,7 @@
                             <th>{{ __('REFERENCE NO.') }}</th>
                             <th>{{ __('ESTABLISHMENT NAME') }}</th>
                             <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
-                            <th>{{ __('BUSINESS LICENSE') }}</th>
+                            <th>{{ __('TRADE LICENSE NUMBER') }}</th>
                             <th>{{ __('SUBMITTED DATE') }}</th>
                             <th>{{ __('REQUEST TYPE') }}</th>
                             <th>{{ __('COMPLETE ADDRESS') }}</th>
@@ -169,7 +169,7 @@
                                <th>{{ __('PHONE NUMBER') }}</th>
                                <th>{{ __('EMAIL') }}</th>
                                <th>{{ __('REQUEST TYPE') }}</th>
-                               <th>{{ __('LAST CHECKED STATUS') }}</th>
+                               <th>{{ __('STATUS') }}</th>
                                <th>{{ __('COMPLETE ADDRESS') }}</th>
                                <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
                                <th>{{ __('BOUNCED BACK REASON') }}</th>
@@ -357,6 +357,7 @@
         ],
         createdRow: function(row, data, index){
 
+        //    $('td:not(:first-child)',row).click(function(e){ alert() });
            $('td:not(:first-child)',row).click(function(e){ location.href = data.link; });
         }
      });

@@ -383,7 +383,7 @@ class CompanyController extends Controller
                 return type($event->type->name, $sub);
             })
             ->addColumn('duration', function($event){
-                return duration($event->issued_date, $event->expired_date);
+                // return duration($event->issued_date, $event->expired_date);
             })
             ->editColumn('status', function($event){
                 return permitStatus($event->status);

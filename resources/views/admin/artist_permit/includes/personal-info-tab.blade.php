@@ -9,7 +9,7 @@
             <section class="card-body">
                 <section class="kt-form kt-form--label-right ">
                     <div class="form-group form-group-sm  row">
-                        <label class="col-3 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist details </label>
+                        <label class="col-3 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL ARTIST DETAILS') }}</label>
                         <div class="col-1">
                             <span class="kt-switch kt-switch--outline kt-switch--sm kt-switch--icon kt-switch--success">
                                 <label>
@@ -261,7 +261,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group form-group-sm row">
+                            <div class="form-group form-group-sm row kt-hide">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{__('UID Expiry Date')}}  <span class="kt-font-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">

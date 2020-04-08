@@ -47,7 +47,7 @@ class AccountSettingsController extends Controller
             $user->NameAr = $request->NameAr;
             $user->email = $request->email;
             $user->mobile_number = $request->mobile_number;
-            
+
             if($request->has('change_username')){
                 $user->username = $request->username;
             }
@@ -66,7 +66,7 @@ class AccountSettingsController extends Controller
         } catch (\Exception $e) {
             $result = ['error', $e->getMessage(), 'Error'];
         }
-        
+
         return redirect()->back()->with('message', $result);
     }
 

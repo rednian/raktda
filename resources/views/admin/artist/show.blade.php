@@ -59,10 +59,10 @@ $language = Auth::user()->LanguageId;
             <span>{{ __('Age') }} : {{$artistpermit->birthdate->age }}</span><br>
             <span>{{ __('Birthdate') }} : {{$artistpermit->birthdate->format('d-F-Y')}}</span><br>
             <span>{{ __('Gender') }} : {{$artistpermit->gender->name}}</span><br>
-            <span>{{ __('Religion') }} : {{$artistpermit->religion->name}}</span><br>
+            {{-- <span>{{ __('Religion') }} : {{$artistpermit->religion->name}}</span><br> --}}
             <span>{{ __('UID No.') }} : {{$artistpermit->uid_number ? $artistpermit->uid_number : 'N/A'}}</span><br>
-            <span>{{ __('UID Expiry Date') }} :
-              {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br>
+            {{-- <span>{{ __('UID Expiry Date') }} : --}}
+              {{-- {{$artistpermit->uid_expire_date ? $artistpermit->uid_expire_date->format('d-F-Y') : '-'}}</span><br> --}}
             <span>{{ __('Visa Type') }} :
               {{$artistpermit->visaType->name_en ? ucfirst($artistpermit->visaType->name_en) : 'N/A'}}</span><br>
             <span>{{ __('Visa No.') }} : {{$artistpermit->visa_number ? $artistpermit->visa_number : '-' }}</span><br>
@@ -76,7 +76,7 @@ $language = Auth::user()->LanguageId;
             <span>{{ __('Email') }} : {{$artistpermit->email }}</span><br>
             <span>{{ __('Mobile Number') }} : {{$artistpermit->mobile_number }}</span><br>
             <span>{{ __('Phone Number') }} : {{$artistpermit->phone_number }}</span><br>
-            <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br>
+            {{-- <span>{{ __('Fax Number') }} : {{$artistpermit->fax_number }}</span><br> --}}
 
             <h6 class="kt-font-dark kt-font-bold kt-margin-t-15 ">{{__('ADDRESS DETAILS')}}</h6>
             <hr class="kt-margin-b-5  kt-margin-t-0">

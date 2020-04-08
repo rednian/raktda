@@ -9,7 +9,7 @@
             <section class="card-body">
                 <section class="kt-form kt-form--label-right ">
                   <div class="form-group form-group-sm  row">
-                      <label class="col-4 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">Check all artist address details </label>
+                      <label class="col-4 col-form-label kt-font-dark kt-font-bold kt-font-transform-u">{{ __('CHECK ALL ARTIST ADDRESS DETAILS') }}</label>
                       <div class="col-1">
                           <span class="kt-switch kt-switch--outline kt-switch--sm  kt-switch--icon kt-switch--success">
                               <label>
