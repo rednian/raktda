@@ -308,7 +308,7 @@
                               <th>{{__('PERMIT DURATION')}}</th>
                               <th>{{__('REQUEST TYPE')}}</th>
                               <th>{{__('PERMIT NO.')}}</th>
-                              <th>{{__('NUMBER OF ARTIST')}}</th>
+                              <th>{{__('NO. OF ARTIST')}}</th>
                               <th>{{__('STATUS')}}</th>
                               <th>{{__('WORK LOCATION')}}</th>
                           </tr>
@@ -327,7 +327,7 @@
                               <th>{{__('STATUS')}}</th>
                               <th>{{__('BIRTHDATE')}}</th>
                               <th>{{__('AGE')}}</th>
-                              <th>{{__('RELIGION')}}</th>
+                              {{-- <th>{{__('RELIGION')}}</th> --}}
                               <th>{{__('VISA TYPE')}}</th>
                               <th>{{__('VISA NUMBER')}}</th>
                               <th>{{__('VISA EXPIRY')}}</th>
@@ -462,7 +462,7 @@
           {data: 'artist_status'},
           {data: 'birthdate'},
           {data: 'age'},
-          {data: 'religion'},
+        //   {data: 'religion'},
           {data: 'visa_type'},
           {data: 'visa_number'},
           {data: 'visa_expiry'},
