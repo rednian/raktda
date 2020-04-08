@@ -161,22 +161,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group form-group-sm row">
-                                    <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Number') }}</label>
-                                    <div class="col-lg-8">
-                                        <div class="input-group input-group-sm">
-                                            <input value="{{ ucwords($artist_permit->visa_number) }}" readonly type="text" class="form-control form-control-sm">
-                                            <div class="input-group-append">
-                                               <span class="input-group-text">
-                                                 <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
-                                                   <input data-step="step-1" value="{{ ucwords($artist_permit->visa_number) }}" type="checkbox" name="check[visa_number]">
-                                                   <span></span>
-                                                 </label>
-                                               </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                         </section>
                     </div>
                     <div class="col-sm-6">
@@ -261,7 +246,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group form-group-sm row kt-hide">
+                            {{-- <div class="form-group form-group-sm row kt-hide">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{__('UID Expiry Date')}}  <span class="kt-font-danger">*</span></label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
@@ -276,8 +261,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group form-group-sm row">
+                            </div> --}}
+                            {{-- <div class="form-group form-group-sm row">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Language') }}</label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
@@ -292,7 +277,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group form-group-sm row">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('UID No.') }} <span class="kt-font-danger">*</span></label>
                                 <div class="col-lg-8">
@@ -302,6 +287,22 @@
                                            <span class="input-group-text">
                                              <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
                                                <input data-step="step-1" value="{{ ucwords($artist_permit->uid_number) }}" type="checkbox" name="check[uid_number]">
+                                               <span></span>
+                                             </label>
+                                           </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm row">
+                                <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Visa Number') }}</label>
+                                <div class="col-lg-8">
+                                    <div class="input-group input-group-sm">
+                                        <input value="{{ ucwords($artist_permit->visa_number) }}" readonly type="text" class="form-control form-control-sm">
+                                        <div class="input-group-append">
+                                           <span class="input-group-text">
+                                             <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                               <input data-step="step-1" value="{{ ucwords($artist_permit->visa_number) }}" type="checkbox" name="check[visa_number]">
                                                <span></span>
                                              </label>
                                            </span>
