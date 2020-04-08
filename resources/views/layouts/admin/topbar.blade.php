@@ -74,7 +74,8 @@
                         $first_name = $first_name[0];
                         $first_letter = substr($first_name, 0, 1);
                         @endphp
-                    <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> <span
+                    {{-- <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span> --}}
+                    <span
                         class="kt-header__topbar-username kt-hidden-mobile">{{ ucwords($first_name) }}</span>
                     <span
                         class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}</span>

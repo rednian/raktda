@@ -39,7 +39,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group form-group-sm row">
+                            {{-- <div class="form-group form-group-sm row">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Fax Number') }}</label>
                                 <div class="col-lg-8">
                                     <div class="input-group input-group-sm">
@@ -54,7 +54,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group form-group-sm row">
                                 <label for="example-search-input" class="col-4 col-form-label kt-font-dark">{{ __('Sponsor Name') }} <span
                                         class="text-danger">*</span></label>
