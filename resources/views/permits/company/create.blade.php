@@ -70,6 +70,19 @@
     .cc-picker-code-filter {
       z-index: 10 !important;
     }
+
+    .logo-img {
+      width: 12%;
+      margin-top:30px;
+    }
+
+
+    @media all and (max-width:820px) {
+      .logo-img {
+        width: 25%;
+      }
+    }
+
   </style>
 </head>
 
@@ -80,12 +93,10 @@
 
   <!-- begin #page-container -->
   <div id="page-container">
-    <img class="center-block" style="width: 15%" src="{{ asset('img/small.png') }}">
-    <h4 class="text-center" style="margin-top: 2% 0">Create an account</h4>
-    <div class="m-t-10 m-b-20 p-b-40 text-center text-inverse">
-      Already a member? Click <a class="text-success" href="{{ route('login') }}">here</a> to login.
-    </div>
-    <section class="row">
+    <img class="center-block logo-img" src="{{ asset('img/small.png') }}" />
+    <h4 class="text-center" style="margin:25px;">New Registration</h4>
+    
+    <section class="">
       <div class="col-md-6 col-md-offset-3">
         @if (session('error'))
         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -98,7 +109,7 @@
     </section>
 
 
-    <section class="row">
+    <section class="">
       <div class="col-md-6 col-md-offset-3">
         @if (Session::has('error'))
         <section class="alert alert-danger">
@@ -108,10 +119,9 @@
 
         <form action="{{ route('company.store') }}" method="post" accept-charset="utf-8">
           @csrf
-          <section class="panel panel-default">
-            <div class="panel-heading">
-              Establishment Information
-              <h5 class="panel-title"></h5>
+          <section class="panel panel-default" style="margin-bottom:0;">
+            <div class="panel-heading"  style="background:rgba(204,204,204,0.4);padding:15px;">
+              <h5 class="panel-title"><strong>Establishment Information</strong></h5>
             </div>
             <div class="panel-body">
               <div class="form-group @if( $errors->has('name_en') ) has-error @endif">
@@ -128,7 +138,7 @@
               <section class="row corporate">
                 <div class="col-sm-6">
                   <div class="form-group @if( $errors->has('trade_license') ) has-error @endif">
-                    <label>Trade License Number <span class="text-danger">*</span></label>
+                    <label>Business License Number <span class="text-danger">*</span></label>
                     <input required value="{{old('trade_license')}}" type="text" name="trade_license"
                       class="form-control @error('trade_license') is-invalid @enderror" autocomplete="off">
                     @if ($errors->has('trade_license'))
@@ -139,7 +149,7 @@
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group @if( $errors->has('trade_license_expired_date') ) has-error @endif">
-                    <label>Trade License Expired Date <span class="text-danger">*</span></label>
+                    <label>Business License Expiry Date <span class="text-danger">*</span></label>
                     <input min="{{date('Y-m-d')}}" required value="{{old('trade_license_expired_date')}}" type="date"
                       name="trade_license_expired_date"
                       class="form-control @error('trade_license_expired_date') is-invalid @enderror" autocomplete="off">
@@ -221,19 +231,19 @@
   </div>
   </section>
   <section class="panel panel-default" style="margin-bottom: 0">
-    <div class="panel-heading">
-      User Information
+    <div class="panel-heading" style="background:rgba(204,204,204,0.4);padding:15px;">
+     <h5 class="panel-title"><strong> User Information</strong></h5>
     </div>
     <div class="panel-body">
       <div class="form-group">
-        <label>Name <span class="text-danger">*</span></label>
+        <label>Full Name <span class="text-danger">*</span></label>
         <input value="{{old('NameEn')}}" type="text" name="NameEn" class="form-control" required autocomplete="off"
           autofocus>
       </div>
       <section class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>Email <span class="text-danger">*</span></label>
+            <label>Email Address<span class="text-danger">*</span></label>
             <input value="{{old('email')}}" type="email" required name="email" class="form-control" required
               autocomplete="off" autofocus>
           </div>
@@ -272,8 +282,7 @@
       </section>
     </div>
   </section>
-  <section class="panel">
-    <div class="panel-body">
+    <div class="panel-body" style="padding-top:0px;">
       {{-- <div class="form-group">
                                 {!! NoCaptcha::display() !!}
                                 @if ($errors->has('g-recaptcha-response'))
@@ -283,11 +292,12 @@
       @endif
     </div> --}}
     <div class="form-group">
-      <label>
-        <input name="term_condition" required type="checkbox" required=""> By clicking Register, you agree to
+      <label style="display: flex; align-items: center;">
+        <input name="term_condition" required type="checkbox" style="margin-right:10px;"> I agree to &nbsp;<a href="{{route('company.tandc')}}">terms and conditions</a>
+        {{-- By clicking Register, you agree to
         our <a href="javacript:void(0)">Terms</a> and that you have read our <a href="javacript:void(0)">Data
           Policy</a>, including
-        our <a href="javacript:void(0)">Cookie Use</a>.
+        our <a href="javacript:void(0)">Cookie Use</a>. --}}
       </label>
     </div>
     <div class="form-group">
@@ -295,9 +305,10 @@
         <button type="submit" class="btn btn-success btn-block">Register</button>
       </div>
     </div>
-
+  <div class="m-t-10 m-b-20 text-center text-inverse">
+      Already Registered ? Click <a class="text-success" href="{{ route('login') }}">here</a> to Login.
     </div>
-  </section>
+    </div>
 
 
 

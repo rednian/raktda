@@ -202,7 +202,7 @@
         <div class="col-md-6">
             <div class="row form-group form-group-sm">
                 <div class="col-sm-6">
-                    <label>Business License Number <span class="text-danger">*</span></label>
+                    <label>{{__('Business License Number')}}<span class="text-danger">*</span></label>
                     <input required name="trade_license" autocomplete="off" class="form-control form-control-sm
                                                                        @error('trade_license') is-invalid @enderror"
                         type="text" value="{{$company->trade_license }}">
@@ -211,7 +211,7 @@
                     @endif
                 </div>
                 <div class="col-sm-6">
-                    <label>Business License Expiry Date<span class="text-danger">*</span></label>
+                    <label>{{__('Business License Expiry Date')}}<span class="text-danger">*</span></label>
                     <input required name="trade_license_expired_date" autocomplete="off"
                         class="date-picker end form-control form-control-sm
                                                                       @error('trade_license_    _date') is-invalid @enderror" type="text"
@@ -257,7 +257,7 @@
                         @if (App\Areas::where('emirates_id', 5)->orderBy('area_en')->count() > 0)
                         @foreach (App\Areas::where('emirates_id', 5)->orderBy('area_en')->get() as $area)
                         <option {{ $area->id == $company->area_id ? 'selected': null }}
-                            value="{{old('area_id',$area->id)}}">{{ucfirst($area->area_en)}}</option>
+                            value="{{old('area_id',$area->id)}}">{{getLangId() == 1 ? ucfirst($area->area_en) : $area->area_ar}}</option>
                         @endforeach
                         @endif
                     </select>
@@ -321,7 +321,7 @@
             <div class="card-body">
                 <section class="row form-group form-group-sm">
                     <div class="col-md-6">
-                        <label>{{__('Name')}} <span class="text-danger">*</span></label>
+                        <label>{{__('Full Name (EN)')}} <span class="text-danger">*</span></label>
                         <input required autocomplete="off" name="contact_name_en"
                             class="form-control form-control-sm @error('contact_name_en') is-invalid @enderror"
                             type="text" value="{{old('contact_name_en', $company->contact->contact_name_en)}}">
@@ -330,7 +330,7 @@
                         @endif
                     </div>
                     <div class="col-md-6">
-                        <label>{{__('Name (AR)')}}<span class="text-danger">*</span></label>
+                        <label>{{__('Full Name (AR)')}}<span class="text-danger">*</span></label>
                         <input required dir="rtl" name="contact_name_ar" autocomplete="off"
                             class="form-control form-control-sm @error('contact_name_ar') is-invalid @enderror"
                             type="text" value="{{old('contact_name_ar', $company->contact->contact_name_ar)}}">
@@ -415,18 +415,18 @@
         <div id="collapse-requirement" class="collapse show" aria-labelledby="heading-requirement"
             data-parent="#accordion-requirement">
             <div class="card-body">
-                <div class="alert alert-outline-primary fade kt-margin-b-20 show kt-padding-t-0 kt-padding-b-0"
+                <div class="alert alert-secondary fade kt-margin-b-20 show kt-padding-t-10 kt-padding-b-0"
                     role="alert">
-                    <div class="alert-icon"><i class="flaticon-questions-circular-button"></i>
+                    <div class="alert-icon">
+                        <i class="flaticon-warning"></i>
                     </div>
                     <div class="alert-text kt-font-dark">
-                        <span class="kt-font-danger kt-font-bold">{{__('Note')}}:</span>
+                        {{-- <span class="kt-font-danger kt-font-bold">{{__('Note')}}:</span> --}}
                         <ul>
-                            <li class="kt-font-danger">
-                                {{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
-                            <li>{{__('Uploading file not in the list? Please use the Other upload option.')}}</li>
-                            <li>{{__('The maximum file size for uploads is 5MB.')}}</li>
-                            <li>{{__('File Upload (JPG, PNG & PDF) only allowed.')}}</li>
+                            {{-- <li class="kt-font-danger">{{__('Uploaded files will be deleted if not submitted or saved as draft.')}}</li>
+                            <li>{{__('Uploading file not in the list? Please use the Other upload option.')}}</li> --}}
+                            <li>{{__('The maximum file size for uploads is 5MB')}}</li>
+                            <li>{{__('Accepted documents formats (pdf, jpg, png)')}}</li>
                         </ul>
                     </div>
                     <div class="alert-close">
@@ -443,7 +443,7 @@
                         <select name="requirement_id" class=" form-control"></select>
                     </div>
                     <div class="col-md-4">
-                        <label>{{__('Upload document')}} <span class="text-danger">*</span></label>
+                        <label>{{__('Upload Document')}} <span class="text-danger">*</span></label>
                         <input id="file" onchange="readUrl(this);" type="file" multiple class="form-control">
                     </div>
                     {{--                                                      <div class="col-md-2 date-required">--}}
@@ -467,7 +467,7 @@
                     <thead>
                         <tr>
                             <th>{{__('Requirement Name')}}</th>
-                            <th>{{__('File')}}</th>
+                            <th>{{__('No.of.Files')}}</th>
                             {{-- <th>{{__('ISSUED DATE')}}</th>
                             <th>{{__('EXPIRED DATE')}}</th> --}}
                             <th>{{__('Action')}}</th>

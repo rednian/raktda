@@ -38,6 +38,10 @@ Route::get('/registration', 'Company\CompanyController@create')->name('company.c
 Route::post('/registration', 'Company\CompanyController@store')->name('company.store');
 Route::get('/registration/is_exist', 'Company\CompanyController@isexist')->name('company.isexist');
 
+Route::get('/termsandconditions', function(){
+    return view('permits.company.tandc');
+})->name('company.tandc');
+
 Auth::routes(['register' => false, 'verify' => true ]);
 Route::post('/update_language', 'Admin\UserController@updateLanguage')->name('admin.language')->middleware('auth');
 

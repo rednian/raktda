@@ -90,9 +90,7 @@
                     $first_name = $first_name[0];
                     $first_letter = substr($first_name, 0, 1);
                     @endphp
-
-                    <span class="kt-header__topbar-welcome kt-hidden-mobile">{{__('Hi')}}</span> <span
-                        class="kt-header__topbar-username kt-hidden-mobile">{{ getLangId() == 1 ? ucwords($first_name) :  $name_ar }}</span>
+                    <span class="kt-header__topbar-username kt-hidden-mobile">{{ getLangId() == 1 ? ucwords($first_name) :  $name_ar }}</span>
                     <span
                         class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">{{ ucwords($first_letter) }}
                     </span>
@@ -133,7 +131,7 @@
                     <div class="kt-notification__custom kt-space-between pull-right">
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();"
-                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Sign out')}}</a>
+                            class="btn btn-secondary btn-elevate btn-hover-warning">{{__('Logout')}}</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf
                         </form>
                     </div>
