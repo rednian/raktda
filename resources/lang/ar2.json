@@ -1,4 +1,8 @@
 {
+    "Custom From & To":"من تاريخ إلى تاريخ",
+    "Last Month":"آخر شهر",
+    "This Month":"هذا الشهر",
+    "Yesterday":"أمس",
     "ADD GOVERNMENT USER":"إضافة مستخدم حكومي",
     "ADD USER":"إضافة مستخدم",
     "ADDRESS DETAILS":"تفاصيل العنوان",
@@ -186,6 +190,7 @@
 "Issued Date":"تاريخ الإصدار",
 "ISSUED DATE":"تاريخ الإصدار",
 "Language":"اللغة",
+"Last 7 Days":"أخر 7 أيام",
 "Last 30 days":"آخر 30 يوم",
 "LAST NAME":"اسم العائلة",
 "Last Name":"اسم العائلة",

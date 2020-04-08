@@ -394,7 +394,7 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
-        locale:{'customRangeLabel':'Custom From & To'},
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
           '{{ __('Today') }}': [moment(), moment()],
           '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -470,7 +470,7 @@
           startDate: start,
           endDate: end,
           maxDate: new Date,
-          locale:{'customRangeLabel':'Custom From & To'},
+          locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
           ranges: {
             '{{ __('Today') }}': [moment(), moment()],
             '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -547,7 +547,7 @@
           startDate: start,
           endDate: end,
           maxDate: new Date,
-          locale:{'customRangeLabel':'Custom From & To'},
+          locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
           ranges: {
             '{{ __('Today') }}': [moment(), moment()],
             '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -619,7 +619,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
-         locale:{'customRangeLabel':'Custom From & To'},
+         locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -700,7 +700,7 @@
          startDate: start,
          endDate: end,
          maxDate: new Date,
-       locale:{'customRangeLabel':'Custom From & To'},
+       locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
          ranges: {
            '{{ __('Today') }}': [moment(), moment()],
            '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
