@@ -45,7 +45,7 @@ function dayCount(from, to) {
     var y = moment(to, "DD-MM-YYYY");
     var from = moment([x.format("YYYY"), x.month(), x.format("DD")]);
     var to = moment([y.format("YYYY"), y.month(), y.format("DD")]);
-    return to.diff(from, "days");
+    return to.diff(from, "days") + 1;
 }
 
 function capitalizeFirst(word) {

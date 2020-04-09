@@ -59,9 +59,7 @@
                             $artist_total_fee = 0;
                             $artist_vat_total = 0;
                             $artist_g_total = 0;
-                            $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date);
-                            $event = $permit_details->event;
-                            $noofdays = isset($event) ?  $noofdays + 1 : $noofdays;
+                            $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date) + 1;
                             @endphp
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('Permit Duration')}}</span>

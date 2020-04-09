@@ -529,11 +529,12 @@ function calculateDateDiff($x, $y)
     $diffr = $from->diff($to);
     $term = '';
     $year = $diffr->y;
-    $term .= $year ? $year . ' ' . ($year > 2 ? __('Years') . ' ' :  $year > 1 ? __('years') . ' ' : __('year') . ' ') : '';
+    $term .= $year ? $year . ' ' . ($year > 2 ? __('years') . ' ' :  $year > 1 ? __('years') . ' ' : __('year') . ' ') : '';
     $month = $diffr->m;
-    $term .= $month ? $month . ' ' . ($month > 2 ? __('Months') . ' ' : $month > 1 ? __('months') . ' ' : __('month') . ' ') : '';
-    $day = $diffr->d;
-    $term .= $day ? $day . ' ' . ($day > 2  ? __('Days') : $day > 1  ? __('days') : __('day')) : '';
+    $term .= $month ? $month . ' ' . ($month > 2 ? __('months') . ' ' : $month > 1 ? __('months') . ' ' : __('month') . ' ') : '';
+    if($from == $to) return '1 day';
+    $day = $diffr->d + 1;
+    $term .= $day ? $day . ' ' . ($day > 2  ? __('days') : $day > 1  ? __('days') : __('day')) : '';
     return $term;
 }
 
