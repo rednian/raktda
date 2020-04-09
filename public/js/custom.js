@@ -50,6 +50,12 @@ $(document).ready(function(){
         // {targets: '_all', className: 'no-wrap'}
       ],
         language:{
+            aria: {
+                paginate: {
+                    previous: 'Previous',
+                    next:     'Next'
+                }
+            }
           search: '',
           searchPlaceholder: 'Search...',
           lengthMenu: "_MENU_ ",
