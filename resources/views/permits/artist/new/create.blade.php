@@ -565,7 +565,7 @@
                 {
                     $('#showwarning').modal('show');
                 }
-                var permit_to = x.add(30, 'days').calendar();
+                var permit_to = x.add(29, 'days').calendar();
                 var permit_to_date = moment(permit_to,'MM/DD/YYYY').format('DD-MM-YYYY');
                 $('#permit_to').val(permit_to_date).datepicker('update');
                 
