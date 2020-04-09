@@ -136,7 +136,7 @@
                                             @php
                                             $issued_date = strtotime($event->issued_date);
                                             $expired_date = strtotime($event->expired_date);
-                                            $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                            $noofdays = (abs($expired_date - $issued_date) / 60 / 60 / 24) + 1;
                                             @endphp
                                             <div class="kt-widget__item">
                                                 <span class="kt-widget__date">{{__('No.of.days')}}</span>
@@ -273,7 +273,7 @@
                                                 <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                             </tr>
                                             @endif
-                                            @if(isset($event->liquor) &&
+                                            @if($event->liquor->company_name_en !== null &&
                                             $event->liquor->provided == 0 && $event->liquor->paid == 0)
                                             <tr>
                                                 <td colspan="2">{{__('Liquor')}} </td>

@@ -34,19 +34,19 @@
                             <form id="happiness_center" autocomplete="off" novalidate>
                                 <div class="d-flex justify-content-around happiness--center">
                                     <input type="hidden" id="sel_value">
-                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,0)">
+                                    <div id="sad" style="cursor:pointer" onclick="makeSelected(this.id,0)" title="{{__('Dissatisfied')}}">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/sad.svg" alt="" id="sad_btn"> -->
                                         <?php echo file_get_contents('./img/sad.svg'); ?>
                                         <!--</a> -->
-                                    </div>
-                                    <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id, 50)">
+                                    </div> 
+                                    <div id="notbad" style="cursor:pointer" onclick="makeSelected(this.id, 50)" title="{{__('Neutral')}}">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/notbad.svg" alt="" id="notbad_btn"> -->
                                         <?php echo file_get_contents('./img/notbad.svg'); ?>
                                         <!--</a> -->
                                     </div>
-                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 100)">
+                                    <div id="happy" style="cursor:pointer" onclick="makeSelected(this.id, 100)"  title="{{__('Satisfied')}}">
                                         <!--<a href="/company/artist_permits"> -->
                                         <!-- <img src="./assets/img/happiness.svg" alt="" id="happy_btn"> -->
                                         <?php echo file_get_contents('./img/happiness.svg'); ?>

@@ -397,8 +397,8 @@
                     data: { event_id: eventId },
                     async: true,
                     success: function(result){
-                        $('#permit_from').val(moment(result.issued_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY')); $('#permit_from').addClass('mk-disabled');
-                        $('#permit_to').val(moment(result.expired_date,"DD-MMM-YYYY").utc().format('DD-MM-YYYY'));$('#permit_to').addClass('mk-disabled');
+                        $('#permit_from').val(moment(result.issued_date,"DD-MMM-YYYY").format('DD-MM-YYYY')); $('#permit_from').addClass('mk-disabled');
+                        $('#permit_to').val(moment(result.expired_date,"DD-MMM-YYYY").format('DD-MM-YYYY'));$('#permit_to').addClass('mk-disabled');
                         $('#work_loc').val(result.venue_en);$('#work_loc').addClass('mk-disabled');
                         $('#work_loc_ar').val(result.venue_ar);$('#work_loc_ar').addClass('mk-disabled');
                         $('#add_artist').attr('disabled', false);

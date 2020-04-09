@@ -58,7 +58,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                                 <div class="input-group input-group-sm">
                                                     <select class="form-control form-control-sm" name="event_type_id"
                                                         id="event_type_id" placeholder="Type"
-                                                        onchange="getRequirementsList();setSubTypes()" {{$isDisabled}}>
+                                                        onchange="setSubTypes();getRequirementsList();" {{$isDisabled}}>
                                                         <option value="">{{__('Select')}}</option>
                                                         @foreach ($event_types as $pt)
                                                         <option value="{{$pt->event_type_id}}"

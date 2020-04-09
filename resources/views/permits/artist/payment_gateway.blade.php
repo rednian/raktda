@@ -55,11 +55,19 @@
                                     </span>
                                 </div>
                             </div>
+                            @php
+                            $artist_total_fee = 0;
+                            $artist_vat_total = 0;
+                            $artist_g_total = 0;
+                            $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date);
+                            $event = $permit_details->event;
+                            $noofdays = isset($event) ?  $noofdays + 1 : $noofdays;
+                            @endphp
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
-                                        {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
+                                        {{$noofdays.' '.($noofdays  > 1 ? 'days' : 'day' )}}
                                     </span>
                                 </div>
                             </div>
@@ -93,12 +101,6 @@
 
                     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
-                    @php
-                    $artist_total_fee = 0;
-                    $artist_vat_total = 0;
-                    $artist_g_total = 0;
-                    $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date);
-                    @endphp
 
                     <input type="hidden" id="noofdays" value="{{$noofdays}}">
                     <div class="table-responsive">
@@ -266,7 +268,7 @@
                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                 </tr>
                                 @endif
-                                @if(isset($event->liquor) &&
+                                @if($event->liquor->company_name_en !== null &&
                                 $event->liquor->provided == 0 && $event->liquor->paid == 0)
                                 <tr>
                                     <td colspan="2">{{__('Liquor')}} </td>

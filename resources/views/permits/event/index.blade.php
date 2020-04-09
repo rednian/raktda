@@ -633,7 +633,7 @@
                     element.find('.fc-title').html('&emsp;'+info.event.title.toUpperCase());
                     if (info.event.extendedProps && info.event.extendedProps.description) {
                         if (element.hasClass('fc-day-grid-event')) {
-                            element.data('content', 'VENUE: '+info.event.extendedProps.description);
+                            element.data('content', "{{__('Venue')}}"+'  '+info.event.extendedProps.description);
                             // element.data('placement', 'top');
                             // KTApp.initPopover(element);
                         } else if (element.hasClass('fc-time-grid-event')) {

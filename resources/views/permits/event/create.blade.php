@@ -641,7 +641,7 @@
             $('#issued_date').valid() || $('#issued_date').removeClass('invalid').addClass('success');
             var minDate = new Date(selected.date.valueOf());
             // var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'month').subtract(1, 'day');
-            var expDate = moment(minDate, 'DD-MM-YYYY').add(1,'day');
+            var expDate = moment(minDate, 'DD-MM-YYYY'); //.add(1,'day')
             $('#expired_date').datepicker('setStartDate', minDate);
             // $('#expired_date').datepicker('setEndDate', expDate.format("DD-MM-YYYY"));
             $('#expired_date').val(expDate.format("DD-MM-YYYY")).datepicker('update');
@@ -872,8 +872,7 @@
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
                      }
-                     uploadFunction();
-                     picUploadFunction();
+                     
                     documentsValidator = $('#documents_required').validate({
                         rules: docRules,
                         messages: docMessages
@@ -881,6 +880,8 @@
                  }else {
                     $('#documents_required').empty();
                  }
+                 uploadFunction();
+                 picUploadFunction();
                 }
             });
             }
