@@ -130,7 +130,7 @@ body{
     <li>
         <button class="btn btn-warning btn-sm"
                 style="box-shadow: 1px 4px 7px -5px grey;height: 24px;border-radius: 3px;line-height: 4px;margin-top: 9px;border: none"
-                id="filter_button"><i class="fas fa-filter"></i>{{__('FILTER')}}
+                id="filter_button"><i class="fas fa-filter"></i>{{__('Filter')}}
         </button>
     </li>
     <li>
@@ -278,7 +278,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                       padding: 6px;
                                       border-bottom: 1px solid #8c8c8c;
                                       text-align: center;">
-                                    Personal Details
+                                    {{__('Personal Details')}}
                                     - {{Auth()->user()->LanguageId == 1 ? $artistWithThisId->firstname_en . " " . $artistWithThisId->lastname_en  : $artists->firstname_ar. " ".$artistWithThisId->lastname_ar}}
                                 </th>
                             </tr>
@@ -286,7 +286,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                                 <th style=";padding: 9px;white-space: nowrap">{{__('PERSON CODE')}}</th>
                                 <th style=";padding: 9px;white-space: nowrap">{{__('PROFESSION')}}</th>
                                 <th style=";padding: 9px;width: 14%">{{__('NATIONALITY')}}</th>
-                                <th style="padding: 9px;white-space: nowrap">{{__('E-MAIL')}}</th>
+                                <th style="padding: 9px;white-space: nowrap">{{__('EMAIL')}}</th>
                                 <th style=";padding: 9px;white-space: nowrap">{{__('PASSPORT NO.')}}</th>
                                 <th style="padding: 9px;white-space: nowrap">{{__('PASSPORT EXPIRY DATE')}}</th>
                                 <th style="padding: 9px;white-space: nowrap"><span> {{__('VISA NO.')}}</span></th>
@@ -369,7 +369,7 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                             </tr>
                             <tr>
                                 <th style="text-align: left;padding: 10px">
-                                    Total Permits : <span style="color: grey">{{$permits->count()}}</span>
+                                    {{__('Total Permits')}} : <span style="color: grey">{{$permits->count()}}</span>
                                 </th>
                             </tr>
                             </tbody>
@@ -379,11 +379,11 @@ margin-left: 10px;border: none;background-color:#f7f7f7;" id="ArtistTableresetBu
                 <div class="modal-footer" id="modal_footer{{$artists->artist_id}}">
                     <a class="btn btn-success"
                        style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
-                       id="{{$artists->artist_id}}" href="{{route('admin.artist_permit_report.artistHistory',$artists->artist_id)}}" >Artist History
+                       id="{{$artists->artist_id}}" href="{{route('admin.artist_permit_report.artistHistory',$artists->artist_id)}}" >{{__('Artist History')}}
                     </a>
                     <button class="btn btn-success"
                             style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
-                            id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">Print
+                            id="{{$artists->artist_id}}" onclick="printContent({{$artists->artist_id}})">{{__('Print')}}
                     </button>
                     <button
                         style="height: 26px; line-height: 3px; border-radius: 2px; box-shadow: 1px 3px 4px -4px black;"
