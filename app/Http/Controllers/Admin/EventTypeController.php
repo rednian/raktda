@@ -47,7 +47,7 @@ class EventTypeController extends Controller
 		    	return $user->LanguageId == 1 ? ucfirst($type->description_en) : $type->description_ar;
 		    })
             ->addColumn('actions', function($type){
-                return '<button data-url="' . route('event_type.destroy', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('Delete') . '</button> <button data-url="' . URL::signedRoute('event_type.edit', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Edit') . '</button>';
+                return '<button data-url="' . route('event_type.destroy', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">' . __('DELETE') . '</button> <button data-url="' . URL::signedRoute('event_type.edit', $type->event_type_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('EDIT') . '</button>';
             })
             ->rawCOlumns(['actions'])
 		    ->setTotalRecords($totalRecords)
@@ -131,7 +131,7 @@ class EventTypeController extends Controller
                 }
             }
         }
-        
+
         return view('admin.settings.event.edit', ['page_title'=>'Edit Event Type', 'event_type' => $event_type, 'required' => $required, 'selected' => $selected]);
     }
 
@@ -183,6 +183,6 @@ class EventTypeController extends Controller
                 $result = ['error', $e->getMessage(), 'Error'];
             }
             return response()->json(['message' => $result]);
-        
+
     }
 }

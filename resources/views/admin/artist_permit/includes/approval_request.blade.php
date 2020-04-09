@@ -16,21 +16,21 @@
 			<div class="col-4">
 				  <div class="input-group input-group-sm">
 				  		<div class="kt-input-icon kt-input-icon--right">
-				  			<input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}" id="new-applied-date" >
+				  			<input autocomplete="off" type="text" class="form-control form-control-sm" aria-label="Text input with checkbox" placeholder="{{ __('SUBMITTED DATE') }}" id="new-applied-date" >
 				  			<span class="kt-input-icon__icon kt-input-icon__icon--right">
 				  				<span><i class="la la-calendar"></i></span>
 				  			</span>
 				  		</div>
 				</div>
 			</div>
-			<div class="col-3">
+			{{-- <div class="col-3">
 				<select name="" id="new-request-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="artistPermit.draw()" >
 					<option selected disabled >{{ __('REQUEST TYPE') }}</option>
 					<option value="new">{{ __('New Application') }}</option>
 					<option value="amend">{{ __('Amend Application') }}</option>
 					<option value="renew">{{ __('Renew Application') }}</option>
 				</select>
-			</div>
+			</div> --}}
 			{{-- <div class="col-3">
 				<select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="artistPermit.draw()">
 					<option disabled selected>PERMIT STATUS</option>
@@ -61,15 +61,11 @@
 		<th>{{ __('ESTABLISHMENT NAME') }}</th>
 		<th>
 			{{ __('NO. OF ARTIST') }}
-			<span data-content="The number of artist that already checked"
-				  data-original-title="" data-container="body" data-toggle="kt-popover"
-				  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-			</span>
 		</th>
 		<th>{{ __('REQUEST TYPE') }}</th>
 		<th>{{ __('SUBMITTED DATE') }}</th>
 		<th>{{ __('STATUS') }}</th>
-		
+
 	 </tr>
 	 </thead>
 </table>

@@ -88,9 +88,9 @@
 								 <tr>
 										<th>{{ __('DOCUMENT NAME') }}</th>
 										<th>{{ __('DESCRIPTION') }}</th>
-										<th>{{ __('VALIDITY (months)') }}</th>
+										<th>{{ __('VALIDITY (in months)') }}</th>
 										{{-- <th>{{ __('PERMIT TERM') }}</th> --}}
-										<th>{{ __('DATE REQUIRED') }}</th>
+										<th>{{ __('IS DATE REQUIRED') }}</th>
 										<th>{{ __('STATUS') }}</th>
 										<th>{{ __('ACTIONS') }}</th>
 								 </tr>
@@ -611,7 +611,7 @@
                global: false,
            },
            columnDefs: [
-                {targets:  [3], className: 'no-wrap', sortable: false},
+                {targets:  '_all', className: 'no-wrap', sortable: false},
            ],
            columns: [
            		{ data: 'name', name: 'name' },

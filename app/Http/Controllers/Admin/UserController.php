@@ -106,11 +106,11 @@ class UserController extends Controller
     	})->editColumn('CreatedAt', function($user){
     		return $user->CreatedAt->format('Y-m-d');
     	})->addColumn('actions', function($user){
-    		return '<button data-url="' . URL::signedRoute('user_management.details', ['user' => $user->user_id ]) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('Details') . '</button>';
+    		return '<button data-url="' . URL::signedRoute('user_management.details', ['user' => $user->user_id ]) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">' . __('DETAILS') . '</button>';
     	})->addColumn('show_url', function($user){
     		return URL::signedRoute('user_management.details', ['user' => $user->user_id ]);
     	})->addColumn('status', function($user){
-    		return  $user->IsActive == 1 ? 'Active' : 'Inactive';
+    		return  $user->IsActive == 1 ? __('Active') : __('Inactive');
     	})->addColumn('department', function($user) use($request){
             if(!is_null($user->government_id)){
                 return $request->user()->language_id == 1 ? $user->governmentDepartment->government_name_en : $user->governmentDepartment->government_name_ar;

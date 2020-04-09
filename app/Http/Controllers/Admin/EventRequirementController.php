@@ -42,7 +42,7 @@ class EventRequirementController extends Controller
 				 	return ucfirst($requirement->requirement_description);
 				 })
 				  ->editColumn('date_required', function($requirement) use ($user){
-				 	return $requirement->dates_required;
+				 	return __($requirement->dates_required);
 				 })
 				 ->make(true);
 		}
