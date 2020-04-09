@@ -1,4 +1,5 @@
 {
+    "Checked Permits":"التصاريح التي تم تدقيقها",
     "Please wait..":"أرجو الإنتظار..",
     "Custom From & To":"من تاريخ إلى تاريخ",
     "Last Month":"آخر شهر",
@@ -193,6 +194,12 @@
 "Language":"اللغة",
 "Last 7 Days":"أخر 7 أيام",
 "Last 30 days":"آخر 30 يوم",
+"Last Action Taken":"آخر إجراء تم اتخاذه",
+"LAST ACTION TAKEN":"آخر إجراء تم اتخاذه",
+"Last Checked By":"آخر تدقيق من قبل",
+"LAST CHECKED BY":"آخر تدقيق من قبل",
+"Last Checked Date":" تاريخ آخر تدقيق",
+"LAST CHECKED DATE":" تاريخ آخر تدقيق",
 "LAST NAME":"اسم العائلة",
 "Last Name":"اسم العائلة",
 "Last Name (AR)":"اسم العائلة",
