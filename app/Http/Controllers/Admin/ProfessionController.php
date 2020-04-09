@@ -33,7 +33,7 @@ class ProfessionController extends Controller
 			if($request->user()->LanguageId == 1){
 				return $profession->is_multiple ? 'Yes' : 'No';
 			}
-			return $profession->is_multiple ? __('Yes') : __('No');
+			return $profession->is_multiple ? __('YES') : __('NO');
 		})
 		->editColumn('amount', function($args){
 		 	return number_format($args->amount, 2).' AED';
@@ -46,7 +46,7 @@ class ProfessionController extends Controller
 			return $user->LanguageId == 1 ? ucwords($args->createdBy->NameEn) : ucwords($args->createdBy->NameAr);
 		})
 		->addColumn('actions', function($args){
-			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('Delete').'</button> <button data-url="' . URL::signedRoute('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('Edit').'</button>';
+			return '<button data-url="' . route('settings.profession.destroy', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-delete">'.__('DELETE').'</button> <button data-url="' . URL::signedRoute('settings.profession.edit', $args->profession_id) . '" class="btn btn-secondary btn-sm btn-elevate btn-edit">'.__('EDIT').'</button>';
 		})
 		->rawColumns(['actions', 'created_at'])
 		->make(true);

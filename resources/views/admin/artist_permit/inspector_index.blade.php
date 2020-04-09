@@ -45,7 +45,7 @@
 @section('content')
 	 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
 			<div class="kt-portlet__body">
-        
+
 				 <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger" role="tablist" id="artist-permit-nav">
 						<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#new-request" data-target="#new-request">{{ __('Need Approval') }}</a></li>
             <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#checked-request" data-target="#checked-request">{{ __('Checked Permits') }}</a></li>
@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-        
+
 				 <div class="tab-content">
 						<div class="tab-pane show fade active" id="new-request" role="tabpanel">
 									@include('admin.artist_permit.includes.approval_request')
@@ -148,7 +148,7 @@
     setInterval(function(){ newRequest(); pendingRequest();}, 100000);
 
     hash && $('ul.nav a[href="' + hash + '"]').tab('show');
-    
+
     $('.nav-tabs a').click(function (e) {
       $(this).tab('show');
       var scrollmem = $('body').scrollTop();
@@ -158,7 +158,7 @@
   });
 
 
-        
+
      function newRequest() {
 
        var start = moment().subtract(29, 'days');
@@ -196,11 +196,12 @@
               "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         ajax: {
           url: '{{ route('admin.artist_permit.datatable') }}',
+          responsive: true,
           data: function (d) {
              // var status = $('select#new-permit-status').val();
              d.request_type = $('select#new-request-type').val();
              d.status = ['need approval', 'checked-inspector', 'checked-manager'];
-             d.date = $('#new-applied-date').val()  ? selected_date : null; 
+             d.date = $('#new-applied-date').val()  ? selected_date : null;
              d.approval = 1;
              @if(Auth::user()->roles()->first()->role_id == 6)
              d.gov = 1;
@@ -209,7 +210,7 @@
          },
          // order: [[ 3, "desc" ]],
          columnDefs: [
-           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+           {targets: '_all', className: 'no-wrap'},
          ],
          columns: [
            {data: 'reference_number'},
@@ -281,16 +282,17 @@
              // var status = $('select#new-permit-status').val();
              d.request_type = $('select#checked-request-type').val();
              d.status = ['need approval', 'checked'];
-             d.checked_date = $('#checked-applied-date').val()  ? selected_date : null; 
+             d.checked_date = $('#checked-applied-date').val()  ? selected_date : null;
              d.checked = 1;
              @if(Auth::user()->roles()->first()->role_id == 6)
              d.gov = 1;
              @endif
            }
          },
+         responsive:true,
          // order: [[ 3, "desc" ]],
          columnDefs: [
-           {targets: [0, 2, 4, 5], className: 'no-wrap'},
+           {targets: '_all', className: 'no-wrap'},
          ],
          columns: [
            {data: 'reference_number'},

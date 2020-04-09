@@ -23,7 +23,7 @@
 				  		</div>
 				</div>
 			</div>
-			
+
 			{{-- <div class="col-3">
 				<select  name="" id="new-permit-status" class=" form-control form-control-sm custom-select-sm custom-select" onchange="artistPermit.draw()">
 					<option disabled selected>PERMIT STATUS</option>
@@ -54,10 +54,6 @@
 		<th>{{ __('ESTABLISHMENT NAME') }}</th>
 		<th>
 			{{ __('NO. OF ARTIST') }}
-			<span data-content="The number of artist that already checked"
-				  data-original-title="" data-container="body" data-toggle="kt-popover"
-				  data-placement="top" class="la la-question-circle kt-font-bold kt-font-warning" style="font-size:large">
-			</span>
 		</th>
 		<th>{{ __('LAST CHECKED DATE') }}</th>
 		<th>{{ __('LAST CHECKED BY') }}</th>

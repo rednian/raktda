@@ -301,7 +301,7 @@
 	               global: false,
 	           	},
 	           	columnDefs: [
-	                {targets:  [4], className: 'no-wrap text-right', sortable: false},
+	                {targets:  '_all', className: 'no-wrap text-right', sortable: false},
 	           	],
 	           	columns: [
 	           		{ data: 'name', name: 'name' },
@@ -348,6 +348,7 @@
 	           	},
 	           	columnDefs: [
 	                {targets:  [5], className: 'no-wrap text-right', sortable: false},
+	                {targets:  '_all', className: 'no-wrap text-right', sortable: false},
 	           	],
 	           	columns: [
 	           		{ data: 'name', name: 'name' },

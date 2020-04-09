@@ -20,8 +20,8 @@ class Profession extends Model
 
     public function createdBy(){
     	return $this->belongsTo(User::class, 'created_by', 'user_id')->withDefault([
-	        'NameEn' => 'Not Available',
-	        'NameAr' => 'Not Available'
+	        'NameEn' => __('Not Available'),
+	        'NameAr' => __('Not Available')
 	    ]);
     }
     public function getNameAttribute()

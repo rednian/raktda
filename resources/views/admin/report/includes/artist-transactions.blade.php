@@ -52,7 +52,7 @@
             </tr>
         </table>
         <div class="container" align="center">
-            <button class="btn print_button btn-sm" id="ClicktoPrintEvent" style="text-align: center">PRINT</button>
+            <button class="btn print_button btn-sm" id="ClicktoPrintEvent" style="text-align: center">{{__('PRINT')}}</button>
         </div>
 
     </section>
