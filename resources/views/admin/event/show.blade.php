@@ -162,8 +162,8 @@
                         </div>
                         <div class="form-group row form-group-sm kt-hide">
                             <div class="col-md-6">
-                                <label for="">{{ __('Waive Payment Percentage') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="exempt_percentage" class="form-control form-control-sm">
+                                <label for="">{{ __('Waive Payment Percentage') }} (1-100%)<span class="text-danger">*</span></label>
+                                <input autocomplete="off" type="text" name="exempt_percentage" class="form-control form-control-sm">
                             </div>
                         </div>
                         @endif

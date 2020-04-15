@@ -287,6 +287,7 @@ class ArtistPermitController extends Controller
 
                         $permit->exempt_payment = 1;
                         $permit->exempt_by = $request->user()->user_id;
+                        $permit->exempt_percentage = $request->exempt_percentage;
                         $permit->save();
                     }
 
