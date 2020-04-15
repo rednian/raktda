@@ -815,6 +815,7 @@ class EventController extends Controller
 
                   $event->exempt_payment = 1;
                   $event->exempt_by = $request->user()->user_id;
+                  $event->exempt_percentage = $request->exempt_percentage;
                   $event->save();
               	}
 

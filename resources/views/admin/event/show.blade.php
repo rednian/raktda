@@ -90,7 +90,7 @@
       <div class="alert alert-outline-danger fade show" role="alert" style="margin-bottom:0px">
         <div class="alert-text">
           <h6 class="alert-heading text-danger kt-font-transform-u">{{ __('Last Action Taken') }}</h6>
-          <table class="table table-hover table-bordered table-striped">
+          <table class="table table-hover table-bordered table-striped table-sm">
             <thead>
               <tr>
                 <th>{{ __('Name') }}</th>
@@ -158,6 +158,12 @@
                                   <input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
                                   <span></span>
                                 </label>
+                            </div>
+                        </div>
+                        <div class="form-group row form-group-sm kt-hide">
+                            <div class="col-md-6">
+                                <label for="">{{ __('Waive Payment Percentage') }} (1-100%)<span class="text-danger">*</span></label>
+                                <input autocomplete="off" type="text" name="exempt_percentage" class="form-control form-control-sm">
                             </div>
                         </div>
                         @endif
@@ -717,7 +723,33 @@
     });
 
     $('form#frm-status').validate();
-    $('form#frm-savecomment').validate();
+
+    $('input[name=bypass_payment]').change(function(){
+        if($(this).is(':checked')){
+            $('input[name=exempt_percentage]').parents('.form-group').removeClass('kt-hide');
+            $('input[name=exempt_percentage]').removeAttr('disabled');
+        }
+        else{
+            $('input[name=exempt_percentage]').parents('.form-group').addClass('kt-hide');
+            $('input[name=exempt_percentage]').val('');
+            $('input[name=exempt_percentage]').attr('disabled', true);
+        }
+    });
+
+    $('form#frm-savecomment').validate({
+        rules:{
+            exempt_percentage:{
+                integer: true,
+                range: [0, 100],
+                required: function(){
+                    return $('input[name=bypass_payment]').is(':checked') ? true : false;
+                }
+            }
+
+        }
+    });
+
+
 
      eventComment();
      requirementTable();

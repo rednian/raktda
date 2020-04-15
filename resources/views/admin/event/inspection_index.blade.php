@@ -20,7 +20,7 @@
 @section('content')
 <section class="kt-portlet kt-portlet--last kt-portlet--responsive-mobile" id="kt_page_portlet">
   <div class="kt-portlet__body">
-    
+
     <section class="row">
       <div class="col-md-12">
         <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger"
@@ -53,7 +53,7 @@
                 <div class="input-group input-group-sm">
                   <div class="kt-input-icon kt-input-icon--right">
                     <input autocomplete="off" type="text" class="form-control form-control-sm"
-                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+                      aria-label="Text input with checkbox" placeholder="{{ __('SUBMITTED DATE') }}"
                       id="new-applied-date">
                     <span class="kt-input-icon__icon kt-input-icon__icon--right">
                       <span><i class="la la-calendar"></i></span>
@@ -65,19 +65,19 @@
                 <select name="" id="new-applicant-type"
                   class="form-control-sm form-control custom-select custom-select-sm " onchange="newEventTable.draw()">
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
-                  <option value="private">{{ __('Private') }}</option>
+                  <option value="private">{{ __('Corporate') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                  <option value="individual">{{ __('Individual') }}</option>
+                  {{-- <option value="individual">{{ __('Individual') }}</option> --}}
                 </select>
               </div>
-              <div class="col-3">
+              {{-- <div class="col-3">
                 <select name="" id="new-permit-status"
                   class=" form-control form-control-sm custom-select-sm custom-select" onchange="newEventTable.draw()">
                   <option disabled selected>{{ __('STATUS') }}</option>
                   <option value="new">{{ __('New') }}</option>
                   <option value="amended">{{ __('Amended') }}</option>
                 </select>
-              </div>
+              </div> --}}
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
               </div>
@@ -102,7 +102,7 @@
               <th>{{ __('ESTABLISHMENT NAME') }}</th>
               <th>{{ __('EVENT NAME') }}</th>
               <th>{{ __('APPLICATION TYPE') }}</th>
-              <th>{{ __('APPLIED DATE') }}</th>
+              <th>{{ __('SUBMITTED DATE') }}</th>
               <th>{{ __('STATUS') }}</th>
             </tr>
           </thead>
@@ -128,7 +128,7 @@
                 <div class="input-group input-group-sm">
                   <div class="kt-input-icon kt-input-icon--right">
                     <input autocomplete="off" type="text" class="form-control form-control-sm"
-                      aria-label="Text input with checkbox" placeholder="{{ __('APPLIED DATE') }}"
+                      aria-label="Text input with checkbox" placeholder="{{ __('SUBMITTED DATE') }}"
                       id="checked-applied-date">
                     <span class="kt-input-icon__icon kt-input-icon__icon--right">
                       <span><i class="la la-calendar"></i></span>
@@ -142,17 +142,17 @@
                   <option selected disabled>{{ __('APPLICATION TYPE') }}</option>
                   <option value="private">{{ __('Private') }}</option>
                   <option value="government">{{ __('Government') }}</option>
-                  <option value="individual">{{ __('Individual') }}</option>
+                  {{-- <option value="individual">{{ __('Individual') }}</option> --}}
                 </select>
               </div>
-              <div class="col-3">
+              {{-- <div class="col-3">
                 <select name="" id="checked-permit-status"
                   class=" form-control form-control-sm custom-select-sm custom-select" onchange="checkedTable.draw()">
                   <option disabled selected>{{ __('STATUS') }}</option>
                   <option value="new">{{ __('New') }}</option>
                   <option value="amended">{{ __('Amended') }}</option>
                 </select>
-              </div>
+              </div> --}}
               <div class="col-2">
                 <button type="button" class="btn btn-sm btn-secondary" id="checked-btn-reset">{{ __('RESET') }}</button>
               </div>
@@ -244,7 +244,7 @@
      $(document).ready(function () {
 
       $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){ $('.nav-tabs a[href="#new-request"]').tab('show');  });
-     
+
        newEvent();
        checkedEvents();
        setInterval(function(){ newEvent();},100000);
@@ -276,13 +276,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
@@ -358,13 +359,14 @@
         startDate: start,
         endDate: end,
         maxDate: new Date,
+        locale:{'customRangeLabel':'{{ __('Custom From & To') }}'},
         ranges: {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          '{{ __('Today') }}': [moment(), moment()],
+          '{{ __('Yesterday') }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          '{{ __('Last 7 Days') }}': [moment().subtract(6, 'days'), moment()],
+          '{{ __('Last 30 Days') }}': [moment().subtract(29, 'days'), moment()],
+          '{{ __('This Month') }}': [moment().startOf('month'), moment().endOf('month')],
+          '{{ __('Last Month') }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }
       }, function (start, end, label) {
         $('input#checked-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));

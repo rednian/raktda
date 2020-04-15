@@ -15,7 +15,7 @@
          @if ($event->is_liquor)
             <li>{{ __('This event serve a Liqour.') }}</li>
          @endif
-         @if ($event->comment()->count() > 0)
+         {{-- @if ($event->comment()->count() > 0)
             @php
                $comment = $event->comment()->latest()->first();
             @endphp
@@ -26,7 +26,7 @@
                   @if ($comment->comment)<li><p>{{ ucfirst($comment->comment) }}</p></li>@endif
                </ul>
             </li>
-         @endif
+         @endif --}}
       </ul>
    </div>
    <div class="alert-close">

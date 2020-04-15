@@ -21,7 +21,7 @@ class Event extends Model
         'last_check_by', 'lock', 'created_by', 'note_en', 'note_ar', 'cancelled_by', 'cancel_reason', 'latitude',
         'longitude', 'full_address', 'firm', 'is_liquor', 'is_truck', 'audience_number', 'paid', 'paid_artist_fee',
         'owner_name','owner_name_ar', 'request_type', 'additional_location_info','cancel_date', 'event_type_sub_id','exempt_payment',
-        'exempt_by', 'approved_by', 'approved_date'];
+        'exempt_by', 'approved_by', 'approved_date', 'exempt_percentage'];
 
 
     public function smsNotification()

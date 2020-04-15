@@ -18,7 +18,7 @@ class Permit extends Model
         'issued_date', 'expired_date', 'permit_number', 'work_location', 'permit_status', 'lock', 'user_id', 'permit_revision_id',
         'company_id', 'created_by', 'updated_by', 'deleted_by', 'cancel_reason', 'cancel_by', 'cancel_date',
         'reference_number', 'request_type', 'happiness', 'event_id', 'term', 'paid', 'paid_event_fee', 'work_location_ar',
-        'lock_user_id', 'exempt_by', 'exempt_payment', 'approved_by', 'approved_date', 'rivision_number', 'permit_reference_id'
+        'lock_user_id', 'exempt_by', 'exempt_payment', 'approved_by', 'approved_date', 'rivision_number', 'permit_reference_id', 'exempt_percentage'
     ];
     protected $dates = ['created_at', 'issued_date', 'expired_date', 'lock', 'approved_date', 'cancel_date'];
 

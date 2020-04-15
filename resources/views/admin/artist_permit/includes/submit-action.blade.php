@@ -79,7 +79,7 @@
 								</div>
 							</div>
 							@if(Auth::user()->roles()->whereIn('roles.role_id', [5])->exists())
-							<div class="form-group row">
+							<div class="form-group row form-group-xs">
 								<label class="col-sm-2 col-form-label"></label>
 								<div class="col-sm-8">
 									<label class="kt-checkbox kt-checkbox--default kt-font-dark">
@@ -87,7 +87,14 @@
 										<span></span>
 									</label>
 								</div>
-							</div>
+                            </div>
+                            <div class="form-group form-group-xs row kt-hide">
+                                <label class="col-sm-2 col-form-label"></label>
+                                <div class="col-md-6">
+                                    <label for="">{{ __('Waive Payment Percentage') }} (1-100%)<span class="text-danger">*</span></label>
+                                    <input autocomplete="off" type="text" name="exempt_percentage" class="form-control form-control-sm">
+                                </div>
+                            </div>
 							@endif
 						</div>
 					</section>

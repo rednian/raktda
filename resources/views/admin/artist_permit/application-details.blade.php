@@ -332,6 +332,19 @@
   var artist = {};
   $(document).ready(function () {
 
+
+    $('input[name=bypass_payment]').change(function(){
+        if($(this).is(':checked')){
+            $('input[name=exempt_percentage]').parents('.form-group').removeClass('kt-hide');
+            $('input[name=exempt_percentage]').removeAttr('disabled');
+        }
+        else{
+            $('input[name=exempt_percentage]').parents('.form-group').addClass('kt-hide');
+            $('input[name=exempt_percentage]').val('');
+            $('input[name=exempt_percentage]').attr('disabled', true);
+        }
+    })
+
     $('select[name=action]').change(function(){
       if($(this).val() == 'approved-unpaid'){
         $('form#permit-action').find('textarea[name=comment]').removeAttr('required',true).removeClass('is-invalid');
@@ -380,7 +393,14 @@
     },
     action: {
       required: true
-    }
+    },
+    exempt_percentage:{
+                integer: true,
+                range: [0, 100],
+                required: function(){
+                    return $('input[name=bypass_payment]').is(':checked') ? true : false;
+                }
+            }
   },
   invalidHandler: function (event, validator) {
     var errors = validator.numberOfInvalids();
