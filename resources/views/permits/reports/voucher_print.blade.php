@@ -262,7 +262,7 @@
                     @php
                     $from_d = strtotime($et->event->issued_date);
                     $to_d = strtotime($et->event->expired_date);
-                    $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
+                    $noofdays = (abs($from_d - $to_d) / 60 / 60 / 24) + 1;
                     @endphp
                     @if($et->type == 'event')
                     <tr>
@@ -290,7 +290,7 @@
                         <td></td>
                         @php
                         $truck_count = $et->total_trucks;
-                        $per_truck_fee = $et->amount / ( $truck_count * $noofdays ) ;
+                        $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1;
                         @endphp
                         <td style="text-align:right">{{number_format($per_truck_fee,2)}} / truck</td>
                         <td class="text-center">

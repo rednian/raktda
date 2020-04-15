@@ -224,7 +224,7 @@
                                                                 </div>
                                                             </div>
 
-{{-- 
+{{--
                                                             <div class="form-group form-group-sm row">
                                                                 <label for="uid_expiry"
                                                                     class="col-md-4 col-form-label kt-font-bold col-sm-12 text-left text-lg-right">{{__('UID Expiry Date')}}
@@ -431,7 +431,7 @@
 
                                                     <input type="hidden" value="" name="id_no" id="id_no">
 
-                                                 
+
 
                                                     {{-- <div class=" form-group form-group-sm row">
                                                         <label for="language"
@@ -913,11 +913,11 @@
                     $("#doc_exp_date_" + i).val('').datepicker("update");
                     $("#doc_exp_date_" + i).attr('disabled', false);
                 }
-               
+
             }
         }
     }
-    
+
 
     $('#agree').on('click', function(){
         if($(this).is(':checked')) {
@@ -956,7 +956,7 @@
                         //You can control using PD
                     pd.progressDiv.show();
                     pd.progressbar.width('0%');
-                },               
+                },
                 onLoad: function (obj) {
                     var code = $('#code').val();
                         $.ajax({
@@ -1019,7 +1019,7 @@
                             type: 'POST',
                             data: {requiredID : requiId},
                             success: function (data) {
-                               
+
                             }
                     });
                 },
@@ -1061,7 +1061,7 @@
                     //You can control using PD
                 pd.progressDiv.show();
                 pd.progressbar.width('0%');
-            },    
+            },
             onLoad: function (obj) {
                 // console.log(obj);
                 $code = $('#code').val();
@@ -1086,7 +1086,7 @@
                     });
                 }
 
-            }, 
+            },
             downloadCallback: function (files, pd) {
                 if(files.filepath) {
                         let file_path = files.filepath;
@@ -1095,7 +1095,7 @@
                     "{{url('storage')}}"+'/' + path,
                     '_blank'
                     );
-                }else{ 
+                }else{
                     let user_id = $('#user_id').val();
                     let artistpermitid = $('#artist_permit_id').val();
                     let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
@@ -1103,7 +1103,7 @@
                     "{{url('storage')}}"+'/' + this_url,
                     '_blank'
                     );
-                } 
+                }
             },
             deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
             {
@@ -1118,15 +1118,15 @@
         $('#pic_uploader + div').attr('id', 'pic-file-upload');
     };
 
-    // $.validator.addMethod("greaterThan", 
+    // $.validator.addMethod("greaterThan",
     // function(value, element, params) {
 
     //     if (!/Invalid|NaN/.test(new Date(value))) {
     //         return new Date(value) < new Date($(params).val());
     //     }
 
-    //     return isNaN(value) && isNaN($(params).val()) 
-    //         || (Number(value) < Number($(params).val())); 
+    //     return isNaN(value) && isNaN($(params).val())
+    //         || (Number(value) < Number($(params).val()));
     // },'Must be less than {0}.');
 
     var detailsValidator = $("#artist_details").validate({
@@ -1154,7 +1154,7 @@
                 //    required: true,
                 //    dateNL: true
                 //},
-                // visa_number: 'required', 
+                // visa_number: 'required',
                 // visa_type:'required',
                 // visa_expiry: {
                 //     required: true,
@@ -1175,12 +1175,12 @@
                 fname_ar: "",
                 lname_en: "",
                 lname_ar: "",
-                profession: "", 
+                profession: "",
                 dob: "",
                 permit_type: "",
                 gender: "",
                 nationality: "",
-                passport: '', 
+                passport: '',
                 pp_expiry:'',
                 address: "",
                 uid_number: '',
@@ -1257,7 +1257,7 @@
                             $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
                             $('.hd-eu').show();
                         }
-                        
+
                     }
                 });
             }
@@ -1273,14 +1273,14 @@
 
             var noofdays = $('#permitNoOfDays').val();
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 docRules['doc_issue_date_' + i] = 'required';
                 docRules['doc_exp_date_' + i] = 'required';
                 docMessages['doc_issue_date_' + i] = '';
                 docMessages['doc_exp_date_' + i] = '';
             }
-           
+
         }
 
         $("#check_inst").on("click", function () {
@@ -1385,7 +1385,7 @@
                         landline: $('#landline').val(),
                         mobile: $('#mobile').val(),
                         email: $('#email').val(),
-                        is_old_artist: $('#is_old_artist').val(), 
+                        is_old_artist: $('#is_old_artist').val(),
                     };
 
                     localStorage.setItem('artistDetails', JSON.stringify(artistDetails));
@@ -1401,7 +1401,7 @@
                 var term ;
                 for (var i = 1; i <= $('#requirements_count').val(); i++) {
                     term = $('#permitTerm_'+i).val();
-                    if((term == 'long' && noofdays > 30) || term == 'short')
+                    if(term == 'short')
                     {
                         $('#cnd_'+i).html('*');
                         $('#cnd_'+i).addClass('text-danger');
@@ -1429,10 +1429,9 @@
             var hasFileArray = [];
             var noofdays = $('#permitNoOfDays').val();
             var nationality = $('#nationality').val();
-            var term ;
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
                 term = $('#permitTerm_'+i).val();
-                if((term == 'long' && noofdays > 30) || term == 'short')
+                if(term == 'short')
                 {
                     if ($('#ajax-file-upload_' + i).length) {
                         if ($('#ajax-file-upload_' + i).contents().length == 0) {
@@ -1558,14 +1557,14 @@
             {
                 searchCode(e);
             }
-        }); 
+        });
 
 
         function checkforArtistKeyUp(){
           setTimeout( checkforArtist(),4000);
         }
 
-        
+
         function checkforArtist(){
             let firstname = $('#fname_en').val();
             let lastname = $('#lname_en').val();
@@ -1596,7 +1595,7 @@
                             backdrop: 'static',
                             keyboard: false,
                             show: true
-                        }); 
+                        });
                         if(data.artist.artist_status == 'blocked')
                         {
                             $('#person_code_modal').append('<div class="text-danger kt-font-bolder">{{__("Sorry, This Artist is blocked ! Please Select a New Artist")}}</div>');
@@ -1612,7 +1611,7 @@
                             $('#ex_artist_personcode').html(data.person_code);
                             var dob = moment(data.birthdate, 'YYYY-MM-DD').format('DD-MM-YYYY');
                             $('#ex_artist_dob').html(dob);
-                            
+
                             $('#ex_artist_nationality').html(langid == 1 ? capitalizeFirst(data.nationality.nationality_en) : data.nationality.nationality_ar);
                             var gender = data.gender == 1 ? '{{__('Male')}}' : '{{__('Female')}}';
                             $('#ex_artist_gender').html(gender);
@@ -1696,7 +1695,7 @@
                         data = data.artist_d ;
 
                         if(data.artist_permit.length > 0) {
-                            
+
                             let total_aps = data.artist_permit.length;
                             let j = total_aps - 1 ;
                             if(total_aps > 0) {
@@ -1898,7 +1897,7 @@
             // $('#submit--btn_group').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--sm kt-spinner--dark');
 
             // $('#submit--btn-group').css('pointer-events', 'none');
-           
+
             var pd = localStorage.getItem('permitDetails');
             var ad = localStorage.getItem('artistDetails');
             var dd = localStorage.getItem('documentDetails');
@@ -1944,7 +1943,7 @@
                 },
                 success: function (result) {
                     if(result.message[0]){
-                        
+
                         localStorage.clear();
                         // var URL ;
                         // if(id == 1)
@@ -1972,7 +1971,7 @@
                         window.location.href = result.toURL ;
                         KTApp.unblockPage();
                     }
-                    
+
                 }
             });
         }

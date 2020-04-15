@@ -17,16 +17,14 @@
 
                 <div class="kt-portlet__head-toolbar">
                     <div class="my-auto float-right">
-                        <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}"
-                            class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
+                        <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
                             <i class="la la-arrow-left"></i>
                             {{__('BACK')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
-                        <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}"
-                            class="btn btn--maroon btn-elevate btn-sm">
+                        <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}" class="btn btn--maroon btn-elevate btn-sm">
                             <i class="la la-arrow-left"></i>
                         </a>
                     </div>
@@ -40,8 +38,7 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('From Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
                                         {{date('d F Y',strtotime($permit_details->issued_date))}}
                                     </span>
                                 </div>
@@ -49,8 +46,7 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('To Date')}}</span>
                                 <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
                                         {{date('d F Y',strtotime($permit_details->expired_date))}}
                                     </span>
                                 </div>
@@ -72,8 +68,7 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('Reference No')}}</span>
                                 <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
                                         {{$permit_details->reference_number}}
                                     </span>
                                 </div>
@@ -82,8 +77,7 @@
                             <div class="kt-widget__item">
                                 <span class="kt-widget__date">{{__('Connected to Event')}} :</span>
                                 <div class="kt-widget__label">
-                                    <span
-                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                    <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
                                         {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
                                     </span>
                                 </div>
@@ -334,15 +328,11 @@
 
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn"
-                            onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
+                        <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn" onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
                         {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
 
-                        <a
-                            href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button
-                                class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide"
-                                id="next_btn">{{__('NEXT')}}</button></a>
+                        <a href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide" id="next_btn">{{__('NEXT')}}</button></a>
                     </div>
 
                 </div>
@@ -357,7 +347,7 @@
         'apiOperation' => 'CREATE_CHECKOUT_SESSION',
         'order' => array(
             'currency' => 'AED',
-            'id' => getPaymentOrderId('artist', $permit_details->permit_id) 
+            'id' => getPaymentOrderId('artist', $permit_details->permit_id)
         ),
         'interaction' => array(
             'operation' => 'PURCHASE'
@@ -400,79 +390,83 @@
     @section('script')
 
 
-    <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js"
-        data-error="errorCallback" data-cancel="cancelCallback" data-complete="completedCallback">
+    <script src="https://test-rakbankpay.mtf.gateway.mastercard.com/checkout/version/54/checkout.js" data-error="errorCallback" data-cancel="cancelCallback" data-complete="completedCallback">
     </script>
     <script>
         function errorCallback(error) {
             console.log(JSON.stringify(error));
             $.notify({
-            title: 'Error',
-            message: "{{__('Payment Error ! Please Try Again')}}",
-            },{
-                type:'danger',
-                animate: {
-                    enter: 'animated zoomIn',
-                    exit: 'animated zoomOut'
-                },
-            });
+                title: 'Error'
+                , message: "{{__('Payment Error ! Please Try Again')}}"
+            , }, {
+                type: 'danger'
+                , animate: {
+                    enter: 'animated zoomIn'
+                    , exit: 'animated zoomOut'
+                }
+            , });
         }
+
         function cancelCallback() {
             $.notify({
-                title: 'Error',
-                message: "{{__('Payment cancelled ! Please Try Again')}}",
-            },{
-                type:'danger',
-                animate: {
-                    enter: 'animated zoomIn',
-                    exit: 'animated zoomOut'
-                },
-            });
-        }
-      
-    
-        var sessionId = "{{$output->session->id}}";
-    
-        var successIndicator = "{{$output->successIndicator}}";
-    
-        // console.log(sessionId);
-                
-        Checkout.configure({
-            merchant: 'NRSINFOWAYSL',
-            order: {
-                amount: function() {
-                    return $('#total').val();
-                },
-                currency: 'AED',
-                description: 'Artist Permit Payment'
-            },
-            session: {
-                id: sessionId
-            },
-            interaction: {
-                merchant: {
-                    name: "{{__('Ras Al Khaimah TDA')}}",
-                },
-                @if(getLangId() == 2)
-                locale : 'ar-AE',
-                @endif
-                displayControl: {
-                    billingAddress  : 'HIDE',
+                title: 'Error'
+                , message: "{{__('Payment cancelled ! Please Try Again')}}"
+            , }, {
+                type: 'danger'
+                , animate: {
+                    enter: 'animated zoomIn'
+                    , exit: 'animated zoomOut'
                 }
+            , });
+        }
+
+
+        var sessionId = "{{$output->session->id}}";
+
+        var successIndicator = "{{$output->successIndicator}}";
+
+        // console.log(sessionId);
+
+        Checkout.configure({
+            merchant: 'NRSINFOWAYSL'
+            , order: {
+                amount: function() {
+                    let isConnected = $('#isEventPay').prop('checked');
+                    let artistTotal = parseInt($('#artist_g_total').val());
+                    let eventTotal = $('#event_grand_total').val();
+                    let artistEventTotal = parseInt(artistTotal) + parseInt(eventTotal);
+
+                    return isConnected ? artistEventTotal : artistTotal;
+                }
+                , currency: 'AED'
+                , description: 'Artist Permit Payment'
+            }
+            , session: {
+                id: sessionId
+            }
+            , interaction: {
+                merchant: {
+                    name: "{{__('Ras Al Khaimah TDA')}}"
+                , }
+                , @if(getLangId() == 2)
+                locale: 'ar-AE'
+                , @endif
+                displayControl: {
+                    billingAddress: 'HIDE'
+                , }
             }
         });
-    
+
         function completedCallback(resultIndicator, sessionVersion) {
-            var transactionID, receipt ;
-            if(successIndicator == resultIndicator)
-            {
+            var transactionID, receipt;
+            if (successIndicator == resultIndicator) {
                 var orderId = '{{getPaymentOrderId("artist", $permit_details->permit_id)}}';
                 var url = "{{route('company.getpaymentdetails', ['orderid' => ':orderId'])}}";
                 url = url.replace(':orderId', orderId);
                 $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function(res){
+                    url: url
+                    , type: 'GET'
+                    , success: function(res) {
                         // console.log(res);
                         var res = JSON.parse(res);
                         var transactionId = res.transaction[0].transaction.acquirer.transactionId;
@@ -482,112 +476,110 @@
                 });
             }
         }
-    
-    
-        function paymentDoneUpdation(transactionID,receipt) {
+
+
+        function paymentDoneUpdation(transactionID, receipt) {
             var paidArtistFee = 0;
             var paidEventFee = 0;
-            if($('#isEventPay').prop("checked")){
+            if ($('#isEventPay').prop("checked")) {
                 paidEventFee = 1;
             }
-           
+
             $.ajax({
-                url: "{{route('company.payment')}}",
-                type: "POST",
-                beforeSend: function() {
+                url: "{{route('company.payment')}}"
+                , type: "POST"
+                , beforeSend: function() {
                     KTApp.blockPage({
-                        overlayColor: '#000000',
-                        type: 'v2',
-                        state: 'success',
-                        message: '{{__("Please wait...")}}'
+                        overlayColor: '#000000'
+                        , type: 'v2'
+                        , state: 'success'
+                        , message: '{{__("Please wait...")}}'
                     });
-                },
-                data: {
-                permit_id:$('#permit_id').val(),
-                amount: $('#amount').val(),
-                vat: $('#vat').val(),
-                total: $('#total').val(),
-                noofdays: $('#noofdays').val(),
-                paidEventFee: paidEventFee,
-                transactionId: transactionID,
-                receipt: receipt, 
-                orderId: '{{getPaymentOrderId("artist", $permit_details->permit_id)}}'
-                },
-                success: function (result) {
-                if(result.message[0]){
-                window.location.href = result.toURL;
-                KTApp.unblockPage();
                 }
+                , data: {
+                    permit_id: $('#permit_id').val()
+                    , amount: $('#amount').val()
+                    , vat: $('#vat').val()
+                    , total: $('#total').val()
+                    , noofdays: $('#noofdays').val()
+                    , paidEventFee: paidEventFee
+                    , transactionId: transactionID
+                    , receipt: receipt
+                    , orderId: '{{getPaymentOrderId("artist", $permit_details->permit_id)}}'
+                }
+                , success: function(result) {
+                    if (result.message[0]) {
+                        window.location.href = result.toURL;
+                        KTApp.unblockPage();
+                    }
                 }
             });
         }
-    
+
     </script>
     <script>
-        $(document).ready(function(){
-        $('#event_details_table').hide();
-        var artistTotalFee = $('#artist_total_fee').val();
-        $('#total_amt').html(parseInt(artistTotalFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-        var artistVatTotal = $('#artist_vat_total').val();
-        $('#total_vat').html(parseInt(artistVatTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-        var artistGTotal = $('#artist_g_total').val();
-        $('#grand_total').html(parseInt(artistGTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-        $('#amount').val(artistTotalFee);
-        $('#vat').val(artistVatTotal);
-        $('#total').val(artistGTotal);
-        if(artistGTotal == 0){
-            $('#next_btn').removeClass('kt-hide');
-            $('#pay_btn').addClass('kt-hide');
-        }
-    });
-
-
-    function check_permit(){
-        var ischecked = $('#isEventPay').prop('checked');
-        var artistTotalFee = $('#artist_total_fee').val();
-        var artistVatTotal = $('#artist_vat_total').val();
-        var artistGTotal = $('#artist_g_total').val();
-        var eventFeeTotal = $('#event_fee_total').val();
-        var eventVatTotal = $('#event_vat_total').val();
-        var eventGrandTotal = $('#event_grand_total').val();
-        var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
-        var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
-        var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
-        if(ischecked)
-        {
-            $('#event_details_table').show();
-            $('#total_amt').html(totalFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-            $('#total_vat').html(totalVat.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-            $('#grand_total').html(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-            $('#amount').val(totalFee);
-            $('#vat').val(totalVat);
-            $('#total').val(total);
-            if(total == 0){
-                $('#next_btn').removeClass('kt-hide');
-                $('#pay_btn').addClass('kt-hide');
-            }else {
-                $('#pay_btn').removeClass('kt-hide');
-                $('#next_btn').addClass('kt-hide');
-            }
-        }else{
+        $(document).ready(function() {
             $('#event_details_table').hide();
+            var artistTotalFee = $('#artist_total_fee').val();
             $('#total_amt').html(parseInt(artistTotalFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+            var artistVatTotal = $('#artist_vat_total').val();
             $('#total_vat').html(parseInt(artistVatTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+            var artistGTotal = $('#artist_g_total').val();
             $('#grand_total').html(parseInt(artistGTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
             $('#amount').val(artistTotalFee);
             $('#vat').val(artistVatTotal);
             $('#total').val(artistGTotal);
-            if(artistGTotal == 0){
+            if (artistGTotal == 0) {
                 $('#next_btn').removeClass('kt-hide');
                 $('#pay_btn').addClass('kt-hide');
-            }else {
-                $('#pay_btn').removeClass('kt-hide');
-                $('#next_btn').addClass('kt-hide');
+            }
+        });
+
+
+        function check_permit() {
+            var ischecked = $('#isEventPay').prop('checked');
+            // console.log(ischecked);
+            var artistTotalFee = $('#artist_total_fee').val();
+            var artistVatTotal = $('#artist_vat_total').val();
+            var artistGTotal = $('#artist_g_total').val();
+            var eventFeeTotal = $('#event_fee_total').val();
+            var eventVatTotal = $('#event_vat_total').val();
+            var eventGrandTotal = $('#event_grand_total').val();
+            var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
+            var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
+            var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
+            if (ischecked) {
+                $('#event_details_table').show();
+                $('#total_amt').html(totalFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#total_vat').html(totalVat.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#grand_total').html(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#amount').val(totalFee);
+                $('#vat').val(totalVat);
+                $('#total').val(total);
+                if (total == 0) {
+                    $('#next_btn').removeClass('kt-hide');
+                    $('#pay_btn').addClass('kt-hide');
+                } else {
+                    $('#pay_btn').removeClass('kt-hide');
+                    $('#next_btn').addClass('kt-hide');
+                }
+            } else {
+                $('#event_details_table').hide();
+                $('#total_amt').html(parseInt(artistTotalFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#total_vat').html(parseInt(artistVatTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#grand_total').html(parseInt(artistGTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#amount').val(artistTotalFee);
+                $('#vat').val(artistVatTotal);
+                $('#total').val(artistGTotal);
+                if (artistGTotal == 0) {
+                    $('#next_btn').removeClass('kt-hide');
+                    $('#pay_btn').addClass('kt-hide');
+                } else {
+                    $('#pay_btn').removeClass('kt-hide');
+                    $('#next_btn').addClass('kt-hide');
+                }
             }
         }
-    }
-
-
 
     </script>
 

@@ -170,30 +170,30 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             </button>
           </div>
-          <div class="modal-body container">
+          <div class="modal-body container text-center">
             <form action="{{route('company.changePassword', $company->company_id )}}" id="passwordChangeform"
               method="POST" novalidate>
               @csrf
               <div class="row kt-margin-b-2">
-                <label for="" class="col-md-4 col-form-label">{{__('Old Password')}}</label>
+                <label for="" class="col-md-4 col-form-label text-left">{{__('Old Password')}}</label>
                 <div class="form-group form-group-sm col-md-6">
                   <input type="text" class="form-control form-control-sm " id="old_password" name="old_password">
                 </div>
               </div>
               <div class="row kt-margin-b-2">
-                <label for="" class="col-md-4 col-form-label">{{__('New Password')}}</label>
+                <label for="" class="col-md-4 col-form-label text-left">{{__('New Password')}}</label>
                 <div class="form-group form-group-sm col-md-6">
                   <input type="text" class="form-control form-control-sm" id="new_password" name="new_password">
                 </div>
               </div>
               <div class="row kt-margin-b-2">
-                <label for="" class="col-md-4 col-form-label">{{__('Confirm Password')}}</label>
+                <label for="" class="col-md-4 col-form-label text-left">{{__('Confirm Password')}}</label>
                 <div class="form-group form-group-sm col-md-6">
                   <input type="text" class="form-control form-control-sm" id="confirm_password" name="confirm_password">
                 </div>
               </div>
-              <input type="submit" value="{{__('Change')}}" onclick="changePassword()"
-                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right">
+              <button onclick="changePassword()"
+                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right" style="margin-right: calc(50% - 39px);margin-top: 5px;">{{__('Change')}}</button>
           </div>
           </form>
         </div>

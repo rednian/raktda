@@ -449,7 +449,7 @@ function check_is_blocked()
     }
     return $data;
 }
-
+    
 function getPaymentOrderId($from, $id)
 {
     $pre =  $from == 'artist' ?  'POID1' : 'POID2';
@@ -457,7 +457,7 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
-        $payment_no = sprintf("%07d",  415);
+        $payment_no = sprintf("%07d",  618);
     } else {
         $last_trn = explode('-', $last_transaction->payment_order_id);
         $last_year = $last_trn[1];

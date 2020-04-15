@@ -446,14 +446,14 @@
                         @else --}}
 
 
-                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"
-                            onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
-                            <i class="fa fa-check"></i>
-                            {{__('PAY')}}
-                        </div>
+{{--                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"--}}
+{{--                            onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">--}}
+{{--                            <i class="fa fa-check"></i>--}}
+{{--                            {{__('PAY')}}--}}
+{{--                        </div>--}}
 
 
-                        {{-- <button onclick="paymentDoneUpdation('xyz', '10245');">payment</button> --}}
+                    <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"onclick="paymentDoneUpdation('xyz', '10245');">payment</button>
 
                         <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
                             class="kt-hide "><span
@@ -489,7 +489,7 @@ $postFields = array(
     'apiOperation' => 'CREATE_CHECKOUT_SESSION',
     'order' => array(
         'currency' => 'AED',
-        'id' => getPaymentOrderId('event', $event->event_id) 
+        'id' => getPaymentOrderId('event', $event->event_id)
     ),
     'interaction' => array(
         // "returnUrl" => route('event.happiness', ['id' => $event->event_id]),
@@ -571,12 +571,12 @@ $output = json_decode($output);
         });
     }
 
-        
+
     var sessionId = "{{$output->session->id}}";
 
     var successIndicator = "{{$output->successIndicator}}";
-  
-            
+
+
     Checkout.configure({
         merchant: 'NRSINFOWAYSL',
         order: {
@@ -643,7 +643,7 @@ $output = json_decode($output);
                 total: $('#total').val(),
                 paidArtistFee: paidArtistFee,
                 transactionId: transactionId,
-                receipt: receipt, 
+                receipt: receipt,
                 orderId: '{{getPaymentOrderId("event", $event->event_id)}}'
             },
             beforeSend: function() {
@@ -693,13 +693,13 @@ $output = json_decode($output);
         imageUploadFunction();
         var artistContains = $('#containsApproved').val();
         var isPaid = $('#isPaid').val();
-        
+
         if(artistContains == 1 && isPaid == 0){
             $('#is_event_pay_div').show();
         }else {
             $('#is_event_pay_div').hide();
         }
-        
+
         var eventTotalAmount = $('#event_total_amount').val();
         $('#total_amt').html(parseInt(eventTotalAmount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
         var eventVatTotal = $('#event_vat_total').val();
@@ -709,7 +709,7 @@ $output = json_decode($output);
         $('#amount').val(eventTotalAmount);
         $('#vat').val(eventVatTotal);
         $('#total').val(eventGrandTotal);
-        
+
         if(eventGrandTotal == 0){
             $('#pay_next_btn').removeClass('kt-hide');
             $('#submit_btn').addClass('kt-hide');
@@ -733,7 +733,7 @@ $output = json_decode($output);
         var eventGrandTotal = $('#event_grand_total').val();
         var artist_fee_total = $('#artist_fee_total').val();
         var artist_vat_total = $('#artist_vat_total').val();
-        var artist_g_total = $('#artist_g_total').val(); 
+        var artist_g_total = $('#artist_g_total').val();
         var total_amt = parseInt(artist_fee_total) + parseInt(eventTotalAmount);
         var total_vat = parseInt(artist_vat_total) + parseInt(eventVatTotal);
         var grand_total = parseInt(artist_g_total) + parseInt(eventGrandTotal);
@@ -796,7 +796,7 @@ $output = json_decode($output);
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {
-                        id: i , 
+                        id: i ,
                         reqId: $('#truck_req_id_'+i).val()
                     },
                     onSuccess: function (files, response, xhr, pd) {
@@ -863,10 +863,10 @@ $output = json_decode($output);
             var event_id = $('#event_id').val() ;
             var url = "{{route('event.fetch_truck_details_by_event_id', ':id')}}" ;
             url = url.replace(':id', event_id);
-            $.ajax({    
+            $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
                         $('#food_truck_list').empty();
                         // console.log(result);
@@ -889,7 +889,7 @@ $output = json_decode($output);
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
                         $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
                         $('#edit_food_truck').modal('hide');
@@ -911,7 +911,7 @@ $output = json_decode($output);
             });
         }
 
-       
+
 
     const uploadFunction = () => {
             // console.log($('#artist_number_doc').val());
@@ -969,7 +969,7 @@ $output = json_decode($output);
                                             $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
                                         }
-                                        
+
                                         j++;
                                     }
 
@@ -1062,7 +1062,7 @@ $output = json_decode($output);
 
 
         var eventValidator = $('#eventdetails').validate({
-           
+
         });
 
 
@@ -1071,7 +1071,7 @@ $output = json_decode($output);
         });
 
         $("#event_det").on("click", function () {
-  
+
             setThis('block', 'block', 'none', 'none');
         });
 
@@ -1081,7 +1081,7 @@ $output = json_decode($output);
         });
 
         $('#mk_payment').on('click', function(){
-    
+
             setThis('block', 'none', 'none', 'block');
         })
 
@@ -1276,7 +1276,7 @@ $output = json_decode($output);
                             $('#exp_dd_'+j+'').append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker mk-disabled" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" readonly/>')
                          }
 
-            
+
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
                      }
@@ -1331,7 +1331,7 @@ $output = json_decode($output);
                     liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
                     url: "{{route('event.uploadLiquor')}}",
                     method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "liquor_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
@@ -1396,7 +1396,7 @@ $output = json_decode($output);
                             }
                         });
                     }
-                    
+
                 });
                 $('#liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
                 $('#liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
@@ -1417,7 +1417,7 @@ $output = json_decode($output);
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data)
                     {
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
@@ -1523,7 +1523,7 @@ $output = json_decode($output);
                     window.open(
                     "{{url('storage')}}"+'/' + this_url,
                     '_blank'
-                    ); 
+                    );
                 },
             });
             $('#image_uploader div').attr('id', 'image-upload');

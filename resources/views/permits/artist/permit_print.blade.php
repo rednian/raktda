@@ -155,20 +155,17 @@
         }
 
         .print--footer {
-            padding-top: 15px;
+            padding: 15px 0 0;
+            width: 100%;
+            margin:0px;
+            border-width:0px;
         }
 
-        .print--footer p {
-            margin: 0;
-            font-size: 10px;
-            font-weight: 400;
-            text-align: center;
-        }
+        /*.print--footer,*/
 
-        footer .seal--space {
-            display: block;
+         .seal--space p {
             text-align: left;
-            padding-left: 5px;
+             padding-left: 5px;
             font-size: 12px;
         }
 
@@ -493,14 +490,26 @@
     <htmlpagefooter name="page-footer">
         <footer>
             <div class="seal--space">
+                <p>إدارة التراخيص السياحية وضمان الجودة</p>
                 <p>Department of Tourism Licensing & Quality Assurance</p>
             </div>
-            <div class="print--footer">
-                <p>Department of Tourism & Quality Assurance </p>
-                <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
-                <p>tlqa@raktda.com</p>
-                <p>www.raktda.com</p>
-            </div>
+
+            <table class="print--footer">
+                <tr>
+                    <td style="text-align: left;">
+                        <p>Department of Tourism & Quality Assurance </p>
+                        <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
+                    <td style="text-align: center;">
+                        <p>tlqa@raktda.com</p>
+                        <p>www.raktda.com</p>
+                    </td>
+                    <td style="text-align: right;">
+                        <p>إدارة التراخيص السياحية وضمان الجودة</p>
+                        <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
+                    </td>
+                </tr>
+            </table>
+
         </footer>
     </htmlpagefooter>
 

@@ -217,7 +217,7 @@
                     $("#doc_exp_date_" + i).val('').datepicker("update");
                     $("#doc_exp_date_" + i).attr('disabled', false);
                 }
-               
+
             }
         }
     }
@@ -400,14 +400,14 @@
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'
                         );
-                    }else{ 
+                    }else{
                         let temp_id = $('#temp_id').val();
                         let this_url = user_id + '/artist/temp/' +temp_id +'/photos/'+ files;
                         window.open(
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'
                         );
-                    } 
+                    }
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -497,7 +497,7 @@
         {
             var noofdays = $('#permitNoOfDays').val();
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 docRules['doc_issue_date_'+i] = 'required';
                 docRules['doc_exp_date_'+i] = 'required';
@@ -562,13 +562,13 @@
                             $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
                             $('.hd-eu').show();
                         }
-                        
+
                     }
                 });
             }
         }
 
-        
+
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
         });
@@ -678,7 +678,7 @@
             var term ;
             for (var i = 1; i <= $('#requirements_count').val(); i++) {
                 term = $('#permitTerm_'+i).val();
-                if((term == 'long' && noofdays > 30) || term == 'short')
+                if(term == 'short')
                 {
                     $('#cnd_'+i).html('*');
                     $('#cnd_'+i).addClass('text-danger');
@@ -712,7 +712,7 @@
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 if ($('#ajax-file-upload_' + i).length) {
                     if($('#ajax-file-upload_'+i).contents().length == 0) {

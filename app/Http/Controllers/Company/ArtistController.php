@@ -173,7 +173,7 @@ class ArtistController extends Controller
                 $expired_date = strtotime($permit->expired_date);
                 $approved_date = strtotime($permit->approved_date);
                 $today = strtotime(date('Y-m-d 00:00:00'));
-                
+
                 $diff = abs($today - $issued_date) / 60 / 60 / 24;
                 $approvediff = abs($today - $approved_date) / 60 / 60 / 24;
                 $expDiff = abs($today - $expired_date) / 60 / 60 / 24;
@@ -2324,7 +2324,7 @@ class ArtistController extends Controller
         //     return redirect(URL::signedRoute('company.happiness_center', ['id' => $permit->permit_id]));
         // }
 
-        
+
         $data['company_details'] = Auth::user()->type == 1 ? Company::find(Auth::user()->EmpClientId) : [];
         $data['artist_details'] = $permit->artistPermit()->with('artist', 'profession', 'Nationality')->get();
         $data['permit_details'] = $permit;
@@ -2371,7 +2371,6 @@ class ArtistController extends Controller
 
     public function payment(Request $request)
     {
-
         $permit_id = $request->permit_id;
         $amount = $request->amount;
         $vat = $request->vat;
@@ -2401,7 +2400,8 @@ class ArtistController extends Controller
 
             foreach ($artistPermits as $artistPermit) {
                 $per_day_fee = $artistPermit->profession->amount;
-                $total_fee = $per_day_fee * $noofdays;
+                $no_of_months = ceil($noofdays ? $noofdays/30 : 1 ) ;
+                $total_fee = $per_day_fee * $no_of_months;
                 $vat_fee = $total_fee * 0.05;
                 $transArr->artistPermitTransaction()->create([
                     'vat' => $vat_fee,
@@ -2414,12 +2414,16 @@ class ArtistController extends Controller
 
             $permit_number = generateArtistPermitNumber();
 
-            $permit = Permit::where('permit_id', $permit_id)->first();
+//            $permit = DB::table('permit')
+//                        ->where('permit_id', $permit_id)
+//                        ->first();
+            $permit  = Permit::where('permit_id', $permit_id)->first();
 
             $eventArray = [];
+
             $eventpermitnumber = '';
 
-            if ($paidEventFee) {
+            if ($paidEventFee == 1) {
 
                 $ev_amount = $permit->event->type->amount * $noofdays;
                 $ev_vat = $ev_amount * 0.05;
@@ -2454,7 +2458,7 @@ class ArtistController extends Controller
                         EventTransaction::create([
                             'event_id' => $event_id,
                             'user_id' => Auth::user()->user_id,
-                            'transaction_id' => $trans->transaction_id,
+                            'transaction_id' => $transArr->transaction_id,
                             'amount' => $tr_amount,
                             'vat' => $tr_amount * 0.05,
                             'type' => 'truck',
@@ -2470,7 +2474,7 @@ class ArtistController extends Controller
                         $lq_amount = getSettings()->liquor_fee * $noofdays;
                         EventTransaction::create([
                             'event_id' => $event_id,
-                            'transaction_id' => $trans->transaction_id,
+                            'transaction_id' => $transArr->transaction_id,
                             'type' => 'liquor',
                             'amount' => $lq_amount,
                             'vat' => $lq_amount * 0.05,
@@ -2482,11 +2486,13 @@ class ArtistController extends Controller
                 }
             }
 
+
             $issued_date = strtotime($permit->issued_date);
-            $expired_date = strtotime($permit->exprired_date);
+            $expired_date = strtotime($permit->expired_date);
             $today_date = strtotime(date('Y-m-d'));
 
-            $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
+            $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+
 
             if ($issued_date <= $today_date) {
                 $new_issued_date = date('Y-m-d');
@@ -2505,7 +2511,6 @@ class ArtistController extends Controller
             ArtistPermit::where('permit_id', $permit_id)->update([
                 'is_paid' => 1
             ]);
-
 
 
             DB::commit();
