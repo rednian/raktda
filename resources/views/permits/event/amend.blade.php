@@ -653,7 +653,6 @@
                         });
                     },
                     success: function (result) {
-                        console.log(result);
                         KTApp.unblockPage();
                         if(result) 
                         {

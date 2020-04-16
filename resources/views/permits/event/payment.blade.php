@@ -114,21 +114,21 @@
                                     <div class="kt-widget__body  kt-padding-l-10">
                                         <div class="kt-widget__stats d-">
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('From Date')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('From Date')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{date('d F Y',strtotime($event->issued_date))}}&nbsp;
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                                        {{date('jS F Y',strtotime($event->issued_date))}}&nbsp;
 
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('To Date')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('To Date')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
-                                                        {{date('d F Y',strtotime($event->expired_date))}} &nbsp;
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                                        {{date('jS F Y',strtotime($event->expired_date))}} &nbsp;
 
                                                     </span>
                                                 </div>
@@ -139,39 +139,39 @@
                                             $noofdays = (abs($expired_date - $issued_date) / 60 / 60 / 24) + 1;
                                             @endphp
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('No.of.days')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('No.of.days')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                         {{$noofdays.' '.($noofdays > 1 ? __('days') :
                                                         __('day'))}}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('Reference No')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('Reference No')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                         {{$event->reference_number}}
                                                     </span>
                                                 </div>
                                             </div>
                                             @if($event->request_type == 'amend')
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('Event Type')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('Event Type')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                         {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="kt-widget__item">
-                                                <span class="kt-widget__date">{{__('Event Name')}}</span>
+                                                <span class="kt-widget__date pb-1">{{__('Event Name')}}</span>
                                                 <div class="kt-widget__label">
                                                     <span
-                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                        class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                         {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
                                                     </span>
                                                 </div>
@@ -180,7 +180,7 @@
                                         </div>
                                         <div class="kt-widget__text kt-margin-t-10">
                                             <strong>{{__('Venue')}} :</strong>
-                                            {{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}
+                                           <span  class="kt-widget__label pl-1"> {{getLangId() == 1 ? $event->venue_en : $event->venue_ar}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -197,9 +197,10 @@
                                 <input type="hidden" value="{{$noofdays}}" id="noofdays">
                                 <div class="table-responsive col-md-12">
                                     <table class="table table-borderless table-hover border table-striped">
-                                        @if($event->request_type != 'amend' && $event->paid == 0)
                                         <thead>
                                             <tr>
+                                            @if($event->request_type != 'amend' && $event->paid == 0)
+                                    
                                                 <th>{{__('Event Name')}}</th>
                                                 <th>{{__('Event Type')}}</th>
                                                 <th class="text-right">{{__('Fee / Day')}} (AED)</th>
@@ -207,20 +208,16 @@
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
-                                            </tr>
-                                        </thead>
-                                        @else
-                                        <thead>
-                                            <tr>
+                                            @else
                                                 <th colspan="2">#</th>
                                                 <th class="text-right">{{__('Fee')}} (AED) / Day</th>
                                                 <th class="text-center">{{__('No.of.days')}}</th>
                                                 <th class="text-center">{{__('Qty')}}</th>
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
+                                            @endif
                                             </tr>
                                         </thead>
-                                        @endif
                                         <tbody>
                                             @if($event->request_type != 'amend' && $event->paid == 0)
                                             <tr>
@@ -252,6 +249,27 @@
                                                     {{number_format($event_fee, 2)}}
                                                 </td>
                                             </tr>
+                                            @else
+                                                 <td class="text-left">
+                                                   {{__('Amendment Fee')}}
+                                                </td>
+                                                <td class="text-left"></td>
+                                                @php
+                                                $amend_fee = !is_null(getSettings()->event_amendment_fee) ? getSettings()->event_amendment_fee : 0;
+                                                $event_fee_total += $amend_fee;
+                                                $event_grand_total += $event_fee_total;
+                                                @endphp
+                                                <td class="text-right">-
+                                                </td>
+                                                <td class="text-center">-
+                                                </td>
+                                                <td class="text-center">-</td>
+                                                {{-- <td class="text-right">
+                                                    {{number_format($vat_amt , 2)}}
+                                                </td> --}}
+                                                <td class="text-right">
+                                                    {{number_format($event_fee_total, 2)}}
+                                                </td>
                                             @endif
                                             @if(isset($event->truck) && count($event->truck->where('paid', 0)) > 0)
                                             <tr>
@@ -322,7 +340,7 @@
                                                 <th>{{__('Artist Name')}}</th>
                                                 <th>{{__('Profession')}}</th>
                                                 <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                                <th class="text-center">{{__('Duration')}}</th>
+                                                {{-- <th class="text-center">{{__('Duration')}}</th> --}}
                                                 {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                 <th class="text-right">{{__('Total')}} (AED) </th>
                                             </tr>
@@ -348,9 +366,9 @@
                                                 <td class="text-right">
                                                     {{number_format($ap->profession['amount'],2)}}
                                                 </td>
-                                                <td class="text-right">
+                                                {{-- <td class="text-right">
                                                     {{$noofdays.' '.__('days')}}
-                                                </td>
+                                                </td> --}}
                                                 <td class="text-right">
                                                     {{number_format($artist_fee, 2)}}
                                                 </td>
@@ -446,14 +464,14 @@
                         @else --}}
 
 
-{{--                        <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"--}}
-{{--                            onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">--}}
-{{--                            <i class="fa fa-check"></i>--}}
-{{--                            {{__('PAY')}}--}}
-{{--                        </div>--}}
+                       <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"--}}
+                           onclick="Checkout.showLightbox()" id="submit_btn" data-ktwizard-type="action-submit">
+                           <i class="fa fa-check"></i>
+                           {{__('PAY')}}
+                       </div>
 
 
-                    <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"onclick="paymentDoneUpdation('xyz', '10245');">payment</button>
+                    {{-- <button class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u"onclick="paymentDoneUpdation('xyz', '10245');">payment</button> --}}
 
                         <a href="{{URL::signedRoute('event.happiness', [ 'id' => $event])}}" id="pay_next_btn"
                             class="kt-hide "><span
@@ -1530,6 +1548,28 @@ $output = json_decode($output);
             $('#image_uploader + div').attr('id', 'image-file-upload');
             $("#image-upload").css('pointer-events', 'none');
         };
+
+        $('.subtype_table').DataTable({
+            ordering: false,
+            dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>",
+            language: {
+                @if(Auth::check() && Auth::user()->LanguageId != 1)
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+                @endif
+                paginate: {
+                    previous: '<',
+                    next:     '>'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next:     'Next'
+                    }
+                }
+            },
+        });
 
 
 

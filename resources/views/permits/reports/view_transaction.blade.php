@@ -70,10 +70,10 @@
                     <div class="col-md-4 col-sm-12 row">
                         <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Transaction Date')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            {{date('d-M-Y', strtotime($transaction->transaction_date))}}</p>
+                            {{date('jS F Y', strtotime($transaction->transaction_date))}}</p>
                     </div>
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Made From')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Paid For')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$transaction->transaction_type == 'event' ? __('Event Permit') : __('Artist Permit')}}</p>
                     </div>
@@ -114,7 +114,7 @@
                             <th>{{__('Artist Name')}}</th>
                             <th>{{__('Profession')}}</th>
                             <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                            <th class="text-center">{{__('Permit Duration')}}</th>
+                            {{-- <th class="text-center">{{__('Permit Duration')}}</th> --}}
                             <th class="text-right">{{__('Total')}} (AED)</th>
                             <th></th>
                         </tr>
@@ -142,9 +142,9 @@
                             $to_d = strtotime($at->permit->expired_date);
                             $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
                             @endphp
-                            <td class="text-center">
+                            {{-- <td class="text-center">
                                 {{ $noofdays.' '.($noofdays > 1 ?  __('days') : __('day')) }}
-                            </td>
+                            </td> --}}
                             <td class="text-right">
                                 {{number_format($at->amount,2)}}
                             </td>

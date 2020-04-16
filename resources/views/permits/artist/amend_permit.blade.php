@@ -4,7 +4,7 @@
 
 @section('content')
 
-    @include('permits.artist.partials.amendprofessioninfo')
+    
 
 <div class="kt-portlet kt-portlet--mobile">
 
@@ -108,6 +108,8 @@
                     {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
             </div>
+
+            @include('permits.artist.partials.amendprofessioninfo')
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">

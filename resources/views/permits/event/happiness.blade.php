@@ -115,7 +115,6 @@
 
                     <div class="kt-wizard-v3__content" data-ktwizard-type="step-content">
                         <div class="kt-form__section kt-form__section--first ">
-                            <div class="kt-wizard-v3__form">
                                 @if($event->firm == 'corporate')
                                 <form id="make_payment">
                                     <div class="kt-widget kt-widget--project-1">
@@ -124,8 +123,8 @@
                                                 <div class="kt-widget__item">
                                                     <span class="kt-widget__date">{{__('From Date')}}</span>
                                                     <div class="kt-widget__label">
-                                                        <span class="btn btn-label-success btn-sm btn-bold btn-upper">
-                                                            {{date('d M,y',strtotime($event->issued_date))}}&nbsp;
+                                                        <span class="btn  btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                                            {{date('jS F Y',strtotime($event->issued_date))}}&nbsp;
 
                                                         </span>
                                                     </div>
@@ -133,8 +132,8 @@
                                                 <div class="kt-widget__item">
                                                     <span class="kt-widget__date">{{__('To Date')}}</span>
                                                     <div class="kt-widget__label">
-                                                        <span class="btn btn-label-danger btn-sm btn-bold btn-upper">
-                                                            {{date('d M,y',strtotime($event->expired_date))}} &nbsp;
+                                                        <span class="btn  btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
+                                                            {{date('jS F Y',strtotime($event->expired_date))}} &nbsp;
 
                                                         </span>
                                                     </div>
@@ -142,12 +141,12 @@
                                                 @php
                                                 $issued_date = strtotime($event->issued_date);
                                                 $expired_date = strtotime($event->expired_date);
-                                                $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
+                                                $noofdays = (abs($expired_date - $issued_date) / 60 / 60 / 24) + 1;
                                                 @endphp
                                                 <div class="kt-widget__item">
                                                     <span class="kt-widget__date">{{__('No.of.days')}}</span>
                                                     <div class="kt-widget__label">
-                                                        <span class="btn btn-label-info btn-sm btn-bold">
+                                                        <span class="btn  btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                             {{$noofdays.' '.($noofdays > 1 ? __('days') :
                                                             __('day'))}}
                                                         </span>
@@ -157,7 +156,7 @@
                                                     <span class="kt-widget__date">{{__('Reference No')}}</span>
                                                     <div class="kt-widget__label">
                                                         <span
-                                                            class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
+                                                            class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                                             {{$event->reference_number}}
                                                         </span>
                                                     </div>
@@ -196,22 +195,30 @@
                                     $event_grand_total = 0;
                                     $truck_fee = 0;
                                     $liquor_fee = 0 ;
-                                    $issued_date = strtotime($event->issued_date);
-                                    $expired_date = strtotime($event->expired_date);
-                                    $noofdays = abs($expired_date - $issued_date) / 60 / 60 / 24;
                                     @endphp
                                     <div class="table-responsive">
                                         <table class="table table-borderless table-hover border table-striped">
                                             <thead>
                                                 <tr>
+                                                @if($event->request_type != 'amend')
                                                     <th>{{__('Event Name')}}</th>
                                                     <th>{{__('Event Type')}}</th>
-                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th class="text-right">{{__('Fee / Day')}} (AED)</th>
+                                                    <th class="text-center">{{__('No.of.days')}}</th>
+                                                    <th class="text-right">{{__('Qty')}} (5%)</th>
                                                     <th class="text-right">{{__('Total')}} (AED) </th>
+                                                @else
+                                                    <th colspan="2">#</th>
+                                                    <th class="text-right">{{__('Fee')}} (AED) / Day</th>
+                                                    <th class="text-center">{{__('No.of.days')}}</th>
+                                                    <th class="text-center">{{__('Qty')}}</th>
+                                                    {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
+                                                    <th class="text-right">{{__('Total')}} (AED) </th>
+                                                @endif
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @if($event->request_type != 'amend')
                                                 <tr>
                                                     <td class="text-left">
                                                         {{getLangId() == 1 ? $event->name_en : $event->name_ar}}
@@ -228,40 +235,77 @@
                                                     $event_grand_total += $event_total;
                                                     @endphp
                                                     <td class="text-right">
-                                                        {{number_format($event_fee,2)}}
+                                                        {{number_format($event->type['amount'],2)}}
+                                                    </td>
+                                                     <td class="text-center">
+                                                        {{$noofdays}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($vat_amt , 2)}}
+                                                       -
                                                     </td>
                                                     <td class="text-right">
-                                                        {{number_format($event_total, 2)}}
+                                                        {{number_format($event_fee, 2)}}
                                                     </td>
                                                 </tr>
-                                                @if($event->is_truck == 1)
+                                                @else
+                                                <tr>
+                                                    <td class="text-left">
+                                                    {{__('Amendment Fee')}}
+                                                    </td>
+                                                    <td class="text-left"></td>
+                                                    @php
+                                                    $amend_fee = !is_null(getSettings()->event_amendment_fee) ? getSettings()->event_amendment_fee : 0;
+                                                    $event_fee_total += $amend_fee;
+                                                    $event_grand_total += $event_fee_total;
+                                                    @endphp
+                                                    <td class="text-right">-
+                                                    </td>
+                                                    <td class="text-center">-
+                                                    </td>
+                                                    <td class="text-center">-</td>
+                                                    {{-- <td class="text-right">
+                                                        {{number_format($vat_amt , 2)}}
+                                                    </td> --}}
+                                                    <td class="text-right">
+                                                        {{number_format($event_fee_total, 2)}}
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                                @if(isset($event->truck))
                                                 <tr>
                                                     <td colspan="2">{{__('Food Truck')}}</td>
                                                     @php
                                                     $per_truck_fee = getSettings()->food_truck_fee;
-                                                    $truck_fee += $noofdays * $per_truck_fee;
+                                                    $nooftrucks = $event->truck()->groupBy('updated_at')->latest()->count();
+                                                    $truck_fee += $noofdays * $per_truck_fee * $nooftrucks;
                                                     $event_fee_total += $truck_fee;
                                                     $event_grand_total += $truck_fee;
                                                     @endphp
-                                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
-                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">{{number_format($per_truck_fee, 2)}}</td>
+                                                    <td class="text-center">
+                                                        {{$noofdays}}
+                                                    </td>
+                                                    <td class="text-center">{{$nooftrucks}}</td>
                                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
                                                 </tr>
                                                 @endif
-                                                @if($event->is_liquor == 1)
+                                                @if($event->liquor->company_name_en !== null &&
+                                            $event->liquor->provided == 0 && $event->liquor()->where('updated_at', date('Y-m-d'))->count() > 0)
                                                 <tr>
                                                     <td colspan="2">{{__('Liquor')}} </td>
                                                     @php
                                                     $per_liquor_fee = getSettings()->liquor_fee;
                                                     $liquor_fee += $noofdays * $per_liquor_fee;
+                                                     $liquor_vat_amt = $liquor_fee * 0.05;
+                                                    $event_vat_total += $liquor_vat_amt;
                                                     $event_fee_total += $liquor_fee;
                                                     $event_grand_total += $liquor_fee;
                                                     @endphp
-                                                    <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
-                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">{{number_format($per_liquor_fee, 2)}}</td>
+                                                        <td class="text-center">
+                                                        {{$noofdays}}
+                                                    </td>
+                                                    <td class="text-right">-</td>
                                                     <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
                                                 </tr>
                                                 @endif
@@ -293,9 +337,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>{{__('Artist Name')}}</th>
-                                                    <th>{{__('Artist Permit Type')}}</th>
-                                                    <th class="text-right">{{__('Fee')}} (AED)</th>
-                                                    <th class="text-right">{{__('VAT')}} (5%)</th>
+                                                    <th>{{__('Profession')}}</th>
+                                                    <th class="text-right">{{__('Profession Fee')}} (AED)</th>
+                                                    {{-- <th class="text-right">{{__('VAT')}} (5%)</th> --}}
                                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                                 </tr>
                                             </thead>
@@ -309,7 +353,8 @@
                                                         {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
                                                     </td>
                                                     @php
-                                                    $artist_fee += $ap->profession['amount'] * $noofdays;
+                                                    $noofmonths = ceil($noofdays ? $noofdays/30 : 1) ;
+                                                    $artist_fee += $ap->profession['amount'] * $noofmonths;
                                                     $artist_vat = $artist_fee * 0.05;
                                                     $artist_total += $artist_fee + $artist_vat;
                                                     $artist_fee_total += $artist_fee;
@@ -317,41 +362,25 @@
                                                     $artist_g_total += $artist_total;
                                                     @endphp
                                                     <td class="text-right">
-                                                        {{number_format($artist_fee,2)}}
+                                                        {{number_format($ap->profession['amount'],2)}}
                                                     </td>
-                                                    <td class="text-right">
+                                                    {{-- <td class="text-right">
                                                         {{number_format($artist_vat,2)}}
-                                                    </td>
+                                                    </td> --}}
                                                     <td class="text-right">
-                                                        {{number_format($artist_total, 2)}}
+                                                        {{number_format($artist_fee, 2)}}
                                                     </td>
                                                 </tr>
                                                 @endif
                                                 @endforeach
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <td colspan="2" class="kt-font-bold">
-                                                        Total
-                                                    </td>
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_fee_total,2)}}
-                                                    </td>
-
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_vat_total,2)}}
-                                                    </td>
-                                                    <td class="kt-font-bold text-right">
-                                                        {{number_format($artist_g_total,2)}}
-                                                    </td>
-                                                </tr>
-                                            </tfoot>
+                                   
                                         </table>
                                     </div>
                                     <div style="display:none" id="is_event_pay_div">
                                         <label class="kt-checkbox kt-checkbox--warning ml-2 mt-3">
                                             <input type="checkbox" id="isEventPay" name="isEventPay" disabled>
-                                            Do you wish to pay associated artist permit fee ?
+                                            {{__('Do you want to pay the connected Artist Permit?')}}
                                             <span></span>
                                         </label>
                                     </div>
@@ -393,7 +422,6 @@
                                 @else
                                 <h4>{{__('No Payments for Government')}}</h4>
                                 @endif
-                            </div>
                         </div>
                     </div>
 
@@ -1468,6 +1496,28 @@
             $('#image_uploader + div').attr('id', 'image-file-upload');
             $("#image-upload").css('pointer-events', 'none');
         };
+
+        $('.subtype_table').DataTable({
+            ordering: false,
+            dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>",
+            language: {
+                @if(Auth::check() && Auth::user()->LanguageId != 1)
+                info: 'رض _START_ إلى _END_ للـــ _TOTAL_',
+                @endif
+                paginate: {
+                    previous: '<',
+                    next:     '>'
+                },
+                aria: {
+                    paginate: {
+                        previous: 'Previous',
+                        next:     'Next'
+                    }
+                }
+            },
+        });
 
 </script>
 

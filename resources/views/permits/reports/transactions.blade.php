@@ -31,7 +31,7 @@
                         <div>
                             <select name="made_from" id="made_from"
                                 class="form-control-sm form-control custom-select custom-select-sm" onchange="t.draw()">
-                                <option value=''>{{__('FROM')}}</option>
+                                <option value=''>{{__('Paid For')}}</option>
                                 <option value='artist'>{{__('Artist Permit')}}</option>
                                 <option value='event'>{{__('Event Permit')}}</option>
                             </select>
@@ -93,7 +93,7 @@
                 <th>{{__('Amount')}}(AED)</th>
                 <th>{{__('Vat')}}(5%)</th>
                 <th>{{__('Total')}}(AED)</th>
-                <th>{{__('FROM')}}</th>
+                <th>{{__('Paid For')}}</th>
                 <th>{{__('Date')}}</th>
                 <th>{{__('View')}}</th>
                 {{-- <th class="text-center">{{__('Action')}}</th> --}}

@@ -36,18 +36,18 @@
                     <div class="kt-widget__body kt-padding-l-0">
                         <div class="kt-widget__stats d-">
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('From Date')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('From Date')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
-                                        {{date('d F Y',strtotime($permit_details->issued_date))}}
+                                        {{date('jS F Y',strtotime($permit_details->issued_date))}}
                                     </span>
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('To Date')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('To Date')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
-                                        {{date('d F Y',strtotime($permit_details->expired_date))}}
+                                        {{date('jS F Y',strtotime($permit_details->expired_date))}}
                                     </span>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                             $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date) + 1;
                             @endphp
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Permit Duration')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                         {{$noofdays.' '.($noofdays  > 1 ? 'days' : 'day' )}}
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Reference No')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('Reference No')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
                                         {{$permit_details->reference_number}}
@@ -75,7 +75,7 @@
                             </div>
                             @if($permit_details->event)
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Connected to Event')}} :</span>
+                                <span class="kt-widget__date pb-1">{{__('Connected to Event')}} :</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
                                         {{getLangId() == 1 ? ucfirst($permit_details->event->name_en) : $permit_details->event->name_ar}}
@@ -85,8 +85,8 @@
                             @endif
                         </div>
                         <div class="kt-widget__text kt-margin-t-20">
-                            <strong>{{__('Work Location')}} :</strong>
-                            {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
+                           {{__('Work Location')}} :
+                            <span  class="kt-widget__label kt-font-bolder">{{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}</span>
                         </div>
                     </div>
 
@@ -102,7 +102,7 @@
                                     <th>{{__('Artist Name')}}</th>
                                     <th>{{__('Profession')}}</th>
                                     <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                    <th class="text-center">{{__('Permit Duration')}}</th>
+                                    {{-- <th class="text-center">{{__('Permit Duration')}}</th> --}}
                                     <th class="text-right">{{__('Total')}} (AED) </th>
                                 </tr>
                             </thead>
@@ -118,9 +118,9 @@
                                     </td>
                                     @php
                                     $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
-                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
-                                    $artist_vat = $artist_fee * 0.05;
-                                    $artist_total = $artist_fee + $artist_vat;
+                                    $artist_fee += $ap->profession['amount'] * $noofmonths;
+                                    $artist_vat += $artist_fee * 0.05;
+                                    $artist_total += $artist_fee + $artist_vat;
                                     $artist_total_fee += $artist_fee;
                                     $artist_vat_total += $artist_vat;
                                     $artist_g_total += $artist_total;
@@ -129,9 +129,9 @@
                                     <td class="text-right">
                                         {{number_format($ap->profession['amount'], 2)}}
                                     </td>
-                                    <td class="text-center">
+                                    {{-- <td class="text-center">
                                         {{$noofdays ? $noofdays .' '. ($noofdays > 1 ?  __('days') : __('day') ) : '' }}
-                                    </td>
+                                    </td> --}}
                                     {{-- <td class="text-right">
                                         {{number_format($artist_vat,2)}}
                                     </td> --}}
@@ -144,29 +144,26 @@
                                 </tr>
                                 @endif
                                 @endforeach
-                                {{-- @if($permit_details->request_type == 'amend')
+                                @if($permit_details->request_type == 'amend request')
                                 <tr>
                                 <td colspan="2">{{__('Amendment Fee')}}
                                 </td>
-                                @php
+                                @php 
                                 $amend_fee = getSettings()->artist_amendment_fee ;
-                                $artist_total += $amend_fee;
+                                $artist_total_fee += $amend_fee;
                                 $artist_amend_vat = $amend_fee * 0.05;
-                                $artist_vat_total += $artist_vat;
-                                $artist_amend_total += $amend_fee + $artist_vat_total;
+                                $artist_vat_total += $artist_amend_vat;
+                                $artist_amend_total = $amend_fee + $artist_amend_vat;
                                 $artist_g_total += $artist_amend_total;
                                 @endphp
                                 <td class="text-right">
                                     {{number_format($amend_fee,2)}}
                                 </td>
                                 <td class="text-right">
-                                    {{number_format($artist_amend_vat,2)}}
-                                </td>
-                                <td class="text-right">
                                     {{number_format($artist_amend_total, 2)}}
                                 </td>
                                 </tr>
-                                @endif --}}
+                                @endif
                             </tbody>
 
 

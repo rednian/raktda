@@ -391,12 +391,12 @@ class CompanyController extends Controller
 
 
       DB::commit();
-      $result = ['success', '', 'Success'];
+      $result = ['success', '', 'Document uploaded Successfully'];
     } catch (Exception $e) {
       DB::rollBack();
-     $result = ['danger', $e->getMessage(), 'Error'];
+     $result = ['danger', $e->getMessage(), 'Error! Please try again'];
     }
-    return response()->json(['message'=> $result]);
+    return response()->json(['message'=> __($result)]);
 
    }
 
@@ -509,6 +509,7 @@ class CompanyController extends Controller
             'requirement_name'=> ucfirst($v->requirement_name),
             'requirement_id'=> $v->requirement_id,
             'dates_required'=> $v->dates_required,
+            'requirement_name_ar'=> $v->requirement_name_ar,
           ];
       });
 

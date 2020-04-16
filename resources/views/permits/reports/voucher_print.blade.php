@@ -162,7 +162,7 @@
                     <b> {{__('Transaction Date')}}</b>
                 </td>
                 <td class="text-right" style="width:25%;">
-                    {{date('d-M-Y', strtotime($transaction->transaction_date))}}
+                    {{date('jS F Y', strtotime($transaction->transaction_date))}}
                 </td>
             </tr>
         </table>
@@ -200,7 +200,7 @@
                         <th>{{__('Artist Name')}}</th>
                         <th>{{__('Profession')}}</th>
                         <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                        <th class="text-center">{{__('Duration')}}</th>
+                        {{-- <th class="text-center">{{__('Duration')}}</th> --}}
                         <th class="text-right">{{__('Total')}} (AED)</th>
                     </tr>
                 </thead>
@@ -226,9 +226,9 @@
                         $to_d = strtotime($at->permit->expired_date);
                         $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
                         @endphp
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
-                        </td>
+                        </td> --}}
                         <td class="text-right">
                             {{number_format( $at->amount,2)}}
                         </td>
