@@ -361,7 +361,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                     </div>
                                 </div>
                             </div>
-                            {{-- 
+                            {{--
                     <div class="col-md-3 form-group form-group-xs">
                         <label class="col-form-label">{{__('To Time')}} <span class="text-danger">*</span></label>
 
@@ -504,11 +504,13 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
 
 <script>
     function check_duration() {
-        var iss = $('#issued_date').val();  
+        var iss = $('#issued_date').val();
         var exp = $('#expired_date').val();
         $('#issued_date').datepicker('setStartDate', moment().format('DD-MM-YYYY'));
         $('#expired_date').datepicker('setStartDate', iss);
-        var diff = dayCount(iss, exp) + 1;
+        var diff = dayCount(iss, exp);
+        // console.log(iss,  exp, dateDiff)
+        //var diff = (iss == exp) ? dateDiff : dateDiff + 1;
         $('#date_duration').val(diff + (diff > 2 ? " {!! __('Days')!!}" : ( diff > 1 ? " {!! __('days')!!}" :  " {!! __('day')!!}")));
     }
 </script>

@@ -1742,7 +1742,7 @@
             ordering: false,
             dom:"<'row d-none'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
             "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "<'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>",
             language: {
                 @if(Auth::check() && Auth::user()->LanguageId != 1)
                 info: 'رض _START_ إلى _END_ للـــ _TOTAL_',

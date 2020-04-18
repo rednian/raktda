@@ -1,8 +1,8 @@
 <div class="kt-portlet__body kt-padding-5">
     <section class="row">
         <div class="col-md-3">
-            <div class="border kt-padding-5 kt-margin-t-5">
-                <p class="kt-font-transform-u kt-font-bolder text-center kt-margin-t-5">{{__('Event Types')}}</p>
+            <div class="kt-padding-5 kt-margin-t-5">
+                <p class="kt-font-transform-u kt-font-bolder kt-heading kt-margin-t-0">{{__('Event Types')}}</p>
                 <ul class="nav nav-pills nav-fill nav-flex-column kt-margin-b-0" id="event_type_nav" role="tablist">
                     @php
                     $i = 1;
@@ -10,7 +10,10 @@
                     @foreach($event_types as $et)
                     <li class="nav-item" style="width: 100%;">
                         <a class="nav-link {{$i == 1 ? 'active' : ''}} kt-padding-5" data-toggle="tab"
-                            href="#kt_tabs_5_{{$i}}">{{ getLangId() == 1 ? ucfirst($et->name_en) : $et->name_ar}}</a>
+                            href="#kt_tabs_5_{{$i}}" style="display:flex;justify-content:space-between">
+                             <span >{{ getLangId() == 1 ? ucfirst($et->name_en) : $et->name_ar}}</span>
+                            <span ><i class="fa {{getLangId() == 1 ? 'fa-angle-right' : 'fa-angle-left'}} text-white"></i></span>
+                        </a>
                     </li>
                     @php
                     $i++;
@@ -27,7 +30,7 @@
                 @foreach($event_types as $et)
                 <div class="tab-pane {{$i == 1 ? 'active' : ''}}" id="kt_tabs_5_{{$i}}" role="tabpanel">
                     @if($et->subType()->exists())
-                    <table class="table table-borderless  border table-sm subtype_table">
+                    <table class="table table-borderless border table-sm subtype_table">
                         <thead>
                             <tr class="kt-font-transform-u">
                                 <th class="text-center">#</th>
@@ -57,6 +60,7 @@
                     </table>
                     @endif
                     <section class="row">
+                    <h6 class="kt-heading p-0 m-0 pl-3">{{__('Required Documents')}}</h6>
                         <div class="col-md-12">
                             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10"
                                 role="tablist">
@@ -73,10 +77,9 @@
                     </section>
                     <div class="tab-content">
                         <div class="tab-pane show fade active" id="corporate" role="tabpanel">
-                            <small>{{__('List of required documents')}}</small>
-                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                            <table class="table table-borderless  kt-margin-t-10">
                                 <thead>
-                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                    <tr class="kt-font-transform-u">
                                         <th class="text-center">#</th>
                                         <th style="width: 40%;">{{__('Document Name')}}</th>
                                         <th style="width: 50%;">{{__('Notes')}}</th>
@@ -117,10 +120,9 @@
                             </table>
                         </div>
                         <div class="tab-pane fade" id="government" role="tabpanel">
-                            <small>{{__('List of required documents')}}</small>
-                            <table class="table table-borderless border table-sm kt-margin-t-10">
+                            <table class="table table-borderless  kt-margin-t-10">
                                 <thead>
-                                    <tr class="kt-font-transform-u kt-margin-t-5">
+                                    <tr class="kt-font-transform-u ">
                                         <th class="text-center">#</th>
                                         <th style="width: 40%;">{{__('Document Name')}}</th>
                                         <th style="width: 50%;">{{__('Notes')}}</th>

@@ -162,7 +162,7 @@
                     <b> {{__('Transaction Date')}}</b>
                 </td>
                 <td class="text-right" style="width:25%;">
-                    {{date('d-M-Y', strtotime($transaction->transaction_date))}}
+                    {{date('jS F Y', strtotime($transaction->transaction_date))}}
                 </td>
             </tr>
         </table>
@@ -200,7 +200,7 @@
                         <th>{{__('Artist Name')}}</th>
                         <th>{{__('Profession')}}</th>
                         <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                        <th class="text-center">{{__('Duration')}}</th>
+                        {{-- <th class="text-center">{{__('Duration')}}</th> --}}
                         <th class="text-right">{{__('Total')}} (AED)</th>
                     </tr>
                 </thead>
@@ -226,9 +226,9 @@
                         $to_d = strtotime($at->permit->expired_date);
                         $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
                         @endphp
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
-                        </td>
+                        </td> --}}
                         <td class="text-right">
                             {{number_format( $at->amount,2)}}
                         </td>
@@ -262,7 +262,7 @@
                     @php
                     $from_d = strtotime($et->event->issued_date);
                     $to_d = strtotime($et->event->expired_date);
-                    $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
+                    $noofdays = (abs($from_d - $to_d) / 60 / 60 / 24) + 1;
                     @endphp
                     @if($et->type == 'event')
                     <tr>
@@ -290,7 +290,7 @@
                         <td></td>
                         @php
                         $truck_count = $et->total_trucks;
-                        $per_truck_fee = $et->amount / ( $truck_count * $noofdays ) ;
+                        $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1;
                         @endphp
                         <td style="text-align:right">{{number_format($per_truck_fee,2)}} / truck</td>
                         <td class="text-center">

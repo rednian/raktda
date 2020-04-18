@@ -86,7 +86,7 @@ class ReportController extends Controller
                 }
             })->addIndexColumn()->editColumn('created_at', function ($transaction) {
                 if ($transaction->created_at) {
-                    return  Carbon::parse($transaction->created_at)->format('d-M-Y');
+                    return  Carbon::parse($transaction->created_at)->format('jS F Y');
                 } else {
                     return 'None';
                 }

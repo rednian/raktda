@@ -3,7 +3,11 @@
 @section('title', 'Amend Artist Permit - Smart Government Rak')
 
 @section('content')
+
+    
+
 <div class="kt-portlet kt-portlet--mobile">
+
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
             <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('AMEND ARTIST PERMIT')}}
@@ -11,6 +15,7 @@
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
                 <strong>{{$permit_details['permit_number']}}</strong></span>
         </div>
+
 
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
@@ -103,6 +108,8 @@
                     {{getLangId() == 1 ? ucfirst($permit_details->work_location) : $permit_details->work_location_ar}}
                 </div>
             </div>
+
+            @include('permits.artist.partials.amendprofessioninfo')
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover border table-borderless" id="applied-artists-table">

@@ -11,6 +11,16 @@
         padding: 8px;
         margin-bottom: 5px;
     }
+    .make--disabled:parent {
+        pointer-events:none;
+    } 
+    .make--disabled {
+        cursor:no-drop;
+        background: #ccc !important;
+    }
+    input.make--disabled:focus {
+       border:1px solid #cccccc !important;
+    }
 </style>
 @stop
 @section('content')
@@ -54,7 +64,7 @@
                 <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
                     <div class="alert-icon"><i class="flaticon-warning"></i></div>
                     <div class="alert-text">
-                        <div class="kt-font-bold"> Your application was bounced back, see the comment below:</div>
+                        <div class="kt-font-bold"> {{__('Your application was bounced back, see the comment below')}}:</div>
                         <ul class="kt-margin-t-10">
                             @if ($company->comment()->latest()->exists())
                             <li>
@@ -179,9 +189,16 @@
         <div class="col-md-6">
             <input type="hidden" name="empty_document" value="{{$invalid}}">
             <label>{{__('Establishment Name')}} <span class="text-danger">*</span></label>
-            <input required {{$disabled}} name="name_en" autocomplete="off"
-                class=" @error('name_en') is-invalid @enderror form-control form-control-sm" type="text"
-                value="{{old( 'name_en',$company->name_en)}}">
+            <input 
+                type="text"
+                name="name_en" 
+                dir="ltr" 
+                autocomplete="off"
+                class="form-control form-control-sm {{$disabled == 'readonly' ? 'make--disabled' : '' }} @error('name_en') is-invalid @enderror" 
+                value="{{old( 'name_en',$company->name_en)}}"
+                required
+                {{$disabled}}
+                >
             @if ($errors->has('name_en'))
             <div class="invalid-feedback">{{$errors->first('name_en')}}</div>
             @endif
@@ -190,7 +207,7 @@
         <div class="col-md-6">
             <label>{{__('Establishment Name (AR)')}}<span class="text-danger">*</span></label>
             <input required {{$disabled}} dir="rtl" name="name_ar" autocomplete="off"
-                class="@error('name_ar') is-invalid @enderror form-control form-control-sm" type="text"
+                class="@error('name_ar') is-invalid @enderror form-control form-control-sm {{!is_null($disabled) ? 'make--disabled' : '' }}" type="text"
                 value="{{old('name_ar', $company->name_ar)}}">
             @if ($errors->has('name_ar'))
             <div class="invalid-feedback">{{$errors->first('name_ar')}}</div>
@@ -456,10 +473,10 @@
                         class="text-danger">*</span></label>--}}
                     {{--                                                        <input id="upload-date-end"  name="expired_date" type="text" multiple class="form-control date-picker end">--}}
                     {{--                                                      </div>--}}
-                    <div class="col-md-1 kt-margin-l-0 kt-margin-r-0 kt-padding-0">
-                        <label> </label>
+                    <div class="col-md-1">
+                        <label class="invisible">{{__('Button')}}</label>
                         <button autocomplete="off" type="button" id="btn-save"
-                            class="kt-margin-t-5 btn btn-warning kt-font-transform-u">{{__('Upload')}}</button>
+                            class="btn btn-warning kt-font-transform-u">{{__('Upload')}}</button>
                     </div>
                 </section>
 
@@ -808,16 +825,22 @@
         });
 
         $('select[name=requirement_id]').html('');
-        $('select[name=requirement_id]').append('<option selected disabled>Select Requirement</option>');
+        $('select[name=requirement_id]').append('<option selected disabled>{!! __('Select Requirement') !!}</option>');
         $.ajax({
             url: '{{ route('company.requirement') }}',
             dataType: 'json',
         }).done(function (response) {
             if (response) {
                 $.each(response, function (i, v) {
-                    $('select[name=requirement_id]').append('<option data-name="' + v.requirement_name + '" data-date="' + v.dates_required + '" value="' + v.requirement_id + '">' + v.requirement_name + '</option>');
+
+                    var languageId = "{{Auth()->user()->LanguageId}}";
+                    var requirementName = languageId == 1 ? v.requirement_name : v.requirement_name_ar;
+
+                    $('select[name=requirement_id]').append(`<option data-name="${requirementName}" data-date="${v.dates_required}" value="${v.requirement_id}">${requirementName}</option>`);
+
+
                 });
-                $('select[name=requirement_id]').append('<option value="other upload" >Other</option>');
+                //$('select[name=requirement_id]').append('<option value="other upload" >Other</option>');
             }
         });
     }

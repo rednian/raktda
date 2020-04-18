@@ -761,7 +761,7 @@ $language_id = \Auth::user()->LanguageId;
     $.ajaxSetup({
             headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
-    
+
     var fileUploadFns = [];
     var picUploader ;
     var artistDetails = new Object();
@@ -799,12 +799,12 @@ $language_id = \Auth::user()->LanguageId;
                     $("#doc_exp_date_" + i).val('').datepicker("update");
                     $("#doc_exp_date_" + i).attr('disabled', false);
                 }
-               
+
             }
         }
     }
 
-    
+
     const uploadFunction = () => {
         // console.log($('#artist_number_doc').val());
         for(var i = 1; i <= $('#requirements_count').val(); i++)
@@ -868,7 +868,7 @@ $language_id = \Auth::user()->LanguageId;
                             }
                         }
                     });
-                    
+
                 },
                 deleteCallback: function(data, pd) // Delete function must be present when showDelete is set to true
                 {
@@ -878,7 +878,7 @@ $language_id = \Auth::user()->LanguageId;
                             type: 'POST',
                             data: {requiredID : reqId},
                             success: function (data) {
-                               
+
                             }
                     });
                 },
@@ -977,7 +977,7 @@ $language_id = \Auth::user()->LanguageId;
                         "{{url('storage')}}"+'/' + path,
                         '_blank'
                         );
-                    }else{ 
+                    }else{
                         let user_id = $('#user_id').val();
                         let artistpermitid = $('#artist_permit_id').val();
                         let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
@@ -985,7 +985,7 @@ $language_id = \Auth::user()->LanguageId;
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'
                         );
-                    } 
+                    }
                 },
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
@@ -1061,7 +1061,7 @@ $language_id = \Auth::user()->LanguageId;
         }
     }
 });
-        
+
 
 function checkVisaRequired(){
             var nationality = $('#nationality').val();
@@ -1121,7 +1121,7 @@ function checkVisaRequired(){
                             $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
                             $('.hd-eu').show();
                         }
-                        
+
                     }
                 });
             }
@@ -1136,7 +1136,7 @@ function checkVisaRequired(){
         {
             var noofdays = $('#permitNoOfDays').val();
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 docRules['doc_issue_date_'+i] = 'required';
                 docRules['doc_exp_date_'+i] = 'required';
@@ -1144,7 +1144,7 @@ function checkVisaRequired(){
                 docMessages['doc_exp_date_'+i] = 'This field is required';
             }
         }
-        
+
         $( "#check_inst" ).on( "click", function() {
             setThis('none', 'block', 'block', 'none');
         });
@@ -1249,7 +1249,7 @@ function checkVisaRequired(){
                 var term ;
                 for (var i = 1; i <= $('#requirements_count').val(); i++) {
                     term = $('#permitTerm_'+i).val();
-                    if((term == 'long' && noofdays > 30) || term == 'short')
+                    if(term == 'short')
                     {
                         $('#cnd_'+i).html('*');
                         $('#cnd_'+i).addClass('text-danger');
@@ -1280,7 +1280,7 @@ function checkVisaRequired(){
         for(var i = 1; i <= $('#requirements_count').val(); i++)
         {
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 if ($('#ajax-file-upload_' + i).length) {
                     if($('#ajax-file-upload_'+i).contents().length == 0) {
@@ -1366,7 +1366,7 @@ function checkVisaRequired(){
                         $('#area').empty();
                         $('#area').append('<option value=" ">{!!__('Select')!!}</option>');
                         for(let i = 0; i< result.length;i++)
-                        {   
+                        {
                             let area = $('#getLangid').val() == 1 ? result[i].area_en : result[i].area_ar ;
                             if(area)
                             {
@@ -1384,7 +1384,7 @@ function checkVisaRequired(){
             {
                 searchCode();
             }
-        }); 
+        });
 
         function checkforArtistKeyUp(){
           setTimeout( checkforArtist(),4000);
@@ -1569,7 +1569,7 @@ function checkVisaRequired(){
             $('#visa_number').val(apd.visa_number),
             $('#sp_name').val(apd.sponsor_name_en),
             $('#id_no').val(apd.identification_number);
-           
+
             $('#gender').val(apd.gender_id);
             if(apd.emirate_id){
                 $('#city').val(apd.emirate_id);
@@ -1696,7 +1696,7 @@ function checkVisaRequired(){
         var permit_id = $('#permit_id').val();
         var from_page = $('#from_page').val();
         // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
-       
+
         $.ajaxSetup({
             headers : { "X-CSRF-TOKEN" :jQuery(`meta[name="csrf-token"]`).attr("content")}
         });

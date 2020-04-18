@@ -1228,35 +1228,35 @@ class EventController extends Controller
     public function fetch_applied(Request $request)
     {
             return $this->datatable_function('applied');
-        
+
     }
 
     public function fetch_valid(Request $request)
     {
-        
+
             return $this->datatable_function('valid');
-        
+
     }
 
     public function fetch_draft(Request $request)
     {
-        
+
             return $this->datatable_function('draft');
-        
+
     }
 
     public function fetch_expired(Request $request)
     {
-       
+
             return $this->datatable_function('expired');
-        
+
     }
 
     public function fetch_cancelled(Request $request)
     {
-     
+
             return $this->datatable_function('cancelled');
-        
+
     }
 
 
@@ -2159,8 +2159,10 @@ class EventController extends Controller
                         'vat' => $truck_fee * 0.05,
                         'user_id' => Auth::user()->user_id,
                     ]);
+
                     EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
                 }
+
 
                 if ($liquor_fee > 0) {
                     EventTransaction::create([

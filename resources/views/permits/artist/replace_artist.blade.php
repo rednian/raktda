@@ -370,7 +370,7 @@ $language_id = Auth::user()->LanguageId;
 
                                                     <input type="hidden" name="id_no" id="id_no" value="">
 
-                                                
+
 
                                                     {{-- <div class=" form-group form-group-sm row">
                                                         <label for="language"
@@ -762,7 +762,7 @@ $language_id = Auth::user()->LanguageId;
     $.ajaxSetup({
             headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
     });
-    
+
     var fileUploadFns = [];
     var picUploader ;
     var artistDetails = new Object();
@@ -814,7 +814,7 @@ $language_id = Auth::user()->LanguageId;
                     $("#doc_exp_date_" + i).val('').datepicker("update");
                     $("#doc_exp_date_" + i).attr('disabled', false);
                 }
-               
+
             }
         }
     }
@@ -897,7 +897,7 @@ $language_id = Auth::user()->LanguageId;
                             type: 'POST',
                             data: {requiredID : reqId},
                             success: function (data) {
-                               
+
                             }
                     });
                 },
@@ -1004,7 +1004,7 @@ $language_id = Auth::user()->LanguageId;
                         "{{url('storage')}}"+'/' + path,
                         '_blank'
                         );
-                    }else{ 
+                    }else{
                         let user_id = $('#user_id').val();
                         let artistpermitid = $('#artist_permit_id').val();
                         let this_url = user_id + '/artist/' + artistpermitid +'/photos/'+files;
@@ -1012,9 +1012,9 @@ $language_id = Auth::user()->LanguageId;
                         "{{url('storage')}}"+'/' + this_url,
                         '_blank'
                         );
-                    } 
+                    }
                 },
-                
+
             });
             $('#pic_uploader div').attr('id', 'pic-upload');
             $('#pic_uploader + div').attr('id', 'pic-file-upload');
@@ -1093,7 +1093,7 @@ $language_id = Auth::user()->LanguageId;
         {
             var noofdays = $('#permitNoOfDays').val();
             term = $('#permitTerm_'+i).val();
-            if((term == 'long' && noofdays > 30) || term == 'short')
+            if(term == 'short')
             {
                 docRules['doc_issue_date_'+i] = 'required';
                 docRules['doc_exp_date_'+i] = 'required';
@@ -1204,7 +1204,7 @@ $language_id = Auth::user()->LanguageId;
                     var term ;
                     for (var i = 1; i <= $('#requirements_count').val(); i++) {
                         term = $('#permitTerm_'+i).val();
-                        if((term == 'long' && noofdays > 30) || term == 'short')
+                        if(term == 'short')
                         {
                             $('#cnd_'+i).html('*');
                             $('#cnd_'+i).addClass('text-danger');
@@ -1248,7 +1248,7 @@ $language_id = Auth::user()->LanguageId;
             for(var i = 1; i <= $('#requirements_count').val(); i++)
             {
                 term = $('#permitTerm_'+i).val();
-                if((term == 'long' && noofdays > 30) || term == 'short')
+                if(term == 'short')
                 {
                     if ($('#ajax-file-upload_' + i).length) {
                         if($('#ajax-file-upload_'+i).contents().length == 0) {
@@ -1344,14 +1344,14 @@ $language_id = Auth::user()->LanguageId;
                 });
           }
         }
-       
+
         $('#code').keyup(function (e) {
             var code = $('#code').val();
             if(code.length >= 4)
             {
                 searchCode(e);
             }
-        }); 
+        });
 
         function checkforArtistKeyUp(){
           setTimeout( checkforArtist(),4000);
@@ -1397,9 +1397,9 @@ $language_id = Auth::user()->LanguageId;
                             $('#person_code_modal').append('<div class="text--maroon kt-font-bold text-center">{!!__("Sorry, This Artist is blocked ! Please Select a New Artist")!!}</div>');
                             return ;
                         }
-                        
+
                         data = data.artist_d ;
-                        
+
                         if(data && data.artist_permit.length > 0) {
 
                             let total_aps = data.artist_permit.length;
@@ -1519,7 +1519,7 @@ $language_id = Auth::user()->LanguageId;
                             $('input[name="visa_expiry"]').rules('add', { required: true, messages: {required:''}});
                             $('.hd-eu').show();
                         }
-                        
+
                     }
                 });
             }
@@ -1664,7 +1664,7 @@ $language_id = Auth::user()->LanguageId;
                             $('#artistDetailswithcode').val(JSON.stringify(data));
                             var langid = $('#getLangid').val();
                             $('#ex_artist_en_name').html(langid == 1 ? capitalizeFirst(data.firstname_en)+' '+capitalizeFirst(data.lastname_en)  : data.lastname_ar+' '+data.firstname_ar);
-                           
+
                             $('#ex_artist_mobilenumber').html(data.mobile_number);
                             $('#ex_artist_email').html(data.email);
                             $('#ex_artist_personcode').html(data.person_code);
@@ -1697,7 +1697,7 @@ $language_id = Auth::user()->LanguageId;
             if(documentsValidator.form() && hasFile){
                 // $('#submit_btn').addClass('kt-spinner kt-spinner--v2 kt-spinner--right kt-spinner--dark');
                 // $('#submit_btn').css('pointer-events','none');
-             
+
             var artist_permit_id = $('#artist_permit_id').val();
             var permit_id = $('#permit_id').val();
             var ad = localStorage.getItem('artistDetails');
