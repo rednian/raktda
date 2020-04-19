@@ -839,7 +839,7 @@ img.ajax-file-upload-preview {
 
 input:focus,
 .form-control:focus {
-    border: 2px solid #ffbf00 !important;
+    border: 1px solid #ffbf00 !important;
 }
 
 .subtype_table {

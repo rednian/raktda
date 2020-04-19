@@ -138,10 +138,10 @@
         </table>
         <div id="heading">
             <div>
-                تصريح خدمة تقديم الكحول
+                تصريح تقديم المشروبات الكحولية
             </div>
             <div>
-                Liquor Permit
+                Permit To Provide Alcohol Beverages
             </div>
         </div>
     </header>

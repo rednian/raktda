@@ -419,6 +419,7 @@
     "Business License Expiry Date":"تاريخ انتهاء الرخصة",
     "Business License Number":"رقم الرخصة",
     "Establishment Details (AR)":"اسم المنشأة بالعربي",
+    "Establishment Details (EN)":"اسم المنشأة  اللغة الانجليزي ",
     "Full Name (EN)":"الاسم بالانكليزي",
     "Full Name (AR)":"الاسم بالعربي",
     "No.of.Files":"عدد الملفات",
@@ -436,14 +437,16 @@
     "Satisfied":"سعيد ",
     "Neutral":"حيادي",
     "Dissatisfied":"غير سعيد",
+    "Paid For" : "مدفوع لأجل",
 
     "Yesterday":"البارِحة",
     "Last 7 days":"",
-    "This Month":"",    
+    "This Month":"",
     "Last Month":"",
     "Custom From & To":"",
     "Your application was bounced back, see the comment below":"",
     "Select Requirement":"اختار",
     "Document uploaded Successfully":"",
-    "Error! Please try again":""
+    "Error! Please try again":"",
+    "Relax, you're doing well. Notification is empty": ""
 }

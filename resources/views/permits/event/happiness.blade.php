@@ -374,7 +374,7 @@
                                                 @endif
                                                 @endforeach
                                             </tbody>
-                                   
+
                                         </table>
                                     </div>
                                     <div style="display:none" id="is_event_pay_div">
@@ -472,7 +472,7 @@
                         </div>
 
 
-                        <a href="{{url('company/event')}}">
+                        <a href="{{URL::signedRoute('event.index')}}#valid">
                             <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="back_btn">
                                 {{__('BACK')}}
                             </div>
@@ -603,7 +603,7 @@
         var eventGrandTotal = $('#event_grand_total').val();
         var artist_fee_total = $('#artist_fee_total').val();
         var artist_vat_total = $('#artist_vat_total').val();
-        var artist_g_total = $('#artist_g_total').val(); 
+        var artist_g_total = $('#artist_g_total').val();
         var total_amt = parseInt(artist_fee_total) + parseInt(eventTotalAmount);
         var total_vat = parseInt(artist_vat_total) + parseInt(eventVatTotal);
         var grand_total = parseInt(artist_g_total) + parseInt(eventGrandTotal);
@@ -707,7 +707,7 @@
                                             $('#doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
                                         }
-                                        
+
                                         j++;
                                     }
 
@@ -746,7 +746,7 @@
                 allowedTypes: "jpeg,jpg,png",
                 fileName: "pic_file",
                 multiple: false,
-                deleteStr: `<i class="la la-trash"></i>`,   
+                deleteStr: `<i class="la la-trash"></i>`,
                 downloadStr:  `<i class="la la-download"></i>`,
                 showFileSize: false,
                 uploadStr: `{{__('Upload')}}`,
@@ -834,12 +834,12 @@
         });
 
         $("#event_det").on("click", function () {
-     
+
             setThis('block', 'block', 'none', 'none');
         });
 
         $("#upload_doc").on("click", function () {
-     
+
             setThis('block', 'block', 'none', 'none');
         });
 
@@ -849,7 +849,7 @@
         })
 
         $('#happiness').on('click', function(){
-    
+
             setThis('block', 'none', 'none', 'block');
         })
 
@@ -914,7 +914,7 @@
         if (wizard.currentStep == 3) {
 
             $('#next_btn').css('display', 'block');
-            
+
         }
 
         if (wizard.currentStep == 4) {
@@ -986,10 +986,10 @@
             var event_id = $('#event_id').val() ;
             var url = "{{route('event.fetch_truck_details_by_event_id', ':id')}}" ;
             url = url.replace(':id', event_id);
-            $.ajax({    
+            $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
                         $('#food_truck_list').empty();
                         // console.log(result);
@@ -999,10 +999,10 @@
                             var k = s + 1 ;
                            $('#food_truck_list').append('<tr><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <button class="btn btn-secondary" onclick="viewThisTruck('+result[s].event_truck_id+', '+k+')">view</button>&emsp;<span id="append_'+s+'"></span></td></tr>');
 
-                        
+
                         }
 
-                        
+
                     }
                 }
             });
@@ -1015,7 +1015,7 @@
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
                         $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
                         $('#edit_food_truck').modal('hide');
@@ -1062,7 +1062,7 @@
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     showDownload: true,
                     formData: {
-                        id: i , 
+                        id: i ,
                         reqId: $('#truck_req_id_'+i).val()
                     },
                     onSuccess: function (files, response, xhr, pd) {
@@ -1175,7 +1175,7 @@
             var firm = $('#firm_type').val();
             $.ajax({
                 url: "{{route('company.event.get_requirements')}}",
-                type: "POST", 
+                type: "POST",
                 data: { id: id, firm: firm},
                 success: function (result) {
                  if(result){
@@ -1236,7 +1236,7 @@
                             $('#exp_dd_'+j).append('<label for="" class="text--maroon kt-font-bold" title="Expiry Date">Expiry Date</label><input type="text" class="form-control form-control-sm date-picker" name="doc_exp_date_'+j+'" data-date-start-date="+0d" id="doc_exp_date_'+j+'" placeholder="DD-MM-YYYY" />')
                          }
 
-           
+
                         j++;
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
 
@@ -1265,7 +1265,7 @@
                     liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
                     url: "{{route('event.uploadLiquor')}}",
                     method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "liquor_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
@@ -1330,7 +1330,7 @@
                             }
                         });
                     }
-                    
+
                 });
                 $('#liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
                 $('#liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
@@ -1344,7 +1344,7 @@
             $.ajax({
                 url:  url,
                 success: function (data) {
-                    if(data) 
+                    if(data)
                     {
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
@@ -1395,7 +1395,7 @@
                 $('#limited_types').hide();
             }
         }
-   
+
 
         $('#submit_btn').click((e) => {
             var rating = $('#rating').val();
@@ -1425,12 +1425,12 @@
                             }
                         }
                     });
-                
-               
+
+
             }else{
                 alert("{{__('Please select your experience')}}");
             }
-                
+
 
         });
 
@@ -1489,7 +1489,7 @@
                     window.open(
                     "{{url('storage')}}"+'/' + this_url,
                     '_blank'
-                    ); 
+                    );
                 },
             });
             $('#image_uploader div').attr('id', 'image-upload');

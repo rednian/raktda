@@ -196,7 +196,7 @@
                 <th>اسم المنشأة / Establishment Name</th>
                 <th>رقم اللوحة المرورية / Traffic Plate No.</th>
                 <th>تاريخ انتهاء تسجيل المركبة / Registration Expiry Date</th>
-                <th>خدمة الطعام / Types of provided F&B</th>
+                <th>نوعية الأطعمة و المشروبات المقدمة   / Types of provided F&B</th>
             </tr>
         </thead>
         <tbody>

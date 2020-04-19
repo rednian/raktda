@@ -13,5 +13,5 @@
 
 @endforeach
 @else
-<p class="text-center kt-padding-15">Relax, you're doing well. Notification is empty.</p>
+<p class="text-center kt-padding-15">{{__("Relax, you're doing well. Notification is empty")}}</p>
 @endif

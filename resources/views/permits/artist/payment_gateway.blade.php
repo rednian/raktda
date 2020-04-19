@@ -61,7 +61,7 @@
                                 <span class="kt-widget__date pb-1">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
-                                        {{$noofdays.' '.($noofdays  > 1 ? 'days' : 'day' )}}
+                                        {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
                                     </span>
                                 </div>
                             </div>
@@ -118,9 +118,9 @@
                                     </td>
                                     @php
                                     $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
-                                    $artist_fee += $ap->profession['amount'] * $noofmonths;
-                                    $artist_vat += $artist_fee * 0.05;
-                                    $artist_total += $artist_fee + $artist_vat;
+                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
+                                    $artist_vat = $artist_fee * 0.05;
+                                    $artist_total = $artist_fee + $artist_vat;
                                     $artist_total_fee += $artist_fee;
                                     $artist_vat_total += $artist_vat;
                                     $artist_g_total += $artist_total;
@@ -148,7 +148,7 @@
                                 <tr>
                                 <td colspan="2">{{__('Amendment Fee')}}
                                 </td>
-                                @php 
+                                @php
                                 $amend_fee = getSettings()->artist_amendment_fee ;
                                 $artist_total_fee += $amend_fee;
                                 $artist_amend_vat = $amend_fee * 0.05;
