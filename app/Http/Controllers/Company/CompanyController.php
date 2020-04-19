@@ -307,9 +307,7 @@ class CompanyController extends Controller
         if (Storage::delete('public/'.$request->path)) {
             $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
         };
-
     }
-
 
 
     public function upload(Request $request, Company $company)

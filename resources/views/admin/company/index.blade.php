@@ -80,6 +80,12 @@
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
                 </a>
               </li>
+               <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#bounce-back" data-target="#bounce-back">
+                  {{ __('Bounce Back Requests') }}
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
                   {{ __('Pending Registrations') }}
@@ -160,23 +166,40 @@
                     </thead>
                </table>
                </section>
-                 <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
-                     <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
-                       <thead>
-                           <tr>
-                               <th>{{ __('REFERENCE NO.') }}</th>
-                               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                               <th>{{ __('PHONE NUMBER') }}</th>
-                               <th>{{ __('EMAIL') }}</th>
-                               <th>{{ __('REQUEST TYPE') }}</th>
-                               <th>{{ __('STATUS') }}</th>
-                               <th>{{ __('COMPLETE ADDRESS') }}</th>
-                               <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
-                               <th>{{ __('BOUNCED BACK REASON') }}</th>
-                           </tr>
-                       </thead>
-                  </table>
-                 </section>
+               <section  class="tab-pane show fade" id="bounce-back" role="tabpanel">
+                <table class="table table-hover table-borderless table- border table-sm table-striped" id="back-table">
+                <thead>
+                    <tr>
+                        <th>{{ __('REFERENCE NO.') }}</th>
+                        <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                        <th>{{ __('PHONE NUMBER') }}</th>
+                        <th>{{ __('EMAIL') }}</th>
+                        <th>{{ __('REQUEST TYPE') }}</th>
+                        <th>{{ __('STATUS') }}</th>
+                        <th>{{ __('COMPLETE ADDRESS') }}</th>
+                        <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                        <th>{{ __('BOUNCED BACK REASON') }}</th>
+                    </tr>
+                </thead>
+            </table>
+            </section>
+                <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
+                    <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PHONE NUMBER') }}</th>
+                            <th>{{ __('EMAIL') }}</th>
+                            <th>{{ __('REQUEST TYPE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                            <th>{{ __('BOUNCED BACK REASON') }}</th>
+                        </tr>
+                    </thead>
+                </table>
+                </section>
                <section  class="tab-pane show fade" id="active-company" role="tabpanel">
                      <section class="form-row">
                       <div class="col-1">
@@ -266,8 +289,10 @@
 <script>
    var new_company = {};
    var company_table = {};
+   var back = {};
    $(document).ready(function(){
     $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#new-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#bounce-back"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){$('.nav-tabs a[href="#processing-request"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
@@ -282,6 +307,7 @@
         if('#new-request' == current_tab ){  newCompany(); }
         if('#processing-request' == current_tab ){ processing();   }
         if('#active-company' == current_tab ){  company(); }
+        if('#back-request' == current_tab ){  bounceBack(); }
       });
 
    });
@@ -374,6 +400,77 @@
       $('input#search-active-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
 
    }
+
+function bounceBack(){
+
+back =  $('table#back-request').DataTable({
+    dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    ajax: {
+       url: '{{ route('admin.company.datatable') }}',
+       data: function(d){
+          d.status = ['pending'];
+          // d.type = $('#new-company-type').val();
+          d.area = $('#new-company-area').val();
+       }
+    },
+    columnDefs:[
+       {targets:'_all', className:'no-wrap'}
+    ],
+    responsive:true,
+    columns:[
+    {data: 'reference_number'},
+    {data: 'name'},
+    {data: 'expired_date'},
+    {data: 'trade_license'},
+    {data: 'date'},
+    {data: 'request_type'},
+    {data: 'full_address'},
+    ],
+    createdRow: function(row, data, index){
+       $('td:not(:first-child)', row).click(function(e){ location.href = data.application_link; });
+    }
+ });
+
+var start = moment().subtract(29, 'days');
+     var end = moment();
+     var selected_date = [];
+
+     $('input#new-applied-date').daterangepicker({
+       autoUpdateInput: false,
+       buttonClasses: 'btn',
+       applyClass: 'btn-warning btn-sm btn-elevate',
+       cancelClass: 'btn-secondary btn-sm btn-elevate',
+       startDate: start,
+       endDate: end,
+       maxDate: new Date,
+       ranges: {
+         'Today': [moment(), moment()],
+         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+         'This Month': [moment().startOf('month'), moment().endOf('month')],
+         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+       }
+     }, function (start, end, label) {
+       $('input#new-applied-date.form-control').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+     }).on('apply.daterangepicker', function(e, d){
+      selected_date = {'start': d.startDate.format('YYYY-MM-DD'), 'end': d.endDate.format('YYYY-MM-DD') };
+      artistPermit.draw();
+     });
+
+
+ //clear fillte button
+  $('#new-btn-reset').click(function(){ $(this).closest('form.form-row')[0].reset(); new_company.draw();});
+ //custom pagelength
+ new_company.page.len($('#new-length-change').val());
+ $('#new-length-change').change(function(){ new_company.page.len( $(this).val() ).draw(); });
+ //custom search
+
+ var search = $.fn.dataTable.util.throttle(function(v){ new_company.search(v).draw(); });
+ $('input#search-new-request').keyup(function(){ if($(this).val() == ''){ } search($(this).val()); });
+}
 
    function newCompany(){
 

@@ -104,7 +104,7 @@
                         $date = $date !=  0 ? $date : 1;
                         $day = $date > 1 ? ' Days': ' Day';
                       @endphp
-                      {{$date.$day}}
+                      {{($date+1).$day}}
                       </span>
                     </div>
                   </div>
