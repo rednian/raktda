@@ -217,6 +217,8 @@ class CompanyController extends Controller
                'phone_number'=> 'required|max:255',
                'address'=> 'required|max:255',
                'area_id'=> 'required|max:255',
+               'company_description_en'=> 'required|max:255',
+               'company_description_ar'=> 'required|max:255',
                'contact_name_en'=> 'required|max:255',
                'contact_name_ar'=> 'required|max:255',
                'designation_en'=> 'required|max:255',
@@ -310,9 +312,10 @@ class CompanyController extends Controller
 
    }
 
+
+
    public function upload(Request $request, Company $company)
    {
-       dd($request->all());
     try {
       DB::beginTransaction();
 
@@ -388,12 +391,12 @@ class CompanyController extends Controller
 
 
       DB::commit();
-      $result = ['success', '', 'Document uploaded Successfully'];
+      $result = ['success', '', 'Success'];
     } catch (Exception $e) {
       DB::rollBack();
-     $result = ['danger', $e->getMessage(), 'Error! Please try again'];
+     $result = ['danger', $e->getMessage(), 'Error'];
     }
-    return response()->json(['message'=> __($result)]);
+    return response()->json(['message'=> $result]);
 
    }
 
@@ -418,7 +421,7 @@ class CompanyController extends Controller
       return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
-          $name = getLangId() == 1 ? $data->requirement->requirement_name : $data->requirement->requirement_name_ar;
+          $name = $data->requirement->requirement_name;
         }
         else{
           $name = __('Other Upload');
@@ -506,7 +509,6 @@ class CompanyController extends Controller
             'requirement_name'=> ucfirst($v->requirement_name),
             'requirement_id'=> $v->requirement_id,
             'dates_required'=> $v->dates_required,
-            'requirement_name_ar'=> $v->requirement_name_ar,
           ];
       });
 
