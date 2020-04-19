@@ -310,10 +310,9 @@ class CompanyController extends Controller
 
    }
 
-
-
    public function upload(Request $request, Company $company)
    {
+       dd($request->all());
     try {
       DB::beginTransaction();
 

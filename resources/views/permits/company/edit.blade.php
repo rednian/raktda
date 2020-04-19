@@ -742,8 +742,6 @@
             formData.append('files[]', v.file);
         });
 
-        // formData.append('issued_date', $('#upload-date-start').val());
-        // formData.append('expired_date', $('#upload-date-end').val());
         formData.append('requirement_id', $('select[name=requirement_id]').val());
         formData.append('requirement_name', name);
 
