@@ -80,6 +80,12 @@
                   <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
                 </a>
               </li>
+               <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#bounce-back" data-target="#bounce-back">
+                  {{ __('Bounce Requests') }}
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#processing-request" data-target="#processing-request">
                   {{ __('Pending Registrations') }}
@@ -160,23 +166,40 @@
                     </thead>
                </table>
                </section>
-                 <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
-                     <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
-                       <thead>
-                           <tr>
-                               <th>{{ __('REFERENCE NO.') }}</th>
-                               <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                               <th>{{ __('PHONE NUMBER') }}</th>
-                               <th>{{ __('EMAIL') }}</th>
-                               <th>{{ __('REQUEST TYPE') }}</th>
-                               <th>{{ __('STATUS') }}</th>
-                               <th>{{ __('COMPLETE ADDRESS') }}</th>
-                               <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
-                               <th>{{ __('BOUNCED BACK REASON') }}</th>
-                           </tr>
-                       </thead>
-                  </table>
-                 </section>
+               <section  class="tab-pane show fade" id="bounce-back" role="tabpanel">
+                <table class="table table-hover table-borderless table- border table-sm table-striped" id="back-table">
+                <thead>
+                    <tr>
+                        <th>{{ __('REFERENCE NO.') }}</th>
+                        <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                        <th>{{ __('PHONE NUMBER') }}</th>
+                        <th>{{ __('EMAIL') }}</th>
+                        <th>{{ __('REQUEST TYPE') }}</th>
+                        <th>{{ __('STATUS') }}</th>
+                        <th>{{ __('COMPLETE ADDRESS') }}</th>
+                        <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                        <th>{{ __('BOUNCED BACK REASON') }}</th>
+                    </tr>
+                </thead>
+            </table>
+            </section>
+                <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
+                    <table class="table table-hover table-borderless table- border table-sm table-striped" id="processing-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('PHONE NUMBER') }}</th>
+                            <th>{{ __('EMAIL') }}</th>
+                            <th>{{ __('REQUEST TYPE') }}</th>
+                            <th>{{ __('STATUS') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                            <th>{{ __('BOUNCED BACK REASON') }}</th>
+                        </tr>
+                    </thead>
+                </table>
+                </section>
                <section  class="tab-pane show fade" id="active-company" role="tabpanel">
                      <section class="form-row">
                       <div class="col-1">
@@ -268,6 +291,7 @@
    var company_table = {};
    $(document).ready(function(){
     $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#new-request"]').tab('show'); });
+    $("#kt_page_portlet > div > section > div:nth-child(1) > div").click(function(){$('.nav-tabs a[href="#bounce-back"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(2) > div").click(function(){$('.nav-tabs a[href="#processing-request"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(3) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
     $("#kt_page_portlet > div > section > div:nth-child(4) > div").click(function(){$('.nav-tabs a[href="#active-company"]').tab('show'); });
