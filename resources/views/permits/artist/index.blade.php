@@ -306,6 +306,7 @@
        {
             var table1 = $('#applied-artists-table').DataTable({
                 responsive: true,
+                //dom: "Bfrtip",
                 processing: true,
                 serverSide: true,
                 searching: true,
@@ -333,7 +334,7 @@
                         targets:5,
                         className:'text-center',
                         render: function(data, type, full, meta) {
-                            var artistPermit = JSON.parse(data);  
+                            var artistPermit = JSON.parse(data);
                             return artistPermit.length;
                         }
                     }
@@ -341,7 +342,7 @@
                 language: {
                     emptyTable: "{{__('No Applied Artist Permits')}}",
                     searchPlaceholder: "{{__('Search')}}",
-                   
+
                 }
             });
        }
@@ -378,7 +379,7 @@
                         targets:-4,
                         className:'text-center',
                         render: function(data, type, full, meta) {
-                            var artistPermit = JSON.parse(data);  
+                            var artistPermit = JSON.parse(data);
                             var total = artistPermit.length;
                             var noofapproved = 0 ;
                             for (var i = 0 ;i < total; i++) {
@@ -389,7 +390,7 @@
                             // return "{{__('Approved')}} " + noofapproved + ' of ' + total;
                             $value =  "{{trans_choice('messages.approved_count_mess' , Auth::user()->LanguageId , ['num' => ':approved', 'total' => ':total' ])}}";
                             $value = $value.replace(':approved', noofapproved).replace(':total', total);
-                            return $value; 
+                            return $value;
                         }
                     },
                     {
@@ -476,7 +477,7 @@
                 //         targets:6,
                 //         className:'text-center',
                 //         render: function(data, type, full, meta) {
-                //             var artistPermit = JSON.parse(data);  
+                //             var artistPermit = JSON.parse(data);
                 //             return artistPermit.length;
                 //         }
                 //     }
@@ -521,7 +522,7 @@
 
 
 
- 
+
 
     const cancel_permit = (id,  refno) => {
         var url = "{{route('company.artist.get_status', ':id')}}";

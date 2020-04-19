@@ -200,7 +200,7 @@
                                         <thead>
                                             <tr>
                                             @if($event->request_type != 'amend' && $event->paid == 0)
-                                    
+
                                                 <th>{{__('Event Name')}}</th>
                                                 <th>{{__('Event Type')}}</th>
                                                 <th class="text-right">{{__('Fee / Day')}} (AED)</th>
@@ -740,9 +740,11 @@ $output = json_decode($output);
         if(isLiquor == 0){
             $('#liquorEditBtn').hide();
         }
-        var getLangid = $('#getLangid').val();
         check_duration();
     });
+
+
+    var getLangid = $('#getLangid').val();
 
     function check_permit()
     {
@@ -1275,10 +1277,9 @@ $output = json_decode($output);
                      $('#requirements_count').val(res.length);
                     $('#documents_required').append('<h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">Event Permit Required documents</h5><div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">{{__('Event Logo')}}</label><p class="reqName">{{__('An image of the Event Logo / Banner')}}</p></div><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="pic_uploader">Upload</div></div></div>');
                  if(result){
-
                      for(var i = 0; i < res.length; i++){
                          var j = i+ 1 ;
-                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+(getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( getLangid == 1 ? res[i].requirement_description ? capitalizeFirst(res[i].requirement_description) : '' : res[i].requirement_description_ar ? res[i].requirement_description_ar : '' ) +'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
+                         $('#documents_required').append('<div class="row"><div class="col-lg-4 col-sm-12"><label class="kt-font-bold text--maroon">'+(getLangid == 1 ? capitalizeFirst(res[i].requirement_name) : res[i].requirement_name_ar )+' <span id="cnd_'+j+'"></span></label><p for="" class="reqName">'+( getLangid == 1 ? (res[i].requirement_description ? capitalizeFirst(res[i].requirement_description) : '') : (res[i].requirement_description_ar ? res[i].requirement_description_ar : '') ) +'</p></div><input type="hidden" value="'+res[i].requirement_id+'" id="req_id_'+j+'"><input type="hidden" value="'+res[i].requirement_name+'"id="req_name_'+j+'"><div class="col-lg-4 col-sm-12"><label style="visibility:hidden">hidden</label><div id="fileuploader_'+j+'">Upload</div></div><input type="hidden" id="datesRequiredCheck_'+j+'" value="'+res[i].dates_required+'"><div class="col-lg-2 col-sm-12" id="issue_dd_'+j+'"></div><div class="col-lg-2 col-sm-12" id="exp_dd_'+j+'"></div></div>');
                          if(res[i].event_type_requirements[0].is_mandatory == 1)
                          {
                             $('#cnd_'+j).html(' * ');

@@ -217,8 +217,6 @@ class CompanyController extends Controller
                'phone_number'=> 'required|max:255',
                'address'=> 'required|max:255',
                'area_id'=> 'required|max:255',
-               'company_description_en'=> 'required|max:255',
-               'company_description_ar'=> 'required|max:255',
                'contact_name_en'=> 'required|max:255',
                'contact_name_ar'=> 'required|max:255',
                'designation_en'=> 'required|max:255',
@@ -421,7 +419,7 @@ class CompanyController extends Controller
       return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
-          $name = $data->requirement->requirement_name;
+          $name = getLangId() == 1 ? $data->requirement->requirement_name : $data->requirement->requirement_name_ar;
         }
         else{
           $name = __('Other Upload');

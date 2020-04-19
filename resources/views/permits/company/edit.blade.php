@@ -13,7 +13,7 @@
     }
     .make--disabled:parent {
         pointer-events:none;
-    } 
+    }
     .make--disabled {
         cursor:no-drop;
         background: #ccc !important;
@@ -188,13 +188,13 @@
         @endphp
         <div class="col-md-6">
             <input type="hidden" name="empty_document" value="{{$invalid}}">
-            <label>{{__('Establishment Name')}} <span class="text-danger">*</span></label>
-            <input 
+            <label>{{__('Establishment Name (EN)')}} <span class="text-danger">*</span></label>
+            <input
                 type="text"
-                name="name_en" 
-                dir="ltr" 
+                name="name_en"
+                dir="ltr"
                 autocomplete="off"
-                class="form-control form-control-sm {{$disabled == 'readonly' ? 'make--disabled' : '' }} @error('name_en') is-invalid @enderror" 
+                class="form-control form-control-sm {{$disabled == 'readonly' ? 'make--disabled' : '' }} @error('name_en') is-invalid @enderror"
                 value="{{old( 'name_en',$company->name_en)}}"
                 required
                 {{$disabled}}
@@ -289,7 +289,7 @@
             <div class="row form-group form-group-sm">
                 <div class="col-sm-12">
                     <label>{{__('Address in Ras Al Khaimah')}}<span class="text-danger">*</span></label>
-                    <textarea required dir="ltr" name="address" autocomplete="off" rows="2"
+                    <textarea required name="address" autocomplete="off" rows="2"
                         class="form-control @error('address') is-invalid @enderror">{{old('address', $company->address)}}</textarea>
                     @if ($errors->has('address'))
                     <div class="invalid-feedback"> {{$errors->first('address')}}</div>
@@ -302,22 +302,17 @@
     </section>
     <section class="row form-group form-group-sm">
         <div class="col-md-6">
-            <label>{{__('Establishment Details')}}<span class="text-danger">*</span></label>
-            <textarea required rows="3" autocomplete="off" dir="ltr" class="form-control form-control-sm
-                                                               @error('company_description_en') is-invalid @enderror"
+            <label>{{__('Establishment Details (EN)')}}</label>
+            <textarea  rows="3" autocomplete="off" dir="ltr"
+                       class="form-control form-control-sm"
                 name="company_description_en">{{old('company_description_en',$company->company_description_en)}}</textarea>
-            @if ($errors->has('company_description_en'))
-            <div class="invalid-feedback"> {{$errors->first('company_description_en')}}</div>
-            @endif
         </div>
         <div class="col-md-6">
-            <label>{{__('Establishment Details (AR)')}}<span class="text-danger">*</span></label>
-            <textarea required dir="rtl" rows="3" autocomplete="off"
-                class="form-control form-control-sm @error('company_description_ar') is-invalid @enderror"
+            <label>{{__('Establishment Details (AR)')}}</label>
+            <textarea  dir="rtl" rows="3" autocomplete="off"
+                class="form-control form-control-sm"
                 name="company_description_ar">{{old('company_description_ar', $company->company_description_ar)}}</textarea>
-            @if ($errors->has('company_description_ar'))
-            <div class="invalid-feedback"> {{$errors->first('company_description_ar')}}</div>
-            @endif
+
         </div>
     </section>
 
@@ -341,7 +336,7 @@
                         <label>{{__('Full Name (EN)')}} <span class="text-danger">*</span></label>
                         <input required autocomplete="off" name="contact_name_en"
                             class="form-control form-control-sm @error('contact_name_en') is-invalid @enderror"
-                            type="text" value="{{old('contact_name_en', $company->contact->contact_name_en)}}">
+                            type="text" value="{{old('contact_name_en', $company->contact->contact_name_en)}}" dir="ltr">
                         @if ($errors->has('contact_name_en'))
                         <div class="invalid-feedback"> {{$errors->first('contact_name_en')}}</div>
                         @endif
@@ -350,7 +345,7 @@
                         <label>{{__('Full Name (AR)')}}<span class="text-danger">*</span></label>
                         <input required dir="rtl" name="contact_name_ar" autocomplete="off"
                             class="form-control form-control-sm @error('contact_name_ar') is-invalid @enderror"
-                            type="text" value="{{old('contact_name_ar', $company->contact->contact_name_ar)}}">
+                            type="text" value="{{old('contact_name_ar', $company->contact->contact_name_ar)}}" dir="rtl">
                         @if ($errors->has('contact_name_ar'))
                         <div class="invalid-feedback"> {{$errors->first('contact_name_ar')}}</div>
                         @endif
@@ -361,7 +356,7 @@
                         <label>{{__('Designation (EN)')}} <span class="text-danger">*</span></label>
                         <input required autocomplete="off" name="designation_en"
                             class="form-control form-control-sm @error('designation_en') is-invalid @enderror"
-                            type="text" value="{{old('designation_en' ,$company->contact->designation_en)}}">
+                            type="text" value="{{old('designation_en' ,$company->contact->designation_en)}}" dir="ltr">
                         @if ($errors->has('designation_en'))
                         <div class="invalid-feedback"> {{$errors->first('designation_en')}}</div>
                         @endif
@@ -370,7 +365,7 @@
                         <label>{{__('Designation (AR)')}} <span class="text-danger">*</span></label>
                         <input dir="rtl" name="designation_ar" autocomplete="off"
                             class="form-control form-control-sm @error('designation_ar') is-invalid @enderror"
-                            type="text" value="{{old('designation_ar', $company->contact->designation_ar)}}">
+                            type="text" value="{{old('designation_ar', $company->contact->designation_ar)}}" dir="ltr">
                         @if ($errors->has('designation_ar'))
                         <div class="invalid-feedback"> {{$errors->first('designation_ar')}}</div>
                         @endif
@@ -676,7 +671,7 @@
         requirementTable = $('#upload-requirement-table').DataTable({
             dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "<'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'p>>",
             ajax: '{{ route('company.requirement.datatable', $company->company_id) }}',
             // columnDefs:[{targets: [4], className:'no-wrap'}],
             "order": [[0, 'asc']],

@@ -192,8 +192,10 @@
                   <input type="text" class="form-control form-control-sm" id="confirm_password" name="confirm_password">
                 </div>
               </div>
-              <button onclick="changePassword()"
-                class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u float-right" style="margin-right: calc(50% - 39px);margin-top: 5px;">{{__('Change')}}</button>
+              <div class="d-flex justify-content-center mt-3">
+                  <button onclick="changePassword()"
+                          class="btn btn--maroon btn-sm btn-wide kt-font-bold kt-font-transform-u">{{__('Change')}}</button>
+              </div>
           </div>
           </form>
         </div>
@@ -257,7 +259,7 @@
 
     // });
 
-  
+
 
 
     $('.select2').select2({
@@ -352,7 +354,7 @@
     dom: "<'row d-none'<'col-sm-12 col-md-6 '><' col-sm-12 col-md-6'>>" +
       "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-12 col-md-5'i>"+
-          "<'col-sm-12 col-md-7'p>>", 
+          "<'col-sm-12 col-md-7'p>>",
             ajax: '{{ route('company.requirement.datatable', $company->company_id) }}',
             // columnDefs:[{targets: [4], className:'no-wrap'}],
             "order": [[ 0, 'asc' ]],

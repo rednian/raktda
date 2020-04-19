@@ -145,11 +145,11 @@
         </table>
         <div id="heading">
             <div>
-                تصريح مؤقت
+                تصريح فعالية
             </div>
 
             <div>
-                Temporary Permit
+                Event Permit
             </div>
         </div>
     </header>
