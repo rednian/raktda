@@ -1,5 +1,5 @@
 
-<div class="modal fade" id=show-one-foodtruck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="show-one-foodtruck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true" style=" overflow-y:auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -72,7 +72,7 @@
                             <input type="hidden" value="{{$req->requirement_name}}" id="so_truck_req_name_{{$i}}">
                             <div class="col-lg-4 col-sm-12">
                                 <label style="visibility:hidden">hidden</label>
-                                <div id="truckuploader_{{$i}}">{{__('Upload')}}
+                                <div id="so_truckuploader_{{$i}}">{{__('Upload')}}
                                 </div>
                             </div>
 

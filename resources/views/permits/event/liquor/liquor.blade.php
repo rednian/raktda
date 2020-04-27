@@ -1,20 +1,3 @@
-{{-- <div class="modal fade" id="liquor_type_check" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Liquor Permit Type')}} <i class="fa fa-truck"></i>
-</h5>
-<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsLiquor()">
-</button>
-</div>
-<div class="modal-body">
-
-</div>
-</div>
-</div>
-</div>
---}}
 
 <div class="modal fade" id="liquor_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style=" overflow-y:auto">
@@ -117,23 +100,7 @@
                             <div id="liquoruploader_{{$i}}">{{__('Upload')}}
                             </div>
                         </div>
-                        {{-- <input type="hidden" id="liquordatesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
-                        @if($req->dates_required == 1)
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="" class="text--maroon kt-font-bold"
-                                title="Issue Date">{{__('Issued Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="liquor_doc_issue_date_{{$i}}" data-date-end-date="0d"
-                                id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-                        </div>
-                        <div class="col-lg-2 col-sm-12">
-                            <label for="" class="text--maroon kt-font-bold"
-                                title="Expiry Date">{{__('Expiry Date')}}</label>
-                            <input type="text" class="form-control form-control-sm date-picker"
-                                name="liquor_doc_exp_date_{{$i}}" id="liquor_doc_exp_date_{{$i}}"
-                                placeholder="DD-MM-YYYY" />
-                        </div>
-                        @endif --}}
+
                     </div>
                     @php
                     $i++;

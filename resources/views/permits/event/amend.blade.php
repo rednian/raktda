@@ -249,19 +249,19 @@
                             <td>{{$event->liquor->company_name_en}}</td>
                             <td>{{$event->liquor->company_name_ar}}</td>
                             <td>{{$event->liquor->purchase_receipt}}</td>
-                            <td>{{$event->liquor->liquor_service}}</td>
+                            <td>{{ucfirst($event->liquor->liquor_service)}}</td>
                             <td>
                                 @if($event->liquor->status == 2)
                                     <a onclick="editLiquor({{$event->liquor->event_liquor_id}})"><i class="fa fa-pen fnt-16 text-info"></i></a>
                                     &emsp;<a href="#" data-target="#removeLiquorModal" data-toggle="modal" onclick="setLiquorModal({{$event->liquor->event_liquor_id}})"><i class="fa fa-trash fnt-16 text-danger"></i></a>
                                     @else
-                                <a href="#" class="btn btn-secondary btn-hover-warning" onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}">{{__('View')}}</a>
+                                <a href="#"  onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}"><i class="fa fa-file fnt-16 "></i></a>
                                     @endif
                             </td>
                         </tbody>
                     </table>
                 </div>
-            @elseif($event->liquor->provided == 0)
+            @elseif($event->liquor->provided == 1)
                 <label class="col-form-label"> {{__('Provided by venue ?')}} &emsp; {{__('Yes')}}</label>
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
@@ -272,7 +272,12 @@
                         <tbody id="liquor_list">
                             <td>{{$event->liquor->liquor_permit_no ? $event->liquor->liquor_permit_no : ''}}</td>
                             <td>
-                                <a href="#" class="btn btn-secondary btn-hover-warning" onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}">{{__('View')}}</a>
+                                @if($event->liquor->status == 2)
+                                    <a onclick="editLiquor({{$event->liquor->event_liquor_id}})"><i class="fa fa-pen fnt-16 text-info"></i></a>
+                                    &emsp;<a href="#" data-target="#removeLiquorModal" data-toggle="modal" onclick="setLiquorModal({{$event->liquor->event_liquor_id}})"><i class="fa fa-trash fnt-16 text-danger"></i></a>
+                                @else
+                                <a href="#"  onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}"><i class="fa fa-file fnt-16 "></i></a>
+                                @endif
                             </td>
                         </tbody>
                     </table>
@@ -361,11 +366,9 @@
 
     @include('permits.event.foodtruck.show-one-foodtruck', ['truck_req'=>$truck_req, 'from' => 'amend'])
 
+    @include('permits.event.liquor.view_liquor', ['liquor_req'=>$liquor_req])
 
-        @include('permits.event.liquor.show_liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
-
-        @include('permits.event.liquor.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
-
+    @include('permits.event.liquor.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
 
     @include('permits.event.liquor.remove-modal')
 
@@ -414,15 +417,15 @@
         @if($event->truck()->exists())
         editTruck();
         @endif
-        var provided = $('#liquor_provided').val();
-        checkLiquorVenue(provided);
-        changeLiquorService();
-        $("input:radio[name='isLiquorVenue'][value='"+provided+"']").attr('checked', true);
+
         var unPaidFee = $('#unpaid-fee').val();
         if(!unPaidFee)
         {
             $('#submit_btn').attr('disabled', true);
         }
+        @if($event->liquor->status == 2)
+        $('#submit_btn').attr('disabled', false);
+        @endif
 
     })
 
@@ -662,16 +665,11 @@
         }
 
 
-        function go_back_truck_list()
-        {
-            $('#edit_food_truck').modal('show');
-            $('#edit_one_food_truck').modal('hide');
-        }
-
         function addLiquor() {
             $('#liquor_details').modal('show');
             checkLiquorVenue(0);
         }
+
 
         function editTruck(){
             var event_id = $('#event_id').val() ;
@@ -695,13 +693,132 @@
                                $('#remove_truck_id').val(result[s].event_truck_id);
                                $('#submit_btn').attr('disabled', false);
                            }else {
-                               $('#append_'+s).append('<span><i class="fa fa-file" onclick="viewTruck('+result[s].event_truck_id+')"></i></span>');
+                               $('#append_'+s)
+                                   .append('<span><i class="fa fa-file fnt-16 " ' +
+                                       'onclick="viewTruck('+result[s].event_truck_id+')"></i></span>');
                            }
                         }
                     }
                 }
             });
         }
+
+        function viewTruck(id) {
+            var url = "{{route('event.fetch_this_truck_details', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result)
+                    {
+                        $('#show-one-foodtruck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        $('#so_company_name_en').val(result.company_name_en);
+                        $('#so_company_name_ar').val(result.company_name_ar);
+                        $('#so_plate_no').val(result.plate_number);
+                        $('#so_food_type').val(result.food_type);
+                        $('#so_regis_issue_date').val(moment(result.registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#so_regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#so_this_event_truck_id').val(result.event_truck_id);
+                        $('#show-one-foodtruck .ajax-file-upload-red').trigger('click');
+
+                        truckDocUploadView();
+                    }
+                }
+            });
+        }
+
+    const truckDocUploadView = () => {
+        var per_truck_doc = $('#so_truck_document_count').val();
+        var total = parseInt($('#so_truck_additional_doc > div').length);
+        for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+            let reqID = $('#truck_req_id_'+i).val();
+            truckDocUploader[i] = $('#so_truckuploader_'+i).uploadFile({
+                url: "{{route('event.uploadTruck')}}",
+                method: "POST",
+                fileName: "so_truck_file_"+i,
+                multiple: true,
+                downloadStr: `<i class="la la-download"></i>`,
+                deleteStr: `<i class="la la-trash"></i>`,
+                showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileSize: 5242880,
+                showFileCounter: false,
+                showProgress: false,
+                abortStr: '',
+                returnType: "json",
+                maxFileCount: 2,
+                showPreview: false,
+                showDownload: true,
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                formData: {
+                    id: i ,
+                    reqId: $('#so_truck_req_id_'+i).val()
+                },
+                downloadCallback: function (files, pd) {
+
+                    if(files)
+                    {
+                        let user_id = $('#user_id').val();
+                        let event_id = $('#event_id').val();
+                        let truck_id = $('#so_this_event_truck_id').val();
+                        let path = user_id+'/event/'+ event_id +'/truck/' +truck_id +'/'+reqID +'/' +files;
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }else {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }
+
+                },
+                onLoad:function(obj)
+                {
+                    var ev_tr_id = $('#so_this_event_truck_id').val();
+                    $.ajax({
+                        url: "{{route('event.fetch_this_truck_docs')}}",
+                        type: 'POST',
+                        data: {
+                            truckId: ev_tr_id,
+                            reqId: $('#so_truck_req_id_'+i).val(),
+                        },
+                        dataType: "json",
+                        success: function(data)
+                        {
+                            if (data) {
+                                let j = 1 ;
+                                for(data of data) {
+                                    if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        // var cc = d.splice(4,5);
+                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+                    });
+                },
+            });
+            $('#truckuploader_'+i+'  div').attr('id', 'truck-upload_'+i);
+            $('#truckuploader_'+i+' + div').attr('id', 'truck-file-upload_'+i);
+        }
+    };
 
         $(document).on('click', '#remove-truck-btn', function(){
             var bookId = $(this).data('id');
@@ -806,7 +923,7 @@
 
         $('#add_new_truck').click(function(){
             $('#this_event_truck_id').val('');
-            $('#edit_one_food_truck').modal({
+            $('#amend_food_truck').modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true
@@ -815,13 +932,7 @@
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
-            $('#add_new_td').show();
-            $('#edit_food_truck').modal('hide');
-            $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
-            // truckDocumentsValidator = $('#truck_upload_form').validate({
-            //     rules: truckDocRules,
-            //     messages: truckDocMessages
-            // });
+            $('#amend_food_truck .ajax-file-upload-red').trigger('click');
             truckDocUpload();
         });
 
@@ -854,11 +965,9 @@
                             if(result.status.trim() == 'done')
                             {
                                 editTruck();
-                                $('#edit_one_food_truck').modal('hide');
-                                $('#edit_food_truck').modal('show');
+                                $('#amend_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">{!! __('Food Truck details Added successfully') !!}</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
-                                location.reload(true);
                                 $('#submit_btn').attr('disabled', false);
                             }
                         }
@@ -898,9 +1007,8 @@
                                 editTruck();
                                 $('#amend_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">{!! __('Food Truck details updated successfully') !!}</h5>');
-                                setTimeout(function(){ $('#disp_mess').hide("slow", function(){
-                                    $('#disp_mess').html('');
-                                });}, 2000);
+                                setTimeout(function(){ $('#disp_mess').html('');}, 2000);
+                                $('#submit_btn').attr('disabled', false);
                             }
                         }
                     });
@@ -912,6 +1020,7 @@
             var per_truck_doc = $('#truck_document_count').val();
             var total = parseInt($('#truck_additional_doc > div').length);
             for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+                let reqID = $('#truck_req_id_'+i).val();
                     truckDocUploader[i] = $('#truckuploader_'+i).uploadFile({
                     url: "{{route('event.uploadTruck')}}",
                     method: "POST",
@@ -1003,7 +1112,7 @@
                             type: 'POST',
                             data: {path: data.filepath, ext: data.ext, id: i },
                             success: function (result) {
-                                console.log('success');
+                                console.log('');
                             }
                         });
                     }
@@ -1126,29 +1235,30 @@
                     returnType: "json",
                     maxFileCount: 2,
                     showPreview: false,
-                    // showDelete: true,
+                    showDelete: true,
                     showDownload: true,
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
-                        if(files)
-                        {
+                        if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/', '');
+                            window.open(
+                                "{{url('storage')}}" + '/' + path,
+                                '_blank'
+                            );
+                        }
+                        else {
                             let user_id = $('#user_id').val();
                             let event_id = $('#event_id').val();
                             let liquor_id = $('#event_liquor_id').val();
                             let path = user_id+'/event/'+ event_id +'/liquor/' +liquor_id +'/'+reqID +'/' +files;
                             window.open(
-                            "{{url('storage')}}"+'/' + path,
-                            '_blank'
-                            );
-                        }else {
-                            let file_path = files.filepath;
-                                let path = file_path.replace('public/','');
-                                window.open(
-                            "{{url('storage')}}"+'/' + path,
-                            '_blank'
+                                "{{url('storage')}}"+'/' + path,
+                                '_blank'
                             );
                         }
+
                     },
                     onLoad:function(obj)
                     {
@@ -1164,9 +1274,7 @@
                             success: function(data)
                             {
                                 if (data) {
-                                    let j = 1 ;
                                    for(data of data) {
-                                        if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
                                         let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
@@ -1180,8 +1288,7 @@
                                             $('#liquor_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#liquor_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
                                         }
-                                        }
-                                    j++;
+
                                    }
                                 }
                             }
@@ -1223,9 +1330,8 @@
             }
         }
 
-        function changeLiquorService()
+        function changeLiquorService(service)
         {
-            var service = $('#liquor_service').val();
             if(service == 'limited')
             {
                 $('#limited_types').show();
@@ -1234,17 +1340,20 @@
             }
         }
 
-         function editLiquor(id){
+        function setLiquorModal(id) {
+            $('#del-liquor-id').val(id);
+        }
+
+    function editLiquor(id){
             if(id){
                 var url = "{{route('liquor.show', ':id')}}";
                 url = url.replace(':id', id);
                 $.ajax({
                     url:  url,
                     success: function (data) {
-                        if(data.length)
+                        if(data)
                         {
                             $('#liquor_details .ajax-file-upload-red').trigger('click');
-                            $('#liquor_details').modal('show');
                             $('#event_liquor_id').val(data.event_liquor_id);
                             if(data.provided == 1)
                             {
@@ -1258,10 +1367,11 @@
                                 $('#l_company_name_ar').val(data.company_name_ar);
                                 $('#purchase_receipt').val(data.purchase_receipt);
                                 $('#liquor_service').val(data.liquor_service);
-                                changeLiquorService();
+                                changeLiquorService(data.liquor_service);
                                 $('#liquor_types').val(data.liquor_types);
                                 liquorDocUpload();
                             }
+                            $('#liquor_details').modal('show');
                         }
                     }
                 });
@@ -1277,25 +1387,133 @@
             $.ajax({
                 url: url,
                 success: function (data) {
-                    checkLiquorVenue(data.provided);
-                    if(data.provided == 1){
-                        $('#liquor_permit_no').val(data.liquor_permit_no);
+                    if(data.provided == 1)
+                    {
+                        $('#vl_liquor_provided_form').show();
+                        $('#vl_liquor_provided_upload_form').show();
+                        $('#vl_liquor_details_form').hide();
+                        $('#vl_liquor_upload_form').hide();
                     }else if(data.provided == 0) {
-                        $('#l_company_name_en').val(data.company_name_en);
-                        $('#l_company_name_ar').val(data.company_name_ar);
-                        $('#purchase_receipt').val(data.purchase_receipt);
-                        $('#liquor_service').val(data.liquor_service);
-                        changeLiquorService();
-                        $('#liquor_types').val(data.liquor_types);
+                        $('#vl_liquor_provided_form').hide();
+                        $('#vl_liquor_provided_upload_form').hide();
+                        $('#vl_liquor_details_form').show();
+                        $('#vl_liquor_upload_form').show();
+                        // $('#liquor_upload_form-div').show();
+                    }
+                    if(data.provided == 1){
+                        $('#vl_liquor_permit_no').val(data.liquor_permit_no);
+                        $("input:radio[name='vl_isLiquorVenue'][value='1']").attr('checked', true);
+                    }else if(data.provided == 0) {
+                        $("input:radio[name='vl_isLiquorVenue'][value='0']").attr('checked', true);
+                        $('#vl_company_name_en').val(data.company_name_en);
+                        $('#vl_company_name_ar').val(data.company_name_ar);
+                        $('#vl_purchase_receipt').val(data.purchase_receipt);
+                        $('#vl_liquor_service').val(data.liquor_service);
+                        if(data.liquor_service == 'limited')
+                        {
+                            $('#vl_limited_types').show();
+                        }else{
+                            $('#vl_limited_types').hide();
+                        }
+                        $('#vl_liquor_types').val(data.liquor_types);
                     }
                     resetLiquorUploads();
-                    liquorDocUpload();
+                    liquorDocUploadView();
                     $('#show_liquor_details').modal('show');
                 }
             });
         }
 
-        function resetLiquorUploads(){
+    const liquorDocUploadView = () => {
+        var per_doc = $('#vl_liquor_document_count').val();
+        // var total = parseInt($('#liquor_additional_doc > div').length);
+        for(var i = 1; i <=  parseInt(per_doc);i++){
+            var reqID =  $('#vl_liqour_req_id_'+i).val()  ;
+            liquorDocUploader[i] = $('#vl_liquoruploader_'+i).uploadFile({
+                url: "{{route('event.uploadLiquor')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png,pdf",
+                fileName: "vl_liquor_file_"+i,
+                multiple: true,
+                downloadStr: `<i class="la la-download"></i>`,
+                showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileSize: 5242880,
+                showFileCounter: false,
+                showProgress: false,
+                abortStr: '',
+                returnType: "json",
+                maxFileCount: 2,
+                showPreview: false,
+                showDelete:false,
+                showDownload: true,
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                formData: {id:  i, reqId: reqID },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/', '');
+                        window.open(
+                            "{{url('storage')}}" + '/' + path,
+                            '_blank'
+                        );
+                    }
+                    else {
+                        let user_id = $('#user_id').val();
+                        let event_id = $('#event_id').val();
+                        let liquor_id = $('#vl_event_liquor_id').val();
+                        let path = user_id+'/event/'+ event_id +'/liquor/' +liquor_id +'/'+reqID +'/' +files;
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }
+
+                },
+                onLoad:function(obj)
+                {
+                    var ev_lq_id = $('#vl_event_liquor_id').val();
+                    $.ajax({
+                        url: "{{route('event.fetch_this_liquor_docs')}}",
+                        type: 'POST',
+                        data: {
+                            liquor_id: ev_lq_id,
+                            reqId: $('#vl_liqour_req_id_'+i).val(),
+                        },
+                        dataType: "json",
+                        success: function(data)
+                        {
+                            if (data) {
+                                let j = 1 ;
+                                for(data of data) {
+                                    if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        // var cc = d.splice(4,5);
+                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+                    });
+                },
+
+
+            });
+            $('#vl_liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
+            $('#vl_liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
+        }
+    };
+
+
+    function resetLiquorUploads(){
             let  per_doc = $('#liquor_document_count').val();
             // var total = parseInt($('#liquor_additional_doc > div').length);
             for(let i = 1; i <=  parseInt(per_doc);i++){

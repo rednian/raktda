@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Company;
 
 use App\EventLiquor;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
 class LiquorController
 {

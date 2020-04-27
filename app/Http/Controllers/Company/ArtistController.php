@@ -2415,12 +2415,14 @@ class ArtistController extends Controller
                 $per_day_fee = $artistPermit->profession->amount;
                 $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
                 $total_fee = (int)$per_day_fee * $noofmonths;
+                $exempt_amount = $total_fee * ($exempt /100);
                 $amendment_fee = 100;
                 if($artistPermit->is_paid == 0)
                 {
                     $transArr->artistPermitTransaction()->create([
                         'amount' => $total_fee,
                         'exempt_percentage' => $exempt,
+                        'exempt_amount' =>$exempt_amount,
                         'permit_id' => $permit_id,
                         'artist_permit_id' => $artistPermit->artist_permit_id,
                         'transaction_id' => $transArr->transaction_id
@@ -2431,6 +2433,7 @@ class ArtistController extends Controller
                     $transArr->artistPermitTransaction()->create([
                         'amount' => $amendment_fee,
                         'exempt_percentage' => $exempt,
+                        'exempt_amount' =>$exempt_amount,
                         'permit_id' => $permit_id,
                         'artist_permit_id' => $artistPermit->artist_permit_id,
                         'transaction_id' => $transArr->transaction_id
@@ -2454,12 +2457,15 @@ class ArtistController extends Controller
 
             if ($paidEventFee == 1) {
 
+                $event_exempt_amount = $event_fee * ($exempt /100);
+
                 \App\EventTransaction::create([
                     'event_id' => $permit->event_id,
                     'user_id' => Auth::user()->user_id,
                     'transaction_id' => $transArr->transaction_id,
                     'amount' => $event_fee,
                     'exempt_percentage' => $exempt,
+                    'exempt_amount' => $event_exempt_amount,
                     'type' => 'event'
                 ]);
 
@@ -2483,12 +2489,15 @@ class ArtistController extends Controller
 
                     $totaltrucks = $truck_fee / (getSettings()->food_truck_fee * $noofdays);
 
+                    $truck_exempt_amount = $truck_fee * ($exempt /100);
+
                     EventTransaction::create([
                         'event_id' => $event_id,
                         'user_id' => Auth::user()->user_id,
                         'transaction_id' => $transArr->transaction_id,
                         'amount' => $truck_fee,
                         'exempt_percentage' => $exempt,
+                        'exempt_amount' => $truck_exempt_amount,
                         'type' => 'truck',
                         'total_trucks' => $totaltrucks
                     ]);
@@ -2499,12 +2508,14 @@ class ArtistController extends Controller
 
                 if ($liquor_fee > 0) {
                     $lq_amount = getSettings()->liquor_fee * $noofdays;
+                    $liquor_exempt_amount = $liquor_fee * ($exempt /100);
                     EventTransaction::create([
                         'event_id' => $event_id,
                         'transaction_id' => $transArr->transaction_id,
                         'type' => 'liquor',
                         'amount' => $liquor_fee,
                         'exempt_percentage' => $exempt,
+                        'exempt_amount' => $liquor_exempt_amount,
                         'user_id' => Auth::user()->user_id
                     ]);
 

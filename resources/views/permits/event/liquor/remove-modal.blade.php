@@ -10,7 +10,7 @@
                 <h6 class="text--maroon">{{__('Are you sure to remove liquor details ?')}} </h6>
                 <form action="{{route('event.liquor.remove')}}" method="POST">
                     @csrf
-                    <input type="hidden" name="del_liquor_id" id="del-liquro-id">
+                    <input type="hidden" name="del_liquor_id" id="del-liquor-id">
                     <input type="hidden" name="del_liquor_event_id" value="{{$event->event_id}}">
                     <input type="submit" class="btn btn-sm btn--yellow" value="{{__('Ok')}}">
                 </form>
