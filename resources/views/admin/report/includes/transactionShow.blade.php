@@ -95,7 +95,8 @@
                                 <th>{{__('Artist Name')}}</th>`
                                 <th>{{__('Profession')}}</th>
                                 <th class="text-right">{{__('Amount')}} (AED)</th>
-                                <th class="text-right">{{__('Vat')}} (5%)</th>
+                                <th class="text-right">{{__('Discount')}} (%)</th>
+                                <th class="text-right">{{__('Discount')}} (AED)</th>
                                 <th class="text-right">{{__('Total')}} (AED)</th>
                                 {{--  <th class="text-center">{{__('View')}}</th>--}}
                             </tr>
@@ -114,12 +115,16 @@
                                         {{number_format($at->amount,2)}}
                                     </td>
                                     <td class="text-right">
-                                        {{number_format($at->vat,2)}}
+                                        {{number_format($at->exempt_percentage,1)}}
+                                    </td>
+                                    <td class="text-right">
+                                        {{number_format($at->exempt_amount,2)}}
                                     </td>
                                     @php
-                                        $total = $at->amount + $at->vat;
+                                        $total = $at->amount - $at->exempt_amount;
+
                                         $feetotal += $at->amount;
-                                        $vattotal += $at->vat;
+                                        $vattotal -= $at->exempt_amount;
                                         $grandtotal += $total;
                                     @endphp
                                     <td class="text-right">
@@ -137,7 +142,6 @@
                         </table>
                     </div>
                 @endif
-
                 @if($transaction->eventTransaction()->exists())
                     {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
                     </h5> --}}
@@ -149,7 +153,8 @@
                                 <th class="text-left">{{__('Event Name')}}</th>
                                 <th class="text-left">{{__('Event Type')}}</th>
                                 <th class="text-right">{{__('Fee')}} (AED)</th>
-                                <th class="text-right">{{__('Vat')}}(5%)</th>
+                                <th class="text-right">{{__('Discount')}} (%)</th>
+                                <th class="text-right">{{__('Discount')}} (AED)</th>
                                 <th class="text-right">{{__('Total')}} (AED) </th>
 
                             </tr>
@@ -157,6 +162,7 @@
                             <tbody>
 
                             @foreach($transaction->eventTransaction as $key => $et)
+
                                 @if($et->type == 'event')
                                     <tr>
                                         <td>{{$key+1}}</td>
@@ -164,40 +170,42 @@
 
                                         <td>{{$et->event->type->name_en}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
-                                        <td class="text-right">{{number_format($et->vat,2)}}</td>
+                                        <td class="text-right">{{number_format($et->exempt_percentage,1)}}</td>
+
+                                        <td class="text-right">{{number_format($et->exempt_amount,2)}}</td>
                                         @php
-                                            $total = $et->amount + $et->vat;
+                                            $total = $et->amount - $et->exempt_amount;
                                             $feetotal += $et->amount;
-                                            $vattotal += $et->vat;
+                                            $vattotal -= $et->exempt_amount;
                                             $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
 
                                     </tr>
-                                    @elseif($et->type == 'truck')
+                                @elseif($et->type == 'truck')
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         <td colspan="2">{{__('Truck Fee')}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
-                                        <td class="text-right">{{number_format($et->vat,2)}}</td>
+                                        <td class="text-right">{{number_format($et->exempt_amount,2)}}</td>
                                         @php
-                                            $total = $et->amount + $et->vat;
+                                            $total = $et->amount - $et->exempt_amount;
                                             $feetotal += $et->amount;
-                                            $vattotal += $et->vat;
+                                            $vattotal -= $et->exempt_amount;
                                             $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
                                     </tr>
-                                    @elseif($et->type == 'liquor')
+                                @elseif($et->type == 'liquor')
                                     <tr>
                                         <td>{{$key+1}}</td>
                                         <td colspan="2">{{__('Liquor Fee')}}</td>
                                         <td class="text-right">{{number_format($et->amount,2)}}</td>
-                                        <td class="text-right">{{number_format($et->vat,2)}}</td>
+                                        <td class="text-right">{{number_format($et->exempt_amount,2)}}</td>
                                         @php
-                                            $total = $et->amount + $et->vat;
+                                            $total = $et->amount - $et->exempt_amount;
                                             $feetotal += $et->amount;
-                                            $vattotal += $et->vat;
+                                            $vattotal -= $et->exempt_amount;
                                             $grandtotal += $total;
                                         @endphp
                                         <td class="text-right">{{number_format($total,2)}}</td>
@@ -220,7 +228,7 @@
                                 <td id="total_amt" class="pull-right kt-font-bold">AED{{' '.number_format($feetotal,2)}}</td>
                             </tr>
                             <tr style="border-bottom:1px solid black;">
-                                <td>{{__('Total VAT(5%)')}}</td>
+                                <td>{{__('Total Discount')}}</td>
                                 <td id="total_vat" class="pull-right kt-font-bold">AED {{' '.number_format($vattotal,2)}}</td>
                             </tr>
                             <tr>
