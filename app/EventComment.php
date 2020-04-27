@@ -9,7 +9,7 @@ class EventComment extends Model
 {
 	protected $table = 'smartrak_smartgov.event_comment';
 	protected $primaryKey = 'event_comment_id';
-	protected $fillable = ['event_id', 'user_id', 'type', 'comment', 'comment_ar', 'action', 'user_type', 'role_id', 'government_id','exempt_payment'];
+	protected $fillable = ['event_id', 'user_id', 'type', 'comment', 'comment_ar', 'action', 'user_type', 'role_id', 'government_id','exempt_payment','exempt_percentage'];
 	protected $dates = ['created_at', 'updated_at'];
 
 	public function user()

@@ -27,16 +27,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                @if(isset($from) && $from == 'amend')
-                <div class="alert alert-outline-danger fade show kt-padding-t-0 kt-padding-b-0" role="alert">
-                    <div class="alert-icon">
-                        <i class="flaticon-questions-circular-button"></i>
-                    </div>
-                    <div class="alert-text">{{__('If you Add Liquor Details, Permit will be Submitted for Amendment')}}
-                    </div>
-                </div>
-                @endif
-                @include('permits.event.common.liquor-fee')
+
+                @include('permits.event.liquor.liquor-fee')
                 <div class="col-md-12 form-group form-group-xs d-flex">
                     <label class="col-form-label"> {{__('Provided by venue ?')}}</label>
                     {{-- <label class="kt-checkbox kt-checkbox--bold ml-2 pt-1">

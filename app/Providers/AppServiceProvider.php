@@ -32,5 +32,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('layouts.components.status', 'status');
         Blade::component('layouts.components.empty-default', 'empty');
         Schema::defaultStringLength(191);
+
     }
 }

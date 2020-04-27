@@ -155,8 +155,15 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::post('event/fetch_liquor_details', 'Company\EventController@fetch_liquor_details')->name('event.fetch_liquor_details');
     Route::get('event/fetch_liquor_details_by_event_id/{id}', 'Company\EventController@fetch_liquor_details_by_event_id')->name('event.fetch_liquor_details_by_event_id');
 
+    Route::get('event/liquor/{id}', 'Company\LiquorController@show')->name('liquor.show');
+
+    Route::post('event/liquor/remove', 'Company\LiquorController@delete')->name('event.liquor.remove');
+
+
     Route::post('event/fetch_truck_details', 'Company\EventController@fetch_truck_details')->name('event.fetch_truck_details');
     Route::get('event/fetch_truck_details_by_event_id/{id}', 'Company\EventController@fetch_truck_details_by_event_id')->name('event.fetch_truck_details_by_event_id');
+
+    Route::post('event/foodtruck/delete', 'Company\EventController@deleteFoodTruck')->name('event.foodtruck.delete');
 
     Route::get('event/delete_truck_details/{id}', 'Company\EventController@delete_truck_details')->name('event.delete_truck_details');
 
@@ -191,7 +198,7 @@ Route::group(['middleware' => ['auth', 'set_lang_front', 'verified', 'company_st
     Route::get('transactions', 'Company\ReportController@transactions')->name('company.transactions');
     Route::get('reports/transaction/view/{id}', 'Company\ReportController@show')->name('report.view');
     Route::get('reports/event/view/{id}', 'Company\ReportController@showevent')->name('report.view_event');
-    Route::get('reports/transaction/print/{id}', 'Company\ReportController@transactionprint')->name('transaction.print');
+    Route::get('reports/transaction/print/{id}', 'Company\ReportController@print')->name('transaction.print');
 
      //NOTIFICATIONS
      Route::get('notifications', 'Company\CommonController@notifications')->name('company.notifications');

@@ -4,7 +4,7 @@
 
 @section('content')
 
-    
+
 
 <div class="kt-portlet kt-portlet--mobile">
 
@@ -21,7 +21,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                 ">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-left"></i>
                     {{__('BACK')}}
                 </button>
 
@@ -41,7 +41,7 @@
             </div>
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm kt-font-bold">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-left"></i>
                 </button>
                 <a href="{{URL::signedRoute('company.add_artist_to_permit', ['from' => 'amend', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u ">
@@ -192,12 +192,12 @@
                     </tbody>
                 </table>
             </div>
+
+            <input type="hidden" value="{{$is_Unpaid}}" id="is-unpaid" >
+
             @if(count($artist_details) > 0)
             <div class="d-flex justify-content-end">
-                <div class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn">
-                    <i class="la la-check"></i>
-                    {{__('SUBMIT')}}
-                </div>
+                <input type="submit" class="btn btn--yellow btn-sm btn-wide kt-font-bold kt-font-transform-u" id="submit_btn" value="{{__('SUBMIT')}}">
             </div>
             @endif
         </div>
@@ -219,6 +219,11 @@
     });
 
     $(document).ready(function(){
+
+        let isUnpaid = $('#is-unpaid').val();
+        if(!isUnpaid) {
+            $('#submit_btn').attr('disabled', true);
+        }
 
     $('#kt_aside_menu ul li a').on('mouseenter', stopNavigate)
         .on('mouseout', function () {

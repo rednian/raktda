@@ -484,8 +484,8 @@
 </div>
 </div>
 
-@include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])
-@include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
+@include('permits.event.foodtruck.view_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.liquor.show_liquor', ['liquor_req'=>$liquor_req])
 
 @endsection
 
@@ -501,7 +501,7 @@
             for(var i = 1; i <= $('#imgCount').val(); i++)
             {
                 $('#single_image_'+i).fancybox();
-            }    
+            }
 
                 function viewThisTruck(id)
                 {

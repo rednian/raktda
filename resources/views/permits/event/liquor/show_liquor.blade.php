@@ -1,4 +1,4 @@
-<div class="modal fade" id="liquor_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="show_liquor_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style=" overflow-y:auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

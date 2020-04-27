@@ -528,8 +528,8 @@
 <!--end::Modal-->
 
 
-@include('permits.event.common.show_food_truck', ['truck_req'=>$truck_req])
-@include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
+@include('permits.event.foodtruck.show_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.liquor.show_liquor', ['liquor_req'=>$liquor_req])
 
 @endsection
 

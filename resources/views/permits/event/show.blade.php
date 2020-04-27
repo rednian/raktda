@@ -538,8 +538,8 @@
 </div>
 </div>
 
-@include('permits.event.common.view_food_truck', ['truck_req'=>$truck_req])
-@include('permits.event.common.show_liquor', ['liquor_req'=>$liquor_req])
+@include('permits.event.foodtruck.view_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.liquor.show_liquor', ['liquor_req'=>$liquor_req])
 
 @endsection
 
@@ -555,7 +555,7 @@
             for(var i = 1; i <= $('#imgCount').val(); i++)
             {
                 $('#single_image_'+i).fancybox();
-            }        
+            }
 
 
                 function viewThisTruck(id)
@@ -565,7 +565,7 @@
                     $.ajax({
                         url:  url,
                         success: function (result) {
-                            if(result) 
+                            if(result)
                             {
                                 // console.log(result);
                                 $('#edit_food_truck').modal('hide');
@@ -614,7 +614,7 @@
                     showDownload: true,
                     uploadButtonClass: 'btn btn-default mb-2 mr-2',
                     formData: {
-                        id: i , 
+                        id: i ,
                         reqId: $('#truck_req_id_'+i).val()
                     },
                     downloadCallback: function (files, pd) {
@@ -665,7 +665,7 @@
                             }
                         });
                     },
-                 
+
                 });
                 $('#truckuploader_'+i+'  div').attr('id', 'truck-upload_'+i);
                 $('#truckuploader_'+i+' + div').attr('id', 'truck-file-upload_'+i);
@@ -683,7 +683,7 @@
                     liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
                     url: "{{route('event.uploadLiquor')}}",
                     method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "liquor_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
@@ -700,7 +700,7 @@
                     uploadButtonClass: 'btn btn-default mb-2 mr-2',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
-                        
+
                         // let path = file_path.replace('public/','');
                         let user_id = $('#user_id').val();
                         let event_id = $('#event_id').val();
@@ -787,7 +787,7 @@
             $.ajax({
                 url: url,
                 success: function (data) {
-                    if(data) 
+                    if(data)
                     {
                         $('#liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
@@ -815,6 +815,6 @@
         }
 
 
- 
+
 </script>
 @endsection

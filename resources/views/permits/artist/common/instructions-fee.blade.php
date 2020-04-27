@@ -18,7 +18,7 @@
                     @foreach($profession as $pt)
                     <tr>
                         <td>{{getLangId() == 1 ? $pt->name_en : $pt->name_ar}}</td>
-                        <td>{{number_format($pt->amount,2)}}</td>
+                        <td>{{number_format((int)$pt->amount,2)}}</td>
                     </tr>
                     @endforeach
                 </table>
