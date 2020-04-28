@@ -2163,7 +2163,11 @@ class EventController extends Controller
 
         $data['event'] = $event;
 
-        $eventComment = EventComment::where('event_id', $event->event_id)->latest()->first();
+        $eventComment = EventComment::where([
+            ['event_id', $event->event_id],
+            ['action', 'approved']
+        ])->latest()->first();
+
         $data['exempt'] = !empty($eventComment) ? $eventComment->exempt_percentage : null;
         $permit_status = [];
         $is_paid = [];
@@ -2319,6 +2323,9 @@ class EventController extends Controller
 
             DB::commit();
 
+
+            $result = ['success', __('Payment Done Successfully'), 'Success'];
+
             /* code for payment notification */
 
             if ($trnx_id) {
@@ -2328,49 +2335,61 @@ class EventController extends Controller
                 storeEventPermitPrint($event_id);
                 $directory = 'permit_downloads/event/' . $event_id;
                 $eventPrint = storage_path('app/' . $directory) . '/EventPermit#' . $event_permit_number . '.pdf';
-                $transaction = Transaction::where('created_by', Auth::user()->user_id)->latest()->first();
+                $transaction = Transaction::where('transaction_id', $trnx_id->transaction_id)->latest()->first();
+                $data = getExemptPercentage($transaction);
                 $data['transaction'] = $transaction;
                 $payment_voucher =  storage_path('app/' . $directory) . '/payment_voucher.pdf';
-                PDF::loadView('permits.reports.voucher_print', $data, [], [
-                    'title' => 'Event Permit ' . $event_permit_number,
-                    'default_font_size' => 10
-                ])->save($payment_voucher);
 
-                array_push($files, $eventPrint, $payment_voucher); //  adding the main print and the payment voucher file path to the files array
-                // file path of the truck permit print
-                $truck_file_path = storage_path('app/' . $directory) . '/TruckPermit#' . $event_permit_number . '.pdf';
-                if (Storage::exists($truck_file_path)) {
-                    array_push($files, $truck_file_path); //  adding the file path to the files array
+                try {
+                    PDF::loadView('permits.reports.voucher_print', $data, [], [
+                        'title' => 'Event Permit ' . $event_permit_number,
+                        'default_font_size' => 10
+                    ])->save($payment_voucher);
+
+                    array_push($files, $eventPrint, $payment_voucher); //  adding the main print and the payment voucher file path to the files array
+                    // file path of the truck permit print
+                    $truck_file_path = storage_path('app/' . $directory) . '/TruckPermit#' . $event_permit_number . '.pdf';
+                    if (Storage::exists($truck_file_path)) {
+                        array_push($files, $truck_file_path); //  adding the file path to the files array
+                    }
+                    // file path of the liquor permit print
+                    $liquor_file_path = storage_path('app/' . $directory) . '/LiquorPermit#' . $event_permit_number . '.pdf';
+                    if (Storage::exists($liquor_file_path)) {
+                        array_push($files, $liquor_file_path); //  adding the file path to the files array
+                    }
+
+                    if ($paidArtistFee) {
+                        $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " and " . $artistpermitnumber . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid";
+                        storeArtistPermitPrint($permit_id);
+                        $adirectory = 'permit_downloads/artist/' . $permit_id;
+                        $artistPrint = storage_path('app/' . $adirectory) . '/ArtistPermit#' . $artistpermitnumber . '.pdf';
+                    } else {
+                        $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid \n عزيزي " . Auth::user()->NameEn . ", رسوم التصريح رقم " . $event_permit_number . " مبلغ " . number_format($amount, 2) . " درهم, تمت بنجاح. يمكنك تحميل التصريح من التطبيق.";
+                    }
+
+
+                    paymentNotification($event, $paidArtistFee ? $permitArray : '', $files, $amount);
+                    sendSms(Auth::user()->number, $message); //  send sms to the number
+
+                    if ($paidArtistFee) {
+                        Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
+                    } else {
+                        Storage::deleteDirectory('permit_downloads/event/' . $event_id);
+                    }
+
                 }
-                // file path of the liquor permit print
-                $liquor_file_path = storage_path('app/' . $directory) . '/LiquorPermit#' . $event_permit_number . '.pdf';
-                if (Storage::exists($liquor_file_path)) {
-                    array_push($files, $liquor_file_path); //  adding the file path to the files array
-                }
+                catch(Throwable $e) {
 
-                if ($paidArtistFee) {
-                    $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " and " . $artistpermitnumber . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid";
-                    storeArtistPermitPrint($permit_id);
-                    $adirectory = 'permit_downloads/artist/' . $permit_id;
-                    $artistPrint = storage_path('app/' . $adirectory) . '/ArtistPermit#' . $artistpermitnumber . '.pdf';
-                } else {
-                    $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid \n عزيزي " . Auth::user()->NameEn . ", رسوم التصريح رقم " . $event_permit_number . " مبلغ " . number_format($amount, 2) . " درهم, تمت بنجاح. يمكنك تحميل التصريح من التطبيق.";
-                }
+                    // report($e);
 
+                    return false;
 
-                paymentNotification($event, $paidArtistFee ? $permitArray : '', $files, $amount);
-                sendSms(Auth::user()->number, $message); //  send sms to the number
-
-                if ($paidArtistFee) {
-                    Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
-                } else {
-                    Storage::deleteDirectory('permit_downloads/event/' . $event_id);
+                    // $result = ['error', __('unable to send mail! Please download from app.'), 'Error'];
                 }
             }
 
             /*end code for code for payment notification */
 
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
 
             $toURL = URL::signedRoute('event.happiness', ['id' => $event_id]);
         } catch (Exception $e) {

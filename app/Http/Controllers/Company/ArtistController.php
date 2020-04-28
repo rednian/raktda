@@ -47,6 +47,7 @@ class ArtistController extends Controller
 
     public function index(Request $request)
     {
+
         if (!$request->hasValidSignature()) {
             return abort(401);
         }
@@ -2371,7 +2372,10 @@ class ArtistController extends Controller
             return abort(401);
         }
         $id = $permit->permit_id;
-        $permitComment = PermitComment::where('permit_id', $id)->latest()->first();
+        $permitComment = PermitComment::where([
+            ['permit_id', $id],
+            ['action', 'approved']
+        ])->latest()->first();
         $data_bundle['exempt'] = !empty($permitComment) ? $permitComment->exempt_percentage : null;
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->where('created_by', Auth::user()->user_id)->first();
         return view('permits.artist.payment_gateway', $data_bundle);
@@ -2553,6 +2557,8 @@ class ArtistController extends Controller
 
             DB::commit();
 
+            $result = ['success', __('Payment Done Successfully'), 'Success'];
+
             /* code for payment notification */
 
             if ($transArr) {
@@ -2560,9 +2566,12 @@ class ArtistController extends Controller
                 storeArtistPermitPrint($permit_id);
                 $directory = 'permit_downloads/artist/' . $permit_id;
                 $artistPrint = storage_path('app/' . $directory) . '/ArtistPermit#' . $permit_number . '.pdf';
-                $transaction = Transaction::where('created_by', Auth::user()->user_id)->latest()->first();
+                $transaction = Transaction::where('transaction_id', $transArr->transaction_id)->latest()->first();
+                $data = getExemptPercentage($transaction);
                 $data['transaction'] = $transaction;
                 $payment_voucher =  storage_path('app/' . $directory) . '/payment_voucher.pdf';
+
+                try {
                 PDF::loadView('permits.reports.voucher_print', $data, [], [
                     'title' => 'Event Permit ' . $permit_number,
                     'default_font_size' => 10
@@ -2600,11 +2609,17 @@ class ArtistController extends Controller
                     Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
                 }
             }
+            catch (Throwable $e) {
+                // report($e);
+                return false;
+            }
+
+            }
 
             /*end code for code for payment notification */
 
 
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
+            
         } catch (Exception $e) {
             DB::rollBack();
             $result = ['error', __($e->getMessage()), 'Error'];

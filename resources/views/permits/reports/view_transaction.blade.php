@@ -283,7 +283,8 @@
             let discount = feeTotal * ( parseInt(exempt) / 100);
             let grandTotal = feeTotal - discount;
 
-            $('#discount-amount').html(formatAmount(discount));
+            $('#discount-amount').html('- '+formatAmount(discount));
+            $('#discount-amount').addClass('text-success');
             $('#grand-total').html(formatAmount(grandTotal));
 
         }
