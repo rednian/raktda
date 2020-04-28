@@ -805,7 +805,8 @@ class EventController extends Controller
           			'action' => $request->action,
           			'comment' => $request->comment,
           			'comment_ar' => $request->comment_ar,
-          			'user_id' => $request->user()->user_id
+                      'user_id' => $request->user()->user_id,
+                      'exempt_percentage'=> $request->exempt_percentage
           		]);
 
 				// CHECK IF EXEMPTED FOR PAYMENT
@@ -815,7 +816,7 @@ class EventController extends Controller
 
                   $event->exempt_payment = 1;
                   $event->exempt_by = $request->user()->user_id;
-                  $event->exempt_percentage = $request->exempt_percentage;
+                //   $event->exempt_percentage = $request->exempt_percentage;
                   $event->save();
               	}
 

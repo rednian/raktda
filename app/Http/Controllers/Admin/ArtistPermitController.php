@@ -272,7 +272,7 @@ class ArtistPermitController extends Controller
                         ])->latest()->first();
                     }
 
-                    $comment->update($request->except(['_token', 'bypass_payment']));
+                    $comment->update($request->except(['_token', 'bypass_payment', 'exempt_percentage'=>$request->exempt_percentage]));
 
                     //RESET LOCK TO NONE
                     $permit->update([
@@ -287,7 +287,7 @@ class ArtistPermitController extends Controller
 
                         $permit->exempt_payment = 1;
                         $permit->exempt_by = $request->user()->user_id;
-                        $permit->exempt_percentage = $request->exempt_percentage;
+                        // $permit->exempt_percentage = $request->exempt_percentage;
                         $permit->save();
                     }
 
