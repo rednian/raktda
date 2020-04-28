@@ -97,7 +97,7 @@ class ReportController extends Controller
             })->editColumn('receipt_no', function ($transaction) {
                 return $transaction->payment_receipt_no;
             })->editColumn('amount', function ($transaction) {
-               
+
                 if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
                 {
                     $total = (double)$transaction->artistPermitTransaction->sum('amount') + (double) $transaction->eventTransaction->sum('amount');
@@ -107,16 +107,30 @@ class ReportController extends Controller
                 }else {
                     return number_format($transaction->eventTransaction->sum('amount'),2);
                 }
-            })->editColumn('vat', function ($transaction) {
+            })->editColumn('discount', function($transaction){
+
                 if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
                 {
-                    $total = (double) $transaction->artistPermitTransaction->sum('vat') + (double) $transaction->eventTransaction->sum('vat');
-                    return number_format($total,2);
+                    $total = (double)$transaction->artistPermitTransaction->sum('amount') + (double) $transaction->eventTransaction->sum('amount');
+                    $artistTransactionsArray = $transaction->artistPermitTransaction ;
+                    $exempt = count($artistTransactionsArray) > 0 ? $artistTransactionsArray[0]->exempt_percentage : 0 ;
+                    $discount = $total * ( (int) $exempt / 100);
+                    return number_format($discount,2);
                 }else if($transaction->artistPermitTransaction()->exists()) {
-                    return number_format($transaction->artistPermitTransaction->sum('vat'),2);
+                    $artistTransactionArray =  $transaction->artistPermitTransaction;
+                    $exempt = count($artistTransactionArray) > 0? $artistTransactionArray[0]->exempt_percentage : 0 ;
+                    $total = $transaction->artistPermitTransaction->sum('amount');
+                    $discount = $total * ( (int) $exempt / 100);
+                    return number_format($discount,2);
                 }else {
-                    return number_format($transaction->eventTransaction->sum('vat'),2);
+
+                    $eventTransactionArray =  $transaction->eventTransaction;
+                    $exempt = count($eventTransactionArray) > 0 ? $eventTransactionArray[0]->exempt_percentage :  0 ;
+                    $total = $eventTransactionArray->sum('amount');
+                    $discount = $total * ( (int) $exempt / 100);
+                    return number_format($discount,2);
                 }
+
             })->editColumn('total', function ($transaction) {
                 if($transaction->artistPermitTransaction()->exists() && $transaction->eventTransaction()->exists() )
                 {
@@ -136,7 +150,7 @@ class ReportController extends Controller
                 return ucwords(__("$type Permit"));
             })->addColumn('action', function ($transaction)  {
                 return  '<a href="'  . \Illuminate\Support\Facades\URL::signedRoute('report.view', ['id' => $transaction->transaction_id]) .  '"><button  class="btn btn-sm btn-secondary btn-hover-warning">'.__('View').'</button></a>';
-                
+
             })->rawColumns(['action'])->make(true);
         }
     }
@@ -146,9 +160,52 @@ class ReportController extends Controller
         if(!$request->hasValidSignature()){
             return abort(401);
         }
-        $data['transaction'] = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
+
+        if(!Transaction::where('transaction_id',$id)->exists()){
+            return abort(404);
+        }
+
+        $transactions = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
+
+        $data = $this->getTransactions($transactions);
+
+        $data['transaction'] = $transactions;
 
         return view('permits.reports.view_transaction', $data );
+    }
+
+    public function print(Request $request, $id)
+    {
+        if(!$request->hasValidSignature()){
+            return abort(401);
+        }
+
+        $transactions = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
+
+        $data = $this->getTransactions($transactions);
+
+        $data['transaction'] = $transactions;
+
+        return view('permits.reports.voucher_print', $data);
+
+    }
+
+    public function getTransactions($transactions)
+    {
+        $data['artistPermit'] = [];
+
+        if(!$transactions->artistPermitTransaction->isEmpty()){
+            $data['artistPermit'] =  $transactions->artistPermitTransaction->groupBy(function ($item, $key){
+                return $item->artistPermit->profession_id;
+            });
+            $artistTransactionArray = $transactions->artistPermitTransaction->toArray();
+            $data['exempt'] = count($artistTransactionArray) > 0 ? $artistTransactionArray[0]['exempt_percentage'] : 0 ;
+        }else {
+            $eventTransactionArray = $transactions->eventTransaction->toArray();
+            $data['exempt'] = count($eventTransactionArray) > 0 ? $eventTransactionArray[0]['exempt_percentage'] : 0 ;
+        }
+
+        return $data;
     }
 
     public function showevent(Request $request, $id){
@@ -170,25 +227,11 @@ class ReportController extends Controller
         $data['artist'] = $artist;
         $data['tab'] =  $request->tab;
         $data['eventImages']  = $event->otherUpload;
-    
+
         return view('permits.reports.show_event', $data);
     }
 
-    public function transactionprint(Request $request, $id)
-    {
-        if(!$request->hasValidSignature()){
-            return abort(401);
-        }
-        $transaction = Transaction::where('transaction_id', $id)->latest()->first();
-        $data['transaction'] = $transaction;
-        return view('permits.reports.voucher_print', $data);
-        // $pdf = PDF::loadView('permits.reports.voucher_print', $data, [], [
-        //     'title' => 'Payment Voucher',
-        //     'default_font_size' => 10
-        // ]);
 
-        // return $pdf->stream('Payment Voucher '.$transaction->transaction_id.'.pdf', "S");
-    }
 
     public function dashboard()
     {
@@ -200,7 +243,7 @@ class ReportController extends Controller
         $permit = Permit::where('created_by', $user);
         $artistTempData = ArtistTempData::where('created_by', $user);
         $event = Event::where('created_by', $user);
-        
+
         $data['artist_applied'] = $permit->whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
         $data['artist_valid'] = $permit->where('permit_status', 'active')->count();
         $data['artist_drafts'] = $artistTempData->where('status', 5)->distinct('permit_id')->count();
@@ -237,7 +280,7 @@ class ReportController extends Controller
             $artistTempData->whereDate('created_at', '>=', Carbon::now()->subDays(30)->toDateString());
             $event->whereDate('created_at', '>=', Carbon::now()->subDays(30)->toDateString());
         }
-        
+
         $data['artist_applied'] = $permit->whereIn('permit_status',['new', 'modification-request', 'amended', 'approved-unpaid'])->count();
         $data['artist_valid'] = $permit->where('permit_status', 'active')->count();
         $data['artist_drafts'] = $artistTempData->where('status', 5)->distinct('permit_id')->count();

@@ -19,13 +19,13 @@
                     <div class="my-auto float-right">
                         <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u
                             ">
-                            <i class="la la-arrow-left"></i>
+                            <i class="la la-angle-left"></i>
                             {{__('BACK')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
                         <a href="{{URL::signedRoute('company.make_payment', [ 'id' => $permit_details->permit_id ])}}" class="btn btn--maroon btn-elevate btn-sm">
-                            <i class="la la-arrow-left"></i>
+                            <i class="la la-angle-left"></i>
                         </a>
                     </div>
                 </div>
@@ -53,8 +53,6 @@
                             </div>
                             @php
                             $artist_total_fee = 0;
-                            $artist_vat_total = 0;
-                            $artist_g_total = 0;
                             $noofdays = diffInDays($permit_details->issued_date, $permit_details->expired_date) + 1;
                             @endphp
                             <div class="kt-widget__item">
@@ -98,99 +96,74 @@
                     <div class="table-responsive">
                         <table class="table table-borderless border table-hover table-striped">
                             <thead>
-                                <tr>
-                                    <th>{{__('Artist Name')}}</th>
-                                    <th>{{__('Profession')}}</th>
-                                    <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                                    {{-- <th class="text-center">{{__('Permit Duration')}}</th> --}}
-                                    <th class="text-right">{{__('Total')}} (AED) </th>
+                                <tr class="kt-font-transform-u">
+                                    <th>{{__('FIRST NAME')}}</th>
+                                    <th>{{__('LAST NAME')}}</th>
+                                    <th>{{__('PROFESSION')}}</th>
+                                    <th class=" text-right">{{__('Profession Fee')}} (AED)</th>
+                                     <th class=" text-right">{{__('Amendment Fee')}}</th>
+                                    <th class=" text-right">{{__('Total')}} (AED) </th>
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @foreach($permit_details->artistPermit as $ap)
-                                @if($ap->artist_permit_status == 'approved' && $ap->is_paid == 0)
-                                <tr>
-                                    <td>{{getLangId() == 1 ? $ap['firstname_en'] .' '.$ap['lastname_en'] : $ap['lastname_ar'] .' '. $ap['firstname_ar']}}
-                                    </td>
-                                    <td>
-                                        {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
-                                    </td>
-                                    @php
-                                    $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
-                                    $artist_fee = $ap->profession['amount'] * $noofmonths;
-                                    $artist_vat = $artist_fee * 0.05;
-                                    $artist_total = $artist_fee + $artist_vat;
-                                    $artist_total_fee += $artist_fee;
-                                    $artist_vat_total += $artist_vat;
-                                    $artist_g_total += $artist_total;
-                                    @endphp
+                                @if($ap->artist_permit_status == 'approved')
+                                    @if($ap->is_paid == 0)
+                                    <tr>
+                                        <td>{{getLangId() == 1 ? $ap['firstname_en'] :  $ap['firstname_ar']}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? $ap['lastname_en'] : $ap['lastname_ar'] }}</td>
+                                        <td>
+                                            {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
+                                        </td>
+                                        @php
+                                        $noofmonths = ceil($noofdays ? $noofdays/30 : 1 ) ;
+                                        $artist_fee = (int) $ap->profession['amount'] * $noofmonths;
+                                        $artist_total_fee += $artist_fee;
+                                        @endphp
 
-                                    <td class="text-right">
-                                        {{number_format($ap->profession['amount'], 2)}}
-                                    </td>
-                                    {{-- <td class="text-center">
-                                        {{$noofdays ? $noofdays .' '. ($noofdays > 1 ?  __('days') : __('day') ) : '' }}
-                                    </td> --}}
-                                    {{-- <td class="text-right">
-                                        {{number_format($artist_vat,2)}}
-                                    </td> --}}
-                                    {{-- <td class="text-right">
-                                        {{number_format($artist_total, 2)}}
-                                    </td> --}}
-                                    <td class="text-right">
-                                        {{number_format($artist_fee,2)}}
-                                    </td>
-                                </tr>
+                                        <td class="text-right">
+                                            {{number_format((int)$ap->profession['amount'], 2)}}
+                                        </td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right">
+                                            {{number_format($artist_fee,2)}}
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if($ap->is_paid == 2)
+                                    <tr>
+                                        <td>{{getLangId() == 1 ? $ap['firstname_en'] :  $ap['firstname_ar']}}
+                                        </td>
+                                        <td>{{getLangId() == 1 ? $ap['lastname_en'] : $ap['lastname_ar'] }}</td>
+                                        <td>
+                                            {{getLangId() == 1 ? $ap->profession['name_en'] : $ap->profession['name_ar']}}
+                                        </td>
+                                        @php
+                                            $amendment_fee = 100;
+                                            $artist_total_fee += $amendment_fee;
+                                        @endphp
+
+                                        <td class="text-right">
+                                        </td>
+                                        <td class="text-right">
+                                            {{number_format($amendment_fee, 2)}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{number_format($amendment_fee, 2)}}
+                                        </td>
+                                    </tr>
+                                    @endif
                                 @endif
                                 @endforeach
-                                @if($permit_details->request_type == 'amend request')
-                                <tr>
-                                <td colspan="2">{{__('Amendment Fee')}}
-                                </td>
-                                @php
-                                $amend_fee = getSettings()->artist_amendment_fee ;
-                                $artist_total_fee += $amend_fee;
-                                $artist_amend_vat = $amend_fee * 0.05;
-                                $artist_vat_total += $artist_amend_vat;
-                                $artist_amend_total = $amend_fee + $artist_amend_vat;
-                                $artist_g_total += $artist_amend_total;
-                                @endphp
-                                <td class="text-right">
-                                    {{number_format($amend_fee,2)}}
-                                </td>
-                                <td class="text-right">
-                                    {{number_format($artist_amend_total, 2)}}
-                                </td>
-                                </tr>
-                                @endif
                             </tbody>
-
-
-                            {{-- <tfoot>
-                                <tr>
-                                    <td colspan="2" class="kt-font-bold text-center">
-                                        {{__('Total')}}
-                            </td>
-                            <td colspan="2"></td>
-                            <td class="kt-font-bold text-right">
-                                {{number_format($artist_vat_total,2)}}
-                            </td>
-                            <td class="kt-font-bold text-right">
-                                {{number_format($artist_total_fee,2)}}
-                            </td>
-                            </tr>
-                            </tfoot> --}}
                         </table>
                     </div>
 
                     <input type="hidden" id="artist_total_fee" value="{{$artist_total_fee}}">
-                    <input type="hidden" id="artist_vat_total" value="{{$artist_vat_total}}">
-                    <input type="hidden" id="artist_g_total" value="{{$artist_g_total}}">
+
                     @php
                     $event_fee_total = 0;
-                    $event_vat_total = 0;
-                    $event_grand_total = 0;
                     $liquor_fee = 0 ;
                     $truck_fee = 0;
                     $event = $permit_details->event;
@@ -204,7 +177,6 @@
                                     <th class="text-left">{{__('Event Name')}}</th>
                                     <th class="text-left">{{__('Event Type')}}</th>
                                     <th class="text-right">{{__('Fee')}}/{{__('Day')}} (AED)</th>
-                                    {{-- <th class="text-right">{{__('Vat')}}(5%)</th> --}}
                                     <th class="text-center">{{__('No.of.days')}} </th>
                                     <th class="text-center">{{__('Qty')}} </th>
                                     <th class="text-right">{{__('Total')}} (AED) </th>
@@ -219,12 +191,8 @@
                                         {{getLangId() == 1 ? ucfirst($event->type['name_en']) : $event->type['name_ar']}}
                                     </td>
                                     @php
-                                    $event_fee = $event->type['amount'] * $noofdays;
-                                    $event_vat = $event_fee * 0.05;
-                                    $event_total = $event_fee + $event_vat;
+                                    $event_fee = (int)$event->type['amount'] * $noofdays;
                                     $event_fee_total += $event_fee;
-                                    $event_vat_total += $event_vat;
-                                    $event_grand_total += $event_total;
                                     @endphp
                                     <td class="text-right">
                                         {{number_format($event->type['amount'] ,2)}}
@@ -232,9 +200,7 @@
                                     <td class="text-center">
                                         {{$noofdays}}
                                     </td>
-                                    <td class="text-center">
-                                        -
-                                    </td>
+                                    <td class="text-center"></td>
                                     <td class="text-right">
                                         {{number_format($event_fee, 2)}}
                                     </td>
@@ -246,12 +212,9 @@
                                     $no_of_trucks = count($event->truck->where('paid', 0));
                                     $truck_fee += $noofdays * $per_truck_fee * $no_of_trucks;
                                     $event_fee_total += $truck_fee;
-                                    $truck_event_vat = $truck_fee * 0.05;
-                                    $event_vat_total += $truck_event_vat;
-                                    $event_grand_total += $truck_fee + $truck_event_vat;
                                     @endphp
                                     <td colspan="2">{{__('Truck Fee')}} x <b>{{$no_of_trucks}}</b> </td>
-                                    <td class="text-right">{{number_format($truck_fee, 2)}}</td>
+                                    <td class="text-right">{{number_format($per_truck_fee, 2)}}</td>
                                     <td class="text-center">{{$noofdays}}</td>
                                     <td class="text-center">{{$no_of_trucks}}</td>
                                     <td class="text-right">{{number_format($truck_fee, 2)}}</td>
@@ -264,14 +227,11 @@
                                     @php
                                     $per_liquor_fee = getSettings()->liquor_fee;
                                     $liquor_fee += $noofdays * $per_liquor_fee;
-                                    $liquor_event_vat = $liquor_fee * 0.05;
-                                    $event_vat_total += $liquor_event_vat;
                                     $event_fee_total += $liquor_fee;
-                                    $event_grand_total += $liquor_fee + $liquor_event_vat;
                                     @endphp
-                                    <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
+                                    <td class="text-right">{{number_format($per_liquor_fee, 2)}}</td>
                                     <td class="text-center">{{$noofdays}}</td>
-                                    <td class="text-center">-</td>
+                                    <td class="text-center"></td>
                                     <td class="text-right">{{number_format($liquor_fee, 2)}}</td>
                                 </tr>
                                 @endif
@@ -289,9 +249,12 @@
                     </div>
                     @endif
 
+
+                    <input type="hidden" id="exempt-percentage" value="{{$exempt}}">
+
                     <input type="hidden" id="event_fee_total" value="{{$event_fee_total}}">
-                    <input type="hidden" id="event_vat_total" value="{{$event_vat_total}}">
-                    <input type="hidden" id="event_grand_total" value="{{$event_grand_total}}">
+                    <input type="hidden" id="event-liquor-fee" value="{{$liquor_fee}}">
+                    <input type="hidden" id="event-truck-fee" value="{{$truck_fee}}">
 
                     <div class="table-responsive">
                         <div class="{{getLangId() == 1 ? 'pull-right' : 'pull-left'}}">
@@ -303,16 +266,21 @@
                                         </td>
                                         <td id="total_amt" class="pull-right kt-font-bold"></td>
                                     </tr>
-                                    <tr style="border-bottom:1px solid black;">
-                                        <td>{{__('Total Vat')}} (5%)</td>
-                                        <td id="total_vat" class="pull-right kt-font-bold"></td>
+                                    @if(!is_null($exempt) && $exempt > 0)
+                                    <tr style="border-bottom:1px solid #000;">
+                                        <td>
+                                            {{__('Discount Amount')}}
+                                        </td>
+                                        <td id="discount-amount" class="pull-right kt-font-bold"></td>
                                     </tr>
+
                                     <tr>
                                         <td class="kt-font-transform-u">
                                             {{__('Grand Total')}} (AED)
                                         </td>
-                                        <td id="grand_total" class="pull-right kt-font-bold"></td>
+                                        <td id="grand-total" class="pull-right kt-font-bold"></td>
                                     </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -320,14 +288,15 @@
 
 
                     <input type="hidden" id="amount">
-                    <input type="hidden" id="vat">
+                    <input type="hidden" id="discount">
                     <input type="hidden" id="total">
 
 
                     <div class="d-flex justify-content-end">
+
                         <button class="btn btn-sm btn-wide btn--yellow kt-font-bold kt-font-transform-u" id="pay_btn" onclick="Checkout.showLightbox()">{{__('PAY')}}</button>
 
-                        {{-- <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button> --}}
+{{--                         <button onClick="paymentDoneUpdation('D', 'yes')">Pay</button>--}}
 
                         <a href="{{URL::signedRoute('company.happiness_center', [ 'id' => $permit_details->permit_id])}}"><button class="btn btn-sm btn-wide btn--maroon kt-font-bold kt-font-transform-u kt-hide" id="next_btn">{{__('NEXT')}}</button></a>
                     </div>
@@ -428,12 +397,9 @@
             merchant: 'NRSINFOWAYSL'
             , order: {
                 amount: function() {
-                    let isConnected = $('#isEventPay').prop('checked');
-                    let artistTotal = parseInt($('#artist_g_total').val());
-                    let eventTotal = $('#event_grand_total').val();
-                    let artistEventTotal = parseInt(artistTotal) + parseInt(eventTotal);
-
-                    return isConnected ? artistEventTotal : artistTotal;
+                    var discount = $('#discount').val();
+                    var amount = discount > 0 ? $('#total').val() : $('#amount').val();
+                    return amount;
                 }
                 , currency: 'AED'
                 , description: 'Artist Permit Payment'
@@ -476,10 +442,16 @@
 
 
         function paymentDoneUpdation(transactionID, receipt) {
-            var paidArtistFee = 0;
-            var paidEventFee = 0;
+
+            var paidEventFee = 0,
+                liquorFee = 0,
+                truckFee = 0, eventFee = 0;
+
             if ($('#isEventPay').prop("checked")) {
                 paidEventFee = 1;
+                liquorFee = $('#event-liquor-fee').val();
+                truckFee = $('#event-truck-fee').val();
+                eventFee = $('#event_fee_total').val();
             }
 
             $.ajax({
@@ -495,9 +467,11 @@
                 }
                 , data: {
                     permit_id: $('#permit_id').val()
-                    , amount: $('#amount').val()
-                    , vat: $('#vat').val()
-                    , total: $('#total').val()
+                    , amount: $('#amount').val(),
+                    exempt: $('#exempt-percentage').val(),
+                     liquorFee: liquorFee,
+                     truckFee: truckFee,
+                     eventFee: eventFee
                     , noofdays: $('#noofdays').val()
                     , paidEventFee: paidEventFee
                     , transactionId: transactionID
@@ -517,43 +491,55 @@
     <script>
         $(document).ready(function() {
             $('#event_details_table').hide();
+
             var artistTotalFee = $('#artist_total_fee').val();
-            $('#total_amt').html(parseInt(artistTotalFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-            var artistVatTotal = $('#artist_vat_total').val();
-            $('#total_vat').html(parseInt(artistVatTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-            var artistGTotal = $('#artist_g_total').val();
-            $('#grand_total').html(parseInt(artistGTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+            $('#total_amt').html(formatAmount(artistTotalFee));
+            discountFunction(artistTotalFee);
             $('#amount').val(artistTotalFee);
-            $('#vat').val(artistVatTotal);
-            $('#total').val(artistGTotal);
-            if (artistGTotal == 0) {
+
+            if (artistTotalFee == 0) {
                 $('#next_btn').removeClass('kt-hide');
                 $('#pay_btn').addClass('kt-hide');
             }
+
         });
 
+        function discountFunction(artistTotalFee) {
+            var exempt = $('#exempt-percentage').val();
+            var discount = calculateDiscount(artistTotalFee, exempt);
+            $('#discount-amount').html(formatAmount(discount));
+            $('#discount').val(discount);
+            var total = artistTotalFee - parseInt(discount) ;
+            $('#grand-total').html(formatAmount(total));
+            $('#total').val(total);
+        }
+
+        function formatAmount(amount){
+            return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+
+        function calculateDiscount(amount, percentage){
+            let discountAmount = 0;
+            if(percentage != null && percentage > 0)
+            {
+                discountAmount = amount * ( parseInt(percentage) /100 );
+            }
+            return discountAmount;
+        }
 
         function check_permit() {
             var ischecked = $('#isEventPay').prop('checked');
             // console.log(ischecked);
             var artistTotalFee = $('#artist_total_fee').val();
-            var artistVatTotal = $('#artist_vat_total').val();
-            var artistGTotal = $('#artist_g_total').val();
             var eventFeeTotal = $('#event_fee_total').val();
-            var eventVatTotal = $('#event_vat_total').val();
-            var eventGrandTotal = $('#event_grand_total').val();
             var totalFee = parseInt(artistTotalFee) + parseInt(eventFeeTotal);
-            var totalVat = parseInt(artistVatTotal) + parseInt(eventVatTotal);
-            var total = parseInt(artistGTotal) + parseInt(eventGrandTotal);
+
             if (ischecked) {
                 $('#event_details_table').show();
-                $('#total_amt').html(totalFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-                $('#total_vat').html(totalVat.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-                $('#grand_total').html(total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+                $('#total_amt').html(formatAmount(totalFee));
                 $('#amount').val(totalFee);
-                $('#vat').val(totalVat);
-                $('#total').val(total);
-                if (total == 0) {
+                discountFunction(totalFee);
+                if (totalFee == 0) {
                     $('#next_btn').removeClass('kt-hide');
                     $('#pay_btn').addClass('kt-hide');
                 } else {
@@ -562,13 +548,12 @@
                 }
             } else {
                 $('#event_details_table').hide();
-                $('#total_amt').html(parseInt(artistTotalFee).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-                $('#total_vat').html(parseInt(artistVatTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-                $('#grand_total').html(parseInt(artistGTotal).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'));
+
+                $('#total_amt').html(formatAmount(artistTotalFee));
+                discountFunction(artistTotalFee);
                 $('#amount').val(artistTotalFee);
-                $('#vat').val(artistVatTotal);
-                $('#total').val(artistGTotal);
-                if (artistGTotal == 0) {
+
+                if (artistTotalFee == 0) {
                     $('#next_btn').removeClass('kt-hide');
                     $('#pay_btn').addClass('kt-hide');
                 } else {

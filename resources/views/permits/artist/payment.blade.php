@@ -19,14 +19,14 @@
                     <div class="my-auto float-right permit--action-bar">
                         <a href="{{URL::signedRoute('artist.index')}}#applied"
                             class="btn btn--maroon kt-font-bold kt-font-transform-u btn-sm">
-                            <i class="la la-arrow-left"></i>
+                            <i class="la la-angle-left"></i>
                             {{__('BACK')}}
                         </a>
                     </div>
                     <div class="my-auto float-right permit--action-bar--mobile">
                         <a href="{{URL::signedRoute('artist.index')}}#applied"
                             class="btn btn--maroon btn-elevate btn-sm">
-                            <i class="la la-arrow-left"></i>
+                            <i class="la la-angle-left"></i>
                         </a>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                     <div class="kt-widget__body kt-padding-l-0">
                         <div class="kt-widget__stats d-">
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('From Date')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('From Date')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('To Date')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('To Date')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold cursor-text">
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Permit Duration')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('Permit Duration')}}</span>
                                 <div class="kt-widget__label">
                                     <span class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold">
                                         {{calculateDateDiff($permit_details->issued_date, $permit_details->expired_date)}}
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Reference No')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('Reference No')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -73,7 +73,7 @@
                             </div>
                             @if($permit_details->event)
                             <div class="kt-widget__item">
-                                <span class="kt-widget__date">{{__('Connected to Event')}}</span>
+                                <span class="kt-widget__date pb-1">{{__('Connected to Event')}}</span>
                                 <div class="kt-widget__label">
                                     <span
                                         class="btn btn-label-font-color-1 kt-label-bg-color-1 btn-sm btn-bold btn-upper">
@@ -144,11 +144,10 @@
                     </div>
 
 
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end mt-3">
                         <a href="{{URL::signedRoute('company.payment_gateway',[ 'id' => $permit_details->permit_id])}}">
                             <button class="btn btn--yellow btn-md btn-wide kt-font-bold kt-font-transform-u btn-sm"
                                 {{in_array('approved',$statuses) ? '' : 'disabled'}}>
-                                <i class="la la-check"></i>
                                 {{__('Fees payment')}}
                             </button>
                         </a>

@@ -9,7 +9,7 @@ class PermitComment extends Model
 {
     protected $table = 'smartrak_smartgov.permit_comment';
     protected $primaryKey = 'permit_comment_id';
-    protected $fillable = [ 'comment', 'comment_ar', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment', 'government_id'];
+    protected $fillable = [ 'comment', 'comment_ar', 'user_id', 'permit_id', 'type', 'action', 'role_id', 'checked_date', 'exempt_payment', 'government_id', 'exempt_percentage'];
     protected  $dates = ['created_at', 'updated_at', 'checked_date'];
 
     // public function getCommentAttribute()
@@ -58,6 +58,6 @@ class PermitComment extends Model
 
     public function getRemarksAttribute()
     {
-       return auth()->user()->LanguageId == 1 ? ucfirst($this->comment) : ucfirst($this->comment_ar); 
+       return auth()->user()->LanguageId == 1 ? ucfirst($this->comment) : ucfirst($this->comment_ar);
     }
 }

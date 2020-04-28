@@ -653,7 +653,6 @@ class ArtistController extends Controller
                 'gender' => $artistDetails['gender'],
                 'uid_number' => $artistDetails['uidNumber'],
                 'birthdate' => $artistDetails['dob'] ? Carbon::parse($artistDetails['dob'])->toDateString() : '',
-                //'uid_expire_date' => $artistDetails['uidExp'] ? Carbon::parse($artistDetails['uidExp'])->toDateString() : '',
                 'passport_number' => $artistDetails['passport'],
                 'passport_expire_date' => $artistDetails['ppExp'] ? Carbon::parse($artistDetails['ppExp'])->toDateString() : '',
                 'visa_type' => $artistDetails['visaType'],
@@ -661,8 +660,6 @@ class ArtistController extends Controller
                 'visa_expire_date' => $artistDetails['visaExp'] ? Carbon::parse($artistDetails['visaExp'])->toDateString() : '',
                 'sponsor_name_en' => $artistDetails['spName'],
                 'emirates_id' => $artistDetails['idNo'],
-                //'language' => $artistDetails['language'],
-                //'religion' => $artistDetails['religion'],
                 'profession_id' => $artistDetails['profession'],
                 'city' => $artistDetails['city'],
                 'area' => $artistDetails['area'],
@@ -673,7 +670,6 @@ class ArtistController extends Controller
                 'permit_id' =>  $permit_id,
                 'person_code' => $artistDetails['code'],
                 'po_box' => $artistDetails['po_box'],
-                //'fax_number' => $artistDetails['fax_no'],
                 'is_old_artist' => $artistDetails['is_old_artist'],
                 'artist_permit_status' => 'unchecked',
                 'issue_date' => $permitDetails['from'] ? Carbon::parse($permitDetails['from'])->toDateString() : '',
@@ -682,7 +678,8 @@ class ArtistController extends Controller
                 'work_location_ar' => $permitDetails['location_ar'],
                 'company_id' => Auth::user()->type == 1 ? Auth::user()->EmpClientId : '',
                 'created_by' => Auth::user()->user_id,
-                'created_at' => Carbon::now()->toDateTimeString()
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'is_paid' => 0
             ]);
 
             if ($request->fromPage == 'amend') {
@@ -690,7 +687,7 @@ class ArtistController extends Controller
                 if ($temp_id) {
                     $artistPermitId = ArtistTempData::where('id', $temp_id)->latest()->first()->artist_permit_id;
                     $artistTempData->old_artist_id = $artistPermitId;
-                    $artistTempData->is_paid = 1;
+                    $artistTempData->is_paid = 2;
                     ArtistTempData::where('id', $temp_id)->update([
                         'type' => 'removed'
                     ]);
@@ -1781,7 +1778,16 @@ class ArtistController extends Controller
         Permit::where('permit_id', $id)->update(['is_edit' => 1]);
 
         $data_bundle['permit_details'] =  Permit::where('permit_id', $id)->first();
-        $data_bundle['artist_details'] = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
+        $artist_details = ArtistTempData::where('permit_id', $id)->where('status', 0)->get();
+
+        $data_bundle['artist_details'] = $artist_details;
+
+        $isUnpaid = $artist_details->contains(function ($value, $key) {
+            return $value['is_paid'] != 1;
+        });
+
+        $data_bundle['is_Unpaid'] = $isUnpaid;
+
         // $data_bundle['staff_comments'] = PermitComment::where('permit_id', $id)->where('type', 1)->get();
         $data_bundle['staff_comments'] = PermitComment::doesntHave('artistPermitComment')->where('permit_id', $id)->latest()->first();
         // dd($data_bundle['staff_comments']);
@@ -2365,6 +2371,8 @@ class ArtistController extends Controller
             return abort(401);
         }
         $id = $permit->permit_id;
+        $permitComment = PermitComment::where('permit_id', $id)->latest()->first();
+        $data_bundle['exempt'] = !empty($permitComment) ? $permitComment->exempt_percentage : null;
         $data_bundle['permit_details'] = Permit::with('artistPermit', 'artistPermit.artist', 'artistPermit.artistPermitDocument', 'artistPermit.profession')->where('permit_id', $id)->where('created_by', Auth::user()->user_id)->first();
         return view('permits.artist.payment_gateway', $data_bundle);
     }
@@ -2373,13 +2381,17 @@ class ArtistController extends Controller
     {
         $permit_id = $request->permit_id;
         $amount = $request->amount;
-        $vat = $request->vat;
-        $total = $request->total;
+        $exempt = $request->exempt;
         $paidEventFee = $request->paidEventFee;
         $noofdays = $request->noofdays;
         $transaction_id = $request->transactionId;
         $receipt = $request->receipt;
         $order_id = $request->orderId;
+
+        $event_fee = $request->eventFee;
+        $truck_fee = $request->truckFee;
+        $liquor_fee = $request->liquorFee;
+
         $toURL = '';
         try {
             DB::beginTransaction();
@@ -2399,45 +2411,71 @@ class ArtistController extends Controller
             $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
 
             foreach ($artistPermits as $artistPermit) {
+
                 $per_day_fee = $artistPermit->profession->amount;
-                $no_of_months = ceil($noofdays ? $noofdays/30 : 1 ) ;
-                $total_fee = $per_day_fee * $no_of_months;
-                $vat_fee = $total_fee * 0.05;
-                $transArr->artistPermitTransaction()->create([
-                    'vat' => $vat_fee,
-                    'amount' => $total_fee,
-                    'permit_id' => $permit_id,
-                    'artist_permit_id' => $artistPermit->artist_permit_id,
-                    'transaction_id' => $transArr->transaction_id
-                ]);
+                $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
+                $total_fee = (int)$per_day_fee * $noofmonths;
+                $exempt_amount = $total_fee * ($exempt /100);
+                $amendment_fee = 100;
+                if($artistPermit->is_paid == 0)
+                {
+                    $transArr->artistPermitTransaction()->create([
+                        'amount' => $total_fee,
+                        'exempt_percentage' => $exempt,
+                        'exempt_amount' =>$exempt_amount,
+                        'permit_id' => $permit_id,
+                        'artist_permit_id' => $artistPermit->artist_permit_id,
+                        'transaction_id' => $transArr->transaction_id
+                    ]);
+                }
+                else if($artistPermit->is_paid == 2)
+                {
+                    $transArr->artistPermitTransaction()->create([
+                        'amount' => $amendment_fee,
+                        'exempt_percentage' => $exempt,
+                        'exempt_amount' =>$exempt_amount,
+                        'permit_id' => $permit_id,
+                        'artist_permit_id' => $artistPermit->artist_permit_id,
+                        'transaction_id' => $transArr->transaction_id
+                    ]);
+                }
             }
 
-            $permit_number = generateArtistPermitNumber();
 
-//            $permit = DB::table('permit')
-//                        ->where('permit_id', $permit_id)
-//                        ->first();
-            $permit  = Permit::where('permit_id', $permit_id)->first();
+            $permit = Permit::where('permit_id', $permit_id)->first();
 
+            if(!is_null($permit->permit_number) && $permit->request_type == 'amend request') {
+                $permit_number = $permit->permit_number;
+            }else {
+                $permit_number = generateArtistPermitNumber();
+            }
+
+            $event_id = '';
             $eventArray = [];
 
             $eventpermitnumber = '';
 
             if ($paidEventFee == 1) {
 
-                $ev_amount = $permit->event->type->amount * $noofdays;
-                $ev_vat = $ev_amount * 0.05;
+                $event_exempt_amount = $event_fee * ($exempt /100);
 
                 \App\EventTransaction::create([
                     'event_id' => $permit->event_id,
                     'user_id' => Auth::user()->user_id,
-                    'transaction_id' =>  $transArr->transaction_id,
-                    'amount' => $ev_amount,
-                    'vat' => $ev_vat,
+                    'transaction_id' => $transArr->transaction_id,
+                    'amount' => $event_fee,
+                    'exempt_percentage' => $exempt,
+                    'exempt_amount' => $event_exempt_amount,
                     'type' => 'event'
                 ]);
 
-                $eventpermitnumber = generateEventPermitNumber();
+                $eventArray = \App\Event::where('event_id', $permit->event_id)->first();
+
+                if(!is_null($eventArray->permit_number) && $eventArray->request_type == 'amend request') {
+                    $eventpermitnumber = $eventArray->permit_number;
+                }else {
+                    $eventpermitnumber = generateEventPermitNumber();
+                }
 
                 \App\Event::where('event_id', $permit->event_id)->update([
                     'paid' => 1,
@@ -2445,47 +2483,47 @@ class ArtistController extends Controller
                     'permit_number' => $eventpermitnumber
                 ]);
 
-                $eventArray = \App\Event::where('event_id', $permit->event_id)->first();
-
                 $event_id = $permit->event_id;
 
-                if ($permit->event->is_truck == 1) {
-                    $totaltrucks = EventTruck::where('event_id', $event_id)->where('paid', 0)->count();
+                if ($truck_fee > 0) {
 
-                    if ($totaltrucks > 0) {
-                        $tr_amount = getSettings()->food_truck_fee * $noofdays * $totaltrucks;
+                    $totaltrucks = $truck_fee / (getSettings()->food_truck_fee * $noofdays);
 
-                        EventTransaction::create([
-                            'event_id' => $event_id,
-                            'user_id' => Auth::user()->user_id,
-                            'transaction_id' => $transArr->transaction_id,
-                            'amount' => $tr_amount,
-                            'vat' => $tr_amount * 0.05,
-                            'type' => 'truck',
-                            'total_trucks' => $totaltrucks
-                        ]);
+                    $truck_exempt_amount = $truck_fee * ($exempt /100);
 
-                        EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
-                    }
+                    EventTransaction::create([
+                        'event_id' => $event_id,
+                        'user_id' => Auth::user()->user_id,
+                        'transaction_id' => $transArr->transaction_id,
+                        'amount' => $truck_fee,
+                        'exempt_percentage' => $exempt,
+                        'exempt_amount' => $truck_exempt_amount,
+                        'type' => 'truck',
+                        'total_trucks' => $totaltrucks
+                    ]);
+
+                    EventTruck::where('event_id', $event_id)->update(['paid' => 1]);
                 }
 
-                if ($permit->event->is_liquor == 1) {
-                    if (($permit->event->liquor) && ($permit->event->liquor->paid == 0)) {
-                        $lq_amount = getSettings()->liquor_fee * $noofdays;
-                        EventTransaction::create([
-                            'event_id' => $event_id,
-                            'transaction_id' => $transArr->transaction_id,
-                            'type' => 'liquor',
-                            'amount' => $lq_amount,
-                            'vat' => $lq_amount * 0.05,
-                            'user_id' => Auth::user()->user_id
-                        ]);
 
-                        EventLiquor::where('event_id', $event_id)->update(['paid' => 1]);
-                    }
+                if ($liquor_fee > 0) {
+                    $lq_amount = getSettings()->liquor_fee * $noofdays;
+                    $liquor_exempt_amount = $liquor_fee * ($exempt /100);
+                    EventTransaction::create([
+                        'event_id' => $event_id,
+                        'transaction_id' => $transArr->transaction_id,
+                        'type' => 'liquor',
+                        'amount' => $liquor_fee,
+                        'exempt_percentage' => $exempt,
+                        'exempt_amount' => $liquor_exempt_amount,
+                        'user_id' => Auth::user()->user_id
+                    ]);
+
+                    EventLiquor::where('event_id', $event_id)->update(['paid' => 1]);
+
                 }
-            }
 
+        }
 
             $issued_date = strtotime($permit->issued_date);
             $expired_date = strtotime($permit->expired_date);
@@ -2557,6 +2595,7 @@ class ArtistController extends Controller
 
                 if ($paidEventFee) {
                     Storage::deleteDirectory('permit_downloads/event/' . $event_id);
+                    Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
                 } else {
                     Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
                 }
@@ -2606,7 +2645,7 @@ class ArtistController extends Controller
                 $permit_number = generateArtistPermitNumber();
 
                 $issued_date = strtotime($permit->issued_date);
-                $expired_date = strtotime($permit->exprired_date);
+                $expired_date = strtotime($permit->expired_date);
                 $today_date = strtotime(date('Y-m-d'));
 
                 $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);
@@ -2627,7 +2666,7 @@ class ArtistController extends Controller
                     $permit_number = generateArtistPermitNumber();
 
                     $issued_date = strtotime($permit->issued_date);
-                    $expired_date = strtotime($permit->exprired_date);
+                    $expired_date = strtotime($permit->expired_date);
                     $today_date = strtotime(date('Y-m-d'));
 
                     $diff = round(abs($expired_date - $issued_date) / 60 / 60 / 24);

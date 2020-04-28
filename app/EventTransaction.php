@@ -8,7 +8,7 @@ class EventTransaction extends Model
 {
 	protected $table = 'event_transaction';
 	protected $primaryKey = 'event_transaction_id';
-	protected $fillable = ['event_id', 'transaction_id', 'amount', 'vat', 'total_trucks', 'type', 'user_id'];
+	protected $fillable = ['event_id', 'transaction_id', 'amount', 'vat', 'total_trucks', 'type', 'user_id','exempt_percentage','exempt_amount'];
 	protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
 	public function event()

@@ -83,7 +83,7 @@
                <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#bounce-back" data-target="#bounce-back">
                   {{ __('Bounce Back Requests') }}
-                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$new_company}}</span>
+                  <span class="kt-badge kt-badge--outline kt-badge--info">{{$bounce_back}}</span>
                 </a>
               </li>
               <li class="nav-item">
@@ -151,7 +151,7 @@
                        </div>
                      </div>
                    </div>
-               </section>
+                </section>
                <table class="table table-hover table-borderless table- border table-striped" id="new-company-request">
                     <thead>
                         <tr>
@@ -167,20 +167,68 @@
                </table>
                </section>
                <section  class="tab-pane show fade" id="bounce-back" role="tabpanel">
+                <section class="form-row">
+                    <div class="col-1">
+                      <div>
+                        <select name="length_change" id="new-length-change" class="form-control-sm form-control custom-select custom-select-sm">
+                            <option value='10'>10</option>
+                            <option value='25'>25</option>
+                            <option value='50'>50</option>
+                            <option value='75'>75</option>
+                            <option value='100'>100</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-8">
+                      <form class="form-row">
+                        {{-- <div class="col-3">
+                          <select name="company_id" id="new-company-type" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
+                            <option selected disabled >{{ __('ESTABLISHMENT TYPE') }}</option>
+                           @if ($types->count() >0 )
+                             @foreach ($types as $type)
+                              <option value="{{$type->company_type_id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $type->name_en : $type->name_ar ) }}</option>
+                             @endforeach
+                           @endif
+                          </select>
+                        </div> --}}
+                        <div class="col-3">
+                          <select name="area_id" id="new-company-area" class="form-control-sm form-control custom-select custom-select-sm " onchange="new_company.draw()" >
+                            <option selected disabled >{{ __('AREA') }}</option>
+                           @if ($areas->count() >0 )
+                             @foreach ($areas as $area)
+                              <option value="{{$area->id}}">{{ ucfirst(Auth::user()->LanguageId == 1 ? $area->area_en : $area->area_ar ) }}</option>
+                             @endforeach
+                           @endif
+                          </select>
+                        </div>
+                        <div class="col-2">
+                          <button type="button" class="btn btn-sm btn-secondary" id="new-btn-reset">{{ __('RESET') }}</button>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group form-group-sm">
+                        <div class="kt-input-icon kt-input-icon--right">
+                          <input autocomplete="off" type="search" class="form-control form-control-sm" placeholder="{{ __('Search') }}..." id="search-new-request">
+                          <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                            <span><i class="la la-search"></i></span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                 </section>
                 <table class="table table-hover table-borderless table- border table-sm table-striped" id="back-table">
-                <thead>
-                    <tr>
-                        <th>{{ __('REFERENCE NO.') }}</th>
-                        <th>{{ __('ESTABLISHMENT NAME') }}</th>
-                        <th>{{ __('PHONE NUMBER') }}</th>
-                        <th>{{ __('EMAIL') }}</th>
-                        <th>{{ __('REQUEST TYPE') }}</th>
-                        <th>{{ __('STATUS') }}</th>
-                        <th>{{ __('COMPLETE ADDRESS') }}</th>
-                        <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
-                        <th>{{ __('BOUNCED BACK REASON') }}</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>{{ __('REFERENCE NO.') }}</th>
+                            <th>{{ __('ESTABLISHMENT NAME') }}</th>
+                            <th>{{ __('BUSINESS LICENSE EXPIRY DATE') }}</th>
+                            <th>{{ __('TRADE LICENSE NUMBER') }}</th>
+                            <th>{{ __('SUBMITTED DATE') }}</th>
+                            <th>{{ __('REQUEST TYPE') }}</th>
+                            <th>{{ __('COMPLETE ADDRESS') }}</th>
+                        </tr>
+                    </thead>
             </table>
             </section>
                 <section  class="tab-pane show fade" id="processing-request" role="tabpanel">
@@ -307,7 +355,7 @@
         if('#new-request' == current_tab ){  newCompany(); }
         if('#processing-request' == current_tab ){ processing();   }
         if('#active-company' == current_tab ){  company(); }
-        if('#back-request' == current_tab ){  bounceBack(); }
+        if('#bounce-back' == current_tab ){  bounceBack(); }
       });
 
    });
@@ -321,7 +369,7 @@
            url: '{{ route('admin.company.datatable') }}',
            data: function(d){
               // var status =  $('#active-permit-status').val();
-              d.status =  ['back'];
+              d.status =  ['return'];
               // d.type = $('#active-applicant-type').val();
               // d.area = $('#active-company-area').val();
            }
@@ -403,14 +451,14 @@
 
 function bounceBack(){
 
-back =  $('table#back-request').DataTable({
+back =  $('table#back-table').DataTable({
     dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
     ajax: {
        url: '{{ route('admin.company.datatable') }}',
        data: function(d){
-          d.status = ['pending'];
+          d.status = ['bounce back'];
           // d.type = $('#new-company-type').val();
           d.area = $('#new-company-area').val();
        }
@@ -481,7 +529,7 @@ var start = moment().subtract(29, 'days');
          ajax: {
             url: '{{ route('admin.company.datatable') }}',
             data: function(d){
-               d.status = ['pending'];
+               d.status = ['new'];
                // d.type = $('#new-company-type').val();
                d.area = $('#new-company-area').val();
             }

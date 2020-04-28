@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="form-group form-group-xs row">
-              <label class="col-4 col-form-label">{{__('Description')}} :</label>
+              <label class="col-4 col-form-label">{{__('Establishment Details')}} :</label>
               <div class="col-8">
                 <span class="form-control-plaintext kt-font-bolder">{{ $user == 1 ? ucfirst($company->company_description_en) : $company->company_description_ar }}</span>
               </div>
