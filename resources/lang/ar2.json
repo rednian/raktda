@@ -1,4 +1,6 @@
 {
+    "Establishment Details (AR)":"اسم المنشأة بالعربي",
+    "Establishment Details (EN)":"اسم المنشأة  اللغة الانجليزي ",
     "TODAY":"اليوم",
     "ESTABLISHMENT":"مؤسسة",
     "Change Password":"تغيير كلمة المرور",
@@ -452,8 +454,6 @@
 "VENUE":"اسم المزود بالعربي",
 "* Work Location in Arabic":"موقع العمل بالعربي",
 "*Designation in English":"المسمى الوظيفي بالانكليزي",
-"Establishment Name":"اسم المنشأة بالانكليزي",
-"ESTABLISHMENT NAME":"اسم المنشأة بالانكليزي",
 "*EVENT NAME IN ARABIC":"اسم الفعالية بالعربي",
 "[Name of the artist] - PROFILE":"ملف - [Name of the artist]",
 "ACCOUNT SETTINGS":"إعدادات الحساب",

@@ -160,6 +160,71 @@ class CompanyController extends Controller
 
         return redirect(URL::signedRoute('company.account', $company->company_id))->with(['message'=> $result]);
     }
+       $validate = Validator::make($request->all(), [
+               'name_en'=> 'required|max:255',
+               'name_ar'=> 'required|max:255',
+               'trade_license'=> 'required|max:255',
+               'trade_license_expired_date'=> 'required|max:255|date',
+               'company_email'=> 'required|max:255|email',
+               'phone_number'=> 'required|max:255',
+               'address'=> 'required|max:255',
+               'area_id'=> 'required|max:255',
+               'company_description_en'=> 'required|max:255',
+               'company_description_ar'=> 'required|max:255',
+               'contact_name_en'=> 'required|max:255',
+               'contact_name_ar'=> 'required|max:255',
+               'designation_en'=> 'required|max:255',
+               'designation_ar'=> 'required|max:255',
+               'mobile_number'=> 'required|max:255',
+               'emirate_identification'=> 'required|max:255',
+               'emirate_id_expired_date'=> 'required|max:255',
+               'submit'=> 'required|max:255',
+           ]
+       )->validate();
+
+      try {
+         DB::beginTransaction();
+          $company->requirement()->update(['is_submit'=>1]);
+          switch ($request->submit){
+              case 'submitted':
+                //new
+                $details = [];
+                if($company->status == 'draft'){
+                    $details = [
+                        'reference_number'=> $this->getReferenceNumber($company),
+                        'status'=> 'new',
+                        'application_date'=> Carbon::now(),
+                        'request_type'=>'new registration'
+                    ];
+                }
+
+                //bounce back
+                if($company->status == 'return'){
+                    $details = [
+                        'request_type'=>'bounce back request',
+                        'status'=> 'bounce back',
+                    ];
+                }
+
+
+                //renew
+
+                $company->update(array_merge( $request->all(), $this->addressRelated(), $details ));
+
+
+
+                  //ammendment request
+                  if ($company->status == 'back') {
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
+                  }
+
+                  if ($company->status == 'blocked') {
+                    $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
+                  }
+
+                  if($company->status == 'active'){
+                    $company->update($request->all());
+                  }
 
     public function changePassword(Request $request, Company $company) {
         $old_password = $request->old_password;
@@ -353,7 +418,6 @@ class CompanyController extends Controller
                 }
             }
             else{
-
                 //remove file if exists.
                 if ($company->whereHas('requirement', function($q) use ($request){
                     $q->where('requirement_id', $request->requirement_id);
