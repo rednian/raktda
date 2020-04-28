@@ -235,21 +235,31 @@ class CompanyController extends Controller
           $company->requirement()->update(['is_submit'=>1]);
           switch ($request->submit){
               case 'submitted':
-                  //new registration
-                  if (is_null($company->request_type) && $company->status == 'draft'){
+                //new
+                $details = [];
+                if($company->status == 'draft'){
+                    $details = [
+                        'reference_number'=> $this->getReferenceNumber($company),
+                        'status'=> 'new',
+                        'application_date'=> Carbon::now(),
+                        'request_type'=>'new registration'
+                    ];
+                }
 
-                      $company->update(array_merge(
-                          $request->all(),
-                          [
-                              'reference_number'=> $this->getReferenceNumber($company),
-                              'status'=> 'pending',
-                              'application_date'=> Carbon::now(),
-                              'request_type'=>'new registration'
-                          ],
-                          $this->addressRelated()
-                      ));
-                      $company->request()->create(['type'=>'new registration', 'user_id'=>$request->user()->user_id]);
-                  }
+                //bounce back
+                if($company->status == 'return'){
+                    $details = [
+                        'request_type'=>'bounce back request',
+                        'status'=> 'bounce back',
+                    ];
+                }
+
+
+                //renew
+
+                $company->update(array_merge( $request->all(), $this->addressRelated(), $details ));
+
+
 
                   //ammendment request
                   if ($company->status == 'back') {
@@ -362,6 +372,7 @@ class CompanyController extends Controller
         }
 
         if ($request->files) {
+            // dd($request->all());
 
            foreach ($request->files as $upload) {
              foreach ($upload as $page_number => $file) {

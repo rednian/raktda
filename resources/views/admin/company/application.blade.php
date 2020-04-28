@@ -175,6 +175,38 @@
 
                   </div>
                   <div class="row form-group form-group-sm">
+                     <div class="col-sm-6">
+                        <label class="kt-font-dark">{{ __('Establishment Details (EN)') }}</label>
+                        <div class="input-group input-group-sm">
+                         <input value="{{ ucfirst($company->company_description_en) }}" name="event_type" readonly="readonly" type="text"
+                                      class="form-control">
+                         <div class="input-group-append">
+                            <span class="input-group-text">
+                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                  <input data-step="step-1" type="checkbox" name="check[]">
+                                  <span></span>
+                               </label>
+                             </span>
+                         </div>
+                        </div>
+                     </div>
+                     <div class="col-sm-6">
+                        <label class="kt-font-dark">{{ __('Establishment Details (AR)') }}</label>
+                        <div class="input-group input-group-sm">
+                         <input value="{{ ucfirst($company->company_description_ar) }}" name="event_type" readonly="readonly" type="text"
+                                      class="form-control">
+                         <div class="input-group-append">
+                            <span class="input-group-text">
+                               <label class="kt-checkbox kt-checkbox--single kt-checkbox--default">
+                                  <input data-step="step-1" type="checkbox" name="check[]">
+                                  <span></span>
+                               </label>
+                             </span>
+                         </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row form-group form-group-sm">
                      <div class="col-sm-12">
                          <label class="kt-font-dark">{{ __('Address') }} </label>
                          <textarea rows="3" class="form-control form-control-sm" readonly>{{ucfirst($company->fullAddress)}}</textarea>
@@ -351,7 +383,7 @@
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
-                          <input value="back" type="radio" name="status"> {{ __('Bounce Back Application for Amendments') }}
+                          <input value="return" type="radio" name="status"> {{ __('Bounce Back Application for Amendments') }}
                           <span></span>
                        </label>
                        <label class="kt-radio kt-radion--bold kt-radio--success kt-font-dark">
