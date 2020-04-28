@@ -43,9 +43,9 @@ class TransactionReportController extends Controller
                 }
                 return number_format($transaction->amount, 2);
             })->addColumn('vat', function ($transaction) {
-                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('vat') : 0), 2);
+                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('exempt_amount') : 0), 2);
             })->addColumn('total', function ($transaction) {
-                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0), 2);
+                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0), 2);
             })->addColumn('action', function ($transaction) {
                 $transaction->transaction_id;
                 return "<button style='height: 22px;line-height: 4px;border-radius: 3px;' class='btn btn-outline-warning btn-sm' onclick='transactionFunction($transaction->transaction_id)'>
@@ -86,13 +86,13 @@ class TransactionReportController extends Controller
 
             })
             ->addColumn('vat', function (EventTransaction $artist) {
-                return number_format($artist->vat,2);
+                return number_format($artist->exempt_amount,2);
             })
             ->addColumn('amount', function (EventTransaction $artist) {
                 return number_format($artist->amount,2);
             })
             ->addColumn('total', function (EventTransaction $artist) {
-                return number_format($artist->amount+$artist->vat,2);
+                return number_format($artist->amount-$artist->exempt_amount,2);
             })
             ->addColumn('event_type', function (EventTransaction $artist) {
                 $data=Auth()->user()->LanguageId==1 ? $artist->event->type->name_en:   $artist->event->type->name_ar;
@@ -159,13 +159,13 @@ class TransactionReportController extends Controller
 
             })
             ->addColumn('vat', function (EventTransaction $artist) {
-                return number_format($artist->vat,2);
+                return number_format($artist->exempt_amount,2);
             })
             ->addColumn('amount', function (EventTransaction $artist) {
                 return number_format($artist->amount,2);
             })
             ->addColumn('total', function (EventTransaction $artist) {
-                return number_format($artist->amount+$artist->vat,2);
+                return number_format($artist->amount-$artist->exempt_amount,2);
             })
             ->addColumn('event_type', function (EventTransaction $artist) {
                 $data=Auth()->user()->LanguageId==1 ? $artist->event->type->name_en:   $artist->event->type->name_ar;
@@ -201,7 +201,7 @@ class TransactionReportController extends Controller
                 return Auth()->user()->LanguageId == 1 ? ($user->company ? $user->company->name_en : '') : ($user->company ? $user->company->name_en : '');
             })
             ->addColumn('vat', function (EventTransaction $artist) {
-                return $artist->vat;
+                return $artist->exempt_amount;
             })
             ->addColumn('amount', function (EventTransaction $artist) {
                 return $artist->amount;
@@ -290,9 +290,9 @@ class TransactionReportController extends Controller
                 }
                 return number_format($transaction->amount, 2);
             })->addColumn('vat', function ($transaction) {
-                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('vat') : 0), 2);
+                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('exempt_amount') : 0), 2);
             })->addColumn('total', function ($transaction) {
-                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0), 2);
+                return number_format(($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0), 2);
             })->addColumn('action', function ($transaction) {
                 $transaction->transaction_id;
                 return "<button style='height: 22px;line-height: 4px;border-radius: 3px;' class='btn btn-outline-warning btn-sm' onclick='transactionFunction($transaction->transaction_id)'>
@@ -329,7 +329,7 @@ class TransactionReportController extends Controller
 
                 $amount=[];
                 foreach ($trans as $transaction) {
-                    array_push($amount, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                    array_push($amount, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
                 }
                 $myData=array_sum($amount);
                 array_push($total,$myData);
@@ -345,69 +345,69 @@ class TransactionReportController extends Controller
             $jan = Transaction::whereMonth('transaction_date', '1')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $january = [];
             foreach ($jan as $transaction) {
-                array_push($january, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($january, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $one = array_sum($january);
 
             $feb = Transaction::whereMonth('transaction_date', '2')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $february = [];
             foreach ($feb as $transaction) {
-                array_push($february, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($february, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $two = array_sum($february);
 
             $mar = Transaction::whereMonth('transaction_date', '3')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $march = [];
             foreach ($mar as $transaction) {
-                array_push($march, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($march, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $three = array_sum($march);
 
             $apr = Transaction::whereMonth('transaction_date', '4')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $april = [];
             foreach ($apr as $transaction) {
-                array_push($april, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($april, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $four = array_sum($april);
 
             $ma = Transaction::whereMonth('transaction_date', '5')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $may = [];
             foreach ($ma as $transaction) {
-                array_push($may, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($may, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $five = array_sum($may);
 
             $jun = Transaction::whereMonth('transaction_date', '6')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $june = [];
             foreach ($jun as $transaction) {
-                array_push($june, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($june, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $six = array_sum($june);
             $jul = Transaction::whereMonth('transaction_date', '7')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $july = [];
             foreach ($jul as $transaction) {
-                array_push($july, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($july, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $seven = array_sum($july);
 
             $aug = Transaction::whereMonth('transaction_date', '8')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $august = [];
             foreach ($aug as $transaction) {
-                array_push($august, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($august, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount')- $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $eight = array_sum($august);
 
             $sep = Transaction::whereMonth('transaction_date', '9')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $september = [];
             foreach ($sep as $transaction) {
-                array_push($september, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($september, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $nine = array_sum($september);
 
             $oct = Transaction::whereMonth('transaction_date', '10')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $october = [];
             foreach ($oct as $transaction) {
-                array_push($october, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($october, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $ten = array_sum($october);
 
@@ -415,14 +415,14 @@ class TransactionReportController extends Controller
             $nov = Transaction::whereMonth('transaction_date', '11')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $november = [];
             foreach ($nov as $transaction) {
-                array_push($november, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($november, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $eleven = array_sum($november);
 
             $dec = Transaction::whereMonth('transaction_date', '12')->whereYear('transaction_date', $date)->whereDate('transaction_date', '<', Carbon::now()->format('y-m-d'))->get();
             $december = [];
             foreach ($dec as $transaction) {
-                array_push($december, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') + $transaction->artistPermitTransaction->sum('vat') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') + $transaction->eventTransaction->sum('vat') : 0));
+                array_push($december, ($transaction->artistPermitTransaction ? $transaction->artistPermitTransaction->sum('amount') - $transaction->artistPermitTransaction->sum('exempt_amount') : 0) + ($transaction->eventTransaction ? $transaction->eventTransaction->sum('amount') - $transaction->eventTransaction->sum('exempt_amount') : 0));
             }
             $twelve = array_sum($december);
         }
