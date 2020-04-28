@@ -4,7 +4,7 @@
 
 @section('content')
 
-@include('permits.components.comments', ['staff_comments' => $staff_comments])
+
 
 <div class="kt-portlet kt-portlet--mobile" style="z-index:1;">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
@@ -49,6 +49,8 @@
 
         </div>
     </div>
+
+    @include('permits.components.comments', ['staff_comments' => $staff_comments])
 
     <input type="hidden" id="permit_id" value="{{$permit_details->permit_id}}">
 
@@ -314,11 +316,11 @@
             if($('#permit_from').length)
             {
                var minDate = moment($('#permit_from').val(), 'DD-MM-YYYY').toDate();
-            //    var maxDate = moment(minDate).add(3, 'M').toDate(); 
+            //    var maxDate = moment(minDate).add(3, 'M').toDate();
                $('#permit_to').datepicker('setStartDate', minDate );
             //    $('#permit_to').datepicker('setEndDate', maxDate );
             }
-          
+
         })
 
         function stopNavigate(event) {
@@ -378,7 +380,7 @@
         orientation: "bottom left",
         zIndexOffset: 98
     });
-    
+
     $('#permit_to').datepicker({
         format: 'dd-mm-yyyy',
         autoclose: true,
@@ -418,7 +420,7 @@
                 permit_to: 'required',
                 work_loc: 'required',
                 work_loc_ar: 'required'
-            }, 
+            },
             messages: {
                 permit_from: '',
                 permit_to: '',
@@ -494,7 +496,7 @@
 
     function givWarn()
     {
-        
+
         var from_date = $('#permit_from').val();
         let start_days_count = $('#artiststartafter').val();
         if(from_date)

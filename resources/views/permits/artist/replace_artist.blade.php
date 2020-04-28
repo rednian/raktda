@@ -689,7 +689,6 @@ $language_id = Auth::user()->LanguageId;
         </div>
     </a>
     <div class="btn btn--yellow btn-sm btn-wide kt-font-bold " id="submit_btn" style="display:none;">
-        <i class="la la-check"></i>
         {{__('SUBMIT')}}
     </div>
     <div class="btn btn--maroon btn-sm btn-wide kt-font-bold " data-ktwizard-type="action-next" id="next_btn">

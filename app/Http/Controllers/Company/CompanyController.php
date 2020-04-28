@@ -28,185 +28,137 @@ use App\Notifications\AllNotification;
 
 class CompanyController extends Controller
 {
-   public function create()
-   {
-      $codes = Country::orderBy('nationality_en', 'asc')->get();
-      return view('permits.company.create', ['page_title'=>'Register Company', 'codes' => $codes]);
-   }
+    public function create()
+    {
+        $codes = Country::orderBy('nationality_en', 'asc')->get();
+        return view('permits.company.create', ['page_title'=>'Register Company', 'codes' => $codes]);
+    }
 
-   public function account(Request $request, Company $company)
-   {
-       return view('permits.company.account', ['company'=>$company]);
-   }
-   public function show(Request $request ,Company $company)
-   {
-      Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
-      ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
-      Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
+    public function account(Request $request, Company $company)
+    {
+        return view('permits.company.account', ['company'=>$company]);
+    }
+    public function show(Request $request ,Company $company)
+    {
+        Permit::where('created_by', Auth::user()->user_id)->update(['is_edit' => 0]);
+        ArtistTempData::where('created_by', Auth::user()->user_id )->where('status' , 0)->delete();
+        Permit::whereDate('expired_date', '<', Carbon::now())->update(['permit_status' => 'expired']);
 
-      return view('permits.company.show', ['company'=>$company]);
-   }
-
-
-   public function store(Request $request)
-   {
-
-       $valid_company = Validator::make($request->all(), [
-         'name_en'=> 'required|max:255',
-         'trade_license'=> 'required|max:255',
-         'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::now()->format('Y-m-d'),
-         'address'=> 'required|max:255',
-         'area_id'=> 'required|max:255',
-         'term_condition' => 'required'
-       ]
-     )->validate();
-
-       $valid_user = Validator::make($request->all(), [
-           'NameEn'=>'required:max:255',
-           'username'=>'required:max:255',
-           'mobile_number'=>'required:max:255',
-           'password'=>'required:max:255',
-       ]);
+        return view('permits.company.show', ['company'=>$company]);
+    }
 
 
-      try {
-         DB::beginTransaction();
+    public function store(Request $request)
+    {
 
-         $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
-         $company = Company::create(array_merge($valid_company, ['status'=>'draft'], $this->addressRelated() ));
-         $user = $company->user()->create(array_merge(
-             $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
-             ])
-         );
-         $user->roles()->attach(2);
-         $user->sendEmailVerificationNotification();
-         $user->phoneCode = $request->mobile_number_phoneCode ;
-         $user->save();
+        $valid_company = Validator::make($request->all(), [
+                'name_en'=> 'required|max:255',
+                'trade_license'=> 'required|max:255',
+                'trade_license_expired_date'=> 'required|max:255|date|after_or_equal:'.Carbon::now()->format('Y-m-d'),
+                'address'=> 'required|max:255',
+                'area_id'=> 'required|max:255',
+                'term_condition' => 'required'
+            ]
+        )->validate();
 
-         DB::commit();
-         Auth::login($user);
-         $result = ['success', 'Successfully Registered.', 'Success'];
-         return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))->with('message', $result);
-
-
-      } catch (Exception $e) {
-
-         DB::rollBack();
-         return redirect()->back()->with('error', $e->getMessage());
-      }
-   }
-
-   public function sendNotification($company, $user){
-      if($company->request_type=="amendment request")
-      {
-        $reason = 'requested for Amendment';
-      }else {
-        $reason = 'registered';
-      }
-
-      $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
-
-      $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
-      $title = 'New Company <b>' . $company->name_en . '</b> '.$reason;
-      $buttonText = "View Application";
-      $content = 'New Company <b>' . $company->name_en . '</b> is '.$reason.'.  Please click the link below.';
-
-      $users = User::whereHas('roles', function($q){
-      $q->where('roles.role_id', 1);
-      })->get();
-
-      foreach ($users as $user) {
-          $user->notify(new AllNotification([
-              'subject' => $subject,
-              'title' => $title,
-              'content' => $content,
-              'button' => $buttonText,
-              'url' => $url
-          ]));
-      }
-  }
-
-   public function edit(Request $request, Company $company)
-   {
-      foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
-          Storage::delete('public/'.$requirement->path);
-      }
-
-       $company->requirement()->whereNull('is_submit')->delete();
-
-       return view('permits.company.edit', [
-        'company'=>$company,
-        'invalid'=> $this->hasRequirement($company),
-      ]);
-   }
-
-   public function updateUser(Request $request, Company $company) {
-      try {
-        DB::beginTransaction();
-        $company->user()->update([
-            'NameAr' => $request->acccount_name_ar,
-            'NameEn' => $request->acccount_name_en,
-            'email' => $request->account_email,
-            'mobile_number' =>$request->account_mobile,
-            'phoneCode' =>  $request->account_mobile_phoneCode
+        $valid_user = Validator::make($request->all(), [
+            'NameEn'=>'required:max:255',
+            'username'=>'required:max:255',
+            'mobile_number'=>'required:max:255',
+            'password'=>'required:max:255',
         ]);
 
-        DB::commit();
-        $result = ['success', 'Update Successfully', 'Success'];
-      } catch (Exception $e) {
-        DB::rollBack();
-        $result = ['danger', $e->getMessage(), 'Error'];
-      }
 
-      return redirect(URL::signedRoute('company.account', $company->company_id))->with(['message'=> $result]);
-   }
+        try {
+            DB::beginTransaction();
 
-   public function changePassword(Request $request, Company $company) {
-      $old_password = $request->old_password;
-      $new_password = $request->new_password ;
-      $confirm_password = $request->confirm_password ;
+            $valid_company['company_type_id'] = CompanyType::where('name_en', 'corporate')->first()->company_type_id;
+            $company = Company::create(array_merge($valid_company, ['status'=>'draft'], $this->addressRelated() ));
+            $user = $company->user()->create(array_merge(
+                    $request->all(), ['IsActive'=> 0, 'type'=> 1, 'password'=> bcrypt($request->password)
+                ])
+            );
+            $user->roles()->attach(2);
+            $user->sendEmailVerificationNotification();
+            $user->phoneCode = $request->mobile_number_phoneCode ;
+            $user->save();
 
-      try {
-        DB::beginTransaction();
-        if($new_password == $confirm_password){
-          $newpassword = Hash::make($request->new_password);
-          User::where('user_id', Auth::user()->user_id)->update([
-            'password' => $newpassword
-          ]);
+            DB::commit();
+            Auth::login($user);
+            $result = ['success', 'Successfully Registered.', 'Success'];
+            return redirect(URL::signedRoute('company.edit', ['company' => $company->company_id]))->with('message', $result);
+
+
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return redirect()->back()->with('error', $e->getMessage());
         }
-        DB::commit();
-        $result = ['success', 'Password Changed Successfully', 'Success'];
-      } catch (Exception $e) {
-        DB::rollBack();
-        $result = ['danger', $e->getMessage(), 'Error'];
-      }
-
-      return redirect()->back()->with(['message'=> $result]);
-   }
-
-
-   private function hasRequirement($company)
-   {
-    $requirements = Requirement::where('requirement_type', 'company')->whereStatus('1')->get();
-    $array = [];
-    $data = null;
-    if (!is_null($requirements)) {
-      foreach ($requirements as $requirement) {
-        array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
-      }
     }
-    return in_array(false, $array);
-   }
 
+    public function sendNotification($company, $user){
+        if($company->request_type=="amendment request")
+        {
+            $reason = 'requested for Amendment';
+        }else {
+            $reason = 'registered';
+        }
 
+        $url = URL::signedRoute('admin.company.application', ['company' => $company->company_id]);
 
-   public function update(Request $request, Company $company)
-   {
-    if ($company->status == 'rejected') {
-      return redirect()->back();
+        $subject = 'New Company ' . $company->name_en.' '.$company->name_ar . ' '. $reason;
+        $title = 'New Company <b>' . $company->name_en . '</b> '.$reason;
+        $buttonText = "View Application";
+        $content = 'New Company <b>' . $company->name_en . '</b> is '.$reason.'.  Please click the link below.';
+
+        $users = User::whereHas('roles', function($q){
+            $q->where('roles.role_id', 1);
+        })->get();
+
+        foreach ($users as $user) {
+            $user->notify(new AllNotification([
+                'subject' => $subject,
+                'title' => $title,
+                'content' => $content,
+                'button' => $buttonText,
+                'url' => $url
+            ]));
+        }
     }
-    if ($this->hasRequirement($company) && $request->submit != 'draft') {
-      return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error'])->withInput();
+
+    public function edit(Request $request, Company $company)
+    {
+        foreach ($company->requirement()->whereNull('is_submit')->get() as $requirement) {
+            Storage::delete('public/'.$requirement->path);
+        }
+
+        $company->requirement()->whereNull('is_submit')->delete();
+
+        return view('permits.company.edit', [
+            'company'=>$company,
+            'invalid'=> $this->hasRequirement($company),
+        ]);
+    }
+
+    public function updateUser(Request $request, Company $company) {
+        try {
+            DB::beginTransaction();
+            $company->user()->update([
+                'NameAr' => $request->acccount_name_ar,
+                'NameEn' => $request->acccount_name_en,
+                'email' => $request->account_email,
+                'mobile_number' =>$request->account_mobile,
+                'phoneCode' =>  $request->account_mobile_phoneCode
+            ]);
+
+            DB::commit();
+            $result = ['success', 'Update Successfully', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['danger', $e->getMessage(), 'Error'];
+        }
+
+        return redirect(URL::signedRoute('company.account', $company->company_id))->with(['message'=> $result]);
     }
        $validate = Validator::make($request->all(), [
                'name_en'=> 'required|max:255',
@@ -274,282 +226,383 @@ class CompanyController extends Controller
                     $company->update($request->all());
                   }
 
-                  $result = ['success', 'Successfully submitted!', 'Success'];
-                  break;
-              case 'draft':
-                  $company->update($request->all());
-                 $result = ['success', 'Draft saved!', 'Success'];
-                  break;
-          }
+    public function changePassword(Request $request, Company $company) {
+        $old_password = $request->old_password;
+        $new_password = $request->new_password ;
+        $confirm_password = $request->confirm_password ;
 
-
-         if($company->contact()->exists()){
-             $company->contact()->update([
-                 'contact_name_en'=>$request->contact_name_en,
-                 'contact_name_ar'=>$request->contact_name_ar,
-                 'designation_en'=>$request->designation_en,
-                 'designation_ar'=>$request->designation_ar,
-                 'emirate_id_expired_date'=> date('Y-m-d', strtotime($request->emirate_id_expired_date)),
-                 'emirate_id_issued_date'=> date('Y-m-d', strtotime($request->emirate_id_issued_date)),
-                 'emirate_identification'=>$request->emirate_identification,
-                 'email'=>$request->email,
-                 'mobile_number'=>$request->mobile_number,
-                 ]);
-         }
-         else{
-
-             $company->contact()->create($request->all());
-         }
-
-         $this->sendNotification($company ,User::find(Auth::user()->user_id));
-         DB::commit();
-         return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
-      } catch (Exception $e) {
-         DB::rollBack();
-         $result = ['danger', $e->getMessage(), 'Error'];
-          return redirect()->back()->with('message', $result);
-      }
-
-
-   }
-
-
-   public function deleteFile(Request $request, Company $company)
-   {
-      if (Storage::delete('public/'.$request->path)) {
-        $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
-      };
-
-   }
-
-
-
-   public function upload(Request $request, Company $company)
-   {
-    try {
-      DB::beginTransaction();
-
-      $path = 'public/company/'.$company->company_id;
-      $requirement_name = explode(' ', $request->requirement_name);
-      $requirement_name = strtolower(implode('_', $requirement_name));
-
-
-
-      if($request->requirement_id == 'other upload'){
-        // $company->requirement()->whereType('other')->delete();
-        $other = CompanyOtherUpload::first();
-
-
-        if ($request->files) {
-
-           foreach ($request->files as $upload) {
-             foreach ($upload as $page_number => $file) {
-                 $filename = $other->name_en.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
-
-
-                 Storage::putFileAs($path, $file, $filename);
-
-                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
-                 $request['type'] = 'other';
-                  $request['file_type'] = $file->getClientMimeType();
-                 $request['requirement_id'] = 1;
-                 $request['page_number'] = $page_number+1;
-//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
-//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
-                   $company->requirement()->create($request->all());
-             }
-
-           }
-        }
-      }
-      else{
-
-        //remove file if exists.
-       if ($company->whereHas('requirement', function($q) use ($request){
-           $q->where('requirement_id', $request->requirement_id);
-         })->exists()) {
-          // $company->requirement()->where('requirement_id', $request->requirement_id)->delete();
+        try {
+            DB::beginTransaction();
+            if($new_password == $confirm_password){
+                $newpassword = Hash::make($request->new_password);
+                User::where('user_id', Auth::user()->user_id)->update([
+                    'password' => $newpassword
+                ]);
+            }
+            DB::commit();
+            $result = ['success', 'Password Changed Successfully', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['danger', $e->getMessage(), 'Error'];
         }
 
-        if ($request->files) {
-            // dd($request->all());
-
-           foreach ($request->files as $upload) {
-             foreach ($upload as $page_number => $file) {
-                 $filename = $requirement_name.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
-
-                 Storage::putFileAs($path, $file, $filename);
-
-                 $request['path'] = 'company/'.$company->company_id.'/'.$filename;
-                 $request['type'] = 'requirement';
-                 $request['file_type'] = $file->getClientMimeType();
-                 $request['page_number'] = $page_number+1;
-//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
-//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
-                 if($request->requirement_id != 'other upload'){
-                   $company->requirement()->create($request->all());
-                 }
-                 else{
-                   // $company->requirement()->create([]);
-                 }
-
-             }
-
-           }
-        }
-
-      }
-
-
-      DB::commit();
-      $result = ['success', '', 'Success'];
-    } catch (Exception $e) {
-      DB::rollBack();
-     $result = ['danger', $e->getMessage(), 'Error'];
+        return redirect()->back()->with(['message'=> $result]);
     }
-    return response()->json(['message'=> $result]);
 
-   }
 
-   public function uploadedDatatable(Request $request, Company $company)
-   {
-      $user = $request->user()->LanguageId;
-      $requirement = Requirement::has('company')->where('requirement_type', 'company')->count();
-
-      return DataTables::of($company->requirement()->get())
-      ->addColumn('name', function($upload) use ($user){
-        if($upload->type == 'requirement'){
-            $name =  $user == 1 ? ucwords($upload->requirement->requirement_name) : ucwords($upload->requirement->requirement_name_ar);
+    private function hasRequirement($company)
+    {
+        $requirements = Requirement::where('requirement_type', 'company')->whereStatus('1')->get();
+        $array = [];
+        $data = null;
+        if (!is_null($requirements)) {
+            foreach ($requirements as $requirement) {
+                array_push($array, $company->requirement()->where('requirement_id', $requirement->requirement_id)->exists());
+            }
         }
-        else{
-          $name =  __('Other Upload');
+        return in_array(false, $array);
+    }
+
+
+
+    public function update(Request $request, Company $company)
+    {
+        if ($company->status == 'rejected') {
+            return redirect()->back();
         }
-        return $name;
-      })->editColumn('issued_date', function($data){
-        return !is_null($data->issued_date) ? Carbon::parse($data->issued_date)->format('d-m-Y') : '';
-      })->editColumn('expired_date', function($data){
-      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
-      return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
-      })->addColumn('file', function($data){
-        if ($data->type == 'requirement') {
-          $name = $data->requirement->requirement_name;
+        if ($this->hasRequirement($company) && $request->submit != 'draft') {
+            return redirect()->back()->with('message', ['danger', 'Please Upload all the Documents needed', 'Error'])->withInput();
         }
-        else{
-          $name = __('Other Upload');
+        $validate = Validator::make($request->all(), [
+                'name_en'=> 'required|max:255',
+                'name_ar'=> 'required|max:255',
+                'trade_license'=> 'required|max:255',
+                'trade_license_expired_date'=> 'required|max:255|date',
+                'company_email'=> 'required|max:255|email',
+                'phone_number'=> 'required|max:255',
+                'address'=> 'required|max:255',
+                'area_id'=> 'required|max:255',
+                'company_description_en'=> 'required|max:255',
+                'company_description_ar'=> 'required|max:255',
+                'contact_name_en'=> 'required|max:255',
+                'contact_name_ar'=> 'required|max:255',
+                'designation_en'=> 'required|max:255',
+                'designation_ar'=> 'required|max:255',
+                'mobile_number'=> 'required|max:255',
+                'emirate_identification'=> 'required|max:255',
+                'emirate_id_expired_date'=> 'required|max:255',
+                'submit'=> 'required|max:255',
+            ]
+        )->validate();
+
+        try {
+            DB::beginTransaction();
+            $company->requirement()->update(['is_submit'=>1]);
+            switch ($request->submit){
+                case 'submitted':
+                    //new registration
+                    if (is_null($company->request_type) && $company->status == 'draft'){
+
+                        $company->update(array_merge(
+                            $request->all(),
+                            [
+                                'reference_number'=> $this->getReferenceNumber($company),
+                                'status'=> 'pending',
+                                'application_date'=> Carbon::now(),
+                                'request_type'=>'new registration'
+                            ],
+                            $this->addressRelated()
+                        ));
+                        $company->request()->create(['type'=>'new registration', 'user_id'=>$request->user()->user_id]);
+                    }
+
+                    //ammendment request
+                    if ($company->status == 'back') {
+                        $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'amendment request']));
+                    }
+
+                    if ($company->status == 'blocked') {
+                        $company->update(array_merge($request->all(), ['status'=>'pending', 'request_type'=>'unblocking request']));
+                    }
+
+                    if($company->status == 'active'){
+                        $company->update($request->all());
+                    }
+
+                    $result = ['success', 'Successfully submitted!', 'Success'];
+                    break;
+                case 'draft':
+                    $company->update($request->all());
+                    $result = ['success', 'Draft saved!', 'Success'];
+                    break;
+            }
+
+
+            if($company->contact()->exists()){
+                $company->contact()->update([
+                    'contact_name_en'=>$request->contact_name_en,
+                    'contact_name_ar'=>$request->contact_name_ar,
+                    'designation_en'=>$request->designation_en,
+                    'designation_ar'=>$request->designation_ar,
+                    'emirate_id_expired_date'=> date('Y-m-d', strtotime($request->emirate_id_expired_date)),
+                    'emirate_id_issued_date'=> date('Y-m-d', strtotime($request->emirate_id_issued_date)),
+                    'emirate_identification'=>$request->emirate_identification,
+                    'email'=>$request->email,
+                    'mobile_number'=>$request->mobile_number,
+                ]);
+            }
+            else{
+
+                $company->contact()->create($request->all());
+            }
+
+            $this->sendNotification($company ,User::find(Auth::user()->user_id));
+            DB::commit();
+            return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['danger', $e->getMessage(), 'Error'];
+            return redirect()->back()->with('message', $result);
         }
-        $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$name.'">';
-        $html .= $name;
-        $html .= '</a>';
-        return $html;
-      })
-      ->addColumn('count', function($data) use ($requirement){
-        return $requirement.'  PAGE';
-      })
-      ->addColumn('action', function($data) use ($company){
-        if(in_array($company->status, ['active', 'blocked'])){ return __('Delete not allowed'); }
-        return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
-      })
-      ->rawColumns(['file', 'action'])
-      ->make(true);
-   }
+
+
+    }
+
+
+    public function deleteFile(Request $request, Company $company)
+    {
+        if (Storage::delete('public/'.$request->path)) {
+            $company->requirement()->where('company_requirement_id', $request->company_requirement_id)->delete();
+        };
+
+    }
 
 
 
-   public function isexist(Request $request)
-   {
-      if($request->username){
-         $result =  User::where('username', $request->username)->exists() ?  false : true;
-      }
-      if($request->email){
-         $result =  User::where('email', $request->email)->exists() ?  false : true;
-      }
+    public function upload(Request $request, Company $company)
+    {
+        try {
+            DB::beginTransaction();
 
-      if($request->mobile_number){
-        $phoneCode = $request->phoneCode;
-         $result =  User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->exists() ?  false : true;
-      }
-
-      if($request->name_en){
-         $result =  Company::where('name_en', $request->name_en)
-         ->where('status', '!=', 'rejected')
-         ->exists() ?  false : true;
-      }
-
-      if($request->name_ar){
-         $result =  Company::where('name_en', $request->name_ar)
-         ->where('status', '!=', 'rejected')
-         ->exists() ?  false : true;
-      }
-
-      if($request->trade_license){
-         $result =  Company::where('trade_license', $request->trade_license)
-         ->where('status', '!=', 'rejected')
-         ->exists() ?  false : true;
-      }
-
-      return response()->json(['valid'=>$result]);
-   }
-
-   public function commentDatatable(Request $request, Company $company)
-   {
-    return DataTables::of($company->comment()->latest())
-
-    ->addColumn('remark', function($comment) use ($request){
-      return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
-    })
-    ->editColumn('action', function($comment){
-      return ucfirst($comment->action);
-    })
-    ->addColumn('date', function($comment){
-      return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
-    })
-    ->rawColumns(['date'])
-    ->make(true);
-   }
+            $path = 'public/company/'.$company->company_id;
+            $requirement_name = explode(' ', $request->requirement_name);
+            $requirement_name = strtolower(implode('_', $requirement_name));
 
 
 
-   public function requirements(Request $request)
-   {
-      $requirement = Requirement::where('requirement_type', 'company')
-        ->whereStatus(1)
-        ->orderBy('requirement_name')
-        ->get()
-        ->map(function($v){
+            if($request->requirement_id == 'other upload'){
+                // $company->requirement()->whereType('other')->delete();
+                $other = CompanyOtherUpload::first();
+
+
+                if ($request->files) {
+
+                    foreach ($request->files as $upload) {
+                        foreach ($upload as $page_number => $file) {
+                            $filename = $other->name_en.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
+
+
+                            Storage::putFileAs($path, $file, $filename);
+
+                            $request['path'] = 'company/'.$company->company_id.'/'.$filename;
+                            $request['type'] = 'other';
+                            $request['file_type'] = $file->getClientMimeType();
+                            $request['requirement_id'] = 1;
+                            $request['page_number'] = $page_number+1;
+//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+                            $company->requirement()->create($request->all());
+                        }
+
+                    }
+                }
+            }
+            else{
+                //remove file if exists.
+                if ($company->whereHas('requirement', function($q) use ($request){
+                    $q->where('requirement_id', $request->requirement_id);
+                })->exists()) {
+                    // $company->requirement()->where('requirement_id', $request->requirement_id)->delete();
+                }
+
+                if ($request->files) {
+
+                    foreach ($request->files as $upload) {
+                        foreach ($upload as $page_number => $file) {
+                            $filename = $requirement_name.'_'.($page_number+1).'_'.time().'.'.$file->getClientOriginalExtension();
+
+                            Storage::putFileAs($path, $file, $filename);
+
+                            $request['path'] = 'company/'.$company->company_id.'/'.$filename;
+                            $request['type'] = 'requirement';
+                            $request['file_type'] = $file->getClientMimeType();
+                            $request['page_number'] = $page_number+1;
+//                 $request['issued_date'] = $request->issued_date ? Carbon::parse($request->issued_date)->format('Y-m-d') :  null;
+//                 $request['expired_date'] = $request->expired_date ? Carbon::parse($request->expired_date)->format('Y-m-d') :  null;
+                            if($request->requirement_id != 'other upload'){
+                                $company->requirement()->create($request->all());
+                            }
+                            else{
+                                // $company->requirement()->create([]);
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+
+
+            DB::commit();
+            $result = ['success', '', 'Success'];
+        } catch (Exception $e) {
+            DB::rollBack();
+            $result = ['danger', $e->getMessage(), 'Error'];
+        }
+        return response()->json(['message'=> $result]);
+
+    }
+
+    public function uploadedDatatable(Request $request, Company $company)
+    {
+        $user = $request->user()->LanguageId;
+        $requirement = Requirement::has('company')->where('requirement_type', 'company')->count();
+
+        return DataTables::of($company->requirement()->get())
+            ->addColumn('name', function($upload) use ($user){
+                if($upload->type == 'requirement'){
+                    $name =  $user == 1 ? ucwords($upload->requirement->requirement_name) : ucwords($upload->requirement->requirement_name_ar);
+                }
+                else{
+                    $name =  __('Other Upload');
+                }
+                return $name;
+            })->editColumn('issued_date', function($data){
+                return !is_null($data->issued_date) ? Carbon::parse($data->issued_date)->format('d-m-Y') : '';
+            })->editColumn('expired_date', function($data){
+                //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
+                return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
+            })->addColumn('file', function($data){
+                if ($data->type == 'requirement') {
+                    $name = $data->requirement->requirement_name;
+                }
+                else{
+                    $name = __('Other Upload');
+                }
+                $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$name.'">';
+                $html .= $name;
+                $html .= '</a>';
+                return $html;
+            })
+            ->addColumn('count', function($data) use ($requirement){
+                return $requirement.'  PAGE';
+            })
+            ->addColumn('action', function($data) use ($company){
+                if(in_array($company->status, ['active', 'blocked'])){ return __('Delete not allowed'); }
+                return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
+            })
+            ->rawColumns(['file', 'action'])
+            ->make(true);
+    }
+
+
+
+    public function isexist(Request $request)
+    {
+        if($request->username){
+            $result =  User::where('username', $request->username)->exists() ?  false : true;
+        }
+        if($request->email){
+            $result =  User::where('email', $request->email)->exists() ?  false : true;
+        }
+
+        if($request->mobile_number){
+            $phoneCode = $request->phoneCode;
+            $result =  User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->exists() ?  false : true;
+        }
+
+        if($request->name_en){
+            $result =  Company::where('name_en', $request->name_en)
+                ->where('status', '!=', 'rejected')
+                ->exists() ?  false : true;
+        }
+
+        if($request->name_ar){
+            $result =  Company::where('name_en', $request->name_ar)
+                ->where('status', '!=', 'rejected')
+                ->exists() ?  false : true;
+        }
+
+        if($request->trade_license){
+            $result =  Company::where('trade_license', $request->trade_license)
+                ->where('status', '!=', 'rejected')
+                ->exists() ?  false : true;
+        }
+
+        return response()->json(['valid'=>$result]);
+    }
+
+    public function commentDatatable(Request $request, Company $company)
+    {
+        return DataTables::of($company->comment()->latest())
+
+            ->addColumn('remark', function($comment) use ($request){
+                return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
+            })
+            ->editColumn('action', function($comment){
+                return ucfirst($comment->action);
+            })
+            ->addColumn('date', function($comment){
+                return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+            })
+            ->rawColumns(['date'])
+            ->make(true);
+    }
+
+
+
+    public function requirements(Request $request)
+    {
+        $requirement = Requirement::where('requirement_type', 'company')
+            ->whereStatus(1)
+            ->orderBy('requirement_name')
+            ->get()
+            ->map(function($v){
+                return [
+                    'requirement_name'=> ucfirst($v->requirement_name),
+                    'requirement_id'=> $v->requirement_id,
+                    'dates_required'=> $v->dates_required,
+                ];
+            });
+
+        return response()->json($requirement->all());
+    }
+
+    private function addressRelated()
+    {
         return [
-            'requirement_name'=> ucfirst($v->requirement_name),
-            'requirement_id'=> $v->requirement_id,
-            'dates_required'=> $v->dates_required,
-          ];
-      });
+            'emirate_id'=>Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
+            'country_id'=>Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
+            'company_type_id'=>CompanyType::where('name_en' ,'corporate')->first()->company_type_id,
+        ];
+    }
 
-      return response()->json($requirement->all());
-   }
+    private function getReferenceNumber($company)
+    {
+        if ( Company::exists() && ( !is_null(Company::first()->reference_number) ) ) {
+            $last_reference = Company::where('company_id', '!=', $company->company_id)
+                ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
 
-   private function addressRelated()
-   {
-    return [
-      'emirate_id'=>Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
-      'country_id'=>Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
-      'company_type_id'=>CompanyType::where('name_en' ,'corporate')->first()->company_type_id,
-    ];
-   }
-
-   private function getReferenceNumber($company)
-   {
-    if ( Company::exists() && ( !is_null(Company::first()->reference_number) ) ) {
-         $last_reference = Company::where('company_id', '!=', $company->company_id)
-         ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
-
-         $reference_number = explode('-', $last_reference);
-         $reference_number = $reference_number[2]+1 ;
-         $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
-       }
-       else{
-        $reference_number = 'EST-'.date('Y').'-0001';
-       }
-       return $reference_number;
-   }
+            $reference_number = explode('-', $last_reference);
+            $reference_number = $reference_number[2]+1 ;
+            $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
+        }
+        else{
+            $reference_number = 'EST-'.date('Y').'-0001';
+        }
+        return $reference_number;
+    }
 
 
 

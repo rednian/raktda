@@ -130,6 +130,22 @@
         .text-left {
             text-align: left;
         }
+
+        footer {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+        }
+
+        .print--footer {
+            padding: 15px 0 0;
+            width: 100%;
+            margin:0px;
+            border-width:0px;
+            font-size: 10px;
+        }
+
     </style>
 </head>
 
@@ -183,155 +199,144 @@
                 </td>
             </tr>
         </table>
-
         @php
-        $feetotal = 0;
-        $vattotal = 0;
-        $grandtotal = 0;
+            $noofdays = 1;
+            if($transaction->eventTransaction()->exists())
+            {
+                $from_d = $transaction->eventTransaction[0]->event['issued_date'];
+                $to_d = $transaction->eventTransaction[0]->event['expired_date'];
+                $from_date = strtotime($from_d);
+                $to_date = strtotime($to_d);
+                $noofdays = (abs($from_date - $to_date) / 60 / 60 / 24) + 1;
+            }
+            else if($transaction->artistPermitTransaction()->exists()) {
+                $from_d = $transaction->artistPermitTransaction[0]->permit['issued_date'];
+                $to_d = $transaction->artistPermitTransaction[0]->permit['expired_date'];
+                $from_date = strtotime($from_d);
+                $to_date = strtotime($to_d);
+                $noofdays = (abs($from_date - $to_date) / 60 / 60 / 24) + 1;
+            }
         @endphp
+        <table class="full-width">
+            <tr>
+                <td class="text-left" style="width:25%;">
+                    <b> {{__('No of Days')}}</b>
+                </td>
+                <td class="text-left" style="width:25%;">
+                    {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}
+                </td>
+                <td></td>
+                <td class="text-left" style="width:25%;">
+                </td>
+                <td class="text-right" style="width:25%;">
+                </td>
+            </tr>
+        </table>
 
-        @if($transaction->artistPermitTransaction()->exists())
-        {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
-        </h5> --}}
+
+
         <div class="col-md-12" style="margin-top: 10px;">
             <table class="table full-width table-hover table-borderless border table-striped" border="1">
                 <thead>
                     <tr class="kt-font-transform-u">
-                        <th>{{__('Artist Name')}}</th>
-                        <th>{{__('Profession')}}</th>
+                        <th>{{__('Type')}}</th>
+                        <th>{{__('Detail')}}</th>
+                        <th class="text-center">{{__('Quantity')}} </th>
                         <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                        {{-- <th class="text-center">{{__('Duration')}}</th> --}}
                         <th class="text-right">{{__('Total')}} (AED)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($transaction->artistPermitTransaction as $at)
-                    @if($at->artistPermit->artist_permit_status == 'approved' && $at->artistPermit->is_paid == 1)
-                    <tr>
-                        <td>
-                            {{getLangId() == 1 ? ucfirst($at->artistPermit->firstname_en).' '. ucfirst($at->artistPermit->lastname_en) : $at->artistPermit->lastname_ar.' '.$at->artistPermit->firstname_ar}}
-                        </td>
-                        <td>
-                            {{getLangId() == 1 ? ucfirst($at->artistPermit->profession->name_en) : $at->artistPermit->profession->name_ar}}
-                        </td>
-                        <td class="text-right">
-                            {{number_format($at->artistPermit->profession['amount'], 2)}}
-                        </td>
+                @php  $feetotal = 0; @endphp
+                @if($transaction->artistPermitTransaction()->exists())
+                    @foreach($artistPermit->values()->toArray() as $index => $at)
                         @php
-                        $total = $at->amount + $at->vat;
-                        $feetotal += $at->amount;
-                        $vattotal += $at->vat;
-                        $grandtotal += $total;
-                        $from_d = strtotime($at->permit->issued_date);
-                        $to_d = strtotime($at->permit->expired_date);
-                        $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
+                            $artistCount =  collect($at)->count();
+                           $at = array_dot($at[0]);
                         @endphp
-                        {{-- <td class="text-center">
-                            {{ucfirst($at->term).' Term ('. $noofdays.' '.($noofdays > 1 ?  'days' : 'day' ).')' }}
-                        </td> --}}
-                        <td class="text-right">
-                            {{number_format( $at->amount,2)}}
-                        </td>
-                    </tr>
-                    @endif
+                        @if($at['artist_permit.artist_permit_status'] == 'approved' && $at['artist_permit.is_paid'] == 1)
+                            <tr>
+                                <td>
+                                    {{__('Artist')}}
+                                </td>
+                                @php
+                                    $professionId = $at['artist_permit.profession_id'];
+                                    $getProfession = getProfession($professionId);
+                                    $feetotal += $at['amount'];
+                                @endphp
+                                <td>
+                                    {{getLangId() == 1 ? $getProfession['name_en'] : $getProfession['name_ar']}}
+                                </td>
+                                <td class="text-center">
+                                    {{$artistCount}}
+                                </td>
+                                <td  class="text-right">
+                                    {{(int)$getProfession['amount'] *  $artistCount}}
+                                </td>
+                                <td class="text-right">
+                                    {{number_format($at['amount'],2)}}
+                                </td>
+
+                            </tr>
+                        @endif
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-        @endif
+                @endif
+                @if($transaction->eventTransaction()->exists())
 
-        {{-- {{dd($transaction->eventTransaction)}} --}}
-
-        @if($transaction->eventTransaction()->exists())
-        {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
-        </h5> --}}
-        <div class="col-md-12" style="margin-top: 10px;">
-            <table class="table full-width table-hover table-borderless border table-striped" border="1">
-                <thead>
-                    <tr class="kt-font-transform-u">
-                        <th style="text-align:left">{{__('Event Name')}}</th>
-                        <th style="text-align:left">{{__('Event Type')}}</th>
-                        <th style="text-align:right">{{__('Fee / Day')}} (AED)</th>
-                        <th class="text-center">{{__('No.of.days')}}</th>
-                        <th class="text-center">{{__('Qty')}}</th>
-                        <th style="text-align:right">{{__('Total')}} (AED) </th>
-                    </tr>
-                </thead>
-                <tbody>
                     @foreach($transaction->eventTransaction as $et)
-                    @php
-                    $from_d = strtotime($et->event->issued_date);
-                    $to_d = strtotime($et->event->expired_date);
-                    $noofdays = (abs($from_d - $to_d) / 60 / 60 / 24) + 1;
-                    @endphp
-                    @if($et->type == 'event')
-                    <tr>
-                        <td style="text-align:left">
-                            {{getLangId() == 1 ? ucfirst($et->event->name_en) : $et->event->name_ar}}</td>
-                        <td style="text-align:left">
-                            {{getLangId() == 1 ? ucfirst($et->event->type->name_en) : $et->event->type->name_en }}
-                        </td>
-                        <td style="text-align:right">{{number_format($et->event->type->amount,2)}}</td>
-                        <td class="text-center">
-                            {{$noofdays}}
-                        </td>
-                        <td class="text-right">-</td>
-                        @php
-                        $total = $et->amount + $et->vat;
-                        $feetotal += $et->amount;
-                        $vattotal += $et->vat;
-                        $grandtotal += $total;
-                        @endphp
-                        <td style="text-align:right">{{number_format($feetotal,2)}}</td>
-                    </tr>
-                    @elseif($et->type == 'truck')
-                    <tr>
-                        <td style="text-align:left">{{__('Truck Fee')}}</td>
-                        <td></td>
-                        @php
-                        $truck_count = $et->total_trucks;
-                        $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1;
-                        @endphp
-                        <td style="text-align:right">{{number_format($per_truck_fee,2)}} / truck</td>
-                        <td class="text-center">
-                            {{$noofdays}}
-                        </td>
-                        <td class="text-center">{{$truck_count}}</td>
-                        @php
-                        $total = $et->amount + $et->vat;
-                        $feetotal += $et->amount;
-                        $vattotal += $et->vat;
-                        $grandtotal += $total;
-                        @endphp
-                        <td style="text-align:right">{{number_format($feetotal,2)}}</td>
-                    </tr>
-                    @elseif($et->type == 'liquor')
-                    <tr>
-                        <td style="text-align:left">{{__('Liqour Fee')}}</td>
-                        <td></td>
-                        @php
-                        $per_liquor_fee = $et->amount / $noofdays ;
-                        @endphp
-                        <td style="text-align:right">{{number_format($per_liquor_fee,2)}}</td>
-                        <td class="text-center">
-                            {{$noofdays}}
-                        </td>
-                        <td>-</td>
-                        @php
-                        $total = $et->amount + $et->vat;
-                        $feetotal += $et->amount;
-                        $vattotal += $et->vat;
-                        $grandtotal += $total;
-                        @endphp
-                        <td style="text-align:right">{{number_format($et->amount,2)}}</td>
-                    </tr>
-                    @endif
+
+                        @if($et->type == 'event')
+                            <tr>
+                                <td>{{__('Event')}}</td>
+                                <td>{{getLangId() == 1 ? ucfirst($et->event->name_en).'( '.ucfirst($et->event->type->name_en) .' )' : $et->event->name_ar. '( '.$et->event->type->name_en.' )'}}
+                                </td>
+                                <td class="text-center">1</td>
+                                <td class="text-right">{{number_format($et->event->type->amount,2)}}</td>
+                                @php
+                                    $feetotal += $et->amount;
+                                @endphp
+                                <td class="text-right">{{number_format($et->amount,2)}}</td>
+
+                            </tr>
+                        @elseif($et->type == 'truck')
+                            <tr>
+                                <td colspan="2">{{__('Food Truck')}}</td>
+                                @php
+                                    $truck_count = $et->total_trucks;
+                                    $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1 ;
+                                @endphp
+                                <td class="text-center">{{$truck_count}}</td>
+                                <td class="text-right">{{number_format($per_truck_fee,2)}} / truck</td>
+                                @php
+                                    $feetotal += $et->amount;
+                                @endphp
+                                <td class="text-right">{{number_format($et->amount,2)}}</td>
+                            </tr>
+
+                        @elseif($et->type == 'liquor')
+                            <tr>
+                                <td colspan="2">{{__('Liqour ')}}</td>
+                                @php
+                                    $per_liquor_fee = $et->amount / $noofdays ;
+                                @endphp
+                                <td class="text-center">1</td>
+                                <td class="text-right">{{number_format($per_liquor_fee,2)}}</td>
+                                @php
+                                    $feetotal += $et->amount;
+                                @endphp
+                                <td class="text-right">{{number_format($et->amount,2)}}</td>
+                            </tr>
+                        @endif
                     @endforeach
+                @endif
                 </tbody>
             </table>
         </div>
 
-        @endif
+
+        <input type="hidden" value="{{$exempt}}" id="exempt-percentage">
+        <input type="hidden" value="{{$feetotal}}" id="fee-total">
+
 
         <div>
             <table class=" table table-borderless" id="total_div">
@@ -342,20 +347,21 @@
                         </td>
                         <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                     </tr>
-                    <tr>
-                        <td>{{__('Total Vat (5%)')}} </td>
-                        <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">--------------------------------------------------</td>
-                    </tr>
-                    <tr>
-                        <td class="kt-font-transform-u">
-                            {{__('Grand Total')}} (AED)
-                        </td>
-                        <td id="grand_total" class="pull-right kt-font-bold">{{number_format($grandtotal,2)}}
-                        </td>
-                    </tr>
+                    @if(!is_null($exempt) && $exempt > 0)
+                        <tr style="border-bottom:1px solid #000;">
+                            <td>
+                                {{__('Discount Amount')}}
+                            </td>
+                            <td id="discount-amount" class="pull-right kt-font-bold"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="kt-font-transform-u">
+                                {{__('Grand Total')}} (AED)
+                            </td>
+                            <td id="grand-total" class="pull-right kt-font-bold"></td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -364,7 +370,7 @@
 
 
 
-        <table id="date_data">
+        <table id="date_data" border="1">
             <tr>
                 <td>Printing Date: </td>
                 <td>{{date('d/m/Y')}}</td>
@@ -375,25 +381,38 @@
             <h3>Department of Tourism Licensing & Quality Assurance</h3>
         </div>
         <footer>
-            <div>
-                Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX
-                29798
-            </div>
-            <div>
-                T +97172338998, F +97172338118
-            </div>
-            <div>
-                TLQA@raktda.com &emsp; www.raktda.com
-            </div>
+            @include('permits.components.print.footer')
         </footer>
 
         <script>
+
             window.onload = function(){
+                    callThis();
                     window.open();
                     window.print();
                     setTimeout(function () { window.close(); }, 500);
                     //
                 }
+
+             function callThis()
+             {
+                 let exempt = document.querySelector('#exempt-percentage').value;
+
+                 if(exempt > 0) {
+                     let feeTotal = document.querySelector('#fee-total').value;
+                     let discount = feeTotal * ( parseInt(exempt) / 100);
+                     let grandTotal = feeTotal - discount;
+
+                     document.querySelector('#discount-amount').innerHTML = formatAmount(discount);
+                     document.querySelector('#grand-total').innerHTML = formatAmount(grandTotal);
+
+                 }
+             }
+
+            function formatAmount(amount)
+            {
+                return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
         </script>
 </body>
 

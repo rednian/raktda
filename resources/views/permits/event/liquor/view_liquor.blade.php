@@ -1,4 +1,4 @@
-<div class="modal fade" id="liquor_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="show_liquor_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style=" overflow-y:auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -19,41 +19,41 @@
                             </label> --}}
                     <div class="kt-radio-inline" style="margin: auto 5%;">
                         <label class="kt-radio ">
-                            <input type="radio" name="isLiquorVenue" disabled value="1">
+                            <input type="radio" name="vl_isLiquorVenue" disabled value="1">
                             {{__('Yes')}}
                             <span></span>
                         </label>
                         <label class="kt-radio">
-                            <input type="radio" name="isLiquorVenue" disabled value="0" checked>
+                            <input type="radio" name="vl_isLiquorVenue" disabled value="0" checked>
                             {{__('No')}}
                             <span></span>
                         </label>
                     </div>
                 </div>
-                <form class="col-md-12" id="liquor_details_form" novalidate>
+                <form class="col-md-12" id="vl_liquor_details_form" novalidate>
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}
                                 <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_en"
-                                id="l_company_name_en" disabled>
+                                id="vl_company_name_en" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}
                                 <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="l_company_name_ar"
-                                id="l_company_name_ar" dir="rtl" disabled>
+                                id="vl_company_name_ar" dir="rtl" disabled>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-sm" name="purchase_receipt"
-                                id="purchase_receipt" disabled placeholder="{{__('Purchase Receipt No')}}">
+                                id="vl_purchase_receipt" disabled placeholder="{{__('Purchase Receipt No')}}">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
                                     class="text-danger">*</span></label>
-                            <select class="form-control form-control-sm" name="liquor_service" id="liquor_service"
+                            <select class="form-control form-control-sm" name="liquor_service" id="vl_liquor_service"
                                 disabled onchange="changeLiquorService()">
                                 <option value="">{{__('Select')}}</option>
                                 <option value="limited">{{__('Limited')}}</option>
@@ -64,17 +64,17 @@
                             <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor Service')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"
-                                id="liquor_types" disabled placeholder="{{__('Types of Liquor')}}"></textarea>
+                                id="vl_liquor_types" disabled placeholder="{{__('Types of Liquor')}}"></textarea>
                         </div>
-                        <input type="hidden" id="event_liquor_id">
+                        <input type="hidden" id="vl_event_liquor_id">
                     </div>
                 </form>
-                <form id="liquor_upload_form" class="col-md-12">
+                <form id="vl_liquor_upload_form" class="col-md-12">
                     <div class="row col-md-12 justify-content-between kt-margin-b-15 kt-margin-t-15">
                         <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
                         </h5>
                     </div>
-                    <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
+                    <input type="hidden" id="vl_liquor_document_count" value="{{count($liquor_req)}}">
                     @php
                     $i = 1;
                     @endphp
@@ -90,11 +90,11 @@
                                 {{getLangId() == 1 ? ucwords($req->requirement_description) : $req->requirement_description_ar}}
                             </p>
                         </div>
-                        <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$i}}">
-                        <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$i}}">
+                        <input type="hidden" value="{{$req->requirement_id}}" id="vl_liqour_req_id_{{$i}}">
+                        <input type="hidden" value="{{$req->requirement_name}}" id="vl_liqour_req_name_{{$i}}">
                         <div class="col-lg-4 col-sm-12">
                             <label style="visibility:hidden">hidden</label>
-                            <div id="liquoruploader_{{$i}}">{{__('Upload')}}
+                            <div id="vl_liquoruploader_{{$i}}">{{__('Upload')}}
                             </div>
                         </div>
                         <input type="hidden" id="datesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
@@ -121,15 +121,15 @@
             @endif
             @endforeach
             </form>
-            <form id="liquor_provided_form" disabled>
+            <form id="vl_liquor_provided_form" disabled>
                 <div class="col-md-4 form-group form-group-xs">
                     <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
                             class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-sm" name="liquor_permit_no"
-                        id="liquor_permit_no" disabled>
+                        id="vl_liquor_permit_no" disabled>
                 </div>
             </form>
-            <form id="liquor_provided_upload_form" class="col-md-12">
+            <form id="vl_liquor_provided_upload_form" class="col-md-12">
                 <div class="row col-md-12 justify-content-between kt-margin-b-5 kt-margin-t-5">
                     <h5 class="text-dark  text-underline kt-font-bold">{{__('Liquor Required Documents')}}
                     </h5>
@@ -150,11 +150,11 @@
                             {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
                         </p>
                     </div>
-                    <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$j}}">
-                    <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$j}}">
+                    <input type="hidden" value="{{$req->requirement_id}}" id="vl_liqour_req_id_{{$j}}">
+                    <input type="hidden" value="{{$req->requirement_name}}" id="vl_liqour_req_name_{{$j}}">
                     <div class="col-lg-4 col-sm-12">
                         <label style="visibility:hidden">hidden</label>
-                        <div id="liquoruploader_{{$j}}">{{__('Upload')}}
+                        <div id="vl_liquoruploader_{{$j}}">{{__('Upload')}}
                         </div>
                     </div>
                 </div>

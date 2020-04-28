@@ -28,15 +28,17 @@
                 <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('Print')}}
                 </button>
                 </a> --}}
+                <a href="{{URL::signedRoute('company.reports')}}"
+                   class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-angle-left"></i>
+                    {{__('BACK')}}
+                </a>
+
                 <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
                     target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i> {{__('PRINT')}}
                     </button>
                 </a>
-                <a href="{{URL::signedRoute('company.reports')}}"
-                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
-                    {{__('BACK')}}
-                </a>
+
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
@@ -45,14 +47,16 @@
                 <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
                 </button>
                 </a> --}}
+                <a href="{{URL::signedRoute('company.reports')}}"
+                   class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
+                    <i class="la la-angle-left"></i>
+                </a>
+
                 <a href="{{URL::signedRoute('transaction.print', ['id' => $transaction->transaction_id ])}}"
                     target="_blank"> <button class="btn btn-sm btn--yellow"><i class="la la-print"></i>
                     </button>
                 </a>
-                <a href="{{URL::signedRoute('company.reports')}}"
-                    class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
-                </a>
+
             </div>
         </div>
     </div>
@@ -90,183 +94,148 @@
                             {{$transaction->payment_receipt_no}}
                         </p>
                     </div>
+                    @php
+                    $noofdays = 1;
+                    if($transaction->eventTransaction()->exists())
+                    {
+                        $from_d = $transaction->eventTransaction[0]->event['issued_date'];
+                        $to_d = $transaction->eventTransaction[0]->event['expired_date'];
+                        $from_date = strtotime($from_d);
+                        $to_date = strtotime($to_d);
+                        $noofdays = (abs($from_date - $to_date) / 60 / 60 / 24) + 1;
+                    }
+                    else if($transaction->artistPermitTransaction()->exists()) {
+                        $from_d = $transaction->artistPermitTransaction[0]->permit['issued_date'];
+                        $to_d = $transaction->artistPermitTransaction[0]->permit['expired_date'];
+                        $from_date = strtotime($from_d);
+                        $to_date = strtotime($to_d);
+                        $noofdays = (abs($from_date - $to_date) / 60 / 60 / 24) + 1;
+                    }
+                    @endphp
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Currency')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('No of Days')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
-                            AED
+                            {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}
                         </p>
                     </div>
                 </div>
             </div>
 
-            @php
-            $feetotal = 0;
-            $vattotal = 0;
-            $grandtotal = 0;
-            @endphp
-            @if($transaction->artistPermitTransaction()->exists())
             {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Artist Permit Details')}}
             </h5> --}}
             <div class="col-md-12">
                 <table class="table table-hover table-borderless border table-striped">
                     <thead>
                         <tr class="kt-font-transform-u">
-                            <th>{{__('Artist Name')}}</th>
-                            <th>{{__('Profession')}}</th>
-                            <th class="text-right">{{__('Profession Fee')}} (AED)</th>
-                            {{-- <th class="text-center">{{__('Permit Duration')}}</th> --}}
+                            <th>{{__('Type')}}</th>
+                            <th>{{__('Detail')}}</th>
+                            <th class="text-center">{{__('Quantity')}} </th>
+                             <th class="text-right">{{__('Profession Fee')}} (AED)</th>
                             <th class="text-right">{{__('Total')}} (AED)</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        @foreach($transaction->artistPermitTransaction as $at)
-                        @if($at->artistPermit->artist_permit_status == 'approved' && $at->artistPermit->is_paid == 1)
-                        <tr>
-                            <td>
-                                {{getLangId() == 1 ? ucfirst($at->artistPermit->firstname_en).' '. ucfirst($at->artistPermit->lastname_en) : $at->artistPermit->lastname_ar.' '.$at->artistPermit->firstname_ar}}
-                            </td>
-                            <td>
-                                {{getLangId() == 1 ? ucfirst($at->artistPermit->profession->name_en) : $at->artistPermit->profession->name_ar}}
-                            </td>
-                            <td class="text-right">
-                                {{number_format($at->artistPermit->profession['amount'], 2)}}
-                            </td>
-                            @php
-                            $total = $at->amount + $at->vat;
-                            $feetotal += $at->amount;
-                            $vattotal += $at->vat;
-                            $grandtotal += $total;
-                            $from_d = strtotime($at->permit->issued_date);
-                            $to_d = strtotime($at->permit->expired_date);
-                            $noofdays = abs($from_d - $to_d) / 60 / 60 / 24;
-                            @endphp
-                            {{-- <td class="text-center">
-                                {{ $noofdays.' '.($noofdays > 1 ?  __('days') : __('day')) }}
-                            </td> --}}
-                            <td class="text-right">
-                                {{number_format($at->amount,2)}}
-                            </td>
-                            <td class="text-center">
-                                <a
-                                    href="{{URL::signedRoute('artist_details.view', ['id' => $at->artistPermit->artist_permit_id , 'from' => 'transaction'])}}">
-                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
-                                    </button></a>
-                            </td>
-                        </tr>
-                        @endif
+                    @php  $feetotal = 0; @endphp
+                    @if($transaction->artistPermitTransaction()->exists())
+                        @foreach($artistPermit->values()->toArray() as $index => $at)
+                                @php
+                                    $artistCount =  collect($at)->count();
+                                   $at = array_dot($at[0]);
+                                @endphp
+                                @if($at['artist_permit.artist_permit_status'] == 'approved' && $at['artist_permit.is_paid'] == 1)
+                                    <tr>
+                                        <td>
+                                            {{__('Artist')}}
+                                        </td>
+                                        @php
+                                            $professionId = $at['artist_permit.profession_id'];
+                                            $getProfession = getProfession($professionId);
+                                            $feetotal += $at['amount'];
+                                        @endphp
+                                        <td>
+                                            {{getLangId() == 1 ? $getProfession['name_en'] : $getProfession['name_ar']}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{$artistCount}}
+                                        </td>
+                                        <td  class="text-right">
+                                            {{(int)$getProfession['amount'] *  $artistCount}}
+                                        </td>
+                                        <td class="text-right">
+                                            {{number_format($at['amount'],2)}}
+                                        </td>
+                                        <td class="text-center">
+                                            <a
+                                                href="{{URL::signedRoute('artist_details.view', ['id' => $at['artist_permit.artist_permit_id'] , 'from' => 'transaction'])}}">
+                                                <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                                </button></a>
+                                        </td>
+                                    </tr>
+                                @endif
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @endif
+                    @endif
+                        @if($transaction->eventTransaction()->exists())
 
-            {{-- {{dd($transaction->eventTransaction)}} --}}
+                            @foreach($transaction->eventTransaction as $et)
 
+                                @if($et->type == 'event')
+                                    <tr>
+                                        <td>{{__('Event')}}</td>
+                                        <td>{{getLangId() == 1 ? ucfirst($et->event->name_en).'( '.ucfirst($et->event->type->name_en) .' )' : $et->event->name_ar. '( '.$et->event->type->name_en.' )'}}
+                                        </td>
+                                        <td class="text-center">1</td>
+                                        <td class="text-right">{{number_format($et->event->type->amount,2)}}</td>
+                                        @php
+                                            $feetotal += $et->amount;
+                                        @endphp
+                                        <td class="text-right">{{number_format($et->amount,2)}}</td>
+                                        <td class="text-center">
+                                            <a href="{{URL::signedRoute('report.view_event', ['id' => $et->event->event_id ])}}">
+                                                <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @elseif($et->type == 'truck')
+                                    <tr>
+                                        <td colspan="2">{{__('Food Truck')}}</td>
+                                        @php
+                                            $truck_count = $et->total_trucks;
+                                            $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1 ;
+                                        @endphp
+                                        <td class="text-center">{{$truck_count}}</td>
+                                        <td class="text-right">{{number_format($per_truck_fee,2)}} / truck</td>
+                                        @php
+                                            $feetotal += $et->amount;
+                                        @endphp
+                                        <td class="text-right">{{number_format($et->amount,2)}}</td>
+                                        <td></td>
+                                    </tr>
 
-
-            @if($transaction->eventTransaction()->exists())
-            {{-- <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Event Permit Details')}}
-            </h5> --}}
-            <div class="col-md-12">
-                <table class="table table-hover table-borderless border table-striped">
-                    <thead>
-                        <tr class="kt-font-transform-u">
-                            <th class="text-left">{{__('Event Name')}}</th>
-                            <th class="text-left">{{__('Event Type')}}</th>
-                            <th class="text-right">{{__('Fee / Day')}} (AED) </th>
-                            {{-- <th class="text-right">{{__('Vat')}}(5%)</th> --}}
-                            <th class="text-center">{{__('No.of.days')}}</th>
-                            <th class="text-center">{{__('Qty')}}</th>
-                            <th class="text-right">{{__('Total')}} (AED) </th>
-                            <th class="text-center">{{__('View')}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($transaction->eventTransaction as $et)
-                        @php
-                        $from_d = strtotime($et->event->issued_date);
-                        $to_d = strtotime($et->event->expired_date);
-                        $noofdays = (abs($from_d - $to_d) / 60 / 60 / 24) + 1;
-                        @endphp
-                        @if($et->type == 'event')
-                        <tr>
-                            <td>{{getLangId() == 1 ? ucfirst($et->event->name_en) : $et->event->name_ar}}
-                            </td>
-                            <td>{{getLangId() == 1 ? ucfirst($et->event->type->name_en) : $et->event->type->name_en }}
-                            </td>
-                            <td class="text-right">{{number_format($et->event->type->amount,2)}}</td>
-                            {{-- <td class="text-right">{{number_format($et->vat,2)}}</td> --}}
-                            <td class="text-center">
-                                {{$noofdays}}
-                            </td>
-                            <td class="text-center">-</td>
-                            @php
-                            $total = $et->amount + $et->vat;
-                            $feetotal += $et->amount;
-                            $vattotal += $et->vat;
-                            $grandtotal += $total;
-                            @endphp
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-
-                            <td class="text-center">
-                                <a href="{{URL::signedRoute('report.view_event', ['id' => $et->event->event_id ])}}">
-                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-
-                        @elseif($et->type == 'truck')
-                        <tr>
-                            <td colspan="2">{{__('Truck Fee')}}</td>
-                            @php
-                            $truck_count = $et->total_trucks;
-                            $per_truck_fee = !is_null($truck_count) ?  $et->amount / ( $truck_count * $noofdays ) : 1 ;
-                            @endphp
-                            <td class="text-right">{{number_format($per_truck_fee,2)}} / truck</td>
-                            <td class="text-center">
-                                {{$noofdays}}
-                            </td>
-                            <td class="text-center">{{$truck_count}}</td>
-                            @php
-                            $total = $et->amount + $et->vat;
-                            $feetotal += $et->amount;
-                            $vattotal += $et->vat;
-                            $grandtotal += $total;
-                            @endphp
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-                            <td></td>
-                        </tr>
-
-                        @elseif($et->type == 'liquor')
-                        <tr>
-                            <td colspan="2">{{__('Liqour Fee')}}</td>
-                            @php
-                            $per_liquor_fee = $et->amount / $noofdays ;
-                            @endphp
-                            <td class="text-right">{{number_format($per_liquor_fee,2)}}</td>
-                            <td class="text-center">
-                                {{$noofdays}}
-                            </td>
-                            <td class="text-center">-</td>
-                            @php
-                            $total = $et->amount + $et->vat;
-                            $feetotal += $et->amount;
-                            $vattotal += $et->vat;
-                            $grandtotal += $total;
-                            @endphp
-                            <td class="text-right">{{number_format($et->amount,2)}}</td>
-                            <td></td>
-                        </tr>
+                                @elseif($et->type == 'liquor')
+                                    <tr>
+                                        <td colspan="2">{{__('Liqour ')}}</td>
+                                        @php
+                                            $per_liquor_fee = $et->amount / $noofdays ;
+                                        @endphp
+                                        <td class="text-center">1</td>
+                                        <td class="text-right">{{number_format($per_liquor_fee,2)}}</td>
+                                        @php
+                                            $feetotal += $et->amount;
+                                        @endphp
+                                        <td class="text-right">{{number_format($et->amount,2)}}</td>
+                                        <td></td>
+                                    </tr>
+                                @endif
+                            @endforeach
                         @endif
-                        @endforeach
                     </tbody>
                 </table>
             </div>
 
-            @endif
+            <input type="hidden" value="{{$exempt}}" id="exempt-percentage">
+            <input type="hidden" value="{{$feetotal}}" id="fee-total">
 
 
             <div class="table-responsive">
@@ -279,18 +248,21 @@
                                 </td>
                                 <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                             </tr>
-                            <tr style="border-bottom:1px solid black;">
-                                <td>{{__('Total Vat')}} (5%)</td>
-                                <td id="total_vat" class="pull-right kt-font-bold">{{number_format($vattotal,2)}}</td>
-                            </tr>
-                            <tr>
-                                <td class="kt-font-transform-u">
-                                    {{__('Grand Total')}} (AED)
-                                </td>
-                                <td id="grand_total" class="pull-right kt-font-bold">
-                                    {{number_format($grandtotal,2)}}
-                                </td>
-                            </tr>
+                            @if(!is_null($exempt) && $exempt > 0)
+                                <tr style="border-bottom:1px solid #000;">
+                                    <td>
+                                        {{__('Discount Amount')}}
+                                    </td>
+                                    <td id="discount-amount" class="pull-right kt-font-bold"></td>
+                                </tr>
+
+                                <tr>
+                                    <td class="kt-font-transform-u">
+                                        {{__('Grand Total')}} (AED)
+                                    </td>
+                                    <td id="grand-total" class="pull-right kt-font-bold"></td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -300,3 +272,26 @@
 </div>
 
 @endsection
+
+@section('script')
+    <script>
+
+        let exempt = $('#exempt-percentage').val();
+
+        if(exempt > 0) {
+            let feeTotal = $('#fee-total').val();
+            let discount = feeTotal * ( parseInt(exempt) / 100);
+            let grandTotal = feeTotal - discount;
+
+            $('#discount-amount').html(formatAmount(discount));
+            $('#grand-total').html(formatAmount(grandTotal));
+
+        }
+
+        function formatAmount(amount)
+        {
+            return parseInt(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+
+    </script>
+    @endsection

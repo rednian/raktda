@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 @endif
-                @include('permits.event.common.food-truck-fee')
+                @include('permits.event.foodtruck.food-truck-fee')
                 <div class="table-responsive">
                     <table class="table table-borderless border table-striped">
                         <thead class="no-wrap">
@@ -119,7 +119,6 @@
                         <div class="col-lg-4 col-sm-12">
                             <label
                                 class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
-                                <span id="cnd_{{$i}}"></span>
                                 <span class="text-danger">*</span>
                             </label>
                             <p for="" class="reqName">

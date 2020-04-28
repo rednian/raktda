@@ -180,12 +180,12 @@
 
 
 
-@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
+@include('permits.event.messages.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
-@include('permits.event.common.sure_to_remove');
+@include('permits.event.messages.sure_to_remove');
 
-@include('permits.event.common.edit_food_truck', ['truck_req'=>$truck_req])
-@include('permits.event.common.liquor',['liquor_req'=>$liquor_req])
+@include('permits.event.foodtruck.edit_food_truck', ['truck_req'=>$truck_req])
+@include('permits.event.liquor.liquor',['liquor_req'=>$liquor_req])
 
 
 @endsection
@@ -872,7 +872,7 @@
 
                          $('.date-picker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true});
                      }
-                     
+
                     documentsValidator = $('#documents_required').validate({
                         rules: docRules,
                         messages: docMessages

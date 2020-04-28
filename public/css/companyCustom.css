@@ -804,6 +804,10 @@ select option:first-child {
     font-size: 16px !important;
 }
 
+.fnt-20 {
+    font-size: 20px !important;
+}
+
 .text-capitalize {
     text-transform: capitalize;
 }
@@ -851,4 +855,12 @@ input:focus,
 .subtype_table tr th,
 .subtype_table tr td {
     color: #fff !important;
+}
+
+.col-form-label {
+    color:#212529;
+}
+
+.kt-portlet__head  {
+    margin: 15px 10px;
 }

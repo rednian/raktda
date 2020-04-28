@@ -490,25 +490,11 @@
     <htmlpagefooter name="page-footer">
         <footer>
             <div class="seal--space">
-                <p>إدارة التراخيص السياحية وضمان الجودة</p>
-                <p>Department of Tourism Licensing & Quality Assurance</p>
+                <h2>إدارة التراخيص السياحية وضمان الجودة</h2>
+                <h3>Department of Tourism Licensing & Quality Assurance</h3>
             </div>
 
-            <table class="print--footer">
-                <tr>
-                    <td style="text-align: left;">
-                        <p>Department of Tourism & Quality Assurance </p>
-                        <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
-                    <td style="text-align: center;">
-                        <p>tlqa@raktda.com</p>
-                        <p>www.raktda.com</p>
-                    </td>
-                    <td style="text-align: right;">
-                        <p>إدارة التراخيص السياحية وضمان الجودة</p>
-                        <p>+971 (0)7 2338884 Tel fax +971 (0)72 338118</p>
-                    </td>
-                </tr>
-            </table>
+            @include('permits.components.print.footer')
 
         </footer>
     </htmlpagefooter>
