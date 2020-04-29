@@ -83,7 +83,7 @@
 								<label class="col-sm-2 col-form-label"></label>
 								<div class="col-sm-8">
 									<label class="kt-checkbox kt-checkbox--default kt-font-dark">
-										<input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
+										<input name="bypass_payment" value="1" type="checkbox"> {{ __('Give Discount') }}
 										<span></span>
 									</label>
 								</div>
@@ -92,7 +92,7 @@
                                 <label class="col-sm-2 col-form-label"></label>
                                 <div class="col-md-6">
                                     <label for="">{{ __('Waive Payment Percentage') }} (1-100%)<span class="text-danger">*</span></label>
-                                    <input autocomplete="off" type="text" name="exempt_percentage" class="form-control form-control-sm">
+                                    <input autocomplete="off" type="number" name="exempt_percentage" class="form-control form-control-sm">
                                 </div>
                             </div>
 							@endif
