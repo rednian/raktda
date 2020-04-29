@@ -689,7 +689,8 @@ $output = json_decode($output);
     function discountFunction(artistTotalFee) {
         var exempt = $('#exempt-percentage').val();
         var discount = calculateDiscount(artistTotalFee, exempt);
-        $('#discount-amount').html(formatAmount(discount));
+        $('#discount-amount').html('- '+formatAmount(discount));
+        $('#discount-amount').addClass('text-success');
         $('#discount').val(discount);
         var total = artistTotalFee - parseInt(discount) ;
         $('#grand-total').html(formatAmount(total));

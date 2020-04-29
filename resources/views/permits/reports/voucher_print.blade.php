@@ -146,6 +146,12 @@
             font-size: 10px;
         }
 
+        .discount-tr {
+            border-bottom: 1px solid #000 !important;
+        }
+
+
+
     </style>
 </head>
 
@@ -348,7 +354,7 @@
                         <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                     </tr>
                     @if(!is_null($exempt) && $exempt > 0)
-                        <tr style="border-bottom:1px solid #000;">
+                        <tr>
                             <td>
                                 {{__('Discount Amount')}}
                             </td>
@@ -403,7 +409,8 @@
                      let discount = feeTotal * ( parseInt(exempt) / 100);
                      let grandTotal = feeTotal - discount;
 
-                     document.querySelector('#discount-amount').innerHTML = formatAmount(discount);
+                     document.querySelector('#discount-amount').innerHTML = '- '+formatAmount(discount);
+                     document.querySelector('#discount-amount').setAttribute('style', 'color: #34bfa3');
                      document.querySelector('#grand-total').innerHTML = formatAmount(grandTotal);
 
                  }

@@ -621,3 +621,21 @@ function storeArtistPermitPrint($id)
     function getProfession($id) {
         return App\Profession::find($id);
     }
+
+    function getExemptPercentage($transactions)
+    {
+        $data['artistPermit'] = [];
+
+        if(!$transactions->artistPermitTransaction->isEmpty()){
+            $data['artistPermit'] =  $transactions->artistPermitTransaction->groupBy(function ($item, $key){
+                return $item->artistPermit->profession_id;
+            });
+            $artistTransactionArray = $transactions->artistPermitTransaction->toArray();
+            $data['exempt'] = count($artistTransactionArray) > 0 ? $artistTransactionArray[0]['exempt_percentage'] : 0 ;
+        }else {
+            $eventTransactionArray = $transactions->eventTransaction->toArray();
+            $data['exempt'] = count($eventTransactionArray) > 0 ? $eventTransactionArray[0]['exempt_percentage'] : 0 ;
+        }
+
+        return $data;
+    }
