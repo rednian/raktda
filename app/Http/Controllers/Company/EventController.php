@@ -2227,9 +2227,58 @@ class EventController extends Controller
                 'payment_order_id' => $orderId
             ]);
 
+
+            $permitArray = [];
+
+            $artistpermitnumber = '';
+
+            $total_artist_fee = 0;
+
+
             if ($trnx_id) {
-                $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee);
+
+
+                if ($paidArtistFee) {
+                    $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+
+                    $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+
+                   
+
+                    foreach ($artistPermits as $artistPermit) {
+                        $per_day_fee = $artistPermit->profession->amount;
+                        $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
+                        $total_fee = $per_day_fee * $noofmonths;
+                        $total_artist_fee +=  $total_fee;
+                        $artist_exempt_amount = $total_fee * ($exempt /100);
+                        $trnx_id->artistPermitTransaction()->create([
+                            'amount' => $total_fee,
+                            'exempt_percentage' => $exempt,
+                            'exempt_amount' =>$artist_exempt_amount,
+                            'permit_id' => $permit_id,
+                            'artist_permit_id' => $artistPermit->artist_permit_id,
+                            'transaction_id' => $trnx_id->transaction_id,
+                        ]);
+                    }
+
+                    $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
+
+                    $artistpermitnumber = generateArtistPermitNumber();
+
+                    Permit::where('permit_id', $permit_id)->update([
+                        'paid' => 1,
+                        'permit_number' => $artistpermitnumber,
+                        'permit_status' => 'active'
+                    ]);
+
+                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
+                }
+
+
+                $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee + (int)$total_artist_fee );
+
                 $exempt_amount = $event_amount * ($exempt /100);
+                
                 EventTransaction::create([
                     'event_id' => $event_id,
                     'transaction_id' => $trnx_id->transaction_id,
@@ -2282,42 +2331,7 @@ class EventController extends Controller
                     'paid_artist_fee' => $paidArtistFee
                 ]);
 
-                $permitArray = [];
-
-                $artistpermitnumber = '';
-
-                if ($paidArtistFee) {
-                    $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
-
-                    $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
-
-                    foreach ($artistPermits as $artistPermit) {
-                        $per_day_fee = $artistPermit->profession->amount;
-                        $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
-                        $total_fee = $per_day_fee * $noofmonths;
-                        $artist_exempt_amount = $total_fee * ($exempt /100);
-                        $trnx_id->artistPermitTransaction()->create([
-                            'amount' => $total_fee,
-                            'exempt_percentage' => $exempt,
-                            'exempt_amount' =>$artist_exempt_amount,
-                            'permit_id' => $permit_id,
-                            'artist_permit_id' => $artistPermit->artist_permit_id,
-                            'transaction_id' => $trnx_id->transaction_id,
-                        ]);
-                    }
-
-                    $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
-
-                    $artistpermitnumber = generateArtistPermitNumber();
-
-                    Permit::where('permit_id', $permit_id)->update([
-                        'paid' => 1,
-                        'permit_number' => $artistpermitnumber,
-                        'permit_status' => 'active'
-                    ]);
-
-                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
-                }
+                
             }
 
 
