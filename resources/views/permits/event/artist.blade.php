@@ -15,7 +15,7 @@
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u" title="Go Back">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     {{__('BACK')}}
                 </button>
                 <button id="add_artist" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
@@ -27,7 +27,7 @@
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u"
                     title="{{__('BACK')}}">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                 </button>
                 <button id="add_artist_sm" class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u"
                     onclick="setCokkie()" title="{{__('ADD ARTIST')}}">

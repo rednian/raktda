@@ -422,7 +422,7 @@ class CompanyController extends Controller
       return DataTables::of($company->requirement()->get())
       ->addColumn('name', function($upload) use ($user){
         if($upload->type == 'requirement'){
-            $name =  $user == 1 ? ucwords($upload->requirement->requirement_name) : ucwords($upload->requirement->requirement_name_ar);
+            $name =  getLangId() == 1 ? ucwords($upload->requirement->requirement_name) : $upload->requirement->requirement_name_ar;
         }
         else{
           $name =  __('Other Upload');

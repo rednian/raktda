@@ -41,14 +41,14 @@
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{$routeBack}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     {{__('BACK')}}
                 </a>
             </div>
 
             <div class="my-auto float-right permit--action-bar--mobile">
                 <a href="{{$routeBack}}" class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                 </a>
             </div>
         </div>

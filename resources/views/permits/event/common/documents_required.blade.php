@@ -34,7 +34,7 @@
                         <thead>
                             <tr class="kt-font-transform-u">
                                 <th class="text-center">#</th>
-                                <th style="width: 70%;" class="kt-padding-l-20">{{__('Event Sub Type')}}</th>
+                                <th style="width: 70%;" class="kt-padding-l-20">{{__('Event Subcategory')}}</th>
                                 <th style="width: 30%;" class="text-right kt-padding-r-20">{{__('Fee / Day')}}(AED)
                                 </th>
                             </tr>
