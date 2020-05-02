@@ -113,7 +113,7 @@
                     }
                     @endphp
                     <div class="col-md-4 col-sm-12 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('No of Days')}}</label>
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('No.of.days')}}</label>
                         <p class="col col-md-6 form-control-plaintext">
                             {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}
                         </p>

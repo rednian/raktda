@@ -439,7 +439,11 @@
     "Neutral":"حيادي",
     "Dissatisfied":"غير سعيد",
     "Paid For" : "مدفوع لأجل",
-
+    "Discount": "",
+    "Discount Amount": "",
+    "Quantity": "",
+    "Detail": "",
+    "Type": "",
     "Yesterday":"البارِحة",
     "Last 7 days":"أخر 7 أيام",
     "This Month":"الشهر الحالي",
@@ -449,5 +453,7 @@
     "Select Requirement":"اختار",
     "Document uploaded Successfully":"",
     "Error! Please try again":"",
-    "Relax, you're doing well. Notification is empty": ""
+    "Relax, you're doing well. Notification is empty": "",
+    "If the event has Liquor serving and you don’t have the details as of now, you can proceed ahead without the Liquor.": "",
+    "If the event has Food Trucks and you don’t have the details as of now, you can proceed ahead without the food trucks.": ""
 }

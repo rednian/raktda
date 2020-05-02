@@ -668,6 +668,7 @@
         function addLiquor() {
             $('#liquor_details').modal('show');
             checkLiquorVenue(0);
+            changeLiquorService('unlimited');
         }
 
 
@@ -964,7 +965,8 @@
                         success: function (result) {
                             if(result.status.trim() == 'done')
                             {
-                                editTruck();
+                                //editTruck();
+                                location.reload(true);
                                 $('#amend_food_truck').modal('hide');
                                 $('#disp_mess').html('<h5 class="text-success py-2">{!! __('Food Truck details Added successfully') !!}</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
@@ -1334,8 +1336,10 @@
         {
             if(service == 'limited')
             {
+                console.log('nothere')
                 $('#limited_types').show();
             }else{
+                console.log('here')
                 $('#limited_types').hide();
             }
         }

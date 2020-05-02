@@ -490,8 +490,7 @@
                                                         <div class="col-lg-8">
                                                             <div class="input-group input-group-sm">
                                                                 <input type="text" class="form-control form-control-sm "
-                                                                    name="mobile" id="mobile"
-                                                                    placeholder="{{__('Mobile Number')}}">
+                                                                    name="mobile" id="mobile"  pattern="^\+?[0-9,-]{3,14}$" placeholder="{{__('Mobile Number')}}">
                                                             </div>
                                                         </div>
                                                     </div>
