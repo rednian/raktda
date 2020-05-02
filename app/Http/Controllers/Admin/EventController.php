@@ -522,10 +522,10 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 			})
 			->addColumn('start', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required';
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : '-';
 			})
 			->addColumn('end', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required';
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : '-';
 			})
 			->addColumn('type', function($requirement){
 				return strtoupper($requirement->eventRequirement()->first()->type);
@@ -643,10 +643,10 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($truck){
-				 return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->issued_date)) : 'Not Required';
+				 return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($truck){
-				return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->expired_date)) : 'Not Required';
+				return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->expired_date)) : '-';
 			})
 			->addColumn('files', function($truck) use ($request){
 				$name = $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
@@ -663,10 +663,10 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($liquor){
-				 return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->issued_date)) : 'Not Required';
+				 return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($liquor){
-				return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->expired_date)) : 'Not Required';
+				return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->expired_date)) : '-';
 			})
 			->addColumn('files', function($liquor) use ($request){
 				$name = $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;
@@ -691,10 +691,10 @@ class EventController extends Controller
                 }
 			})
 			->addColumn('issued_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : '-';
 			})
 			->addColumn('files', function($requirement) use ($request){
                 if($requirement->type == 'event'){
@@ -718,8 +718,8 @@ class EventController extends Controller
 				$data['data'][] = [
 				    'name' => 'Event Logo',
 				    'files' => '<a class="kt-padding-l-20" href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">event logo.'.fileName($event->logo_thumbnail).'</a>',
-				    'issued_date'=> 'Not Required',
-				    'expired_date'=> 'Not Required',
+				    'issued_date'=> '-',
+				    'expired_date'=> '-',
 				];
 				}
 
@@ -883,8 +883,8 @@ class EventController extends Controller
                     ->addColumn('duration', function($event) use ($user){
                         $date = Carbon::parse($event->expired_date)->diffInDays($event->issued_date);
                         $date = $date !=  0 ? $date : 1;
-                        $day = $date > 1 ? ' Days': ' Day';
-                        return $date.$day;
+                        $day = $date > 1 ? __('Days'): __('Day');
+                        return $date.' '.$day;
                         return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
                     })
                     ->addColumn('expected_audience', function($event){ return $event->audience_number; })
@@ -908,7 +908,7 @@ class EventController extends Controller
                     })
                     ->editColumn('request_type', function($event){
 
-                        return ucwords(requestType($event->request_type));
+                        return __(ucwords(requestType($event->request_type)));
                     })
                     ->addColumn('description',function($event) use ($user){
                         return ucfirst($event->description);
@@ -928,7 +928,7 @@ class EventController extends Controller
 					$display = $event->is_display_all ? __('YES'): __('NO');
                     })
                     ->addColumn('event_name', function($event) use ($user){ return ucfirst($event->name); })
-                    ->addColumn('type', function($event){return ucwords(__($event->firm)); })
+                    ->addColumn('type', function($event){return __(ucwords(__($event->firm))); })
                     ->editColumn('updated_at', function($event){
                         return '<span title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-original-title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->updated_at).'</span>';
                     })

@@ -2,7 +2,7 @@
     <div class="card border">
         <div class="card-header" id="heading-addres1">
             <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse" data-target="#collapse-addres1" aria-expanded="true" aria-controls="collapse-addres1">
-                <h6 class="kt-font-dark kt-font-transform-u">{{ __('Address details') }}</h6>
+                <h6 class="kt-font-dark kt-font-transform-u">{{ __('ADDRESS DETAILS') }}</h6>
             </div>
         </div>
         <div id="collapse-addres1" class="collapse show" aria-labelledby="heading-addres1" data-parent="#accordion-addres1" style="">

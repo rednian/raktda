@@ -56,7 +56,7 @@
                     <tbody>
                       <tr>
                         <td>{{ $action->user->name }}</td>
-                        <td>{{ $action->updated_at }}</td>
+                        <td>{{ $action->updated_at->format('d-M-Y') }}</td>
                         <td>
                             {{ $action->comment }}
                             @if($action->exempt_payment)
@@ -67,7 +67,7 @@
                       </tr>
                     </tbody>
                   </table>
-                   <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_1_2_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('See History') }}
+                   <a href="#tabDetails" onclick="$('ul.nav a[href=\'#kt_portlet_base_demo_1_2_tab_content\']').tab('show');" class="btn btn-sm btn-warning btn-elevate kt-font-transform-u">{{ __('VIEW HISTORY') }}
                    </a>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                       @php
                         $date =Carbon\Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
                         $date = $date !=  0 ? $date : 1;
-                        $day = $date > 1 ? ' Days': ' Day';
+                        $day = $date > 1 ? __('Days'): __('Day');
                       @endphp
                       {{($date+1).$day}}
                       </span>
@@ -133,7 +133,7 @@
                        @endif
                        <tr>
                           <td>{{ __('Request Type') }} :</td>
-                          <td>{{ ucfirst($permit->request_type) }}</td>
+                          <td>{{ __(ucfirst($permit->request_type)) }}</td>
                        </tr>
                        <tr>
                           <td>{{ __('Permit Status') }} :</td>
@@ -365,7 +365,7 @@
                                <th>{{ __('NAME') }}</th>
                                <th>{{ __('REMARKS') }}</th>
                                <th>{{ __('CHECKED DATE') }}</th>
-                               <th>{{ __('ACTION TAKEN') }}</th>
+                               <th>{{ __('ACTION') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -388,11 +388,11 @@
                                    <td>
                                        {{ ucfirst($comment->comment) }}
                                        @if($comment->exempt_payment)
-                                         <br><span class="kt-badge kt-badge--warning kt-badge--inline">Exempted for Payment</span>
+                                         <br><span class="kt-badge kt-badge--warning kt-badge--inline">{{ __('Exempted for Payment') }}</span>
                                        @endif
                                    </td>
                                    <td>{{ $comment->created_at->format('d-M-Y') }}</td>
-                                   <td>{{ ucfirst($comment->action) }}</td>
+                                   <td>{{ __(ucfirst($comment->action)) }}</td>
                                </tr>
                            @endforeach
                         </tbody>

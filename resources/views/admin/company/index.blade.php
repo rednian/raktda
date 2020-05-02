@@ -154,7 +154,7 @@
                </table>
                </section>
                <section  class="tab-pane show fade" id="bounce-back" role="tabpanel">
-                <section class="form-row">
+                {{-- <section class="form-row">
                     <div class="col-1">
                       <div>
                         <select name="length_change" id="bounce-length-change" class="form-control-sm form-control custom-select custom-select-sm">
@@ -177,7 +177,7 @@
                         </div>
                       </div>
                     </div>
-                 </section>
+                 </section> --}}
                 <table class="table table-hover table-borderless table- border table-sm table-striped" id="back-table">
                     <thead>
                         <tr>
@@ -412,9 +412,9 @@
 function bounceBack(){
 
 back =  $('table#back-table').DataTable({
-    dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    // dom: "<'row d-none'<'col-sm-12 col-md-6 '><'col-sm-12 col-md-6'>>" +
+    //       "<'row'<'col-sm-12'tr>>" +
+    //       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
     ajax: {
        url: '{{ route('admin.company.datatable') }}',
        data: function(d){
