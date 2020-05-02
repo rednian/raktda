@@ -217,8 +217,8 @@ class CompanyController extends Controller
                'phone_number'=> 'required|max:255',
                'address'=> 'required|max:255',
                'area_id'=> 'required|max:255',
-               'company_description_en'=> 'required|max:255',
-               'company_description_ar'=> 'required|max:255',
+              //  'company_description_en'=> 'required|max:255',
+              //  'company_description_ar'=> 'required|max:255',
                'contact_name_en'=> 'required|max:255',
                'contact_name_ar'=> 'required|max:255',
                'designation_en'=> 'required|max:255',
@@ -274,11 +274,13 @@ class CompanyController extends Controller
                     $company->update($request->all());
                   }
 
-                  $result = ['success', 'Successfully submitted!', 'Success'];
+                  $result = ['success', __('Submitted Successfully'), ''];
                   break;
+
               case 'draft':
+
                   $company->update($request->all());
-                 $result = ['success', 'Draft saved!', 'Success'];
+                  $result = ['success', __('Draft saved Successfully'), 'Success'];
                   break;
           }
 
@@ -306,6 +308,7 @@ class CompanyController extends Controller
          return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
       } catch (Exception $e) {
          DB::rollBack();
+
          $result = ['danger', $e->getMessage(), 'Error'];
           return redirect()->back()->with('message', $result);
       }
@@ -402,7 +405,7 @@ class CompanyController extends Controller
 
 
       DB::commit();
-      $result = ['success', '', 'Success'];
+      $result = ['success', __('Document Uploaded Successfully'), 'Success'];
     } catch (Exception $e) {
       DB::rollBack();
      $result = ['danger', $e->getMessage(), 'Error'];
@@ -419,7 +422,7 @@ class CompanyController extends Controller
       return DataTables::of($company->requirement()->get())
       ->addColumn('name', function($upload) use ($user){
         if($upload->type == 'requirement'){
-            $name =  $user == 1 ? ucwords($upload->requirement->requirement_name) : ucwords($upload->requirement->requirement_name_ar);
+            $name =  getLangId() == 1 ? ucwords($upload->requirement->requirement_name) : $upload->requirement->requirement_name_ar;
         }
         else{
           $name =  __('Other Upload');
@@ -432,7 +435,7 @@ class CompanyController extends Controller
       return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
       })->addColumn('file', function($data){
         if ($data->type == 'requirement') {
-          $name = $data->requirement->requirement_name;
+          $name = getLangId() == 1 ? $data->requirement->requirement_name : $data->requirement->requirement_name_ar;
         }
         else{
           $name = __('Other Upload');
@@ -446,7 +449,7 @@ class CompanyController extends Controller
         return $requirement.'  PAGE';
       })
       ->addColumn('action', function($data) use ($company){
-        if(in_array($company->status, ['active', 'blocked'])){ return __('Delete not allowed'); }
+        if(in_array($company->status, ['active', 'blocked'])){ return; }
         return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
       })
       ->rawColumns(['file', 'action'])
@@ -520,6 +523,7 @@ class CompanyController extends Controller
             'requirement_name'=> ucfirst($v->requirement_name),
             'requirement_id'=> $v->requirement_id,
             'dates_required'=> $v->dates_required,
+            'requirement_name_ar'=> $v->requirement_name_ar,
           ];
       });
 

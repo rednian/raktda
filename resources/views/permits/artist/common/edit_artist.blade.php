@@ -492,10 +492,7 @@
                     required: true,
                     dateNL: true
                 },
-                visa_number: "required",
-                visa_type: "required",
                 visa_expiry: {
-                    required: true,
                     dateNL: true
                 },
                 gender: "required",

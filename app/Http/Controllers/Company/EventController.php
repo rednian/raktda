@@ -430,13 +430,13 @@ class EventController extends Controller
 //            }
             DB::commit();
             if ($old_event_liquor_id) {
-                $result = ['success', __('Liquor Details Updated Successfully'), 'Success'];
+                $result = ['success', __('Liquor Details Updated Successfully'), __('Success')];
             } else {
-                $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
+                $result = ['success', __('Liquor Details Added Successfully'), __('Success')];
             }
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -796,10 +796,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $event_id)->latest()->first();
             $this->sendNotification($event, 'new');
-            $result = ['success', __('Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return response()->json(['message' => $result, 'event_id' => $event_id, 'toURL' => $toURL]);
@@ -1120,10 +1120,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $request->event_id)->latest()->first();
             $this->sendNotification($event, 'edit');
-            $result = ['success', __('Permit Edited Successfully'), 'Success'];
+            $result = ['success', __('Permit Edited Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -1150,10 +1150,10 @@ class EventController extends Controller
                 'cancel_reason' => $reason
             ]);
             DB::commit();
-            $result = ['success', __('Permit Cancelled successfully'), 'Success'];
+            $result = ['success', __('Permit Cancelled Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         return redirect(URL::signedRoute('event.index') . '#cancelled')->with('message', $result);
     }
@@ -1458,7 +1458,7 @@ class EventController extends Controller
         $eventTruck = EventTruck::find($truck_id);
         $eventTruck->delete();
 
-        $result = ['success', __('Food Truck Removed Successfully'), 'Success'];
+        $result = ['success', __('Food Truck Removed Successfully'), __('Success')];
 
         return redirect(URL::signedRoute('event.amend', $event_id))->with('message', $result);
     }
@@ -1606,10 +1606,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $request->event_id)->latest()->first();
             $this->sendNotification($event, 'amend');
-            $result = ['success', __('Permit Amended successfully'), 'Success'];
+            $result = ['success', __('Event Permit Amended Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -1884,10 +1884,10 @@ class EventController extends Controller
             Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
             DB::commit();
-            $result = ['success', __('Permit Draft Added successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Added successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         $toURL = URL::signedRoute('event.index') . '#draft';
@@ -1928,10 +1928,10 @@ class EventController extends Controller
 
             Event::where('event_id', $event_id)->delete();
             DB::commit();
-            $result = ['success', __('Permit Draft Deleted Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Deleted Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         return redirect(URL::signedRoute('event.index') . '#draft')->with('message', $result);
     }
@@ -2111,17 +2111,11 @@ class EventController extends Controller
             Storage::deleteDirectory('public/' . $userid . '/event/temp/');
 
             DB::commit();
-            $result = ['success', __('Permit Draft Updated Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Updated Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
-
-        // if ($event) {
-        //     $result = ['success', __('Draft Updated Successfully'), 'Success'];
-        // } else {
-        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
-        // }
 
         return response()->json(['message' => $result, 'toURL' => URL::signedRoute('event.index') . '#draft']);
     }
@@ -2227,9 +2221,58 @@ class EventController extends Controller
                 'payment_order_id' => $orderId
             ]);
 
+
+            $permitArray = [];
+
+            $artistpermitnumber = '';
+
+            $total_artist_fee = 0;
+
+
             if ($trnx_id) {
-                $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee);
+
+
+                if ($paidArtistFee) {
+                    $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+
+                    $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+
+
+
+                    foreach ($artistPermits as $artistPermit) {
+                        $per_day_fee = $artistPermit->profession->amount;
+                        $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
+                        $total_fee = $per_day_fee * $noofmonths;
+                        $total_artist_fee +=  $total_fee;
+                        $artist_exempt_amount = $total_fee * ($exempt /100);
+                        $trnx_id->artistPermitTransaction()->create([
+                            'amount' => $total_fee,
+                            'exempt_percentage' => $exempt,
+                            'exempt_amount' =>$artist_exempt_amount,
+                            'permit_id' => $permit_id,
+                            'artist_permit_id' => $artistPermit->artist_permit_id,
+                            'transaction_id' => $trnx_id->transaction_id,
+                        ]);
+                    }
+
+                    $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
+
+                    $artistpermitnumber = generateArtistPermitNumber();
+
+                    Permit::where('permit_id', $permit_id)->update([
+                        'paid' => 1,
+                        'permit_number' => $artistpermitnumber,
+                        'permit_status' => 'active'
+                    ]);
+
+                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
+                }
+
+
+                $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee + (int)$total_artist_fee );
+
                 $exempt_amount = $event_amount * ($exempt /100);
+
                 EventTransaction::create([
                     'event_id' => $event_id,
                     'transaction_id' => $trnx_id->transaction_id,
@@ -2282,49 +2325,14 @@ class EventController extends Controller
                     'paid_artist_fee' => $paidArtistFee
                 ]);
 
-                $permitArray = [];
 
-                $artistpermitnumber = '';
-
-                if ($paidArtistFee) {
-                    $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
-
-                    $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
-
-                    foreach ($artistPermits as $artistPermit) {
-                        $per_day_fee = $artistPermit->profession->amount;
-                        $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
-                        $total_fee = $per_day_fee * $noofmonths;
-                        $artist_exempt_amount = $total_fee * ($exempt /100);
-                        $trnx_id->artistPermitTransaction()->create([
-                            'amount' => $total_fee,
-                            'exempt_percentage' => $exempt,
-                            'exempt_amount' =>$artist_exempt_amount,
-                            'permit_id' => $permit_id,
-                            'artist_permit_id' => $artistPermit->artist_permit_id,
-                            'transaction_id' => $trnx_id->transaction_id,
-                        ]);
-                    }
-
-                    $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
-
-                    $artistpermitnumber = generateArtistPermitNumber();
-
-                    Permit::where('permit_id', $permit_id)->update([
-                        'paid' => 1,
-                        'permit_number' => $artistpermitnumber,
-                        'permit_status' => 'active'
-                    ]);
-
-                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
-                }
             }
 
 
             DB::commit();
 
 
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
+            $result = ['success', __('Payment Done Successfully'), __('Success')];
 
             /* code for payment notification */
 
@@ -2396,7 +2404,7 @@ class EventController extends Controller
             DB::rollBack();
 
             $toURL = '';
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 

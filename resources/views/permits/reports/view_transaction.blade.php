@@ -160,7 +160,7 @@
                                             {{$artistCount}}
                                         </td>
                                         <td  class="text-right">
-                                            {{(int)$getProfession['amount'] *  $artistCount}}
+                                            {{number_format((int)$getProfession['amount'] *  $artistCount,2)}}
                                         </td>
                                         <td class="text-right">
                                             {{number_format($at['amount'],2)}}

@@ -55,7 +55,7 @@
                 </h5>
                 <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
-                <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-arrow-left"></i>
+                <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     {{__('BACK')}}</button>
                 {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button> --}}

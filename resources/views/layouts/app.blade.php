@@ -84,6 +84,10 @@
         table thead th {
             font-family: "DroidKufi-bold", sans-serif;
         }
+
+        .ajax-upload-dragdrop > div {
+            float:right;
+        }
     </style>
     @endif
     @else
@@ -383,7 +387,7 @@ function unblockPage(){
         },
         error: function(){
             alert('error');
-        }   
+        }
         });
     }
 </script>

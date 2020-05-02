@@ -1156,10 +1156,9 @@
                 //},
                 // visa_number: 'required',
                 // visa_type:'required',
-                // visa_expiry: {
-                //     required: true,
-                //     dateNL: true
-                // },
+                visa_expiry: {
+                    dateNL: true
+                },
                 address: "required",
                 mobile: {
                     // number: true,
@@ -1184,7 +1183,6 @@
                 pp_expiry:'',
                 address: "",
                 uid_number: '',
-                //uid_expiry: '',
                 visa_number:'',
                 visa_type:'',
                 visa_expiry:'',

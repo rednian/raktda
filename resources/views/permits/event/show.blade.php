@@ -56,7 +56,7 @@
                     @endif
                     <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                         class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                        <i class="la la-arrow-left"></i>
+                        <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                         {{__('BACK')}}
                     </a>
             </div>
@@ -97,7 +97,7 @@
                     @endif
                     <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                         class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                        <i class="la la-arrow-left"></i>
+                        <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     </a>
             </div>
         </div>
@@ -132,7 +132,7 @@
                         </tr>
                         @if($event->subType)
                         <tr class="kt-margin-b-0 kt-font-dark">
-                            <td class="kt-font-bold kt-margin-r-15">{{__('Event Sub Type')}}</td>
+                            <td class="kt-font-bold kt-margin-r-15">{{__('Event Subcategory')}}</td>
                             <td>:</td>
                             <td>{{getLangId() == 1  ?  ucfirst($event->subType->sub_name_en) : $event->subType->sub_name_ar}}
                             </td>
