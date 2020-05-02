@@ -451,10 +451,10 @@ class ArtistController extends Controller
             );
             $result = Permit::where('permit_id', $id)->update($insval);
             DB::commit();
-            $message = ['success', __('Permit Cancelled successfully'), 'Success'];
+            $message = ['success', __('Permit Cancelled successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $message = ['error', __('Error, Please Try Again'), 'Error'];
+            $message = ['error', __('Error, Please Try Again'), __('Error')];
         }
         return redirect()->route('artist.index')->with('message', $message);
     }
@@ -829,11 +829,11 @@ class ArtistController extends Controller
 
             DB::commit();
 
-            $result = ['success', __('Artist Added Successfully'), 'Success'];
+            $result = ['success', __('Artist Added Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
 
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return response()->json(['message' => $result, 'toURL' => $toURL]);
@@ -874,12 +874,12 @@ class ArtistController extends Controller
 
             DB::commit();
 
-            $result = ['success', __('Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
 
 
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         $too = '';
         if ($from == 'edit') {
@@ -1213,10 +1213,10 @@ class ArtistController extends Controller
             }
 
             $this->makeSessionForgetPermitDetails();
-            $result = ['success', __('Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -1415,10 +1415,10 @@ class ArtistController extends Controller
             ArtistTempData::where('id', $del_temp_id)->update(['del_status' => 1]);
             ArtistTempDocument::where('temp_data_id', $del_temp_id)->update(['status' => 1]);
             DB::commit();
-            $result = ['success', __('Artist Deleted Successfully'), 'Success'];
+            $result = ['success', __('Artist Deleted Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return redirect(URL::signedRoute('company.view_draft_details', ['id' => $permit_id]))->with('message', $result);
@@ -1436,10 +1436,10 @@ class ArtistController extends Controller
             // Artistpermit::where('artist_permit_id', $artist_permit_id)->update(['artist_permit_status' => 'inactive']);
             ArtistTempData::where('id', $temp_id)->where('created_by', Auth::user()->user_id)->update(['status' => 1]);
             DB::commit();
-            $result = ['success', __('Artist Removed successfully'), 'Success'];
+            $result = ['success', __('Artist Removed Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         if ($from == 'new') {
@@ -1633,17 +1633,11 @@ class ArtistController extends Controller
                 }
             }
             DB::commit();
-            $result = ['success', __('Artist Updated successfully'), 'Success'];
+            $result = ['success', __('Artist Updated Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
-
-        // if ($artists) {
-        //     $result = ['success', __(' Successfully'), 'Success'];
-        // } else {
-        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
-        // }
 
         return response()->json(['message' => $result, 'toURL' => $toURL]);
     }
@@ -1905,10 +1899,10 @@ class ArtistController extends Controller
                 ['created_by', Auth::user()->user_id],
             ])->where('permit_id', $permit_id)->delete();
             DB::commit();
-            $result = ['success', __('Permit Draft Deleted successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Deleted successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         return redirect(URL::signedRoute('artist.index') . '#draft')->with('message', $result);
     }
@@ -1983,11 +1977,11 @@ class ArtistController extends Controller
 
             DB::commit();
 
-            $result = ['success', __('Permit Draft Added Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Added Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
 
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -2233,19 +2227,19 @@ class ArtistController extends Controller
                 ArtistTempDocument::where('permit_id', $permit_id)->delete();
                 if ($old_permit_status == 'modification request') {
                     $this->sendNotification($permit, 'edit');
-                    $message = ['success', __('Permit Edited Successfully'), 'Success'];
+                    $message = ['success', __('Permit Edited Successfully'), __('Success')];
                 } else if ($old_permit_status == 'active') {
                     $this->sendNotification($permit, 'amend');
-                    $message = ['success', __('Permit Amended Successfully'), 'Success'];
+                    $message = ['success', __('Permit Amended Successfully'), __('Success')];
                 } else {
-                    $message = ['success', __('Permit Added Successfully'), 'Success'];
+                    $message = ['success', __('Permit Added Successfully'), __('Success')];
                 }
             }
             DB::commit();
             $result = $message;
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return response()->json(['message' => $result, 'toURL' => $toURL]);
@@ -2253,14 +2247,14 @@ class ArtistController extends Controller
 
     public function get_temp_photo_temp_id($id)
     {
-        $artist_documents = ArtistTempData::where('id', $id)->get();
-        return $artist_documents;
+        return ArtistTempData::where('id', $id)->get();
     }
 
     public function sendNotification($permit, $from)
     {
+        $reason = '';
+        $contenttext = '';
 
-        $reason = $contenttext = '';
         switch ($from) {
             case ('new'):
                 $reason = 'Applied ';
@@ -2557,7 +2551,7 @@ class ArtistController extends Controller
 
             DB::commit();
 
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
+            $result = ['success', __('Payment Done Successfully'), __('Success')];
 
             /* code for payment notification */
 
@@ -2619,10 +2613,10 @@ class ArtistController extends Controller
             /*end code for code for payment notification */
 
 
-            
+
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -2700,10 +2694,10 @@ class ArtistController extends Controller
                 }
             }
             DB::commit();
-            $result = ['success', __('Thank you for your Feedback'), 'Success'];
+            $result = ['success', __('Thank you For your Feedback'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return response()->json(['message' => $result, 'toURL' => $toURL]);

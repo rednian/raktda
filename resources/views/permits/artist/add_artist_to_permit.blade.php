@@ -1017,10 +1017,9 @@ $language_id = \Auth::user()->LanguageId;
         },
         // visa_type: "required",
         // visa_number: 'required',
-        // visa_expiry: {
-        //     required: true,
-        //     dateNL: true
-        // },
+        visa_expiry: {
+            dateNL: true
+        },
         gender: "required",
         nationality: "required",
         address: "required",
