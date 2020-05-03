@@ -226,7 +226,7 @@
         <table class="full-width">
             <tr>
                 <td class="text-left" style="width:25%;">
-                    <b> {{__('No of Days')}}</b>
+                    <b> {{__('No.of.days')}}</b>
                 </td>
                 <td class="text-left" style="width:25%;">
                     {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}

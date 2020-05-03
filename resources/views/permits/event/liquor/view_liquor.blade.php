@@ -60,7 +60,7 @@
                                 <option value="unlimited">{{__('Unlimited')}}</option>
                             </select>
                         </div>
-                        <div class="col-md-4 form-group form-group-xs" id="limited_types">
+                        <div class="col-md-4 form-group form-group-xs" id="vl_limited_types">
                             <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor Service')}} <span
                                     class="text-danger">*</span></label>
                             <textarea type="text" class="form-control form-control-sm" name="liquor_types"

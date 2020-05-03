@@ -9,8 +9,7 @@
                 <div class="d-flex" style="position: absolute;{{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
                         {{__('Add New')}}</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
-                            class="fa fa-check"></i> {{__('Update')}}</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"> {{__('Update')}}</button>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
