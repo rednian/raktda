@@ -164,8 +164,7 @@
                                         class="btn btn-sm btn-secondary btn-elevate btn-hover-warning kt-margin-r-5">{{__('View')}}</button>
                                 </a>
                                 @if(count($artist_details) > 1)
-                                @if($artist_detail->artist_permit_status != 'approved' && $artist_detail->old_artist_id
-                                != '')
+                                @if($artist_detail->artist_permit_status == 'unchecked' && $artist_detail->is_paid != 2 || $artist_detail->artist_permit_status == 'rejected')
                                 <a href="#"
                                     onclick="delArtist({{$artist_detail->id}},{{$artist_detail->permit_id}},'{{$artist_detail->firstname_en.' '.$artist_detail->lastname_en}}','{{$artist_detail->lastname_ar.' '.$artist_detail->firstname_en}}')"
                                     data-toggle="modal" data-target="#delartistmodal">

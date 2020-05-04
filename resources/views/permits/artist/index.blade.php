@@ -12,6 +12,8 @@
 @include('permits.artist.common.company_block')
 @endif
 
+@include('permits.components.license-exp-notification')
+
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
     <div class="kt-portlet__body kt-padding-t-5">
