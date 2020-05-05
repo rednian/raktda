@@ -5,7 +5,7 @@
 @section('content')
 @php
 $user = Auth::user();
-$user_lang = $user->languageId;
+$user_lang = $user->LanguageId;
 @endphp
 <div class="kt-portlet ">
   <div class="kt-portlet__body">
@@ -86,26 +86,28 @@ $user_lang = $user->languageId;
 
 
           </div>
-          <div class="kt-widget__subhead">
+
+           <div class="kt-widget__subhead">
             <span> {!!permitStatus(in_array($company->status, ['rejected', 'active', 'blocked',
               'back',
               'draft', 'active']) ?ucfirst($company->status):'Pending')!!}</span>&emsp;
           </div>
-          <div class="kt-widget__subhead">
-            <span><i class="flaticon2-new-email"></i> {{$company->company_email}}</span>&emsp;
-            <span><i class="flaticon2-phone"></i> {{$company->phone_number}}</span>&emsp;
-            <span><i class="flaticon-placeholder-3"></i> {{$company->getFullAddressAttribute()}}</span>
-          </div>
-          <div class="kt-widget__info row">
+
+           <div class="kt-widget__info row">
             <div class="col-md-8">
-              @if ($company->company_description_en)
-              <div class="kt-widget__desc border-top border-bottom kt-padding-t-5 kt-padding-b-5">
-                <h6>{{__('Establishment Details')}} :-</h6>
-                <p>
-                  {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
-                </p>
-              </div>
-              @endif
+
+         
+          <div class="kt-widget__subhead">
+            <span ><i class="flaticon2-envelope fnt-20 kt-valign-middle"></i>&emsp; {{$company->company_email}}</span><br />
+            <span ><i class="flaticon2-phone fnt-20 kt-valign-middle"></i>&emsp; {{$company->phone_number}}</span><br />
+            <span ><i class="flaticon2-pin fnt-20 kt-valign-middle"></i>&emsp; {{$company->getFullAddressAttribute()}}</span><br />
+             @if($company->company_description_en ?? $company->company_description_ar)
+            <span ><i class="flaticon2-chat fnt-20 kt-valign-middle"></i>&emsp; {{$user_lang == 1  ? ucfirst($company->company_description_en) : ucfirst($company->company_description_ar)}}
+            </span>
+             @endif
+          </div>
+         
+             
               <div class="kt-widget__stats">
                 <div class="kt-widget__item">
                   <span class="kt-widget__date kt-padding-b-5">
@@ -129,7 +131,7 @@ $user_lang = $user->languageId;
               </div>
             </div>
             <div class="col-md-4">
-              <div class="border kt-padding-5">
+              <div class="border kt-padding-10">
                 <h6 class="kt-font-dark kt-font-bold kt-font-transform-u kt-margin-b-10">
                   {{ __('Establishment Details') }}</h6>
                 <table class="table table-borderless table-sm table-display">

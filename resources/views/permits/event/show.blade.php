@@ -340,8 +340,9 @@
                     {{-- <td class="text-center">{{date('d-M-Y', strtotime($truck->registration_expired_date))}}
                     </td> --}}
                     <td class="text-center">
-                        <a class="btn btn-secondary btn-hover-warning"
-                            onclick="viewThisTruck({{$truck->event_truck_id}})">{{__('View')}}</a>
+                        <a onclick="viewThisTruck({{$truck->event_truck_id}})">
+                            <i class="fa fa-file-alt fnt-16 text-info"></i>    
+                        </a>
                     </td>
                 </tr>
                 @endforeach
@@ -379,8 +380,9 @@
                     <td>{{$liquor->liquor_service}}
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-secondary btn-hover-warning"
-                            onclick="viewLiquor('{{$liquor->event_liquor_id}}')">{{__('View')}}</a>
+                        <a onclick="viewLiquor('{{$liquor->event_liquor_id}}')">
+                            <i class="fa fa-file-alt fnt-16 text-info"></i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
@@ -409,8 +411,8 @@
                 <th>{{__('LAST NAME')}}</th>
                 <th>{{__('PROFESSION')}}</th>
                 <th>{{__('MOBILE NUMBER')}}</th>
-                <th>{{__('STATUS')}}</th>
-                <th>{{__('ACTIONS')}}</th>
+                <th class="text-center">{{__('STATUS')}}</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
@@ -421,14 +423,15 @@
                 <td>{{ getLangId() == 1 ? ucfirst($at->profession['name_en']) : $at->profession['name_ar']}}
                 </td>
                 <td>{{$at->mobile_number}}</td>
-                <td>
+                <td class="text-center">
                     {{__(ucfirst($at->artist_permit_status))}}
                 </td>
 
                 <td class="text-center"> <a
                         href="{{URL::signedRoute('artist_details.view' , [ 'id' => $at->artist_permit_id , 'from' => 'event'])}}"
                         title="View">
-                        <button class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button>
+                        {{-- <button class="btn btn-sm btn-secondary btn-elevate btn-hover-warning">{{__('View')}}</button> --}}
+                        <i class="fa fa-file-alt fnt-16"></i>
                     </a></td>
             </tr>
             @endforeach
@@ -448,7 +451,7 @@
                 <th class="text-left">{{__('Document Name')}}</th>
                 <th>{{__('Issue Date')}}</th>
                 <th>{{__('Expiry Date')}}</th>
-                <th>{{__('View')}}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -489,7 +492,8 @@
                 </td>
                 <td class="text-center">
                     <a href="{{asset('storage')}}{{'/'.$reqd->path}}" target="blank" ">
-                                    <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}}
+                                    {{-- <button class=" btn btn-sm btn-secondary btn-hover-warning">{{__('View')}} --}}
+                                    <i class="fa fa-file-alt fnt-16"></i>
                         </button></a>
                 </td>
             </tr>
@@ -760,10 +764,12 @@
                 $('#liquor_provided_form').show();
                 $('#liquor_details_form').hide();
                 $('#liquor_upload_form').hide();
+                $('#liquor_provided_upload_form').show();
             }else if(id == 0) {
                 $('#liquor_provided_form').hide();
                 $('#liquor_details_form').show();
                 $('#liquor_upload_form').show();
+                $('#liquor_provided_upload_form').hide();
             }
         }
 
@@ -781,18 +787,18 @@
 
 
 
-        function viewLiquor(){
-            var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
-            url = url.replace(':id', $('#event_id').val());
+        function viewLiquor(id){
+            var url = "{{route('liquor.show', ':id')}}";
+            url = url.replace(':id',id);
             $.ajax({
                 url: url,
                 success: function (data) {
                     if(data)
                     {
-                        $('#liquor_details').modal('show');
+                        $('#show_liquor_details').modal('show');
                         $('#event_liquor_id').val(data.event_liquor_id);
                         $('#liquor_details .ajax-file-upload-red').trigger('click');
-                        console.log(data);
+                       
                         if(data.provided == 1)
                         {
                             checkLiquorVenue(1);

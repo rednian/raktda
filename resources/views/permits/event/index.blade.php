@@ -487,6 +487,9 @@
                 searching: true,
                 ordering: false,
                 // order:[[6,'desc']],
+                beforeSend: function (request) {
+                    request.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+                },
                 ajax:'{{route("company.event.fetch_cancelled")}}',
                 columns: [
                     { data: 'reference_number', name: 'reference_number' },

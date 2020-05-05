@@ -228,9 +228,9 @@ class ArtistController extends Controller
                     $from = 'cancelled';
                     break;
             }
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'tab' => $from]) . '" title="' . __('View Details') . '" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_permit_details', ['id' => $permit->permit_id, 'tab' => $from]) . '" title="' . __('View Details') . '"><i class="fa fa-file-alt fnt-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.download_permit', $permit) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fnt-16"></i></a>';
         })->rawColumns(['action', 'details', 'download', 'permit_id'])->make(true);
     }
 

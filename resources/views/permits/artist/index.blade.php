@@ -505,6 +505,9 @@
                 // order:[[5,'desc']],
                 // lengthMenu: [ 5, 10, 25, 50, 75, 100 ],
                 ajax:'{{route("company.fetch_cancelled_permits")}}',
+                beforeSend: function (request) {
+                    request.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+                },
                 columns: [
                     { data: 'reference_number', name: 'reference_number' },
                     { data: 'permit_number', name: 'permit_number' },

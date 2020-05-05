@@ -908,7 +908,7 @@ class EventController extends Controller
                 'id' => $event->event_id,
                 'url' => $event->created_by == $user->user_id ? URL::signedRoute('event.show', ['id' =>  $event->event_id, 'tab' => 'calendar'])  : '#',
                 'description' => __('Venue') .': ' . ($user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar),
-                'backgroundColor' => '#8c272d !important',
+                'backgroundColor' => $event->status == 'active' ? '#22BB33 !important' : '#bb2124 !important',
                 'textColor' => '#fff !important',
             ];
         });
@@ -1384,9 +1384,9 @@ class EventController extends Controller
                     $from = 'cancelled';
                     break;
             }
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show', ['id' =>  $permit->event_id, 'tab' => $from]) . '" title="' . __('View Details') . '" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show', ['id' =>  $permit->event_id, 'tab' => $from]) . '" title="' . __('View Details') . '" ><i class="fa fa-file-alt fnt-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fnt-16"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
