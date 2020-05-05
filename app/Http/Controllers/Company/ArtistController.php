@@ -1851,6 +1851,8 @@ class ArtistController extends Controller
                 } else {
                     // return 'none';
                 }
+            })->editColumn('work_location', function ($draft) {
+                return getLangId() == 1 ? $draft->work_location : $draft->work_location_ar;
             })->editColumn('issued_date', function ($draft) {
                 if ($draft->issue_date) {
                     return  Carbon::parse($draft->issue_date)->format('d-m-Y');
@@ -1869,7 +1871,7 @@ class ArtistController extends Controller
                 }
                 return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.view_draft_details', $permit->permit_id) . '"><span class="kt-badge kt-badge--warning kt-badge--inline">' . __('View') . '</span></a>&emsp;<span onClick="delete_draft(' . $permit->permit_id . ')" data-toggle="modal"  class="kt-badge kt-badge--danger kt-badge--inline">' . __('Delete') . '</span>';
             })->addColumn('details', function ($permit) {
-                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" class="kt-font-dark"><i class="fa fa-file"></i></a>';
+                return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.get_draft_details', $permit->permit_id) . '" title="View Details" ><i class="fa fa-file-alt fnt-16"></i></a>';
             })->rawColumns(['action', 'details'])->make(true);
         }
     }

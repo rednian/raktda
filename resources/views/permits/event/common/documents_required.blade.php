@@ -60,8 +60,8 @@
                     </table>
                     @endif
                     <section class="row">
-                    <h6 class="kt-heading p-0 m-0 pl-3">{{__('Required Documents')}}</h6>
-                        <div class="col-md-12">
+                        <h6 class="kt-heading p-0 m-0 pl-3">{{__('Required Documents')}}</h6>
+                        <div class="col-md-12 kt-margin-t-20">
                             <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-toggle="tab" href="#corporateTab_{{$i}}" data-target="#corporateTab_{{$i}}">{{__('Corporate')}}</a>

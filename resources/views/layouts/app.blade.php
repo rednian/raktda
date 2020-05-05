@@ -107,6 +107,7 @@
 
 <body
     class="kt-page--loading-enabled kt-page--loading  kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-aside--enabled kt-aside--fixed">
+
     <!-- begin:: Page -->
 
     <!-- begin::Page loader -->
