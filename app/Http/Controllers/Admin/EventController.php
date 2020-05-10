@@ -535,7 +535,7 @@ class EventController extends Controller
 				$files = $requirement->eventRequirement()->where('event_id', $event->event_id)->get();
 				$html = '<div class="kt-badge kt-badge__pics">';
 				foreach ($files as $index => $file) {
-					$html .= '<a href="'.asset('/storage/'.$file->path).'" data-fancybox="images" data-fancybox data-caption="'.$name.'" class="kt-badge__pic">';
+					$html .= '<a href="'.asset('/storage/'.$file->path).'" data-fancybox data-caption="'.$name.'" class="kt-badge__pic">';
 					$html .= fileExtension($file->path);
 					$html .= '</a>';
 					if($index > 5){
@@ -578,7 +578,6 @@ class EventController extends Controller
 
 		public function artistDatatable(Request $request, Event $event)
 		{
-
 			if (!is_null($event->permit)) {
 				$permit = $event->permit->artistPermit()->get();
 			}
@@ -650,8 +649,14 @@ class EventController extends Controller
 			})
 			->addColumn('files', function($truck) use ($request){
 				$name = $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
-				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$truck->path).'" data-fancybox="gallery2"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($truck->path).'</a>';
-			})
+				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$truck->path).'"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($truck->path).'</a>';
+            })
+            // ->editColumn('document_name', function($artist_permit_document){
+            //     $name = '<a href="'.asset('/storage/'.$artist_permit_document->path).'" data-fancybox data-fancybox data-caption="'.ucwords($artist_permit_document->requirement->requirement_name).'">';
+            //     $name .= ucwords($artist_permit_document->requirement->requirement_name);
+            //     $name .='</a>';
+            //     return $name;
+            // })
 			->rawColumns(['files', 'name'])
 			->make(true);
 		}
@@ -683,7 +688,7 @@ class EventController extends Controller
 			$requirements = DataTables::of($event->eventRequirement)
 			->addColumn('name', function($requirement) use ($request){
                 if($requirement->type == 'event'){
-                    return $requirement->requirement->requirement_name;
+                    return $requirement->requirement->name;
                 }
                 if($requirement->type == 'additional'){
                     return $requirement->additionalRequirement->requirement_name;
@@ -716,7 +721,7 @@ class EventController extends Controller
 			$data = $requirements->getData(true);
 				if ($event->logo_thumbnail) {
 				$data['data'][] = [
-				    'name' => 'Event Logo',
+				    'name' => __('Event Logo'),
 				    'files' => '<a class="kt-padding-l-20" href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">event logo.'.fileName($event->logo_thumbnail).'</a>',
 				    'issued_date'=> '-',
 				    'expired_date'=> '-',
@@ -882,10 +887,11 @@ class EventController extends Controller
                     })
                     ->addColumn('duration', function($event) use ($user){
                         $date = Carbon::parse($event->expired_date)->diffInDays($event->issued_date);
-                        $date = $date !=  0 ? $date : 1;
+                        // $date = $date !=  0 ? $date : 1;
+                        $date = $date + 1;
                         $day = $date > 1 ? __('Days'): __('Day');
                         return $date.' '.$day;
-                        return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
+                        // return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
                     })
                     ->addColumn('expected_audience', function($event){ return $event->audience_number; })
                     ->addColumn('owner',function($event) use ($request){
