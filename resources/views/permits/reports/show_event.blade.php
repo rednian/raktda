@@ -4,6 +4,9 @@
 
 @section('content')
 
+
+<link href="{{ asset('css/uploadfile.css') }}" rel="stylesheet">
+
 <div class="kt-portlet kt-portlet--mobile">
     <div class="kt-portlet__head kt-portlet__head--sm kt-portlet__head--noborder">
         <div class="kt-portlet__head-label">
@@ -550,6 +553,8 @@
                     deleteStr: ``,
                     showFileSize: false,
                     showFileCounter: false,
+                     uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showProgress: false,
                     abortStr: '',
                     returnType: "json",
@@ -557,7 +562,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {
                         id: i ,
                         reqId: $('#truck_req_id_'+i).val()
@@ -633,6 +638,8 @@
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
                     deleteStr: ``,
+                     uploadStr: `{{__('Upload')}}`,
+                    dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
                     showFileSize: false,
                     showFileCounter: false,
                     showProgress: false,
@@ -642,7 +649,7 @@
                     showPreview: false,
                     showDelete: true,
                     showDownload: true,
-                    uploadButtonClass: 'btn btn-default mb-2 mr-2',
+                    uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
 

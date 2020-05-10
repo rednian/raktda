@@ -60,103 +60,72 @@
                     </table>
                     @endif
                     <section class="row">
-                    <h6 class="kt-heading p-0 m-0 pl-3">{{__('Required Documents')}}</h6>
-                        <div class="col-md-12">
-                            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10"
-                                role="tablist">
-                                <li class="nav-item ">
-                                    <a class="nav-link active" data-toggle="tab"
-                                        href="#corporate">{{__('Corporate')}}</a>
+                        <h6 class="kt-heading p-0 m-0 pl-3">{{__('Required Documents')}}</h6>
+                        <div class="col-md-12 kt-margin-t-20">
+                            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-danger kt-margin-b-10" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#corporateTab_{{$i}}" data-target="#corporateTab_{{$i}}">{{__('Corporate')}}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " data-toggle="tab" href="#government"
-                                        data-target="#government">{{__('Government')}} </a>
+                                    <a class="nav-link" data-toggle="tab" href="#governmentTab_{{$i}}">{{__('Government')}} </a>
                                 </li>
                             </ul>
                         </div>
                     </section>
                     <div class="tab-content">
-                        <div class="tab-pane show fade active" id="corporate" role="tabpanel">
+                        <div class="tab-pane show fade active" id="corporateTab_{{$i}}" role="tabpanel">
                             <table class="table table-borderless  kt-margin-t-10">
                                 <thead>
                                     <tr class="kt-font-transform-u">
-                                        <th class="text-center">#</th>
                                         <th style="width: 40%;">{{__('Document Name')}}</th>
                                         <th style="width: 50%;">{{__('Notes')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-
-                                    @php
-                                    $j = 1; $c_count = 0;
-                                    @endphp
                                     @foreach($et->event_type_requirements as $req)
                                     @if(isset($req->requirement) && strtolower($req->requirement->requirement_name) !=
-                                    'other documents' &&
-                                    $req->requirement->type == 'corporate')
-                                    @php
-                                    $c_count++;
-                                    @endphp
+                                    'other documents' && $req->requirement->type == 'corporate')
                                     <tr>
-                                        <td class="text-center">{{$j}}</td>
-                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        <td>{{getLangId() == 1 ? ucfirst(trim($req->requirement->requirement_name)) : $req->requirement->requirement_name_ar}}
                                         </td>
-                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        <td>{{getLangId() == 1 ? ucfirst(trim($req->requirement->requirement_description)) : $req->requirement->requirement_description_ar}}
                                         </td>
                                     </tr>
-                                    @php
-                                    $j++;
-                                    @endphp
                                     @endif
                                     @endforeach
-                                    @if($c_count == 0)
-                                    <tr>
-                                        <td></td>
-                                        <td colspan="2">{{__('No Required Documents')}}</td>
-                                    </tr>
-                                    @endif
+                                    @unless(count($et->event_type_requirements))
+                                         <tr>
+                                            <td colspan="2">{{__('No Required Documents')}}</td>
+                                        </tr>
+                                    @endunless
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="government" role="tabpanel">
+                        <div class="tab-pane fade" id="governmentTab_{{$i}}" role="tabpanel">
                             <table class="table table-borderless  kt-margin-t-10">
                                 <thead>
                                     <tr class="kt-font-transform-u ">
-                                        <th class="text-center">#</th>
                                         <th style="width: 40%;">{{__('Document Name')}}</th>
                                         <th style="width: 50%;">{{__('Notes')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                    $j = 1; $g_count = 0;
-                                    @endphp
-                                    @foreach($et->event_type_requirements as $req)
+                                      @foreach($et->event_type_requirements as $req)
                                     @if(isset($req->requirement) && strtolower($req->requirement->requirement_name) !=
-                                    'other documents' &&
-                                    $req->requirement->type == 'government')
-                                    @php
-                                    $g_count++;
-                                    @endphp
+                                    'other documents' && $req->requirement->type == 'government')
                                     <tr>
-                                        <td class="text-center">{{$j}}</td>
-                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_name) : $req->requirement->requirement_name_ar}}
+                                        <td>{{getLangId() == 1 ? ucfirst(trim($req->requirement->requirement_name)) : $req->requirement->requirement_name_ar}}
                                         </td>
-                                        <td>{{getLangId() == 1 ? ucfirst($req->requirement->requirement_description) : $req->requirement->requirement_description_ar}}
+                                        <td>{{getLangId() == 1 ? ucfirst(trim($req->requirement->requirement_description)) : $req->requirement->requirement_description_ar}}
                                         </td>
                                     </tr>
-                                    @php
-                                    $j++;
-                                    @endphp
                                     @endif
                                     @endforeach
-                                    @if($g_count == 0)
-                                    <tr>
-                                        <td></td>
-                                        <td colspan="2">{{__('No Required Documents')}}</td>
-                                    </tr>
-                                    @endif
+                                    @unless(count($et->event_type_requirements))
+                                         <tr>
+                                            <td colspan="2">{{__('No Required Documents')}}</td>
+                                        </tr>
+                                    @endunless
                                 </tbody>
                             </table>
                         </div>

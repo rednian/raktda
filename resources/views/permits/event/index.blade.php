@@ -38,6 +38,8 @@
 @include('permits.artist.common.company_block')
 @endif
 
+@include('permits.components.license-exp-notification')
+
 <input type="hidden" id="lang_id" value="{{getLangId()}}">
 <section class="kt-portlet kt-portlet--head-sm kt-portlet--responsive-mobile" id="kt_page_portlet">
 
@@ -91,8 +93,8 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('REFERENCE NO')}}</th>
                             <th>{{__('EVENT TYPE')}}</th>
-                            <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
-                            <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
+                            <th class="text-center">{{__('From Date')}} </th>
+                            <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('EVENT NAME')}}</th>
                             <th class="text-center">{{__('STATUS')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
@@ -108,8 +110,8 @@
                         <tr class="kt-font-transform-u">
                             <th>{{__('PERMIT NUMBER')}}</th>
                             <th>{{__('EVENT TYPE')}}</th>
-                            <th style="width:11%;" class="text-center">{{__('From Date')}} </th>
-                            <th style="width:11%;" class="text-center">{{__('To Date')}} </th>
+                            <th class="text-center">{{__('From Date')}} </th>
+                            <th class="text-center">{{__('To Date')}} </th>
                             <th>{{__('EVENT NAME')}}</th>
                             <th class="text-center">{{__('ACTION')}}</th>
                             <th></th>
@@ -348,8 +350,8 @@
                 columns: [
                     { data: 'reference_number', name: 'reference_number' },
                     { data: 'type_name', name: 'type_name' },
-                    { data: 'issued_date', name: 'issued_date' , className: 'no-wrap'},
-                    { data: 'expired_date', name: 'expired_date' , className: 'no-wrap'},
+                    { data: 'issued_date', name: 'issued_date' },
+                    { data: 'expired_date', name: 'expired_date' },
                     { data: 'name_en', name: 'name_en' },        
                     { data: 'permit_status', name: 'permit_status' },
                     { data: 'action', name: 'action' ,  className: "text-center"},
@@ -361,7 +363,6 @@
                     { targets: '_all', className:'no-wrap'},
                     {
                         targets:-3,
-                        width: '10%',
                         className: 'text-center',
                         render: function(data, type, full, meta) {
                             return `<span class="kt-font-transform-c text-center">${data}</span>`;
@@ -486,6 +487,9 @@
                 searching: true,
                 ordering: false,
                 // order:[[6,'desc']],
+                beforeSend: function (request) {
+                    request.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));
+                },
                 ajax:'{{route("company.event.fetch_cancelled")}}',
                 columns: [
                     { data: 'reference_number', name: 'reference_number' },
