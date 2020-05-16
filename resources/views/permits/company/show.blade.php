@@ -43,7 +43,7 @@ $user_lang = $user->languageId;
     </div>
     @endif
 
-    @if ($company->status == 'back')
+    @if ($company->status == 'return')
     <div class="alert alert-outline-danger fade show kt-padding-t-10 kt-padding-b-10" role="alert">
       <div class="alert-icon"><i class="flaticon-warning"></i></div>
       <div class="alert-text">
@@ -75,7 +75,7 @@ $user_lang = $user->languageId;
           <div class="kt-widget__head">
             <span class="kt-widget__title">{{$user_lang == 1  ? ucfirst($company->name_en) : $company->name_ar }}</span>
 
-            @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'back']))
+            @if (in_array($company->status, ['active' , 'blocked', 'draft' , 'return']))
             <div class="kt-widget__action">
               <a href="{{ URL::signedRoute('company.edit', $company->company_id) }}"
                 class="btn btn-sm btn--maroon kt-font-transform-u">{{__('Update Details')}}</a>&nbsp;

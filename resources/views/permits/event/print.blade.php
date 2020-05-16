@@ -123,14 +123,30 @@
             text-align: center;
         }
 
+        /*footer {*/
+        /*    position: absolute;*/
+        /*    bottom: 20px;*/
+        /*    left: 0;*/
+        /*    right: 0;*/
+        /*    text-align: center;*/
+        /*    font-size: 10px;*/
+        /*}*/
+
         footer {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 0;
             right: 0;
-            text-align: center;
+        }
+
+        .print--footer {
+            padding: 15px 0 0;
+            width: 100%;
+            margin:0px;
+            border-width:0px;
             font-size: 10px;
         }
+
     </style>
 
 </head>
@@ -264,16 +280,7 @@
         <h3>Department of Tourism Licensing & Quality Assurance</h3>
     </div>
     <footer>
-        <div>
-            Department of Tourism Licensing & Quality Assurance - RAKTDA - Al Marjan Island - RAK - UAE, PO BOX
-            29798
-        </div>
-        <div>
-            T +97172338998, F +97172338118
-        </div>
-        <div>
-            TLQA@raktda.com &emsp; www.raktda.com
-        </div>
+        @include('permits.components.print.footer')
     </footer>
 </body>
 

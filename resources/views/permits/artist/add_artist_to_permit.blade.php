@@ -1140,8 +1140,8 @@ function checkVisaRequired(){
             {
                 docRules['doc_issue_date_'+i] = 'required';
                 docRules['doc_exp_date_'+i] = 'required';
-                docMessages['doc_issue_date_'+i] = 'This field is required';
-                docMessages['doc_exp_date_'+i] = 'This field is required';
+                docMessages['doc_issue_date_'+i] = '';
+                docMessages['doc_exp_date_'+i] = '';
             }
         }
 

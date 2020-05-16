@@ -25,11 +25,12 @@ class CompanyController extends Controller
 
         return view('admin.company.index',[
             'page_title'=> __('Establishment'),
-            'new_company'=> Company::where('status', 'pending')->count(),
+            'new_company'=> Company::where('status', 'new')->count(),
+            'bounce_back'=> Company::where('status', 'bounce back')->count(),
             'approved'=> Company::where('status', 'active')->count(),
             'blocked'=> Company::where('status', 'blocked')->count(),
             'types'=>  CompanyType::orderBy('name_en')->get(),
-            'pending'=>Company::whereStatus('back')->count(),
+            'pending'=>Company::whereStatus('return')->count(),
             'areas'=>  Areas::whereHas('company', function($q){ $q->whereIn('status', ['new', 'pending']); })->where('emirates_id', 5)->orderBy('area_en')->get(),
         ]);
     }
@@ -49,7 +50,7 @@ class CompanyController extends Controller
 
         }
 
-        if($type == 'back'){
+        if($type == 'return'){
             $subject = $company->name . ' - Application Requires Amendment';
             $title = 'Applications Requires Amendment';
             $content = 'Your application has been bounced back for amendment. To view the details, please click the button below.';
@@ -107,7 +108,7 @@ class CompanyController extends Controller
                     $company->comment()->create($request->all());
                     $result = ['success', '', 'Success'];
                 break;
-                case 'back':
+                case 'return':
                     $company->update(['status'=>$request->status]);
 
                     $company->comment()->create($request->all());
@@ -436,6 +437,7 @@ class CompanyController extends Controller
             ->orderBy('updated_at', 'desc')
             ->orderBy('name_en')
             ->get();
+
         // ->latest();
 
         return DataTables::of($company)
@@ -447,7 +449,7 @@ class CompanyController extends Controller
             })
             ->addColumn('profile', function($company) use ($request){
 
-                return profileName($company->name, $company->type->name);
+                // return profileName($company->name, $company->type->name);
             })
             ->addColumn('name', function($company) use ($request){
                 return ucfirst($company->name);

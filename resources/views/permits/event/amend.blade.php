@@ -12,8 +12,7 @@
             <h3 class="kt-portlet__head-title kt-font-transform-u">{{__('Amend Event Permit')}}
             </h3>
             <span class="text--yellow bg--maroon px-3 ml-3 text-center mr-2">
-                <strong>{{$event->permit_number}}
-                </strong>
+                <strong>{{$event->permit_number}}</strong>
             </span>
         </div>
 
@@ -21,7 +20,7 @@
             <div class="my-auto float-right permit--action-bar">
                 <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la {{getLangId() == 1 ? 'la-angle-left' : 'la-angle-right'}}"></i>
                     {{__('BACK')}}
                 </a>
 
@@ -29,7 +28,7 @@
             <div class="my-auto float-right permit--action-bar--mobile">
                 <a href="{{URL::signedRoute('event.index')}}#{{$tab}}"
                     class="btn btn--maroon btn-elevate btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la {{getLangId() == 1 ? 'la-angle-left' : 'la-angle-right'}}"></i>
                 </a>
 
             </div>
@@ -40,196 +39,174 @@
 
     <div class="kt-portlet__body kt-padding-t-0">
         <div class="kt-container col-md-12 kt-padding-0 kt-margin-b-15 row">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Reference No')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->reference_number}}
-                        </p>
-                    </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Applicant Type')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{__(ucfirst($event->firm))}}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Owner (EN)')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->owner_name}}
-                        </p>
-                    </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Owner (AR)')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->owner_name_ar}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Name')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
-                        </p>
-                    </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Type')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{getLangId() == 1 ? ucfirst($event->type->name_en) : $event->type->name_ar}}
-
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Reference No')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{$event->reference_number}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Applicant Type')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{__(ucfirst($event->firm))}}</p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Name')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->name_en) : $event->name_ar}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label for="issued_date" class="col col-md-6 col-form-label kt-font-bolder">
+                    {{__('From Date')}} <span class="text-danger">*</span></label>
+                <div class="col col-md-6 form-group form-group-xs ">
+                    <div class="input-group input-group-sm date">
+                        <div class="kt-input-icon kt-input-icon--right">
+                            <input type="text" class="form-control form-control-sm " name="issued_date"
+                                   id="issued_date" placeholder="DD-MM-YYYY"
+                                   value="{{date('d-m-Y', strtotime($event->issued_date))}}"
+                                   onchange="changeExpiry();givWarn()" />
+                            <input type="hidden" id="old-issue-date" value="{{date('d-m-Y', strtotime($event->issued_date))}}">
+                            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                <span>
+                                    <i class="la la-calendar"></i>
+                                </span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event SubType')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{!is_null($event->subType->sub_name_en)?  getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar : ''}}
-                        </p>
-                    </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Expected Audience')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->audience_number}}
+            </div>
+            @php
+                $issued_date = strtotime($event->issued_date);
+                $expired_date = strtotime($event->expired_date);
+                $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
+            @endphp
+            <input type="hidden" id="days" value="{{$diff}}">
+            <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
+            <div class="col-md-4 row">
+                <label for="issued_date" class="col col-md-6 col-form-label kt-font-bolder">
+                    {{__('To Date')}} </label>
+                <div class="col col-md-6 form-group form-group-xs ">
+                    <div class="input-group input-group-sm date">
+                        <div class="kt-input-icon kt-input-icon--right">
+                            <input type="text" class="form-control form-control-sm" name="disp_expired_date"
+                                   id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}"
+                                   disabled />
+                            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                <span>
+                                    <i class="la la-calendar"></i>
+                                </span>
+                            </span>
+                        </div>
+                        <input type="hidden" name="expired_date" id="expired_date"
+                               value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Longitude')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->longitude}}
-                        </p>
-                    </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Latitude')}}</label>
-                        <p class="col col-md-6 form-control-plaintext ">
-                            {{$event->latitude}}
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck')}} ?</label>
-                        <div class="col col-md-6 d-flex">
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Owner')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->owner_name) : $event->owner_name_ar}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event Type')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->type->name_en) : $event->type->name_ar}}
+                </p>
+            </div>
+            @if(!is_null($event->subType->sub_name_en))
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Event SubType')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucwords($event->subType->sub_name_en) : $event->subType->sub_name_ar }}
+                </p>
+            </div>
+            @endif
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Expected Audience')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                {{$event->audience_number}}
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Longitude')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{$event->longitude}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Latitude')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{$event->latitude}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Area')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->area['area_en']) : $event->area['area_ar']}}
+                </p>
+            </div>
+            <div class="col-md-4 row">
+                <label class="col col-md-6 col-form-label kt-font-bolder">{{__('Street')}}</label>
+                <p class="col col-md-6 form-control-plaintext ">
+                    {{$event->street}}
+                </p>
+            </div>
+                <div class="col-md-4 row">
+                    <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Food Truck')}} ?</label>
+                    <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext">
-                                {{$event->truck()->exists() ? 'Yes' : 'No'}}</span>
-                            @if(!$event->truck()->exists())
+                                {{$event->truck()->exists() ? __('Yes') : __('No')}}</span>
+                        @if(!$event->truck()->exists())
                             {{-- <button type="button" class="btn btn-sm btn-secondary btn-hover-warning">{{__('Add')}}</button>
                             --}}
-                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" onclick="addTruck()"></i>
-                            @endif
-                        </div>
+                            <i class="fa fa-plus-circle text-warning fnt-20 kt-padding-t-10" onclick="addTruck()" title="{{__('Add Food Truck')}}"></i>
+                        @endif
                     </div>
-                    <div class="col-md-6 row">
-                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor Serving')}} ?</label>
-                        <div class="col col-md-6 d-flex">
+                </div>
+                <div class="col-md-4 row">
+                    <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('Liquor Serving')}} ?</label>
+                    <div class="col col-md-6 d-flex">
                             <span class="form-control-plaintext ">
-                                {{$event->liquor()->exists() ? 'Yes' : 'No'}}</span>
-                            @if(!$event->liquor()->exists())
+                                {{$event->liquor()->exists() ? __('Yes') : __('No')}}</span>
+                        @if(!$event->liquor()->exists())
                             {{-- <button type="button" class="btn btn-sm btn-secondary btn-hover-warning">{{__('Add')}}</button>
                             --}}
-                            <i class="fa fa-pencil-alt fnt-16  kt-padding-t-10" onclick="addLiquor()"></i>
-                            @endif
-                        </div>
+                            <i class="fa fa-plus-circle text-warning fnt-20 kt-padding-t-10" onclick="addLiquor()" title="{{__('Add Liquor')}}"></i>
+                        @endif
                     </div>
                 </div>
+
+        </div>
+
+        <div class="kt-container col-md-12 kt-padding-0 kt-margin-b-15 row">
+            <div class="col-md-12 row">
+                <label class="col col-md-2 col-form-label kt-font-bolder">{{__('Event Details')}}</label>
+                <p class="col col-md-10 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->description_en) : $event->description_ar}}
+                </p>
             </div>
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="col-md-6 form-group form-group-xs ">
-                        <label for="issued_date" class=" col-form-label kt-font-bold text-right">
-                            {{__('From Date')}} <span class="text-danger">*</span></label>
-                        <div class="input-group input-group-sm date">
-                            <div class="kt-input-icon kt-input-icon--right">
-                                <input type="text" class="form-control form-control-sm " name="issued_date"
-                                    id="issued_date" placeholder="DD-MM-YYYY"
-                                    value="{{date('d-m-Y', strtotime($event->issued_date))}}"
-                                    onchange="changeExpiry();givWarn()" />
-                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                    <span>
-                                        <i class="la la-calendar"></i>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    @php
-                    $issued_date = strtotime($event->issued_date);
-                    $expired_date = strtotime($event->expired_date);
-                    $diff = abs($expired_date - $issued_date) / 60 / 60 / 24;
-                    @endphp
-                    <input type="hidden" id="days" value="{{$diff}}">
-                    <input type="hidden" id="event_id" name="event_id" value="{{$event->event_id}}">
-
-
-                    <div class="col-md-6 form-group form-group-xs ">
-                        <label for="issued_date" class=" col-form-label kt-font-bold text-right">
-                            {{__('To Date')}} <span class="text-danger">*</span></label>
-                        <div class="input-group input-group-sm date">
-                            <div class="kt-input-icon kt-input-icon--right">
-                                <input type="text" class="form-control form-control-sm" name="disp_expired_date"
-                                    id="disp_expired_date" value="{{date('d-m-Y', strtotime($event->expired_date))}}"
-                                    disabled />
-                                <span class="kt-input-icon__icon kt-input-icon__icon--right">
-                                    <span>
-                                        <i class="la la-calendar"></i>
-                                    </span>
-                                </span>
-                            </div>
-                            <input type="hidden" name="expired_date" id="expired_date"
-                                value="{{date('d-m-Y', strtotime($event->expired_date))}}" />
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="row">
-                    <div class="col-md-6 form-group form-group-xs ">
-                        <label for="time_start" class=" col-form-label kt-font-bold text-right">
-                            {{__('Start Time')}} <span class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-sm" name="time_start" id="time_start"
-                    value="{{$event->time_start}}" />
+            <div class="col-md-12 row">
+                <label class="col col-md-2 col-form-label kt-font-bolder">{{__('Address')}}</label>
+                <p class="col col-md-10 form-control-plaintext ">
+                    {{$event->address}}
+                </p>
             </div>
-            <div class="col-md-6 form-group form-group-xs ">
-                <label for="time_start" class=" col-form-label kt-font-bold text-right">
-                    {{__('End Time')}} <span class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-sm" name="time_end" id="time_end"
-                    value="{{$event->time_end}}" />
+            <div class="col-md-12 row">
+                <label class="col col-md-2 col-form-label kt-font-bolder">{{__('Venue')}}</label>
+                <p class="col col-md-10 form-control-plaintext ">
+                    {{getLangId() == 1 ? ucfirst($event->venue_en) : $event->venue_ar}}
+                </p>
             </div>
-        </div> --}}
-    </div>
-</div>
+        </div>
 
-
-<div>
-    <table class="table table-borderless border">
-        <tbody>
-            <tr>
-                <td class="kt-font-bolder">{{__('Event Details')}}
-                </td>
-                <td>:</td>
-                <td class="">{{getLangId() == 1 ? ucfirst($event->description_en) : $event->description_ar}}</td>
-            </tr>
-            <tr>
-                <td class="kt-font-bolder">{{__('Address')}}
-                </td>
-                <td>:</td>
-                <td class="">{{$event->address}}</td>
-            </tr>
-            <tr>
-                <td class="kt-font-bolder">{{__('Venue')}}
-                </td>
-                <td>:</td>
-                <td class="">{{getLangId() == 1 ? ucfirst($event->venue_en) : $event->venue_ar}}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div>
     @if($event->truck()->exists())
     <div class="d-flex kt-margin-b-10 justify-content-between kt-margin-t-15">
-        <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck Details')}}</h5>
-        <button class="btn btn-sm btn-secondary btn-hover-warning"
-            id="add_new_truck">{{__('Add New Food Truck')}}</button>
+        <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Food Truck List')}}</h5>
+        <button class="btn btn-sm btn-secondary btn-hover-elevate"
+            id="add_new_truck">
+            <i class="fa fa-plus text-warning"></i>
+            {{__('Add New')}}</button>
     </div>
     <div class="table-responsive">
         <table class="table table-borderless border table-striped">
@@ -238,7 +215,7 @@
                 <th>{{__('Establishment Name (EN)')}}</th>
                 <th>{{__('Establishment Name (AR)')}}</th>
                 <th>{{__('Traffic Plate No')}}</th>
-                <th>{{__('Types of Provided F&B')}}</th>
+                <th>{{__('Types of provided F&B')}}</th>
                 <th></th>
             </thead>
             <tbody id="food_truck_list">
@@ -249,188 +226,94 @@
         <div id="disp_mess" class="text-center"></div>
     </div>
     @endif
-</div>
 
-<input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
+    <input type="hidden" id="user_id" value="{{Auth::user()->user_id}}">
 
-<input type="hidden" id="isLiquor" value="{{$event->liquor()->exists() == true ? 1 : 0 }}">
+    <input type="hidden" id="isLiquor" value="{{$event->liquor()->exists() == true ? 1 : 0 }}">
 
-<div>
     @if($event->liquor()->exists())
-    <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Liquor Details')}}</h5>
-    <div class="col-md-12 form-group form-group-xs d-flex">
-        <label class="col-form-label"> {{__('Provided by venue')}}
-            ?</label>
-        <div class="kt-radio-inline" style="margin: auto 5%;">
-            <label class="kt-radio ">
-                <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(1)" value="1">
-                {{__('Yes')}}
-                <span></span>
-            </label>
-            <label class="kt-radio">
-                <input type="radio" name="isLiquorVenue" onclick="checkLiquorVenue(0)" value="0">
-                {{__('No')}}
-                <span></span>
-            </label>
-        </div>
-    </div>
-    <input type="hidden" id="liquor_provided" value="{{$event->liquor->provided}}">
-    <form class="col-md-12" id="liquor_details_form" novalidate autocomplete="off">
-        <div class="row">
-            <div class="col-md-4 form-group form-group-xs">
-                <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}} <span
-                        class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-sm" name="l_company_name_en" id="l_company_name_en"
-                    value="{{$event->liquor->company_name_en}}" autocomplete="off">
-            </div>
-            <div class="col-md-4 form-group form-group-xs">
-                <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}} <span
-                        class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-sm" name="l_company_name_ar" id="l_company_name_ar"
-                    dir="rtl" value="{{$event->liquor->company_name_ar}}" autocomplete="off">
-            </div>
-            <div class="col-md-4 form-group form-group-xs">
-                <label for="" class="col-form-label kt-font-bold">{{__('Purchase Receipt No')}} <span
-                        class="text-danger">*</span></label>
-                <input type="text" class="form-control form-control-sm" name="purchase_receipt" id="purchase_receipt"
-                    value="{{$event->liquor->purchase_receipt}}" autocomplete="off">
-            </div>
-            <div class="col-md-4 form-group form-group-xs">
-                <label for="" class="col-form-label kt-font-bold">{{__('Liquor Service')}} <span
-                        class="text-danger">*</span></label>
-                <select class="form-control form-control-sm" name="liquor_service" id="liquor_service"
-                    onchange="changeLiquorService()">
-                    <option value="">{{__('Select')}}</option>
-                    <option value="limited" {{$event->liquor->liquor_service == 'limited' ? 'selected' : ''}}>
-                        {{__('Limited')}}</option>
-                    <option value="unlimited" {{$event->liquor->liquor_service == 'unlimited' ? 'selected' : ''}}>
-                        {{__('Unlimited')}}</option>
-                </select>
-            </div>
-            <div class="col-md-4 form-group form-group-xs" id="limited_types">
-                <label for="" class="col-form-label kt-font-bold">{{__('Types of Liquor Service')}} <span
-                        class="text-danger">*</span></label>
-                <textarea type="text" dir="ltr" class="form-control form-control-sm" name="liquor_types"
-                    id="liquor_types" autocomplete="off">{{$event->liquor->liquor_types}}</textarea>
-            </div>
-            <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
-        </div>
-    </form>
-    <form id="liquor_provided_form" autocomplete="off">
-        <div class="col-md-4 form-group form-group-xs">
-            <label for="" class="col-form-label kt-font-bold">{{__('Liquor Permit No')}} <span
-                    class="text-danger">*</span></label>
-            <input type="text" class="form-control form-control-sm" name="liquor_permit_no" id="liquor_permit_no"
-                value="{{$event->liquor->liquor_permit_no ? $event->liquor->liquor_permit_no : ''}}" autocomplete="off">
-        </div>
-    </form>
-</div>
-<div class="kt-margin-t-20" id="liquor_upload_form-div">
-    <h5 class="text-dark kt-margin-b-20 text-underline kt-font-bold">{{__('Liquor Required Documents')}}
-    </h5>
-    <form id="liquor_upload_form" class="col-md-12">
-        <input type="hidden" id="liquor_document_count" value="{{count($liquor_req)}}">
-        @include('permits.components.requirements')
-        @php
-        $i = 1;
-        @endphp
-        @foreach($liquor_req as $req)
-        @if(is_null($req->type))
-        <div class="row">
-            <div class="col-lg-4 col-sm-12">
-                <label
-                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
-                    <span id="cnd_{{$i}}"></span>
-                </label>
-                <p for="" class="reqName">
-                    {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
-                </p>
-            </div>
-            <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$i}}">
-            <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$i}}">
-            <div class="col-lg-4 col-sm-12">
-                <label style="visibility:hidden">hidden</label>
-                <div id="liquoruploader_{{$i}}">{{__('Upload')}}
+
+            <h5 class="text-dark kt-margin-b-15 text-underline kt-font-bold">{{__('Liquor Details')}}</h5>
+            @if($event->liquor->provided == 0)
+                <label class="col-form-label"> {{__('Provided by venue ?')}} &emsp;{{__('No')}}</label>
+                <div class="table-responsive">
+                    <table class="table table-borderless border table-striped">
+                        <thead >
+                            <th>{{__('Establishment Name (EN)')}}</th>
+                            <th>{{__('Establishment Name (AR)')}}</th>
+                            <th>{{__('Purchase Receipt No')}}</th>
+                            <th>{{__('Liquor Service')}}</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="liquor_list">
+                            <td>{{$event->liquor->company_name_en}}</td>
+                            <td>{{$event->liquor->company_name_ar}}</td>
+                            <td>{{$event->liquor->purchase_receipt}}</td>
+                            <td>{{ucfirst($event->liquor->liquor_service)}}</td>
+                            <td>
+                                @if($event->liquor->status == 2)
+                                    <a onclick="editLiquor({{$event->liquor->event_liquor_id}})"><i class="fa fa-pen fnt-16 text-info"></i></a>
+                                    &emsp;<a href="#" data-target="#removeLiquorModal" data-toggle="modal" onclick="setLiquorModal({{$event->liquor->event_liquor_id}})"><i class="fa fa-trash fnt-16 text-danger"></i></a>
+                                    @else
+                                <a href="#"  onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}"><i class="fa fa-file fnt-16 "></i></a>
+                                    @endif
+                            </td>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <input type="hidden" id="liquordatesRequiredCheck_{{$i}}" value="{{$req->dates_required}}">
-            @if($req->dates_required == 1)
-            <div class="col-lg-2 col-sm-12">
-                <label for="" class="text--maroon kt-font-bold" title="Issue Date">{{__('Issue Date')}}</label>
-                <input type="text" class="form-control form-control-sm date-picker" name="liquor_doc_issue_date_{{$i}}"
-                    data-date-end-date="0d" id="liquor_doc_issue_date_{{$i}}" placeholder="DD-MM-YYYY" />
-            </div>
-            <div class="col-lg-2 col-sm-12">
-                <label for="" class="text--maroon kt-font-bold" title="Expiry Date">{{__('Expiry Date')}}</label>
-                <input type="text" class="form-control form-control-sm date-picker" name="liquor_doc_exp_date_{{$i}}"
-                    id="liquor_doc_exp_date_{{$i}}" placeholder="DD-MM-YYYY" />
-            </div>
+            @elseif($event->liquor->provided == 1)
+                <label class="col-form-label"> {{__('Provided by venue ?')}} &emsp; {{__('Yes')}}</label>
+                <div class="table-responsive">
+                    <table class="table table-borderless border table-striped">
+                        <thead >
+                            <th>{{__('Liquor Permit No')}}</th>
+                            <th></th>
+                        </thead>
+                        <tbody id="liquor_list">
+                            <td>{{$event->liquor->liquor_permit_no ? $event->liquor->liquor_permit_no : ''}}</td>
+                            <td>
+                                @if($event->liquor->status == 2)
+                                    <a onclick="editLiquor({{$event->liquor->event_liquor_id}})"><i class="fa fa-pen fnt-16 text-info"></i></a>
+                                    &emsp;<a href="#" data-target="#removeLiquorModal" data-toggle="modal" onclick="setLiquorModal({{$event->liquor->event_liquor_id}})"><i class="fa fa-trash fnt-16 text-danger"></i></a>
+                                @else
+                                <a href="#"  onClick="viewLiquor({{$event->liquor->event_liquor_id}})" title="{{__('View Liquor Details')}}"><i class="fa fa-file fnt-16 "></i></a>
+                                @endif
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
             @endif
-        </div>
-        @php
-        $i++;
-        @endphp
-        @endif
-        @endforeach
-    </form>
-    <form id="liquor_provided_upload_form" class="col-md-12">
-        @include('permits.components.requirements')
-        @php
-        $j = $i;
-        @endphp
-        @foreach($liquor_req as $req)
-        @if(!is_null($req->type))
-        <div class="row">
-            <div class="col-lg-4 col-sm-12">
-                <label
-                    class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
-                    <span id="cnd_{{$j}}"></span>
-                </label>
-                <p for="" class="reqName">
-                    {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
-                </p>
-            </div>
-            <input type="hidden" value="{{$req->requirement_id}}" id="liqour_req_id_{{$j}}">
-            <input type="hidden" value="{{$req->requirement_name}}" id="liqour_req_name_{{$j}}">
-            <input type="hidden" value="{{$req->type}}" id="liqour_req_type_{{$j}}">
-            <div class="col-lg-4 col-sm-12">
-                <label style="visibility:hidden">hidden</label>
-                <div id="liquoruploader_{{$j}}">{{__('Upload')}}
-                </div>
-            </div>
-        </div>
-        @php
-        $j++;
-        @endphp
-        @endif
-        @endforeach
-    </form>
-</div>
+            <input type="hidden" id="event_liquor_id" value="{{$event->liquor->event_liquor_id}}">
 
 @endif
 
+
+        <input type="hidden" name="unpaid-fee" value="{{$isUnpaid}}">
 
 <div class="d-flex kt-margin-t-20 justify-content-md-end justify-content-sm-center">
     <input type="submit" class="col-md-2 btn btn--yellow btn-sm kt-font-bold kt-font-transform-u" id="submit_btn"
         value="{{__('Submit')}}">
 </div>
 </div>
-</div>
-</div>
+
 
 
 <div class="modal hide" id="removeModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{__('Remove Truck')}}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{__('Remove Food Truck')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
             </div>
             <div class="modal-body d-flex justify-content-between">
-                <h6 class="text--maroon">{{__('Are you sure to remove data')}} ?</h6>
-                <input type="hidden" id="remove_truck_id">
-                <button class="btn btn-sm btn--yellow" onclick="deleteThisTruck()">{{__('Ok')}}</button>
+                <h6 class="text--maroon">{{__('Are you sure to remove this food truck')}} ?</h6>
+                <form action="{{route('event.foodtruck.delete')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="del_truck_id" id="del-truck-id">
+                    <input type="hidden" name="del_truck_event_id" value="{{$event->event_id}}">
+                    <input type="submit" class="btn btn-sm btn--yellow" value="{{__('Ok')}}">
+                </form>
             </div>
         </div>
     </div>
@@ -475,20 +358,26 @@
 @endif
 --}}
 
-@include('permits.event.common.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
 
-@if($event->truck()->exists())
-@include('permits.event.common.amend_food_truck', ['truck_req'=>$truck_req])
-@else
-@include('permits.event.common.edit_food_truck', ['truck_req'=>$truck_req, 'from' => 'amend'])
-@endif
 
-@include('permits.event.common.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
+@include('permits.event.messages.show_warning_modal', ['day_count' => getSettings()->event_start_after]);
+
+    @include('permits.event.foodtruck.amend_food_truck', ['truck_req'=>$truck_req])
+
+    @include('permits.event.foodtruck.show-one-foodtruck', ['truck_req'=>$truck_req, 'from' => 'amend'])
+
+    @include('permits.event.liquor.view_liquor', ['liquor_req'=>$liquor_req])
+
+    @include('permits.event.liquor.liquor', ['liquor_req'=>$liquor_req, 'from' => 'amend'])
+
+    @include('permits.event.liquor.remove-modal')
 
 @endsection
 
 @section('script')
+
 <script src="{{asset('js/company/uploadfile.js')}}"></script>
+
 <script>
     $.ajaxSetup({
         headers: {"X-CSRF-TOKEN": jQuery(`meta[name="csrf-token"]`).attr("content")}
@@ -528,10 +417,16 @@
         @if($event->truck()->exists())
         editTruck();
         @endif
-        var provided = $('#liquor_provided').val();
-        checkLiquorVenue(provided);
-        changeLiquorService();
-        $("input:radio[name='isLiquorVenue'][value='"+provided+"']").attr('checked', true);
+
+        var unPaidFee = $('#unpaid-fee').val();
+        if(!unPaidFee)
+        {
+            $('#submit_btn').attr('disabled', true);
+        }
+        @if($event->liquor->status == 2)
+        $('#submit_btn').attr('disabled', false);
+        @endif
+
     })
 
     $('.datepicker').datepicker({format: 'dd-mm-yyyy', autoclose: true, todayHighlight: true, orientation: 'bottom' });
@@ -540,9 +435,13 @@
         // $('#time_end').timepicker();
 
         function changeExpiry(){
+            let oldIssueDate = $('#old-issue-date').val();
             var days = $('#days').val();
             var issued_date = $('#issued_date').val();
             var exp = moment(issued_date, 'DD-MM-YYYY').add(days, 'days').toDate();
+            if(issued_date != oldIssueDate) {
+                $('#submit_btn').attr('disabled', false);
+            }
             $('#disp_expired_date').val(moment(exp).format('DD-MM-YYYY'));
             $('#expired_date').val(moment(exp).format('DD-MM-YYYY'));
         }
@@ -600,7 +499,7 @@
         //     }
         // }
 
-        
+
 
         $('#submit_btn').click(function(){
             var isLiquor = $('#isLiquor').val();
@@ -609,41 +508,41 @@
                 type =  $("input:radio[name='isLiquorVenue']:checked").val();
             }
             var hasFile = liqourDocValidation(type);
-            if(isLiquor == 1 ? type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form() : 1)
-            {
-                if(isLiquor) {
-                    if(type == 0)
-                    {
-                        liquorDetails = {
-                            company_name_en: $('#l_company_name_en').val(),
-                            company_name_ar: $('#l_company_name_ar').val(),
-                            purchase_receipt: $('#purchase_receipt').val(),
-                            liquor_service: $('#liquor_service').val(),
-                        };
-                        if($('#liquor_service').val() == 'limited'){
-                            liquorDetails['liquor_types'] = $('#liquor_types').val()
-                        }
-                    } else {
-                        liquorDetails = {
-                            liquor_permit_no: $('#liquor_permit_no').val(),
-                        };
-                    }
-                }
-                $.ajax({    
+            // if(isLiquor == 1 ? type == 0 ? liquorValidator.form() && hasFile : liquorProvidedValidator.form() : 1)
+            // {
+                // if(isLiquor) {
+                //     if(type == 0)
+                //     {
+                //         liquorDetails = {
+                //             company_name_en: $('#l_company_name_en').val(),
+                //             company_name_ar: $('#l_company_name_ar').val(),
+                //             purchase_receipt: $('#purchase_receipt').val(),
+                //             liquor_service: $('#liquor_service').val(),
+                //         };
+                //         if($('#liquor_service').val() == 'limited'){
+                //             liquorDetails['liquor_types'] = $('#liquor_types').val()
+                //         }
+                //     } else {
+                //         liquorDetails = {
+                //             liquor_permit_no: $('#liquor_permit_no').val(),
+                //         };
+                //     }
+                // }
+                $.ajax({
                     url:  "{{route('event.applyAmend')}}",
                     type:'POST',
-                    data: { 
+                    data: {
                         event_id: $('#event_id').val(),
                         issued_date: $('#issued_date').val(),
                         expired_date: $('#expired_date').val(),
                         time_start:  '',
                         type: type,
                         time_end: '',
-                        liquorDetails: liquorDetails,
+                        // liquorDetails: liquorDetails,
                         // liquorDocDetails: JSON.stringify(liquorDocDetails),
-                        liquorNames: JSON.stringify(liquorNames),
-                        event_liquor_id: $('#event_liquor_id').val()
-                    }, 
+                        // liquorNames: JSON.stringify(liquorNames),
+                        // event_liquor_id: $('#event_liquor_id').val()
+                    },
                     beforeSend: function() {
                         KTApp.blockPage({
                             overlayColor: '#000000',
@@ -654,7 +553,7 @@
                     },
                     success: function (result) {
                         KTApp.unblockPage();
-                        if(result) 
+                        if(result)
                         {
                             window.location.href = result.toURL;
                         }
@@ -662,12 +561,12 @@
 
             });
                 // localStorage.setItem('liquor_details', JSON.stringify(liquorDetails));
-                $('#liquor_details').modal('hide');
-            }
-           
+                // $('#liquor_details').modal('hide');
+            // }
+
         });
 
-         
+
         $('#regis_issue_date , #regis_expiry_date').datepicker({
             format: 'dd-mm-yyyy',
             autoclose: true,
@@ -700,7 +599,7 @@
             }else {
                 $('input[name="isTruck"]').filter('[value=1]').prop('checked', true);
             }
-           
+
         }
 
         $('.date-picker').datepicker({
@@ -737,7 +636,7 @@
             // var total = parseInt($('#truck_additional_doc > div').length);
             if(reqCount > 0)
             {
-                for (var i = 1; i <= reqCount; i++) 
+                for (var i = 1; i <= reqCount; i++)
                 {
                     if($('#truck-file-upload_'+i).length) {
                         if($('#truck-file-upload_'+i).contents().length === 0)
@@ -765,26 +664,21 @@
             return hasFile;
         }
 
-        
-        function go_back_truck_list()
-        {
-            $('#edit_food_truck').modal('show');
-            $('#edit_one_food_truck').modal('hide');
-        }
 
         function addLiquor() {
-            $('#liquor_details').modal('show'); 
+            $('#liquor_details').modal('show');
             checkLiquorVenue(0);
         }
+
 
         function editTruck(){
             var event_id = $('#event_id').val() ;
             var url = "{{route('event.fetch_truck_details_by_event_id', ':id')}}" ;
             url = url.replace(':id', event_id);
-            $.ajax({    
+            $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
                         $('#food_truck_list').empty();
                         // console.log(result);
@@ -792,19 +686,144 @@
                         for(var s = 0;s < result.length;s++)
                         {
                             var k = s + 1 ;
-                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"> <span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span></button>&emsp;<span id="append_'+s+'"></span></td></tr>');
+                           $('#food_truck_list').append('<tr class="text-center"><td>'+k+'</td><td>'+ result[s].company_name_en+'</td><td class="text-right">'+ result[s].company_name_ar+'</td><td>'+ result[s].plate_number+'</td><td>'+ result[s].food_type+'</td><td class="text-center"><span id="append_'+s+'"></span></td></tr>');
 
-                           if(result[s].paid == 0){
-                               $('#append_'+s+'').append('<a class="btn btn-secondary" data-target="#removeModal" data-toggle="modal"><i class="fa fa-trash fnt-16 text-danger"></i></a>');
+                           if(result[s].paid == 0 && result[s].status == 2){
+                               $('#append_'+s+'').append('<span onclick="editThisTruck('+result[s].event_truck_id+', '+k+')"><i class="fa fa-pen fnt-16 text-info"></i></span></button>&emsp;<a href="#" data-target="#removeModal" data-id="'+result[s].event_truck_id+'"  data-toggle="modal" id="remove-truck-btn"><i class="fa fa-trash fnt-16 text-danger"></i></a>');
                                $('#remove_truck_id').val(result[s].event_truck_id);
+                               $('#submit_btn').attr('disabled', false);
+                           }else {
+                               $('#append_'+s)
+                                   .append('<span><i class="fa fa-file fnt-16 " ' +
+                                       'onclick="viewTruck('+result[s].event_truck_id+')"></i></span>');
                            }
-
-                        
                         }
                     }
                 }
             });
         }
+
+        function viewTruck(id) {
+            var url = "{{route('event.fetch_this_truck_details', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url:  url,
+                success: function (result) {
+                    if(result)
+                    {
+                        $('#show-one-foodtruck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        $('#so_company_name_en').val(result.company_name_en);
+                        $('#so_company_name_ar').val(result.company_name_ar);
+                        $('#so_plate_no').val(result.plate_number);
+                        $('#so_food_type').val(result.food_type);
+                        $('#so_regis_issue_date').val(moment(result.registration_issued_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#so_regis_expiry_date').val(moment(result.registration_expired_date, 'YYYY-MM-DD').format('DD-MM-YYYY')).datepicker('update');
+                        $('#so_this_event_truck_id').val(result.event_truck_id);
+                        $('#show-one-foodtruck .ajax-file-upload-red').trigger('click');
+
+                        truckDocUploadView();
+                    }
+                }
+            });
+        }
+
+    const truckDocUploadView = () => {
+        var per_truck_doc = $('#so_truck_document_count').val();
+        var total = parseInt($('#so_truck_additional_doc > div').length);
+        for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+            let reqID = $('#truck_req_id_'+i).val();
+            truckDocUploader[i] = $('#so_truckuploader_'+i).uploadFile({
+                url: "{{route('event.uploadTruck')}}",
+                method: "POST",
+                fileName: "so_truck_file_"+i,
+                multiple: true,
+                downloadStr: `<i class="la la-download"></i>`,
+                deleteStr: `<i class="la la-trash"></i>`,
+                showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileSize: 5242880,
+                showFileCounter: false,
+                showProgress: false,
+                abortStr: '',
+                returnType: "json",
+                maxFileCount: 2,
+                showPreview: false,
+                showDownload: true,
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                formData: {
+                    id: i ,
+                    reqId: $('#so_truck_req_id_'+i).val()
+                },
+                downloadCallback: function (files, pd) {
+
+                    if(files)
+                    {
+                        let user_id = $('#user_id').val();
+                        let event_id = $('#event_id').val();
+                        let truck_id = $('#so_this_event_truck_id').val();
+                        let path = user_id+'/event/'+ event_id +'/truck/' +truck_id +'/'+reqID +'/' +files;
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }else {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/','');
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }
+
+                },
+                onLoad:function(obj)
+                {
+                    var ev_tr_id = $('#so_this_event_truck_id').val();
+                    $.ajax({
+                        url: "{{route('event.fetch_this_truck_docs')}}",
+                        type: 'POST',
+                        data: {
+                            truckId: ev_tr_id,
+                            reqId: $('#so_truck_req_id_'+i).val(),
+                        },
+                        dataType: "json",
+                        success: function(data)
+                        {
+                            if (data) {
+                                let j = 1 ;
+                                for(data of data) {
+                                    if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        // var cc = d.splice(4,5);
+                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+                    });
+                },
+            });
+            $('#truckuploader_'+i+'  div').attr('id', 'truck-upload_'+i);
+            $('#truckuploader_'+i+' + div').attr('id', 'truck-file-upload_'+i);
+        }
+    };
+
+        $(document).on('click', '#remove-truck-btn', function(){
+            var bookId = $(this).data('id');
+            $('#del-truck-id').val(bookId);
+        })
 
         $('#update_lq').click(function(){
             var type = $("input:radio[name='isLiquorVenue']:checked").val();
@@ -838,7 +857,7 @@
                             type: type,
                             event_id: $('#event_id').val(),
                             event_liquor_id: $('#event_liquor_id').val()
-                        },  
+                        },
                         success: function (result) {
                             if(result)
                             {
@@ -852,36 +871,20 @@
                 $('#liquor_details').modal('hide');
             }
         });
-        
+
 
         function addTruck(){
             // $('#edit_food_truck').modal('show');
-            $('#edit_food_truck').modal({
+            $('#amend_food_truck').modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true
             });
+            $('#edit_truck_title,#update_this_td').addClass('kt-hide');
+            truckDocUpload();
         }
 
-        function deleteThisTruck()
-        {
-            var id = $('#remove_truck_id').val();
-            var url = "{{route('event.delete_truck_details', ':id')}}";
-            url = url.replace(':id', id);
-            $.ajax({
-                url:  url,
-                success: function (result) {
-                    if(result.status.trim() == 'done') 
-                    {
-                        editTruck();
-                        $('#removeModal').modal('hide');
-                        $('#disp_mess').html('<h5 class="text-danger py-2">Food Truck Details Deleted successfully</h5>');
-                        setTimeout(function(){ $('#disp_mess').html('');}, 2000)
-                    }
-                }
-            });
-        }
-    
+
         function editThisTruck(id, num)
         {
             var url = "{{route('event.fetch_this_truck_details', ':id')}}";
@@ -889,19 +892,17 @@
             $.ajax({
                 url:  url,
                 success: function (result) {
-                    if(result) 
+                    if(result)
                     {
-                        // console.log(result);
-                        $('#edit_food_truck').modal('hide');
                         $('#edit_truck_title').show();
                         $('#add_truck_title').hide();
                         $('#update_this_td').show();
                         $('#add_new_td').hide();
-                        $('#edit_one_food_truck').modal({
-                backdrop: 'static',
-                keyboard: false,
-                show: true
-            });
+                        $('#amend_food_truck').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                         $('#company_name_en').val(result.company_name_en);
                         $('#company_name_ar').val(result.company_name_ar);
                         $('#plate_no').val(result.plate_number);
@@ -922,7 +923,7 @@
 
         $('#add_new_truck').click(function(){
             $('#this_event_truck_id').val('');
-            $('#edit_one_food_truck').modal({
+            $('#amend_food_truck').modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true
@@ -931,13 +932,7 @@
             $('#edit_truck_title').hide();
             $('#update_this_td').hide();
             $('#add_truck_title').show();
-            $('#add_new_td').show();
-            $('#edit_food_truck').modal('hide');
-            $('#edit_one_food_truck .ajax-file-upload-red').trigger('click');
-            // truckDocumentsValidator = $('#truck_upload_form').validate({
-            //     rules: truckDocRules,
-            //     messages: truckDocMessages
-            // });
+            $('#amend_food_truck .ajax-file-upload-red').trigger('click');
             truckDocUpload();
         });
 
@@ -970,11 +965,10 @@
                             if(result.status.trim() == 'done')
                             {
                                 editTruck();
-                                $('#edit_one_food_truck').modal('hide');
-                                $('#edit_food_truck').modal('show');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details Added successfully</h5>');
+                                $('#amend_food_truck').modal('hide');
+                                $('#disp_mess').html('<h5 class="text-success py-2">{!! __('Food Truck details Added successfully') !!}</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
-                                location.reload(true);
+                                $('#submit_btn').attr('disabled', false);
                             }
                         }
                     });
@@ -999,7 +993,7 @@
                 {
                     $.ajax({
                         url:  "{{route('event.add_update_truck')}}",
-                        type: 'POST', 
+                        type: 'POST',
                         data: {
                             truck_id : $('#this_event_truck_id').val(),
                             truckDetails: JSON.stringify(truck_details),
@@ -1008,13 +1002,13 @@
                             from: 'amend'
                         },
                         success: function (result) {
-                            if(result.status.trim() == 'done') 
+                            if(result.status.trim() == 'done')
                             {
                                 editTruck();
-                                $('#edit_food_truck').modal('show');
-                                $('#edit_one_food_truck').modal('hide');
-                                $('#disp_mess').html('<h5 class="text-success py-2">Food Truck details updated successfully</h5>');
+                                $('#amend_food_truck').modal('hide');
+                                $('#disp_mess').html('<h5 class="text-success py-2">{!! __('Food Truck details updated successfully') !!}</h5>');
                                 setTimeout(function(){ $('#disp_mess').html('');}, 2000);
+                                $('#submit_btn').attr('disabled', false);
                             }
                         }
                     });
@@ -1026,6 +1020,7 @@
             var per_truck_doc = $('#truck_document_count').val();
             var total = parseInt($('#truck_additional_doc > div').length);
             for(var i = 1; i <= parseInt(per_truck_doc) + total ;i++){
+                let reqID = $('#truck_req_id_'+i).val();
                     truckDocUploader[i] = $('#truckuploader_'+i).uploadFile({
                     url: "{{route('event.uploadTruck')}}",
                     method: "POST",
@@ -1048,11 +1043,11 @@
                     showDownload: true,
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {
-                        id: i , 
+                        id: i ,
                         reqId: $('#truck_req_id_'+i).val()
                     },
                     downloadCallback: function (files, pd) {
-                      
+
                         if(files)
                         {
                             let user_id = $('#user_id').val();
@@ -1071,7 +1066,7 @@
                             '_blank'
                             );
                         }
-                        
+
                     },
                     onLoad:function(obj)
                     {
@@ -1117,8 +1112,8 @@
                             type: 'POST',
                             data: {path: data.filepath, ext: data.ext, id: i },
                             success: function (result) {
-                                console.log('success');
-                            }   
+                                console.log('');
+                            }
                         });
                     }
                 });
@@ -1127,8 +1122,8 @@
             }
         };
 
- 
-    
+
+
 
 
         // script for liquor details
@@ -1136,7 +1131,7 @@
 
 
 
-       
+
         var liquorValidator = $('#liquor_details_form').validate({
             rules: {
                 l_company_name_en: 'required',
@@ -1171,7 +1166,7 @@
             // var total = parseInt($('#liquor_additional_doc > div').length);
             if(reqCount > 0)
             {
-                for (var d = 1; d <= reqCount; d++) 
+                for (var d = 1; d <= reqCount; d++)
                 {
                     let children = $('#liquor-file-upload_' + d).children();
                     let fileNames = Object.keys(children).map(function(key){
@@ -1216,7 +1211,7 @@
 
 
 
-    
+
         const liquorDocUpload = () => {
             var per_doc = $('#liquor_document_count').val();
             // var total = parseInt($('#liquor_additional_doc > div').length);
@@ -1225,7 +1220,7 @@
                     liquorDocUploader[i] = $('#liquoruploader_'+i).uploadFile({
                     url: "{{route('event.uploadLiquor')}}",
                     method: "POST",
-                    allowedTypes: "jpeg,jpg,png,pdf",       
+                    allowedTypes: "jpeg,jpg,png,pdf",
                     fileName: "liquor_file_"+i,
                     multiple: true,
                     downloadStr: `<i class="la la-download"></i>`,
@@ -1245,24 +1240,25 @@
                     uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
                     formData: {id:  i, reqId: reqID },
                     downloadCallback: function (files, pd) {
-                        if(files)
-                        {
+                        if(files.filepath) {
+                            let file_path = files.filepath;
+                            let path = file_path.replace('public/', '');
+                            window.open(
+                                "{{url('storage')}}" + '/' + path,
+                                '_blank'
+                            );
+                        }
+                        else {
                             let user_id = $('#user_id').val();
                             let event_id = $('#event_id').val();
                             let liquor_id = $('#event_liquor_id').val();
                             let path = user_id+'/event/'+ event_id +'/liquor/' +liquor_id +'/'+reqID +'/' +files;
                             window.open(
-                            "{{url('storage')}}"+'/' + path,
-                            '_blank'
-                            );
-                        }else {
-                            let file_path = files.filepath;
-                                let path = file_path.replace('public/','');
-                                window.open(
-                            "{{url('storage')}}"+'/' + path,
-                            '_blank'
+                                "{{url('storage')}}"+'/' + path,
+                                '_blank'
                             );
                         }
+
                     },
                     onLoad:function(obj)
                     {
@@ -1278,9 +1274,7 @@
                             success: function(data)
                             {
                                 if (data) {
-                                    let j = 1 ;
                                    for(data of data) {
-                                        if(j <= 2 ){
                                         let id = obj[0].id;
                                         let number = id.split("_");
                                         let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
@@ -1294,8 +1288,7 @@
                                             $('#liquor_doc_issue_date_' + number[1]).val(formatted_issue_date).datepicker('update');
                                             $('#liquor_doc_exp_date_' + number[1]).val(formatted_exp_date).datepicker('update');
                                         }
-                                        }
-                                    j++;
+
                                    }
                                 }
                             }
@@ -1312,7 +1305,7 @@
                             }
                         });
                     }
-                    
+
                 });
                 $('#liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
                 $('#liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
@@ -1337,9 +1330,8 @@
             }
         }
 
-        function changeLiquorService()
+        function changeLiquorService(service)
         {
-            var service = $('#liquor_service').val();
             if(service == 'limited')
             {
                 $('#limited_types').show();
@@ -1348,40 +1340,189 @@
             }
         }
 
-        // function editLiquor(){
-        //     var url = "{{route('event.fetch_liquor_details_by_event_id', ':id')}}";
-        //     url = url.replace(':id', $('#event_id').val());
-        //     $.ajax({
-        //         url:  url,
-        //         success: function (data) {
-        //             console.log(data)
-        //             if(data.length) 
-        //             {
-        //                 $('#liquor_details .ajax-file-upload-red').trigger('click');
-        //                 // $('#liquor_details').modal('show');
-        //                 $('#event_liquor_id').val(data.event_liquor_id);
-        //                 if(data.provided == 1)
-        //                 {
-        //                     checkLiquorVenue(1);
-        //                     $('#liquor_permit_no').val(data.liquor_permit_no);
-        //                     $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
-        //                 }else {
-        //                     checkLiquorVenue(0);
-        //                     $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
-        //                     $('#l_company_name_en').val(data.company_name_en);
-        //                     $('#l_company_name_ar').val(data.company_name_ar);
-        //                     $('#purchase_receipt').val(data.purchase_receipt);
-        //                     $('#liquor_service').val(data.liquor_service);
-        //                     changeLiquorService();
-        //                     $('#liquor_types').val(data.liquor_types);
-        //                     liquorDocUpload();
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
+        function setLiquorModal(id) {
+            $('#del-liquor-id').val(id);
+        }
 
-        
+    function editLiquor(id){
+            if(id){
+                var url = "{{route('liquor.show', ':id')}}";
+                url = url.replace(':id', id);
+                $.ajax({
+                    url:  url,
+                    success: function (data) {
+                        if(data)
+                        {
+                            $('#liquor_details .ajax-file-upload-red').trigger('click');
+                            $('#event_liquor_id').val(data.event_liquor_id);
+                            if(data.provided == 1)
+                            {
+                                checkLiquorVenue(1);
+                                $('#liquor_permit_no').val(data.liquor_permit_no);
+                                $("input:radio[name='isLiquorVenue'][value='1']").attr('checked', true);
+                            }else {
+                                checkLiquorVenue(0);
+                                $("input:radio[name='isLiquorVenue'][value='0']").attr('checked', true)
+                                $('#l_company_name_en').val(data.company_name_en);
+                                $('#l_company_name_ar').val(data.company_name_ar);
+                                $('#purchase_receipt').val(data.purchase_receipt);
+                                $('#liquor_service').val(data.liquor_service);
+                                changeLiquorService(data.liquor_service);
+                                $('#liquor_types').val(data.liquor_types);
+                                liquorDocUpload();
+                            }
+                            $('#liquor_details').modal('show');
+                        }
+                    }
+                });
+            }
+        }
+
+
+
+
+        function viewLiquor(id){
+            var url = "{{URL::signedRoute('liquor.show', ':id')}}";
+            url = url.replace(':id', id);
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if(data.provided == 1)
+                    {
+                        $('#vl_liquor_provided_form').show();
+                        $('#vl_liquor_provided_upload_form').show();
+                        $('#vl_liquor_details_form').hide();
+                        $('#vl_liquor_upload_form').hide();
+                    }else if(data.provided == 0) {
+                        $('#vl_liquor_provided_form').hide();
+                        $('#vl_liquor_provided_upload_form').hide();
+                        $('#vl_liquor_details_form').show();
+                        $('#vl_liquor_upload_form').show();
+                        // $('#liquor_upload_form-div').show();
+                    }
+                    if(data.provided == 1){
+                        $('#vl_liquor_permit_no').val(data.liquor_permit_no);
+                        $("input:radio[name='vl_isLiquorVenue'][value='1']").attr('checked', true);
+                    }else if(data.provided == 0) {
+                        $("input:radio[name='vl_isLiquorVenue'][value='0']").attr('checked', true);
+                        $('#vl_company_name_en').val(data.company_name_en);
+                        $('#vl_company_name_ar').val(data.company_name_ar);
+                        $('#vl_purchase_receipt').val(data.purchase_receipt);
+                        $('#vl_liquor_service').val(data.liquor_service);
+                        if(data.liquor_service == 'limited')
+                        {
+                            $('#vl_limited_types').show();
+                        }else{
+                            $('#vl_limited_types').hide();
+                        }
+                        $('#vl_liquor_types').val(data.liquor_types);
+                    }
+                    resetLiquorUploads();
+                    liquorDocUploadView();
+                    $('#show_liquor_details').modal('show');
+                }
+            });
+        }
+
+    const liquorDocUploadView = () => {
+        var per_doc = $('#vl_liquor_document_count').val();
+        // var total = parseInt($('#liquor_additional_doc > div').length);
+        for(var i = 1; i <=  parseInt(per_doc);i++){
+            var reqID =  $('#vl_liqour_req_id_'+i).val()  ;
+            liquorDocUploader[i] = $('#vl_liquoruploader_'+i).uploadFile({
+                url: "{{route('event.uploadLiquor')}}",
+                method: "POST",
+                allowedTypes: "jpeg,jpg,png,pdf",
+                fileName: "vl_liquor_file_"+i,
+                multiple: true,
+                downloadStr: `<i class="la la-download"></i>`,
+                showFileSize: false,
+                uploadStr: `{{__('Upload')}}`,
+                dragDropStr: "<span><b>{{__('Drag and drop Files')}}</b></span>",
+                maxFileSize: 5242880,
+                showFileCounter: false,
+                showProgress: false,
+                abortStr: '',
+                returnType: "json",
+                maxFileCount: 2,
+                showPreview: false,
+                showDelete:false,
+                showDownload: true,
+                uploadButtonClass: 'btn btn-secondary btn-sm ht-20 kt-margin-r-10',
+                formData: {id:  i, reqId: reqID },
+                downloadCallback: function (files, pd) {
+                    if(files.filepath) {
+                        let file_path = files.filepath;
+                        let path = file_path.replace('public/', '');
+                        window.open(
+                            "{{url('storage')}}" + '/' + path,
+                            '_blank'
+                        );
+                    }
+                    else {
+                        let user_id = $('#user_id').val();
+                        let event_id = $('#event_id').val();
+                        let liquor_id = $('#vl_event_liquor_id').val();
+                        let path = user_id+'/event/'+ event_id +'/liquor/' +liquor_id +'/'+reqID +'/' +files;
+                        window.open(
+                            "{{url('storage')}}"+'/' + path,
+                            '_blank'
+                        );
+                    }
+
+                },
+                onLoad:function(obj)
+                {
+                    var ev_lq_id = $('#vl_event_liquor_id').val();
+                    $.ajax({
+                        url: "{{route('event.fetch_this_liquor_docs')}}",
+                        type: 'POST',
+                        data: {
+                            liquor_id: ev_lq_id,
+                            reqId: $('#vl_liqour_req_id_'+i).val(),
+                        },
+                        dataType: "json",
+                        success: function(data)
+                        {
+                            if (data) {
+                                let j = 1 ;
+                                for(data of data) {
+                                    if(j <= 2 ){
+                                        let id = obj[0].id;
+                                        let number = id.split("_");
+                                        let formatted_issue_date = moment(data.issue_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        let formatted_exp_date = moment(data.expired_date,'YYYY-MM-DD').format('DD-MM-YYYY');
+                                        const d = data["path"].split("/");
+                                        // var cc = d.splice(4,5);
+                                        // let docName =  cc.length > 1 ? cc.join('/') : cc ;
+                                        let docName = d[d.length - 1];
+                                        obj.createProgress(docName, "{{url('storage')}}"+'/' + data["path"], '');
+                                    }
+                                    j++;
+                                }
+                            }
+                        }
+                    });
+                },
+
+
+            });
+            $('#vl_liquoruploader_'+i+'  div').attr('id', 'liquor-upload_'+i);
+            $('#vl_liquoruploader_'+i+' + div').attr('id', 'liquor-file-upload_'+i);
+        }
+    };
+
+
+    function resetLiquorUploads(){
+            let  per_doc = $('#liquor_document_count').val();
+            // var total = parseInt($('#liquor_additional_doc > div').length);
+            for(let i = 1; i <=  parseInt(per_doc);i++){
+                let uploadObj =$('#liquoruploader_'+i).uploadFile();
+                uploadObj.reset();
+            }
+        }
+
+
 
 </script>
 @endsection

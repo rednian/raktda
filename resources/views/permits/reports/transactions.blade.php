@@ -91,7 +91,7 @@
                 <th>{{__('TRANSACTION ID')}}</th>
                 <th>{{__('RECEIPT NO')}}</th>
                 <th>{{__('Amount')}}(AED)</th>
-                <th>{{__('Vat')}}(5%)</th>
+                <th>{{__('Discount')}}</th>
                 <th>{{__('Total')}}(AED)</th>
                 <th>{{__('Paid For')}}</th>
                 <th>{{__('Date')}}</th>
@@ -125,7 +125,7 @@
         var end = moment();
         var selected_date = [];
 
-        
+
         var t = $('#transaction-details-table').DataTable({
             dom: "<'row d-none'<'col-sm-12 col-md-2'l><'col-sm-12 col-md-10'>f>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -150,11 +150,11 @@
                 { data: 'transaction_id', name: 'transaction_id' },
                 { data: 'receipt_no', name: 'receipt_no' },
                 { data: 'amount', name: 'amount' , className:"no-wrap text-right" },
-                { data: 'vat', name: 'vat' , className: 'no-wrap text-right'},
+                { data: 'discount', name: 'discount' , className: 'no-wrap text-right'},
                 { data: 'total', name: 'total' , className: 'no-wrap text-right'},
                 { data: 'from', name: 'from' , className: 'no-wrap'},
                 { data: 'created_at', name: 'created_at' , className: 'no-wrap'},
-                
+
                 { data: 'action', name: 'action' ,  className: "text-center"},
             ],
             columnDefs: [
@@ -204,7 +204,7 @@
                                 .prepend(
                                     '<img src="{{asset('img/raktdalogo.png')}}"/>'
                                 );
-                            
+
                             // $(win.document.body).find('table').removeClass("table-borderless border");
                             // $(win.document.body).find('table').attr('border', 1);
                             $(win.document.body).find( 'table' )
@@ -213,7 +213,7 @@
                         }
                 }
             ]
-            
+
         });
 
         $('input#applied-date-from').daterangepicker({
@@ -240,7 +240,7 @@
          t.draw();
         });
 
-        
+
 
         function excelTransactions()
         {

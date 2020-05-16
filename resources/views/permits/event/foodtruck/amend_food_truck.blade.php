@@ -1,9 +1,11 @@
-<div class="modal fade" id="edit_one_food_truck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="amend_food_truck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" style=" overflow-y:auto">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{__('View Food Truck')}}
+                <h5 class="modal-title" id="edit_truck_title">{{__('Edit Food Truck')}}
+                </h5>
+                <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 </button>
@@ -13,36 +15,37 @@
                     <div class="row">
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (EN)')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="company_name_en"
-                                id="company_name_en" disabled>
+                            <input type="text" dir="ltr" class="form-control form-control-sm" name="company_name_en"
+                                id="company_name_en" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Establishment Name (AR)')}}</label>
-                            <input type="text" class="form-control form-control-sm" name="company_name_ar"
-                                id="company_name_ar" disabled>
+                            <input type="text" dir="rtl" class="form-control form-control-sm" name="company_name_ar"
+                                id="company_name_ar" autocomplete="off">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Types of provided F&B')}}</label>
-                            <textarea type="text" class="form-control form-control-sm" name="food_type" id="food_type"
-                                disabled placeholder="food type" rows="2"></textarea>
+                            <textarea class="form-control form-control-sm" name="food_type" id="food_type"
+                                autocomplete="off" placeholder="{{__('Food Services')}}" rows="2"></textarea>
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Traffic Plate No')}}</label>
                             <input type="text" class="form-control form-control-sm" name="plate_no" id="plate_no"
-                                disabled placeholder="{{__('Traffic Plate No')}}">
+                                autocomplete="off" placeholder="{{__('Traffic Plate No')}}">
                         </div>
-
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
                             </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_issue_date"
-                                data-date-end-date="+0d" id="regis_issue_date" disabled placeholder="DD-MM-YYYY">
+                                data-date-end-date="+0d" id="regis_issue_date" autocomplete="off"
+                                placeholder="DD-MM-YYYY">
                         </div>
                         <div class="col-md-4 form-group form-group-xs">
                             <label for="" class="col-form-label kt-font-bold">{{__('Vehicle Registration Issue Date')}}
                             </label>
                             <input type="text" class="form-control form-control-sm date-picker" name="regis_expiry_date"
-                                data-date-start-date="+0d" id="regis_expiry_date" disabled placeholder="DD-MM-YYYY">
+                                data-date-start-date="+0d" id="regis_expiry_date" autocomplete="off"
+                                placeholder="DD-MM-YYYY">
                         </div>
                         <input type="hidden" id="this_event_truck_id">
                     </div>
@@ -61,7 +64,7 @@
                         <div class="col-lg-4 col-sm-12">
                             <label
                                 class="kt-font-bold text--maroon">{{getLangId() == 1 ? ucfirst($req->requirement_name) : $req->requirement_name_ar  }}
-                                <span id="cnd_{{$i}}"></span>
+                                <span class="text-danger">*</span>
                             </label>
                             <p for="" class="reqName">
                                 {{getLangId() == 1 ? ucfirst($req->requirement_description) : $req->requirement_description_ar}}
@@ -97,6 +100,10 @@
                     @endphp
                     @endforeach
                 </form>
+                <div class="d-flex justify-content-between kt-margin-t-10 pull-right">
+                    <button class="btn btn-sm btn--maroon" id="update_this_td">{{__('Update')}}</button>
+                    <button class="btn btn-sm btn--maroon" id="add_new_td">{{__('Add')}}</button>
+                </div>
             </div>
         </div>
     </div>
