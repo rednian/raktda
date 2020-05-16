@@ -328,6 +328,7 @@
     "Qty":"الكمية",
     "Ras Al Khaimah":"راس الخيمة",
     "Receipt no":"رقم الإيصال",
+    "Receipt No":"رقم الإيصال",
     "REFERENCE NO.":"رقم المرجع",
     "Reference No.":"رقم المرجع",
     "Registration Expiry Date":"تاريخ انتهاء تسجيل المركبة",
@@ -385,6 +386,7 @@
     "TRADE LICENSE NUMBER":"رقم الرخصة التجارية",
     "Traffic Plate No":"رقم اللوحة المرورية",
     "transaction id":"رقم المعاملة",
+
     "transaction reports":"تقارير المعاملات المالية",
     "truck fee":"رسوم عربة طعام",
     "Types of liquor service":"أنواع المشروبات الكحولية المقدمة",
@@ -832,6 +834,7 @@
     "BLOCKED ARTISTS":"فنانين محظورين",
     "Transactions":"المعاملات",
     "LAST 7 DAYS":"آخر 7 أيام",
+    "Transaction ID":"رقم المعاملة",
     "ALL":"الكل",
     "LAST 30 DAYS":"آخر 30 يوم",
     "THIS MONTH":"الشهر الحالي",
@@ -857,6 +860,7 @@
     "Minor":"قاصر",
     "Adult":"بالغ",
     "EVENTS IN NEXT 60 DAYS":"فعاليات في الـ 60 يوم القادمة",
+    "Total Discount": "إجمالي الخصم\n",
     "Applied Date":"تاريخ التقديم",
     "Last 30 Days":"آخر 30 يوم",
     "Today":"اليوم",
@@ -880,6 +884,7 @@
     "This Month":"الشهر الحالي",
     "EVENT DATE":"تاريخ الفعالية",
     "DISCOUNT(AED)": "خصم(AED)",
+    "DISCOUNT(AED)": "خصم(%)",
     "Discount": "خصم",
     "Back":"الرجوع"
 }

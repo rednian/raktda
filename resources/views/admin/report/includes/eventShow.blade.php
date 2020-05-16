@@ -114,10 +114,10 @@
     </section>
 
     <section>
-        <iframe class="border kt-padding-5" id='mapcanvas'
+       {{-- <iframe class="border kt-padding-5" id='mapcanvas'
                 src='https://maps.google.com/maps?q={{ urlencode($event->full_address)}}&Roadmap&z=10&ie=UTF8&iwloc=&output=embed&z=17'
                 style="height: 350px; width: 100%; margin-top: 1%; border-style: none;">
-        </iframe>
+        </iframe>--}}
         </div>
         <div class="col-md-5">
             <a href="{{url('artist_reports#event-report-section')}}"><button style="    background-color: #b45454; color: white; line-height: 14px; box-shadow: -1px 6px 11px -6px #969696; border: none; border-radius: 3px;" class="btn blue-gradient pull-right">
