@@ -95,7 +95,7 @@
 																	<div class="col-md-6">
 																			<label class="kt-font-dark">{{ __('Application Type') }}</label>
 																		<div class="input-group input-group-sm">
-																	<input value="{{ ucfirst($event->firm) }}" name="no_of_trucks" readonly="readonly" type="text"
+																	<input value="{{ __(ucfirst($event->firm)) }}" name="no_of_trucks" readonly="readonly" type="text"
 																						class="form-control">
 																	<div class="input-group-append">
 																		<span class="input-group-text">
@@ -144,7 +144,7 @@
 															<div class="col-sm-6">
 																	<label class="kt-font-dark">{{ __('Event Type') }} <span class="text-danger">*</span></label>
 																	<div class="input-group input-group-sm">
-																	<input value="{{ ucfirst($event->type->name_en) }}" name="event_type" readonly="readonly" type="text"
+																	<input value="{{ ucfirst($event->type->name) }}" name="event_type" readonly="readonly" type="text"
 																						class="form-control">
 																	<div class="input-group-append">
 																		<span class="input-group-text">
@@ -174,7 +174,7 @@
 														</div>
 														<div class="row form-group form-group-sm">
 															<div class="col-md-6">
-																<label class="kt-font-dark">{{ __('Event Name') }} <span class="text-danger">*</span></label>
+																<label class="kt-font-dark">{{ __('Event Name (EN)') }} <span class="text-danger">*</span></label>
 																<div class="input-group input-group-sm">
 																	<input value="{{ ucfirst($event->name_en) }}" name="name_en" readonly="readonly" type="text" class="form-control">
 																	<div class="input-group-append ">
@@ -205,7 +205,7 @@
 														</div>
 														<div class="row form-group form-group-sm">
 															<div class="col-md-6">
-																<label class="kt-font-dark">{{ __('Owner Name') }} <span class="text-danger">*</span></label>
+																<label class="kt-font-dark">{{ __('Owner Name (EN)') }} <span class="text-danger">*</span></label>
 																<div class="input-group input-group-sm">
 																	<input value="{{ ucfirst($event->owner_name) }}" name="name_en" readonly="readonly" type="text" class="form-control">
 																	<div class="input-group-append ">
@@ -302,8 +302,10 @@
 																			<label class="kt-font-dark">{{ __('Event Duration') }} <span class="text-danger">*</span></label>
 																			<div class="input-group input-group-sm">
 																			@php
-																				$date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
-																				$day = $date > 1 ? ' Days' :' Day';
+                                                                                $date = Carbon\Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
+                                                                                $date = $date +1;
+                                                                                $day = $date > 1 ? ' '.__('Days') : ' '.__('Day');
+                                                                                // dd();
 																			@endphp
 																				<input value="{{ $date.$day }}" name="issued_date" readonly="readonly" type="text"
 																								class="form-control">

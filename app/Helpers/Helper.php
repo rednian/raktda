@@ -457,7 +457,11 @@ function getPaymentOrderId($from, $id)
     $payment_no = '';
     // dd($last_transaction);
     if (empty($last_transaction) || $last_transaction->payment_order_id == null) {
+<<<<<<< HEAD
         $payment_no = sprintf("%07d",  425);
+=======
+        $payment_no = sprintf("%07d",  435);
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
     } else {
         $last_trn = explode('-', $last_transaction->payment_order_id);
         $last_year = $last_trn[1];
@@ -621,3 +625,24 @@ function storeArtistPermitPrint($id)
     function getProfession($id) {
         return App\Profession::find($id);
     }
+<<<<<<< HEAD
+=======
+
+    function getExemptPercentage($transactions)
+    {
+        $data['artistPermit'] = [];
+
+        if(!$transactions->artistPermitTransaction->isEmpty()){
+            $data['artistPermit'] =  $transactions->artistPermitTransaction->groupBy(function ($item, $key){
+                return $item->artistPermit->profession_id;
+            });
+            $artistTransactionArray = $transactions->artistPermitTransaction->toArray();
+            $data['exempt'] = count($artistTransactionArray) > 0 ? $artistTransactionArray[0]['exempt_percentage'] : 0 ;
+        }else {
+            $eventTransactionArray = $transactions->eventTransaction->toArray();
+            $data['exempt'] = count($eventTransactionArray) > 0 ? $eventTransactionArray[0]['exempt_percentage'] : 0 ;
+        }
+
+        return $data;
+    }
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae

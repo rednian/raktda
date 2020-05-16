@@ -155,7 +155,7 @@
                         <div class="form-group row form-group-sm">
                             <div class="col-md-6">
                                 <label class="kt-checkbox kt-checkbox--default kt-font-dark">
-                                  <input name="bypass_payment" value="1" type="checkbox"> {{ __('Bypass the payment') }}
+                                  <input name="bypass_payment" value="1" type="checkbox"> {{ __('Give Discount') }}
                                   <span></span>
                                 </label>
                             </div>
@@ -231,8 +231,8 @@
                   <i class="la la-glass"></i>
                 </div>
                 <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{__('HAS LIQUOR')}}</span>
-                  <span class="kt-widget__value">{{$event->liquor()->exists() > 0 ? 'YES' : 'NO'}}</span>
+                  <span class="kt-widget__title">{{__('HAS A LIQUOR?')}}</span>
+                  <span class="kt-widget__value">{{$event->liquor()->exists() > 0 ? __('YES') : __('NO')}}</span>
                 </div>
               </div>
               <div class="kt-widget__item kt-padding-t-5">
@@ -240,7 +240,7 @@
                   <i class="flaticon-web"></i>
                 </div>
                 <div class="kt-widget__details">
-                  <span class="kt-widget__title">{{{__('IMAGES')}}}</span>
+                  <span class="kt-widget__title">{{{__('EVENT IMAGES')}}}</span>
                   <a href="#" class="kt-widget__value">{{$event->otherUpload()->count()}}</a>
                 </div>
               </div>
@@ -418,7 +418,7 @@
                             </tr>
                         </table>
                         <hr>
-                         <h6 class="kt-font-dark kt-font-transform-u">{{ __('Contact Information') }}</h6>
+                         <h6 class="kt-font-dark kt-font-transform-u">{{ __('CONTACT INFORMATION') }}</h6>
                         <table class="table table-borderless table-sm table-display">
                             <tr>
                                 <td class="no-wrap"><span style="font-size: large;" class="flaticon-profile-1"></span> </td>
@@ -613,7 +613,7 @@
                         <th class="no-wrap">{{ __('NAME') }}</th>
                         <th>{{ __('REMARKS') }}</th>
                         <th class="no-wrap">{{ __('DATE') }}</th>
-                        <th class="no-wrap">{{ __('ACTION TAKEN') }}</th>
+                        <th class="no-wrap">{{ __('ACTION') }}</th>
                     </tr>
                 </thead>
             </table>

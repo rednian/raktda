@@ -9,8 +9,7 @@
                 <div class="d-flex" style="position: absolute;{{ getlangId() == 1 ? 'right:5rem'  : 'left:5rem' }}">
                     <button class="btn btn-sm btn--yellow" id="add_new_truck"><i class="fa fa-plus"></i>
                         {{__('Add New')}}</button>
-                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"><i
-                            class="fa fa-check"></i> {{__('Update')}}</button>
+                    <button class="btn btn-sm btn--maroon ml-2" data-dismiss="modal" onclick="changeIsTruck()"> {{__('Update')}}</button>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button>
@@ -55,7 +54,7 @@
                 </h5>
                 <h5 class="modal-title" id="add_truck_title">{{__('Add Food Truck')}}
                 </h5>
-                <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-arrow-left"></i>
+                <button class="btn btn-sm btn--yellow" onclick="go_back_truck_list()"><i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     {{__('BACK')}}</button>
                 {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="changeIsTruck()">
                 </button> --}}

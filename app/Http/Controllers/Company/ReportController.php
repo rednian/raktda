@@ -167,7 +167,11 @@ class ReportController extends Controller
 
         $transactions = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
 
+<<<<<<< HEAD
         $data = $this->getTransactions($transactions);
+=======
+        $data = getExemptPercentage($transactions);
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
         $data['transaction'] = $transactions;
 
@@ -182,7 +186,11 @@ class ReportController extends Controller
 
         $transactions = Transaction::with('artistPermitTransaction', 'eventTransaction')->where('transaction_id', $id)->latest()->first();
 
+<<<<<<< HEAD
         $data = $this->getTransactions($transactions);
+=======
+        $data = getExemptPercentage($transactions);
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
         $data['transaction'] = $transactions;
 
@@ -190,6 +198,7 @@ class ReportController extends Controller
 
     }
 
+<<<<<<< HEAD
     public function getTransactions($transactions)
     {
         $data['artistPermit'] = [];
@@ -208,6 +217,8 @@ class ReportController extends Controller
         return $data;
     }
 
+=======
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
     public function showevent(Request $request, $id){
         if(!$request->hasValidSignature()){
             return abort(401);

@@ -53,8 +53,8 @@
                       <span class="kt-widget__stat kt-padding-l-0">
                       @php
                         $date =Carbon\Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
-                        $date = $date !=  0 ? $date : 1;
-                        $day = $date > 1 ? ' Days': ' Day';
+                        $date = $date + 1;
+                        $day = $date > 1 ? ' '.__('Days'): ' '.__('Day');
                       @endphp
                       {{$date.$day}}
                       </span>

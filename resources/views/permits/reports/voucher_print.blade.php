@@ -146,6 +146,15 @@
             font-size: 10px;
         }
 
+<<<<<<< HEAD
+=======
+        .discount-tr {
+            border-bottom: 1px solid #000 !important;
+        }
+
+
+
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
     </style>
 </head>
 
@@ -220,7 +229,11 @@
         <table class="full-width">
             <tr>
                 <td class="text-left" style="width:25%;">
+<<<<<<< HEAD
                     <b> {{__('No of Days')}}</b>
+=======
+                    <b> {{__('No.of.days')}}</b>
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                 </td>
                 <td class="text-left" style="width:25%;">
                     {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}
@@ -348,7 +361,11 @@
                         <td id="total_amt" class="pull-right kt-font-bold">{{number_format($feetotal,2)}}</td>
                     </tr>
                     @if(!is_null($exempt) && $exempt > 0)
+<<<<<<< HEAD
                         <tr style="border-bottom:1px solid #000;">
+=======
+                        <tr>
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                             <td>
                                 {{__('Discount Amount')}}
                             </td>
@@ -403,7 +420,12 @@
                      let discount = feeTotal * ( parseInt(exempt) / 100);
                      let grandTotal = feeTotal - discount;
 
+<<<<<<< HEAD
                      document.querySelector('#discount-amount').innerHTML = formatAmount(discount);
+=======
+                     document.querySelector('#discount-amount').innerHTML = '- '+formatAmount(discount);
+                     document.querySelector('#discount-amount').setAttribute('style', 'color: #34bfa3');
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                      document.querySelector('#grand-total').innerHTML = formatAmount(grandTotal);
 
                  }

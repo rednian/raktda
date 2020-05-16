@@ -272,7 +272,7 @@ class ArtistPermitController extends Controller
                         ])->latest()->first();
                     }
 
-                    $comment->update($request->except(['_token', 'bypass_payment']));
+                    $comment->update($request->except(['_token', 'bypass_payment', 'exempt_percentage'=>$request->exempt_percentage]));
 
                     //RESET LOCK TO NONE
                     $permit->update([
@@ -287,7 +287,7 @@ class ArtistPermitController extends Controller
 
                         $permit->exempt_payment = 1;
                         $permit->exempt_by = $request->user()->user_id;
-                        $permit->exempt_percentage = $request->exempt_percentage;
+                        // $permit->exempt_percentage = $request->exempt_percentage;
                         $permit->save();
                     }
 
@@ -854,8 +854,9 @@ class ArtistPermitController extends Controller
                     // return duration($permit->expired_date, $permit->issued_date);
                     // return $date = Carbon::parse($permit->expired_date)->diffInHumans($permit->issued_date);
                     $date = Carbon::parse($permit->expired_date)->diffInDays($permit->issued_date);
-                    $date = $date !=  0 ? $date : 1;
-                    $day = $date > 1 ? ' Days': ' Day';
+                    // $date = $date !=  0 ? $date : 1;
+                    $date = $date + 1;
+                    $day = $date > 1 ? ' '.__('Days'): ' '.__('Day');
                     return $date.$day;
                 })
                 ->editColumn('approved_date', function($permit){

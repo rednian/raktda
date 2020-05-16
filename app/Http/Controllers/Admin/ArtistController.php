@@ -67,7 +67,7 @@
 				$request['action'] = $request->status == 'active' ?  'unblocked' : $request->status;
 				$request['user_id'] = $request->user()->user_id;
 				$artist->action()->create($request->all());
-				$result = ['success', 'Artist has been '.$request->action.' Successfully ', 'Success'];
+				$result = ['success', __('Artist has been '.$request->action.' Successfully '), 'Success'];
 			} catch (Exception $e) {
 				$result = ['danger', $e->getMessage(), 'Error'];
 

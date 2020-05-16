@@ -420,7 +420,10 @@
                                                         <div class="card-title kt-padding-t-10 kt-padding-b-5" data-toggle="collapse"
                                                              data-target="#collapse-requirement" aria-expanded="true" aria-controls="collapse-requirement">
                                                             <h6 class="kt-font-dark "><span class="kt-font-transform-u">{{__('Required Documents')}}</span>
+<<<<<<< HEAD
                                                                 <small>Please upload the  documents.</small>
+=======
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                                                             </h6>
                                                         </div>
                                                     </div>

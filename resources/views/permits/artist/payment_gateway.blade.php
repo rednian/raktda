@@ -507,7 +507,12 @@
         function discountFunction(artistTotalFee) {
             var exempt = $('#exempt-percentage').val();
             var discount = calculateDiscount(artistTotalFee, exempt);
+<<<<<<< HEAD
             $('#discount-amount').html(formatAmount(discount));
+=======
+            $('#discount-amount').html('- '+formatAmount(discount));
+            $('#discount-amount').addClass('text-success');
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
             $('#discount').val(discount);
             var total = artistTotalFee - parseInt(discount) ;
             $('#grand-total').html(formatAmount(total));

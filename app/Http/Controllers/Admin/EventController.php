@@ -522,10 +522,10 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ?  ucfirst($requirement->requirement_name) : $requirement->requirement_name_ar;
 			})
 			->addColumn('start', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : 'Not Required';
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->issued_date->format('d-M-Y') : '-';
 			})
 			->addColumn('end', function($requirement){
-				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : 'Not Required';
+				return $requirement->dates_required == 1 ? $requirement->eventRequirement()->first()->expired_date->format('d-M-Y') : '-';
 			})
 			->addColumn('type', function($requirement){
 				return strtoupper($requirement->eventRequirement()->first()->type);
@@ -535,7 +535,7 @@ class EventController extends Controller
 				$files = $requirement->eventRequirement()->where('event_id', $event->event_id)->get();
 				$html = '<div class="kt-badge kt-badge__pics">';
 				foreach ($files as $index => $file) {
-					$html .= '<a href="'.asset('/storage/'.$file->path).'" data-fancybox="images" data-fancybox data-caption="'.$name.'" class="kt-badge__pic">';
+					$html .= '<a href="'.asset('/storage/'.$file->path).'" data-fancybox data-caption="'.$name.'" class="kt-badge__pic">';
 					$html .= fileExtension($file->path);
 					$html .= '</a>';
 					if($index > 5){
@@ -578,7 +578,6 @@ class EventController extends Controller
 
 		public function artistDatatable(Request $request, Event $event)
 		{
-
 			if (!is_null($event->permit)) {
 				$permit = $event->permit->artistPermit()->get();
 			}
@@ -643,15 +642,21 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($truck){
-				 return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->issued_date)) : 'Not Required';
+				 return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($truck){
-				return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->expired_date)) : 'Not Required';
+				return $truck->requirement->dates_required == 1 ? date('d-M-Y',strtotime($truck->expired_date)) : '-';
 			})
 			->addColumn('files', function($truck) use ($request){
 				$name = $request->user()->LanguageId == 1 ? ucwords($truck->requirement->requirement_name) : $truck->requirement->requirement_name_ar;
-				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$truck->path).'" data-fancybox="gallery2"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($truck->path).'</a>';
-			})
+				return '<a class="kt-padding-l-20" href="'.asset('/storage/'.$truck->path).'"  data-fancybox data-caption="'.$name.'">'.strtolower($name).'.'.fileName($truck->path).'</a>';
+            })
+            // ->editColumn('document_name', function($artist_permit_document){
+            //     $name = '<a href="'.asset('/storage/'.$artist_permit_document->path).'" data-fancybox data-fancybox data-caption="'.ucwords($artist_permit_document->requirement->requirement_name).'">';
+            //     $name .= ucwords($artist_permit_document->requirement->requirement_name);
+            //     $name .='</a>';
+            //     return $name;
+            // })
 			->rawColumns(['files', 'name'])
 			->make(true);
 		}
@@ -663,10 +668,10 @@ class EventController extends Controller
 				return $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;
 			})
 			->addColumn('issued_date', function($liquor){
-				 return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->issued_date)) : 'Not Required';
+				 return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($liquor){
-				return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->expired_date)) : 'Not Required';
+				return $liquor->requirement->dates_required == 1 ? date('d-M-Y',strtotime($liquor->expired_date)) : '-';
 			})
 			->addColumn('files', function($liquor) use ($request){
 				$name = $request->user()->LanguageId == 1 ? ucwords($liquor->requirement->requirement_name) : $liquor->requirement->requirement_name_ar;
@@ -683,7 +688,7 @@ class EventController extends Controller
 			$requirements = DataTables::of($event->eventRequirement)
 			->addColumn('name', function($requirement) use ($request){
                 if($requirement->type == 'event'){
-                    return $requirement->requirement->requirement_name;
+                    return $requirement->requirement->name;
                 }
                 if($requirement->type == 'additional'){
                     return $requirement->additionalRequirement->requirement_name;
@@ -691,10 +696,10 @@ class EventController extends Controller
                 }
 			})
 			->addColumn('issued_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->issued_date)) : '-';
 			})
 			->addColumn('expired_date', function($requirement){
-				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : 'Not Required';
+				 return $requirement->dates_required == 1 ? date('d-M-Y',strtotime($requirement->eventRequirement()->first()->expired_date)) : '-';
 			})
 			->addColumn('files', function($requirement) use ($request){
                 if($requirement->type == 'event'){
@@ -716,10 +721,10 @@ class EventController extends Controller
 			$data = $requirements->getData(true);
 				if ($event->logo_thumbnail) {
 				$data['data'][] = [
-				    'name' => 'Event Logo',
+				    'name' => __('Event Logo'),
 				    'files' => '<a class="kt-padding-l-20" href="'.asset('/storage/'.$event->logo_thumbnail).'" data-fancybox data-caption="Event Logo">event logo.'.fileName($event->logo_thumbnail).'</a>',
-				    'issued_date'=> 'Not Required',
-				    'expired_date'=> 'Not Required',
+				    'issued_date'=> '-',
+				    'expired_date'=> '-',
 				];
 				}
 
@@ -805,7 +810,8 @@ class EventController extends Controller
           			'action' => $request->action,
           			'comment' => $request->comment,
           			'comment_ar' => $request->comment_ar,
-          			'user_id' => $request->user()->user_id
+                      'user_id' => $request->user()->user_id,
+                      'exempt_percentage'=> $request->exempt_percentage
           		]);
 
 				// CHECK IF EXEMPTED FOR PAYMENT
@@ -815,7 +821,7 @@ class EventController extends Controller
 
                   $event->exempt_payment = 1;
                   $event->exempt_by = $request->user()->user_id;
-                  $event->exempt_percentage = $request->exempt_percentage;
+                //   $event->exempt_percentage = $request->exempt_percentage;
                   $event->save();
               	}
 
@@ -881,10 +887,11 @@ class EventController extends Controller
                     })
                     ->addColumn('duration', function($event) use ($user){
                         $date = Carbon::parse($event->expired_date)->diffInDays($event->issued_date);
-                        $date = $date !=  0 ? $date : 1;
-                        $day = $date > 1 ? ' Days': ' Day';
-                        return $date.$day;
-                        return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
+                        // $date = $date !=  0 ? $date : 1;
+                        $date = $date + 1;
+                        $day = $date > 1 ? __('Days'): __('Day');
+                        return $date.' '.$day;
+                        // return Carbon::parse($event->issued_date)->diffInDays($event->expired_date);
                     })
                     ->addColumn('expected_audience', function($event){ return $event->audience_number; })
                     ->addColumn('owner',function($event) use ($request){
@@ -907,7 +914,7 @@ class EventController extends Controller
                     })
                     ->editColumn('request_type', function($event){
 
-                        return ucwords(requestType($event->request_type));
+                        return __(ucwords(requestType($event->request_type)));
                     })
                     ->addColumn('description',function($event) use ($user){
                         return ucfirst($event->description);
@@ -927,7 +934,7 @@ class EventController extends Controller
 					$display = $event->is_display_all ? __('YES'): __('NO');
                     })
                     ->addColumn('event_name', function($event) use ($user){ return ucfirst($event->name); })
-                    ->addColumn('type', function($event){return ucwords(__($event->firm)); })
+                    ->addColumn('type', function($event){return __(ucwords(__($event->firm))); })
                     ->editColumn('updated_at', function($event){
                         return '<span title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-original-title="'.$event->updated_at->format('l d-F-Y h:i A').'" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" class="text-underline">'.humanDate($event->updated_at).'</span>';
                     })

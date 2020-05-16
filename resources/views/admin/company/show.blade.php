@@ -286,9 +286,9 @@
                               <th>{{__('PERMIT NO.')}}</th>
                               <th>{{__('EVENT DURATION')}}</th>
                               <th>{{__('APPLICATION TYPE')}}</th>
-                              <th>{{__('EVENT STATUS')}}</th>
+                              <th>{{__('STATUS')}}</th>
                               <th>{{__('VENUE')}}</th>
-                              <th>{{__('LOCATION')}}</th>
+                              <th>{{__('ADDRESS')}}</th>
                               <th>{{__('START DATE')}}</th>
                               <th>{{__('END DATE')}}</th>
                               <th>{{__('TIME')}}</th>

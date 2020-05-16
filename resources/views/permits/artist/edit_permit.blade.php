@@ -22,7 +22,7 @@
         <div class="kt-portlet__head-toolbar">
             <div class="my-auto float-right permit--action-bar">
                 <button id="back_btn" class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     {{__('BACK')}}
                 </button>
                 {{-- <a href="{{url('company/artist/add_artist_to_permit/edit/'.$permit_details->permit_id)}}"
@@ -39,7 +39,7 @@
 
             <div class="my-auto float-right permit--action-bar--mobile">
                 <button id="back_btn_sm" class="btn btn--maroon btn-sm">
-                    <i class="la la-arrow-left"></i>
+                    <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                 </button>
                 <a href="{{URL::signedRoute('company.add_artist_to_permit',['from' => 'edit', 'id' => $permit_details->permit_id])}}"
                     class="btn btn--yellow btn-sm kt-font-bold kt-font-transform-u">

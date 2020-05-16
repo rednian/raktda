@@ -113,7 +113,11 @@
                     }
                     @endphp
                     <div class="col-md-4 col-sm-12 row">
+<<<<<<< HEAD
                         <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('No of Days')}}</label>
+=======
+                        <label class="col col-md-6 col-form-label  kt-font-bolder">{{__('No.of.days')}}</label>
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                         <p class="col col-md-6 form-control-plaintext">
                             {{$noofdays}} {{$noofdays > 1 ? __('days') : __('day') }}
                         </p>
@@ -160,7 +164,11 @@
                                             {{$artistCount}}
                                         </td>
                                         <td  class="text-right">
+<<<<<<< HEAD
                                             {{(int)$getProfession['amount'] *  $artistCount}}
+=======
+                                            {{number_format((int)$getProfession['amount'] *  $artistCount,2)}}
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                                         </td>
                                         <td class="text-right">
                                             {{number_format($at['amount'],2)}}
@@ -283,7 +291,12 @@
             let discount = feeTotal * ( parseInt(exempt) / 100);
             let grandTotal = feeTotal - discount;
 
+<<<<<<< HEAD
             $('#discount-amount').html(formatAmount(discount));
+=======
+            $('#discount-amount').html('- '+formatAmount(discount));
+            $('#discount-amount').addClass('text-success');
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
             $('#grand-total').html(formatAmount(grandTotal));
 
         }

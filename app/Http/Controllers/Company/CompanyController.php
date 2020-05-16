@@ -169,8 +169,8 @@ class CompanyController extends Controller
                'phone_number'=> 'required|max:255',
                'address'=> 'required|max:255',
                'area_id'=> 'required|max:255',
-               'company_description_en'=> 'required|max:255',
-               'company_description_ar'=> 'required|max:255',
+              //  'company_description_en'=> 'required|max:255',
+              //  'company_description_ar'=> 'required|max:255',
                'contact_name_en'=> 'required|max:255',
                'contact_name_ar'=> 'required|max:255',
                'designation_en'=> 'required|max:255',
@@ -226,6 +226,7 @@ class CompanyController extends Controller
                     $company->update($request->all());
                   }
 
+<<<<<<< HEAD
     public function changePassword(Request $request, Company $company) {
         $old_password = $request->old_password;
         $new_password = $request->new_password ;
@@ -245,6 +246,17 @@ class CompanyController extends Controller
             DB::rollBack();
             $result = ['danger', $e->getMessage(), 'Error'];
         }
+=======
+                  $result = ['success', __('Submitted Successfully'), ''];
+                  break;
+
+              case 'draft':
+
+                  $company->update($request->all());
+                  $result = ['success', __('Draft saved Successfully'), 'Success'];
+                  break;
+          }
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
         return redirect()->back()->with(['message'=> $result]);
     }
@@ -263,6 +275,18 @@ class CompanyController extends Controller
         return in_array(false, $array);
     }
 
+<<<<<<< HEAD
+=======
+         $this->sendNotification($company ,User::find(Auth::user()->user_id));
+         DB::commit();
+         return redirect(URL::signedRoute('company.show', $company->company_id))->with('message', $result);
+      } catch (Exception $e) {
+         DB::rollBack();
+
+         $result = ['danger', $e->getMessage(), 'Error'];
+          return redirect()->back()->with('message', $result);
+      }
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
 
     public function update(Request $request, Company $company)
@@ -462,7 +486,12 @@ class CompanyController extends Controller
         }
         return response()->json(['message'=> $result]);
 
+<<<<<<< HEAD
     }
+=======
+        if ($request->files) {
+            // dd($request->all());
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
     public function uploadedDatatable(Request $request, Company $company)
     {
@@ -540,7 +569,15 @@ class CompanyController extends Controller
                 ->exists() ?  false : true;
         }
 
+<<<<<<< HEAD
         return response()->json(['valid'=>$result]);
+=======
+      DB::commit();
+      $result = ['success', __('Document Uploaded Successfully'), 'Success'];
+    } catch (Exception $e) {
+      DB::rollBack();
+     $result = ['danger', $e->getMessage(), 'Error'];
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
     }
 
     public function commentDatatable(Request $request, Company $company)
@@ -561,6 +598,7 @@ class CompanyController extends Controller
     }
 
 
+<<<<<<< HEAD
 
     public function requirements(Request $request)
     {
@@ -597,12 +635,148 @@ class CompanyController extends Controller
             $reference_number = explode('-', $last_reference);
             $reference_number = $reference_number[2]+1 ;
             $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
+=======
+      return DataTables::of($company->requirement()->get())
+      ->addColumn('name', function($upload) use ($user){
+        if($upload->type == 'requirement'){
+            $name =  getLangId() == 1 ? ucwords($upload->requirement->requirement_name) : $upload->requirement->requirement_name_ar;
+        }
+        else{
+          $name =  __('Other Upload');
+        }
+        return $name;
+      })->editColumn('issued_date', function($data){
+        return !is_null($data->issued_date) ? Carbon::parse($data->issued_date)->format('d-m-Y') : '';
+      })->editColumn('expired_date', function($data){
+      //  return $data->expired_date ? $data->expired_date->format('d-F-Y') : '-';
+      return !is_null($data->expired_date) ? Carbon::parse($data->expired_date)->format('d-m-Y') : '';
+      })->addColumn('file', function($data){
+        if ($data->type == 'requirement') {
+          $name = getLangId() == 1 ? $data->requirement->requirement_name : $data->requirement->requirement_name_ar;
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
         }
         else{
             $reference_number = 'EST-'.date('Y').'-0001';
         }
+<<<<<<< HEAD
         return $reference_number;
     }
+=======
+        $html = '<a href="'.asset('/storage/'.$data->path).'"data-fancybox data-fancybox data-caption="'.$name.'">';
+        $html .= $name;
+        $html .= '</a>';
+        return $html;
+      })
+      ->addColumn('count', function($data) use ($requirement){
+        return $requirement.'  PAGE';
+      })
+      ->addColumn('action', function($data) use ($company){
+        if(in_array($company->status, ['active', 'blocked'])){ return; }
+        return '<button type="button" class="btn btn-sm btn-remove btn-secondary">'.__('REMOVE').'</button>';
+      })
+      ->rawColumns(['file', 'action'])
+      ->make(true);
+   }
+
+
+
+   public function isexist(Request $request)
+   {
+      if($request->username){
+         $result =  User::where('username', $request->username)->exists() ?  false : true;
+      }
+      if($request->email){
+         $result =  User::where('email', $request->email)->exists() ?  false : true;
+      }
+
+      if($request->mobile_number){
+        $phoneCode = $request->phoneCode;
+         $result =  User::where('mobile_number',$request->mobile_number)->where('phoneCode',  $phoneCode)->exists() ?  false : true;
+      }
+
+      if($request->name_en){
+         $result =  Company::where('name_en', $request->name_en)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
+      if($request->name_ar){
+         $result =  Company::where('name_en', $request->name_ar)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
+      if($request->trade_license){
+         $result =  Company::where('trade_license', $request->trade_license)
+         ->where('status', '!=', 'rejected')
+         ->exists() ?  false : true;
+      }
+
+      return response()->json(['valid'=>$result]);
+   }
+
+   public function commentDatatable(Request $request, Company $company)
+   {
+    return DataTables::of($company->comment()->latest())
+
+    ->addColumn('remark', function($comment) use ($request){
+      return $request->user()->LanguageId == 1 ? ucfirst($comment->comment_en) : $comment->comment_ar;
+    })
+    ->editColumn('action', function($comment){
+      return ucfirst($comment->action);
+    })
+    ->addColumn('date', function($comment){
+      return '<span class="text-underline"  title="'.$comment->created_at->format('l | h:i A, d-F-Y ').'">'.humanDate($comment->created_at).'</span>';
+    })
+    ->rawColumns(['date'])
+    ->make(true);
+   }
+
+
+
+   public function requirements(Request $request)
+   {
+      $requirement = Requirement::where('requirement_type', 'company')
+        ->whereStatus(1)
+        ->orderBy('requirement_name')
+        ->get()
+        ->map(function($v){
+        return [
+            'requirement_name'=> ucfirst($v->requirement_name),
+            'requirement_id'=> $v->requirement_id,
+            'dates_required'=> $v->dates_required,
+            'requirement_name_ar'=> $v->requirement_name_ar,
+          ];
+      });
+
+      return response()->json($requirement->all());
+   }
+
+   private function addressRelated()
+   {
+    return [
+      'emirate_id'=>Emirates::where('name_en' ,'Ras Al Khaimah')->first()->id,
+      'country_id'=>Country::where('name_en' ,'United Arab Emirates')->first()->country_id,
+      'company_type_id'=>CompanyType::where('name_en' ,'corporate')->first()->company_type_id,
+    ];
+   }
+
+   private function getReferenceNumber($company)
+   {
+    if ( Company::exists() && ( !is_null(Company::first()->reference_number) ) ) {
+         $last_reference = Company::where('company_id', '!=', $company->company_id)
+         ->where('status', '!=', 'draft')->orderBy('company_id', 'desc')->first()->reference_number;
+
+         $reference_number = explode('-', $last_reference);
+         $reference_number = $reference_number[2]+1 ;
+         $reference_number = 'EST-'.date('Y').'-'.str_pad($reference_number, 4, 0, STR_PAD_LEFT);
+       }
+       else{
+        $reference_number = 'EST-'.date('Y').'-0001';
+       }
+       return $reference_number;
+   }
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
 
 

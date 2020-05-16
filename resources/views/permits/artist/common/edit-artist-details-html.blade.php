@@ -341,7 +341,7 @@
 
                                 <input type="hidden" name="id_no" id="id_no" value="">
 
-                               
+
 
 
                                 {{-- <div class=" form-group form-group-sm row">
@@ -398,7 +398,7 @@
                                     <div class="col-lg-8">
                                         <div class="input-group input-group-sm">
                                             <input type="text" class="form-control form-control-sm " name="mobile"
-                                                id="mobile" placeholder="{{__('Mobile Number')}}"
+                                                id="mobile" placeholder="{{__('Mobile Number')}}" pattern="^\+?[0-9,-]{3,14}$"
                                                 value="{{$artist_details->mobile_number}}">
                                         </div>
                                     </div>

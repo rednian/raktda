@@ -74,7 +74,7 @@ $isReadOnly = isset($disabled) ? 'readonly' : '';
                                         <div class="form-group form-group-sm row">
                                             <label for="event_type_id"
                                                 class="col-md-4 col-form-label kt-font-bold text-right">
-                                                {{__('Event Sub Type')}} <span class="text-danger"
+                                                {{__('Event Subcategory')}} <span class="text-danger"
                                                     id="event_sub_type_req"> @if(isset($event) ?
                                                     $event->event_type_sub_id : false) *
                                                     @endif</span>

@@ -62,7 +62,7 @@
                     @endif
                     <a href="{{URL::signedRoute('artist.index')}}#{{$tab}}"
                         class="btn btn--maroon btn-sm kt-font-bold kt-font-transform-u">
-                        <i class="la la-arrow-left"></i>
+                        <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                         {{__('BACK')}}
                     </a>
             </div>
@@ -109,7 +109,7 @@
                     @endif
                     @endif
                     <a href="{{URL::signedRoute('artist.index')}}#{{$tab}}" class="btn btn--maroon btn-sm">
-                        <i class="la la-arrow-left"></i>
+                        <i class="la la-angle-{{getLangId() == 1 ? 'left' : 'right'}}"></i>
                     </a>
             </div>
         </div>

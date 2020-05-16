@@ -440,10 +440,7 @@
                     required: true,
                     dateNL: true
                 },
-                visa_type: "required",
-                visa_number: "required",
                 visa_expiry: {
-                    required: true,
                     dateNL: true
                 },
                 gender: "required",

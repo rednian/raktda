@@ -430,13 +430,13 @@ class EventController extends Controller
 //            }
             DB::commit();
             if ($old_event_liquor_id) {
-                $result = ['success', __('Liquor Details Updated Successfully'), 'Success'];
+                $result = ['success', __('Liquor Details Updated Successfully'), __('Success')];
             } else {
-                $result = ['success', __('Liquor Details Added Successfully'), 'Success'];
+                $result = ['success', __('Liquor Details Added Successfully'), __('Success')];
             }
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -796,10 +796,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $event_id)->latest()->first();
             $this->sendNotification($event, 'new');
-            $result = ['success', __('Permit Applied Successfully'), 'Success'];
+            $result = ['success', __('Permit Applied Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         return response()->json(['message' => $result, 'event_id' => $event_id, 'toURL' => $toURL]);
@@ -908,7 +908,7 @@ class EventController extends Controller
                 'id' => $event->event_id,
                 'url' => $event->created_by == $user->user_id ? URL::signedRoute('event.show', ['id' =>  $event->event_id, 'tab' => 'calendar'])  : '#',
                 'description' => __('Venue') .': ' . ($user->LanguageId == 1  ? ucwords($event->venue_en) : $event->venue_ar),
-                'backgroundColor' => '#8c272d !important',
+                'backgroundColor' => $event->status == 'active' ? '#22BB33 !important' : '#bb2124 !important',
                 'textColor' => '#fff !important',
             ];
         });
@@ -1120,10 +1120,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $request->event_id)->latest()->first();
             $this->sendNotification($event, 'edit');
-            $result = ['success', __('Permit Edited Successfully'), 'Success'];
+            $result = ['success', __('Permit Edited Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -1150,10 +1150,10 @@ class EventController extends Controller
                 'cancel_reason' => $reason
             ]);
             DB::commit();
-            $result = ['success', __('Permit Cancelled successfully'), 'Success'];
+            $result = ['success', __('Permit Cancelled Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         return redirect(URL::signedRoute('event.index') . '#cancelled')->with('message', $result);
     }
@@ -1384,9 +1384,9 @@ class EventController extends Controller
                     $from = 'cancelled';
                     break;
             }
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show', ['id' =>  $permit->event_id, 'tab' => $from]) . '" title="' . __('View Details') . '" class="kt-font-dark"><i class="fa fa-file fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('event.show', ['id' =>  $permit->event_id, 'tab' => $from]) . '" title="' . __('View Details') . '" ><i class="fa fa-file-alt fnt-16"></i></a>';
         })->addColumn('download', function ($permit) {
-            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fs-16"></i></a>';
+            return '<a href="' . \Illuminate\Support\Facades\URL::signedRoute('company.event.download', $permit->event_id) . '" target="_blank" title="' . __('Download Permit') . '" rel="noopener"><i class="fa fa-file-download fnt-16"></i></a>';
         })->rawColumns(['action', 'details', 'download'])->make(true);
     }
 
@@ -1458,7 +1458,11 @@ class EventController extends Controller
         $eventTruck = EventTruck::find($truck_id);
         $eventTruck->delete();
 
+<<<<<<< HEAD
         $result = ['success', __('Food Truck Removed Successfully'), 'Success'];
+=======
+        $result = ['success', __('Food Truck Removed Successfully'), __('Success')];
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
         return redirect(URL::signedRoute('event.amend', $event_id))->with('message', $result);
     }
@@ -1606,10 +1610,10 @@ class EventController extends Controller
             DB::commit();
             $event = Event::where('event_id', $request->event_id)->latest()->first();
             $this->sendNotification($event, 'amend');
-            $result = ['success', __('Permit Amended successfully'), 'Success'];
+            $result = ['success', __('Event Permit Amended Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 
@@ -1884,10 +1888,10 @@ class EventController extends Controller
             Storage::deleteDirectory('public/' . Auth::user()->user_id . '/event/temp/');
 
             DB::commit();
-            $result = ['success', __('Permit Draft Added successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Added successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
         $toURL = URL::signedRoute('event.index') . '#draft';
@@ -1928,10 +1932,10 @@ class EventController extends Controller
 
             Event::where('event_id', $event_id)->delete();
             DB::commit();
-            $result = ['success', __('Permit Draft Deleted Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Deleted Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
         return redirect(URL::signedRoute('event.index') . '#draft')->with('message', $result);
     }
@@ -2111,17 +2115,11 @@ class EventController extends Controller
             Storage::deleteDirectory('public/' . $userid . '/event/temp/');
 
             DB::commit();
-            $result = ['success', __('Permit Draft Updated Successfully'), 'Success'];
+            $result = ['success', __('Permit Draft Updated Successfully'), __('Success')];
         } catch (Exception $e) {
             DB::rollBack();
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
-
-        // if ($event) {
-        //     $result = ['success', __('Draft Updated Successfully'), 'Success'];
-        // } else {
-        //     $result = ['error', __('Error, Please Try Again'), 'Error'];
-        // }
 
         return response()->json(['message' => $result, 'toURL' => URL::signedRoute('event.index') . '#draft']);
     }
@@ -2163,7 +2161,15 @@ class EventController extends Controller
 
         $data['event'] = $event;
 
+<<<<<<< HEAD
         $eventComment = EventComment::where('event_id', $event->event_id)->latest()->first();
+=======
+        $eventComment = EventComment::where([
+            ['event_id', $event->event_id],
+            ['action', 'approved']
+        ])->latest()->first();
+
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
         $data['exempt'] = !empty($eventComment) ? $eventComment->exempt_percentage : null;
         $permit_status = [];
         $is_paid = [];
@@ -2223,9 +2229,63 @@ class EventController extends Controller
                 'payment_order_id' => $orderId
             ]);
 
+
+            $permitArray = [];
+
+            $artistpermitnumber = '';
+
+            $total_artist_fee = 0;
+
+
             if ($trnx_id) {
+<<<<<<< HEAD
                 $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee);
                 $exempt_amount = $event_amount * ($exempt /100);
+=======
+
+
+                if ($paidArtistFee) {
+                    $permit_id = \App\Permit::where('event_id', $event_id)->first()->permit_id;
+
+                    $artistPermits = ArtistPermit::where('permit_id', $permit_id)->where('artist_permit_status', 'approved')->get();
+
+
+
+                    foreach ($artistPermits as $artistPermit) {
+                        $per_day_fee = $artistPermit->profession->amount;
+                        $noofmonths = ceil($noofdays ? $noofdays / 30 : 1);
+                        $total_fee = $per_day_fee * $noofmonths;
+                        $total_artist_fee +=  $total_fee;
+                        $artist_exempt_amount = $total_fee * ($exempt /100);
+                        $trnx_id->artistPermitTransaction()->create([
+                            'amount' => $total_fee,
+                            'exempt_percentage' => $exempt,
+                            'exempt_amount' =>$artist_exempt_amount,
+                            'permit_id' => $permit_id,
+                            'artist_permit_id' => $artistPermit->artist_permit_id,
+                            'transaction_id' => $trnx_id->transaction_id,
+                        ]);
+                    }
+
+                    $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
+
+                    $artistpermitnumber = generateArtistPermitNumber();
+
+                    Permit::where('permit_id', $permit_id)->update([
+                        'paid' => 1,
+                        'permit_number' => $artistpermitnumber,
+                        'permit_status' => 'active'
+                    ]);
+
+                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
+                }
+
+
+                $event_amount = (int) $amount - ((int) $truck_fee + (int) $liquor_fee + (int)$total_artist_fee );
+
+                $exempt_amount = $event_amount * ($exempt /100);
+
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
                 EventTransaction::create([
                     'event_id' => $event_id,
                     'transaction_id' => $trnx_id->transaction_id,
@@ -2278,6 +2338,7 @@ class EventController extends Controller
                     'paid_artist_fee' => $paidArtistFee
                 ]);
 
+<<<<<<< HEAD
                 $permitArray = [];
 
                 $artistpermitnumber = '';
@@ -2305,19 +2366,16 @@ class EventController extends Controller
                     $permitArray = Permit::where('permit_id', $permit_id)->latest()->first();
 
                     $artistpermitnumber = generateArtistPermitNumber();
+=======
+>>>>>>> f2245977b6b50d027cc6c3807ef74b0abc304bae
 
-                    Permit::where('permit_id', $permit_id)->update([
-                        'paid' => 1,
-                        'permit_number' => $artistpermitnumber,
-                        'permit_status' => 'active'
-                    ]);
-
-                    ArtistPermit::where('permit_id', $permit_id)->update(['is_paid' => 1]);
-                }
             }
 
 
             DB::commit();
+
+
+            $result = ['success', __('Payment Done Successfully'), __('Success')];
 
             /* code for payment notification */
 
@@ -2328,56 +2386,68 @@ class EventController extends Controller
                 storeEventPermitPrint($event_id);
                 $directory = 'permit_downloads/event/' . $event_id;
                 $eventPrint = storage_path('app/' . $directory) . '/EventPermit#' . $event_permit_number . '.pdf';
-                $transaction = Transaction::where('created_by', Auth::user()->user_id)->latest()->first();
+                $transaction = Transaction::where('transaction_id', $trnx_id->transaction_id)->latest()->first();
+                $data = getExemptPercentage($transaction);
                 $data['transaction'] = $transaction;
                 $payment_voucher =  storage_path('app/' . $directory) . '/payment_voucher.pdf';
-                PDF::loadView('permits.reports.voucher_print', $data, [], [
-                    'title' => 'Event Permit ' . $event_permit_number,
-                    'default_font_size' => 10
-                ])->save($payment_voucher);
 
-                array_push($files, $eventPrint, $payment_voucher); //  adding the main print and the payment voucher file path to the files array
-                // file path of the truck permit print
-                $truck_file_path = storage_path('app/' . $directory) . '/TruckPermit#' . $event_permit_number . '.pdf';
-                if (Storage::exists($truck_file_path)) {
-                    array_push($files, $truck_file_path); //  adding the file path to the files array
+                try {
+                    PDF::loadView('permits.reports.voucher_print', $data, [], [
+                        'title' => 'Event Permit ' . $event_permit_number,
+                        'default_font_size' => 10
+                    ])->save($payment_voucher);
+
+                    array_push($files, $eventPrint, $payment_voucher); //  adding the main print and the payment voucher file path to the files array
+                    // file path of the truck permit print
+                    $truck_file_path = storage_path('app/' . $directory) . '/TruckPermit#' . $event_permit_number . '.pdf';
+                    if (Storage::exists($truck_file_path)) {
+                        array_push($files, $truck_file_path); //  adding the file path to the files array
+                    }
+                    // file path of the liquor permit print
+                    $liquor_file_path = storage_path('app/' . $directory) . '/LiquorPermit#' . $event_permit_number . '.pdf';
+                    if (Storage::exists($liquor_file_path)) {
+                        array_push($files, $liquor_file_path); //  adding the file path to the files array
+                    }
+
+                    if ($paidArtistFee) {
+                        $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " and " . $artistpermitnumber . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid";
+                        storeArtistPermitPrint($permit_id);
+                        $adirectory = 'permit_downloads/artist/' . $permit_id;
+                        $artistPrint = storage_path('app/' . $adirectory) . '/ArtistPermit#' . $artistpermitnumber . '.pdf';
+                    } else {
+                        $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid \n عزيزي " . Auth::user()->NameEn . ", رسوم التصريح رقم " . $event_permit_number . " مبلغ " . number_format($amount, 2) . " درهم, تمت بنجاح. يمكنك تحميل التصريح من التطبيق.";
+                    }
+
+
+                    paymentNotification($event, $paidArtistFee ? $permitArray : '', $files, $amount);
+                    sendSms(Auth::user()->number, $message); //  send sms to the number
+
+                    if ($paidArtistFee) {
+                        Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
+                    } else {
+                        Storage::deleteDirectory('permit_downloads/event/' . $event_id);
+                    }
+
                 }
-                // file path of the liquor permit print
-                $liquor_file_path = storage_path('app/' . $directory) . '/LiquorPermit#' . $event_permit_number . '.pdf';
-                if (Storage::exists($liquor_file_path)) {
-                    array_push($files, $liquor_file_path); //  adding the file path to the files array
-                }
+                catch(Throwable $e) {
 
-                if ($paidArtistFee) {
-                    $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " and " . $artistpermitnumber . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid";
-                    storeArtistPermitPrint($permit_id);
-                    $adirectory = 'permit_downloads/artist/' . $permit_id;
-                    $artistPrint = storage_path('app/' . $adirectory) . '/ArtistPermit#' . $artistpermitnumber . '.pdf';
-                } else {
-                    $message = "Dear " . Auth::user()->NameEn . ", \n Your payment for the permit " . $event_permit_number . " AED " . number_format($amount, 2) . " is successfully completed. Please click the link below to download permit " . URL::signedRoute('event.index') . "#valid \n عزيزي " . Auth::user()->NameEn . ", رسوم التصريح رقم " . $event_permit_number . " مبلغ " . number_format($amount, 2) . " درهم, تمت بنجاح. يمكنك تحميل التصريح من التطبيق.";
-                }
+                    // report($e);
 
+                    return false;
 
-                paymentNotification($event, $paidArtistFee ? $permitArray : '', $files, $amount);
-                sendSms(Auth::user()->number, $message); //  send sms to the number
-
-                if ($paidArtistFee) {
-                    Storage::deleteDirectory('permit_downloads/artist/' . $permit_id);
-                } else {
-                    Storage::deleteDirectory('permit_downloads/event/' . $event_id);
+                    // $result = ['error', __('unable to send mail! Please download from app.'), 'Error'];
                 }
             }
 
             /*end code for code for payment notification */
 
-            $result = ['success', __('Payment Done Successfully'), 'Success'];
 
             $toURL = URL::signedRoute('event.happiness', ['id' => $event_id]);
         } catch (Exception $e) {
             DB::rollBack();
 
             $toURL = '';
-            $result = ['error', __($e->getMessage()), 'Error'];
+            $result = ['error', __($e->getMessage()), __('Error')];
         }
 
 

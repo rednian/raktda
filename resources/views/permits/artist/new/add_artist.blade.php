@@ -490,8 +490,7 @@
                                                         <div class="col-lg-8">
                                                             <div class="input-group input-group-sm">
                                                                 <input type="text" class="form-control form-control-sm "
-                                                                    name="mobile" id="mobile"
-                                                                    placeholder="{{__('Mobile Number')}}">
+                                                                    name="mobile" id="mobile"  pattern="^\+?[0-9,-]{3,14}$" placeholder="{{__('Mobile Number')}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1156,10 +1155,9 @@
                 //},
                 // visa_number: 'required',
                 // visa_type:'required',
-                // visa_expiry: {
-                //     required: true,
-                //     dateNL: true
-                // },
+                visa_expiry: {
+                    dateNL: true
+                },
                 address: "required",
                 mobile: {
                     // number: true,
@@ -1184,7 +1182,6 @@
                 pp_expiry:'',
                 address: "",
                 uid_number: '',
-                //uid_expiry: '',
                 visa_number:'',
                 visa_type:'',
                 visa_expiry:'',
